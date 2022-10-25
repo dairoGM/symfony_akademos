@@ -1,0 +1,78 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Estructuras{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Listado de estructuras </h3>
+                <div>
+                    <a title="Vista de tabla" href="{{ path('app_estructura_index') }}" class="btn btn-primary"><i
+                                class="fa fa-table"></i> </a>
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="jstree_demo_div" class="mt-1"></div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        let elments = '{{ registros | raw }}'
+
+        console.log('elements', JSON.parse(elments))
+
+        let treData = JSON.parse(elments);
+
+
+        $('#jstree_demo_div')
+
+            .on('select_node.jstree', function (e, data) {
+                // select_node
+                // changed
+
+
+            })
+            .on('loaded.jstree', function () {
+                $('#jstree_demo_div').jstree('open_all');
+                treData.forEach((e) => {
+                    console.log(e.color)
+                    $("#" + e.id + " >a").css("color", e.color);
+                })
+            })
+            .on('open_node.jstree', function () {
+                // $("#" + 4 + " >a").css("color", "red");
+                treData.forEach((e) => {
+                    $("#" + e.id + " >a").css("color", e.color);
+                })
+            })
+
+            .jstree({
+                'core': {
+                    'data': treData,
+                    "check_callback": true,
+                    'themes': {
+                        'name': 'proton',
+                        'responsive': true
+                    }
+
+                }
+            });
+
+
+    </script>
+
+{% endblock %}

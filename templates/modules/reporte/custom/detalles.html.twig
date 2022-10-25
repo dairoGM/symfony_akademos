@@ -1,0 +1,60 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Reporte personalizado{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+        .ck-editor__editable .todo-list .todo-list__label>input {
+            cursor: pointer;
+            margin-left: 18px !important;
+        }
+
+        .todo-list__label__description {
+            margin-left: 12px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+
+                <h3 class="card-title text-bold text-gray">Reporte: {{ reporte.nombre }}</h3>
+                <i class="fas fa-print text-primary" style="cursor: pointer" id="btnPrint">
+
+                </i>
+
+            </div>
+        </div>
+        <div class="card-body">
+            {{ reporte.contenido | raw }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(document).ready(function (){
+        $('.image_resized').each(function(i, obj) {
+            let style = $(this)[0].style.width
+            $(this).children()[0].style.width = style
+        });
+
+        $("#btnPrint").on("click", function () {
+            var divContents = $(".card-body").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>{{ reporte.nombre }}</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+    })
+</script>
+{% endblock %}

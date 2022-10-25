@@ -1,0 +1,64 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar grado académico{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Modificar grado académico</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.siglas) }}
+                    {{ form_widget(form.siglas) }}
+                    {{ form_errors(form.siglas) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcion) }}
+                    {{ form_widget(form.descripcion) }}
+                    {{ form_errors(form.descripcion) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_grado_academico_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#grado_academico_siglas').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 3 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

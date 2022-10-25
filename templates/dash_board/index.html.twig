@@ -1,0 +1,266 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*@media (max-width: 575px) {*/
+        /*    .filter-dash-buttom{*/
+        /*        width: 100%;*/
+        /*    }*/
+        /*}*/
+
+
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .c {
+                min-width: 33.3% !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1400px) {
+            .p {
+                min-width: 33.3% !important;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+
+
+{#    <div class="col-12 mb-1">#}
+{#        <div class="row justify-content-between">#}
+{#            <div class="col-10 col-sm-8 col-md-8 col-lg-8 col-xl-7">#}
+{#                <form method="post">#}
+{#                    <div class="input-group mb-3">#}
+{#                        <input type="text" class="form-control" name="search" value="{{ app.request.get('search') }}"#}
+{#                               placeholder="Buscar" aria-label="Buscar" aria-describedby="button-addon2">#}
+{#                        <div class="input-group-append">#}
+{#                            <button class="btn btn-primary" style="border-color: #682423;" type="submit"#}
+{#                                    id="button-addon2"><i class="fas fa-search"></i></button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+
+{#            </div>#}
+{#            <div class="col-2 col-sm-4 col-md-4 col-lg-2 col-xl-2 mb-1 h-100 d-sm-flex justify-content-end ">#}
+{#                <button class="btn btn-primary  filter-dash-buttom" role="button">#}
+{#                    <i class="fas fa-filter"></i>#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+
+{#    </div>#}
+
+
+
+{#    {% if app.request.get('search') %}#}
+{#        <div class="col-12">#}
+{#            <div class="alert alert-light alert-dismissible fade show" role="alert">#}
+{#                Resultados para la busqueda:<strong> {{ app.request.get('search') }} </strong> <a#}
+{#                        href="{{ path('app_dash_board', {'id': objetivoGeneral}) }}" class="ml-2 text-danger">Click#}
+{#                    para eliminar búsqueda</a>#}
+{#                <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                    <span aria-hidden="true">&times;</span>#}
+{#                </button>#}
+{#            </div>#}
+
+{#        </div>#}
+{#    {% endif %}#}
+
+
+
+
+{#    <div class="d-none d-lg-block col-12 mb-2">#}
+{#        <div class="row">#}
+{#            <div class="col-md-4 col-lg-3 col-xl-3 p mb-2">#}
+{#                <div class="card-stadistics shadow-sm">#}
+{#                    <i class="fa fa-check-circle" style="font-size: 26px;opacity: 0.4"></i>#}
+{#                    <div class="ml-2 text-white-50">#}
+{#                        <p class="mb-0 text-muted font-weight-bold">Total de indicadores: {{ totalIndicadores }}</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+
+{#            {% for key,value in totalPorEvaluaciones %}#}
+{#                <div class="col-md-4 col-lg-3 col-xl-3 p mb-2">#}
+{#                    <div class="card-stadistics shadow-sm">#}
+{#                        <i class="fa fa-check-circle" style="font-size: 26px;opacity: 0.4"></i>#}
+{#                        <div class="ml-2 text-white-50 w-100">#}
+{#                            <p class="mb-0 text-muted font-weight-bold">#}
+{#                                {% if  key == 'N/E' %}#}
+{#                                    No evaluados: {{ value | length }}#}
+{#                                {% else %}#}
+{#                                    Evaluados de {{ key }}: {{ value | length }}#}
+{#                                {% endif %}#}
+{#                            </p>#}
+{#                            <div class="text-muted" style="display: flex; justify-content: space-between">#}
+{#                                <span class="text-muted font-weight-bold" style="background-color: #e9e5e9;#}
+{#    position: absolute;#}
+{#    top: 0;#}
+{#    right: 8px;#}
+{#    padding: 5px 7px;#}
+{#    border-top-right-radius: 20px;#}
+{#    border-bottom-left-radius: 10px;">{{ ' ' ~ (value | length * 100 / totalIndicadores) | round(0) ~ '%' }}</span>#}
+{#                            </div>#}
+
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+{#            {% endfor %}#}
+
+
+{#        </div>#}
+
+{#    </div>#}
+
+
+
+
+    <!-- Small boxes (Stat box) -->
+    <div class="col-12">
+
+
+    </div>
+
+    <div class="modal-container">
+    </div>
+
+    <div class="modal fade" id="filterDashboard" role="dialog" aria-labelledby="filterDashboard"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Filtar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).on('click', '.responsableModalAction', function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.get($(this).data('url'),
+                function (data) {
+                    $('.modal-container').html(data);
+                    $('#modalDetailResponsable').modal('show')
+                    HoldOn.close()
+                });
+        })
+
+        $(document).on('click', '.balanceCumplimiento', function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.get($(this).data('url'),
+                function (data) {
+                    $('.modal-container').html(data);
+                    $('#modalBalanceCumplimiento').modal('show')
+                    HoldOn.close()
+                });
+        })
+
+        $(document).on('click', '.comportamientoAnual', function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.get($(this).data('url'),
+                function (data) {
+                    $('.modal-container').html(data);
+                    $('#modalComportamientoAnual').modal('show')
+                    HoldOn.close()
+                });
+        })
+
+        $(document).on('click', '.evaluacionMunicipios', function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.get($(this).data('url'),
+                function (data) {
+                    $('.modal-container').html(data);
+                    $('#modalMunicipiosMapa').modal('show')
+                    HoldOn.close()
+                });
+        })
+
+        $(document).on('click', '.fa-star', function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+        })
+
+        $(document).ready(function () {
+
+
+            $('.filtrosDashSubmit').click(function (e) {
+                e.preventDefault()
+                $('#formFilterDash').submit()
+                // if($('#exampleFormControlSelect1').val()){
+                //     $('#formFilterDash').submit()
+                // }else{
+                //     document.querySelector('#formFilterDash').reportValidity()
+                // }
+
+            })
+        })
+
+        $(document).ready(function () {
+            // Add minus icon for collapse element which is open by default
+            $(".collapse.show").each(function () {
+                $(this)
+                    .prev(".card-header")
+                    .find(".fa")
+                    .addClass("fa-minus")
+                    .removeClass("fa-plus");
+            });
+
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse")
+                .on("show.bs.collapse", function () {
+                    $(this)
+                        .prev(".card-header")
+                        .find(".fa")
+                        .removeClass("fa-plus")
+                        .addClass("fa-minus");
+                })
+                .on("hide.bs.collapse", function () {
+                    $(this)
+                        .prev(".card-header")
+                        .find(".fa")
+                        .removeClass("fa-minus")
+                        .addClass("fa-plus");
+                });
+        });
+
+
+    </script>
+
+{% endblock %}
+

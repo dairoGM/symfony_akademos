@@ -1,0 +1,72 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('app_admin_home') }}"
+               class="nav-link nav-link-menu  {% if 'app_admin_home' in app.request.get('_route') %} active {% endif %}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Inicio
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Seguridad
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_usuario_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Usuarios</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_rol_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Roles</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_modulo_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Módulos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_funcionalidad_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Funcionalidades</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fa fa-paper-plane"></i>
+                <p>
+                    Notificaciones
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_notificaciones_usuario_listar') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Notificaciones</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

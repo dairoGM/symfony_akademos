@@ -1,0 +1,286 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Todo Lista{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block stylesheets %}
+
+    <style>
+        .content-wrapper, .main-header {
+            margin-left: 0 !important;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block body %}
+
+
+
+
+    <!-- TO DO List -->
+    <div class="card shadow">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="ion ion-clipboard mr-1"></i>
+                Lista de chequeo
+            </h3>
+
+            {# <div class="card-tools"> #}
+            {# <ul class="pagination pagination-sm"> #}
+            {# <li class="page-item"><a href="#" class="page-link">&laquo;</a></li> #}
+            {# <li class="page-item"><a href="#" class="page-link">1</a></li> #}
+            {# <li class="page-item"><a href="#" class="page-link">2</a></li> #}
+            {# <li class="page-item"><a href="#" class="page-link">3</a></li> #}
+            {# <li class="page-item"><a href="#" class="page-link">&raquo;</a></li> #}
+            {# </ul> #}
+            {# </div> #}
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <ul class="todo-list" data-widget="todo-list">
+
+                {% for item in lista %}
+
+                    <li data-id="{{ item.id }}">
+                    <span class="handle">
+                      <i class="fas fa-arrows-alt"></i>
+                    </span>
+                        <div class="icheck-primary d-inline ml-2">
+                            <input type="checkbox" class="check" data-id="{{ item.id }}"
+                                   value="" {% if item.terminado %} checked {% endif %} name="{{ item.id }}"
+                                   id="{{ item.id }}">
+                            <label for="{{ item.id }}"></label>
+                        </div>
+                        <span class="text">{{ item.nombre }}</span>
+
+                        {% set diferencia = item.fechaCumplimiento.diff(date('now')) %}
+                        {% set restante = diferencia.days %}
+
+                        {% if restante == 1 %}
+
+                            <small class="badge badge-primary"><i class="far fa-clock"></i> Hace 1 día</small>
+                        {% endif %}
+                        {% if restante == 0 %}
+                            <small class="badge badge-primary"><i class="far fa-clock"></i> Hoy</small>
+                        {% endif %}
+                        {% if restante != 0 and restante != 1 %}
+                            <small class="badge badge-primary"><i class="far fa-clock"></i> Hace {{ restante }}
+                                días</small>
+                        {% endif %}
+
+                        <div class="tools">
+                            <i class="fas fa-edit" data-id="{{ item.id }}" data-title="{{ item.nombre }}"
+                               data-toggle="modal" data-target="#modalDetail"></i>
+                            <i class="fas fa-trash elementRemove"
+                               data-url="{{ path('eliminar_todo_cliente', {'id': item.id}) }}"></i>
+                        </div>
+                    </li>
+                {% else %}
+
+                    <div class="col-12 text-center">
+                        <span>No existen elementos.</span>
+                    </div>
+
+
+                {% endfor %}
+
+
+            </ul>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            <button type="button" class="btn btn-primary float-right adicionar" data-toggle="modal"
+                    data-target="#modalDetail"><i class="fas fa-plus"></i> Adicionar item
+            </button>
+        </div>
+    </div>
+    <!-- /.card -->
+    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetail"
+         aria-hidden="true">
+        <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="modalDetailLabel">Adicionar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modalDetailBody">
+                    <textarea id="title" name="title" class="form-control" placeholder="Título"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary guardar d-none" data-dismiss="modal">Guardar</button>
+                    <button type="button" class="btn btn-primary editar d-none" data-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        let itemEdit = '';
+        let itemTitle = '';
+
+
+        $('.todo-list').sortable({
+            placeholder: 'sort-highlight',
+            handle: '.handle',
+            forcePlaceholderSize: true,
+            zIndex: 999999,
+            update: function () {
+
+
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: "{{ path('app_todo_lista_cambiar_orden_cliente') }}",
+                    data: {'orden': $('.todo-list').sortable("toArray", {"attribute": "data-id"})},
+                    dataType: "",
+                    success: function (res) {
+
+
+                    },
+                    error: function (err) {
+
+                        toastr.error(err);
+                    }
+                });
+            }
+        })
+
+        $(".check").change(function () {
+            let id = $(this).data('id');
+
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "{{ path('app_todo_lista_activar_desactivar_cliente') }}",
+                data: {
+                    'id': id
+                },
+                dataType: "json",
+                success: function (res) {
+
+
+                    // document.location = document.location.href;
+                },
+                error: function (err) {
+
+                }
+            });
+        })
+
+        $(".guardar").click(function () {
+            let titulo = $('#title').val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "{{ path('adicionar_todo_cliente') }}",
+                data: {
+                    'titulo': titulo
+                },
+                dataType: "json",
+                success: function (res) {
+
+                    // HoldOn.close()
+                    document.location = document.location.href;
+                },
+                error: function (err) {
+
+                }
+            });
+        })
+
+        $(".editar").click(function () {
+            let titulo = $('#title').val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "{{ path('editar_todo_cliente') }}",
+                data: {
+                    'titulo': titulo,
+                    'id': itemEdit
+                },
+                dataType: "json",
+                success: function (res) {
+
+                    // HoldOn.close()
+                    document.location = document.location.href;
+                },
+                error: function (err) {
+
+                }
+            });
+        })
+
+        {# $(".fa-trash").click(function () { #}
+        {# let id = $(this).data('id'); #}
+        {# HoldOn.open({ #}
+        {# theme: "sk-cube-grid", #}
+        {# message: 'Please wait, the process may take a while...', #}
+        {# textColor: "white" #}
+        {# }); #}
+        {# $.ajax({ #}
+        {# type: "POST", #}
+        {# cache: false, #}
+        {# url: "{{ path('eliminar_todo') }}", #}
+        {# data: { #}
+        {# 'id' : id #}
+        {# }, #}
+        {# dataType: "json", #}
+        {# success: function (res) { #}
+
+        {# // HoldOn.close() #}
+        {# document.location = document.location.href; #}
+        {# }, #}
+        {# error: function (err) { #}
+
+        {# } #}
+        {# }); #}
+        {# }) #}
+
+        $('.adicionar').click(function () {
+            $('.guardar').removeClass('d-none')
+            $('.editar').addClass('d-none')
+            $('#title').val("")
+
+            $('#modalDetailLabel').text('Adicionar')
+        })
+
+        $('.fa-edit').click(function () {
+            itemEdit = $(this).data('id')
+            itemTitle = $(this).data('title')
+
+            $('#title').val(itemTitle)
+
+            $('.guardar').addClass('d-none')
+            $('.editar').removeClass('d-none')
+            $('#modalDetailLabel').text('Modificar')
+        })
+
+        $('.menuAmburguesa').remove()
+
+    </script>
+
+{% endblock %}
+

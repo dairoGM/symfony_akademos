@@ -1,0 +1,28 @@
+<nav class="mt-2">
+{#    <select class="form-control" id="planUserBase" name="planUserBase">#}
+{#        <option value="-1">Seleccione el plan</option>#}
+{#        {% for plan in planes %}#}
+{#            <option value="{{ plan.id }}" {% if plan.id == planUser %} selected {% endif %}>{{ plan.nombre }}</option>#}
+{#        {% endfor %}#}
+{#    </select>#}
+    <ul class="nav nav-pills nav-sidebar flex-column mt-2" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        {% for objetivo in objetivosGenerales %}
+
+            <li class="nav-item">
+                <a href="{{ path('app_dash_board', {'id' : objetivo.objetivoGeneral.id }) }}" class="nav-link nav-link-menu text-truncate" data-toggle="tooltip" data-placcement="right" title="{{ objetivo.objetivoGeneral.nombre }}">
+                    <i class="nav-icon fa {{ objetivo.objetivoGeneral.icono }}"></i>
+
+                       <span>
+                          {{ objetivo.objetivoGeneral.nombre }}
+                       </span>
+
+                </a>
+
+            </li>
+
+        {% endfor %}
+
+    </ul>
+</nav>

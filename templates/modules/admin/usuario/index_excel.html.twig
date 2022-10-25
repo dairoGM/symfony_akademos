@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Correo</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in datos %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ item.email }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

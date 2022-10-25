@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
+        <h5 class="mb-0"><b>Nivel escolar:</b> {{ item.nivelEscolar.nombre }}</h5>
+    </div>
+    <div class="col-6">
+        {% if '1' == item.activo %}
+            <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
+        {% else %}
+            <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
+    </div>
+</div>
+

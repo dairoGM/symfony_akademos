@@ -1,0 +1,118 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Trazas{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de trazas</h3>
+                <div style="display: flex; align-items: center; justify-content: center;cursor: pointer">
+
+                    <div class="custom-control custom-switch mr-2" style="cursor: pointer">
+                        <input style="cursor: pointer" type="checkbox" class="custom-control-input" {% if configuracionTraza %} checked {% endif %}  id="customSwitch1">
+                        <label style="cursor: pointer" class="custom-control-label" for="customSwitch1">Activar/Desactivar Trazas</label>
+                    </div>
+
+                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_traza_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Tipo de traza</th>
+                    <th>Acción</th>
+                    <th>Objeto</th>
+                    <th>IP</th>
+                    <th>Navegador</th>
+                    <th>Sistema operativo</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="7%">{{ item.creado | date('d/m/Y H:s') }}</td>
+                        <td width="20%">
+                            <a href="{% if item.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.persona.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                               target="_blank">
+                                <img src="{% if item.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.persona.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
+                            </a>
+                            &nbsp; {{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}
+                        </td>
+                        <td width="7%">{{ item.tipoTraza.nombre | default('') }}</td>
+                        <td width="20%">{{ item.accion.nombre | default('') }}</td>
+                        <td width="20%">{{ item.objeto.nombre | default('') }}</td>
+                        <td width="3%">{{ item.ip | default('') }}</td>
+                        <td width="9%">{{ item.navegador | default('') }}</td>
+                        <td width="9%">{{ item.sistemaOperativo | default('') }}</td>
+                        <td width="1%" class="text-center">
+                            {% if item.tipoTraza.id == 2 %}
+                                <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                        data-url="{{ path('app_traza_detail', {'id' : item.id}) }}"
+                                        data-title="Detalles de la traza">
+                                    <i class="fa fa-eye "></i>
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+ <script>
+     $(document).ready(function () {
+         $('#customSwitch1').change(function () {
+             let url = "{{ path('app_traza_configuracion') }}";
+
+             HoldOn.open({
+                 theme: "sk-bounce",
+                 message: 'Por favor espere...',
+                 textColor: "white"
+             });
+
+             $.ajax({
+                 type: "POST",
+                 cache: false,
+                 url: url,
+                 dataType: "json",
+
+                 success: function (res) {
+
+                     window.location.href = window.location
+
+                 },
+                 error: function (err) {
+
+                     toastr.error(err);
+                     HoldOn.close()
+                 }
+             });
+         })
+     })
+ </script>
+{% endblock %}
+
+

@@ -1,0 +1,71 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Provincias{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de provincias</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_provincia_new') }}"><i class="fa fa-plus"></i>
+                    </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No</th>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>Siglas</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for provincia in provincias %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ provincia.nombre }}</td>
+                        <td>{{ provincia.codigo }}</td>
+                        <td>{{ provincia.siglas }}</td>
+                        <td class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_provincia_detail', {'id' : provincia.id}) }}"
+                                    data-title="Detalles de la provincia">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                            <a title="Modificar" class="btn btn-outline-primary"
+                               href="{{ path('app_provincia_edit', {'id': provincia.id}) }}"><i class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_provincia_delete', {'id': provincia.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+
+{% endblock %}
+

@@ -1,0 +1,74 @@
+<span class="dropdown-header"> {% if notificaciones | length == 1 %} {{ notificaciones | length }} notificación {% else %} {{ notificaciones | length }} notificaciones {% endif %}</span>
+<span class="dropdown-header cantidadContainer d-none">{{ notificaciones | length }}</span>
+{% for n in notificaciones %}
+    <div class="dropdown-divider"></div>
+    <a target="_blank" href="{% if n.url %} {{ n.url }} {% else %} # {% endif %}" class="dropdown-item" data-toggle="tooltip" data-placement="top" title="{{ n.texto }}">
+
+        <div class="text-truncate">
+
+            <i class="fas fa-tasks mr-2 text-muted"></i>
+
+            <span> {{ n.texto }}</span>
+
+            {% set diferencia = n.fechaCreado.diff(date('now')) %}
+            {% set restante = diferencia.days - 1 %}
+
+            {% if restante == 1 %}
+
+                <span class="float-right text-muted text-sm"><i class="far fa-clock"></i> Hace 1 día</span>
+            {% endif %}
+            {% if restante == 0 %}
+                <span class="float-right text-muted text-sm"><i class="far fa-clock"></i> Hoy</span>
+            {% endif %}
+            {% if restante != 0 and restante != 1 %}
+                <span class="float-right text-muted text-sm"><i
+                            class="far fa-clock"></i> Hace {{ restante }} días</span>
+            {% endif %}
+
+
+        </div>
+
+        <div class="">
+            <button class="btn btn-danger btn-block btn-sm notificationRemove" data-url="{{ path('app_notificaciones_usuario_eliminar', {'id': n.id}) }}">Eliminar</button>
+
+        </div>
+
+
+    </a>
+{% endfor %}
+
+<div class="dropdown-divider"></div>
+<a href="{{ path('app_notificaciones_usuario_todas') }}" class="dropdown-item dropdown-footer">Ver todas las
+    notificaciones</a>
+
+<style>
+    .notificationRemove {
+        display: none;
+    }
+
+    .dropdown-item:hover .notificationRemove {
+        display: inline;
+    }
+
+    .notificationRemove {
+        animation: fadeIn 1s;
+        cursor: pointer
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+
+</style>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>

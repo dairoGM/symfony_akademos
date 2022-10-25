@@ -1,0 +1,172 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Estructuras{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 600px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de estructuras </h3>
+                <div>
+                    <a title="Vista de tabla" href="{{ path('app_estructura_index') }}" class="btn btn-primary"><i
+                                class="fa fa-table"></i>
+                    </a>
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="map"></div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            let mymap = '';
+            let defaultLocation = '22.809099, -82.758465';
+            let defaultZoom = 11;
+            let locationMap = '';
+            let map_current_location = '22.81258, -82.758293';
+            let marker = '';
+
+
+            let options = {
+                icon: 'fa-circle',
+                iconColor: '#ffffff',
+                markerColor: 'blue',
+                shape: 'circle',
+                prefix: 'fa'
+            };
+
+
+            mymap = L.map('map').setView(L.latLng(defaultLocation.split(',').map(v => parseFloat(v))), defaultZoom);
+            L.tileLayer('https://map.epe.rimed.cu/tile/{z}/{x}/{y}.png', {
+                attribution: '',
+                maxZoom: 18,
+                // id: 'mapbox/streets-v11',
+                // tileSize: 512,
+                // zoomOffset: -1,
+                // accessToken: 'your.mapbox.access.token'
+            }).addTo(mymap);
+
+
+            initFullScreem();
+
+            var markers = L.markerClusterGroup();
+
+            {% for element in registros %}
+            {% if element.ubicacion %}
+            elementObjet = {
+                nombre: '{{ element.nombre }}',
+                provincia: '{{ element.provincia.nombre }}',
+                municipio: '{{ element.municipio.nombre }}',
+                telefono: '{{ element.telefono }}',
+            }
+
+            options.iconColor = '{{ element.categoriaEstructura.color }}'
+
+            marker = create_extramarker(L.latLng('{{ element.ubicacion }}'.split(',').map(v => parseFloat(v))), options, elementObjet);
+            // marker.addTo(mymap);
+
+            markers.addLayer(marker);
+
+
+            {% endif %}
+
+            {% endfor %}
+
+            mymap.addLayer(markers);
+
+
+            // if ($('#estructura_ubicacion').val() !== '' && $('#estructura_ubicacion').val() !== null) {
+            //     if (marker === '') {
+            //         marker = create_extramarker(L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))), options);
+            //     } else {
+            //         updateMarker(marker, L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))).lat, L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))).lng)
+            //     }
+            //
+            //
+            // } else {
+            //     if (marker === '') {
+            //         marker = create_extramarker(L.latLng(22.81258, -82.758293), options);
+            //     } else {
+            //         updateMarker(marker, 22.81258, -82.758293)
+            //     }
+            // }
+
+
+            // marker.addTo(mymap);
+
+
+            // mymap.addEventListener('click', (e) => {
+            //
+            //     map_current_location = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+            //     locationMap = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+            //
+            //     // update marker location
+            //     updateMarker(marker, e.latlng.lat, e.latlng.lng);
+            //
+            //
+            // });
+
+
+            function updateMarker(marker, lat, lng) {
+                marker.setLatLng([lat, lng])
+                    .bindPopup(marker.getLatLng().toString())
+                    .openPopup();
+            }
+
+            function create_extramarker(latlng, options, element) {
+                // Creates a red marker with the coffee icon
+                let markerIcon = L.ExtraMarkers.icon(
+                    options
+                );
+
+
+                let marker = L.marker(latlng, {icon: markerIcon, title: element.nombre});
+
+                nombre = (typeof element.nombre !== 'undefined') ? `<b> Nombre: </b> ${element.nombre}<br>` : '';
+                provincia = (typeof element.provincia !== 'undefined') ? `<b> Provincia: </b> ${element.provincia}<br>` : '';
+                municipio = (typeof element.municipio !== 'undefined') ? `<b> Municipio: </b> ${element.municipio}<br>` : '';
+                telefono = (typeof element.telefono !== 'undefined') ? `<b> Teléfono: </b> ${element.telefono}<br>` : '';
+
+                marker.bindPopup(`${nombre} ${provincia} ${municipio} ${telefono}`)
+
+
+                return marker;
+            }
+
+            function initFullScreem() {
+                L.control.fullscreen({
+                    position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                    title: 'Show fullscreen', // change the title of the button, default Full Screen
+                    titleCancel: 'Exit fullscreen', // change the title of the button when fullscreen is on, default Exit Full Screen
+                    content: null, // change the content of the button, can be HTML, default null
+                    forceSeparateButton: true, // force seperate button to detach from zoom buttons, default false
+                    fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
+                }).addTo(mymap);
+            }
+
+
+        })
+
+
+    </script>
+
+{% endblock %}

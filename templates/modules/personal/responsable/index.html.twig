@@ -1,0 +1,62 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Responsables{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de responsables</h3>
+                <div style="float: left;padding-right: 1%">
+
+                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_responsable_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Foto</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Carné de identidad</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="2%"><a
+                                    href="{% if item.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.persona.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                    target="_blank">
+                                <img src="{% if item.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.persona.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle"
+                                     style="width: 40px;height: 40px; object-fit: cover">
+                            </a></td>
+
+
+                        <td>{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
+                        <td>{{ item.persona.carnetIdentidad }}</td>
+                        <td class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_responsable_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}

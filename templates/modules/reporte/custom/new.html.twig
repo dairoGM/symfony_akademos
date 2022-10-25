@@ -1,0 +1,100 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Reporte personalizado{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+        .ck-editor__editable .todo-list .todo-list__label>input {
+            cursor: pointer;
+            margin-left: 22px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Adicionar reporte</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.contenido) }}
+                    {{ form_widget(form.contenido) }}
+                    {{ form_errors(form.contenido) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.privado) }}
+                    {{ form_widget(form.privado) }}
+                    {{ form_errors(form.privado) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_tipo_actividad_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        ClassicEditor
+            .create(document.getElementById('informe_personalizado_contenido'), {
+
+                licenseKey: '',
+                image: {
+                    toolbar: [
+                        'imageStyle:inline',
+                        'imageStyle:alignLeft',
+                        'imageStyle:alignRight',
+                        'imageStyle:alignCenter',
+                        'imageStyle:alignBlockLeft',
+                        'imageStyle:alignBlockRight',
+                        'imageStyle:block',
+                        'imageStyle:side',
+                        '|',
+                        'toggleImageCaption',
+                        'imageTextAlternative',
+                        '|',
+                        'linkImage']
+                },
+                readOnly: true
+
+
+            })
+            .then(editor => {
+                window.editor = editor;
+
+
+            })
+            .catch(error => {
+                console.error('Oops, something went wrong!');
+                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                console.warn('Build id: u10iznhzocs8-dmhpfqrzlv6q');
+                console.error(error);
+            });
+    </script>
+
+{% endblock %}

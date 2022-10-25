@@ -1,0 +1,113 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('app_admin_home') }}"
+               class="nav-link nav-link-menu  {% if 'app_admin_home' in app.request.get('_route') %} active {% endif %}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Inicio
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Estructura
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_categoria_estructura_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Categorías de estructuras</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_tipo_estructura_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Tipos de estructuras</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_estructura_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Estructuras</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Responsabilidad
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_categoria_responsabilidad_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Categorías de responsabilidad</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_responsabilidad_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Responsabilidad</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Configuración
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_provincia_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Provincias</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_municipio_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Municipios</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_tipo_entidad_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Tipos de entidades</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_entidad_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Entidades</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+    </ul>
+</nav>

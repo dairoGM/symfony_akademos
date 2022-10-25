@@ -1,0 +1,76 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Tipos de entidades{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de tipos de entidades</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_tipo_entidad_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                     </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Puede subordinarse a</th>
+                    <th>Color</th>
+                    <th>Estado</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoEntidad.nombre | default('') }}</td>
+                        <td class="-text-center">
+                            <div class="-flex">
+                                <div style="width: 20px; height: 20px; border-radius: 50%; background-color: {{ item.color }}"></div>
+{#                                <p style="margin-top: -22px; margin-left: 22px; margin-bottom: 0">{{ item.color }}</p>#}
+                            </div>
+                        </td>
+                        <td class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_tipo_entidad_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles del tipo de entidad">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                            <a title="Modificar" class="btn btn-outline-primary"
+                               href="{{ path('app_tipo_entidad_modificar', {'id': item.id}) }}"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_tipo_entidad_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}

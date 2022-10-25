@@ -1,0 +1,74 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Entidades{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de entidades</h3>
+
+                <div style="float: left;padding-right: 1%">
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_entidad_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
+                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_entidad_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Tipo de entidad</th>
+                    <th>Estado</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoEntidad.nombre | default('') }}</td>
+                        <td class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_entidad_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la entidad">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                            <a title="Modificar" class="btn btn-outline-primary"
+                               href="{{ path('app_entidad_modificar', {'id': item.id}) }}"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_entidad_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}

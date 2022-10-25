@@ -1,0 +1,136 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar estructura y responsabilidad{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Modificar estructura y responsabilidad</h3>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 1%">
+            <div class="col-1">
+                <h5 class="mb-0"><b></b>  <img src="{% if persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ persona.foto }}{% else %} /assets/images/usuario.png {% endif %}" class="img-circle" alt="{{ persona.primerNombre }}" style="width: 120px;height: 120px; object-fit: cover"></h5>
+            </div>
+            <div class="col-5">
+                <h5 class="mb-0"><b>Nombre:</b> {{ persona.primerNombre ~ ' ' ~ persona.segundoNombre ~' '~ persona.primerApellido ~ ' ' ~ persona.segundoApellido }}</h5>
+                <h5 class="mb-0">
+                    <b>CI:</b> {{ persona.carnetIdentidad }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Provincia:</b> {{ persona.provincia.nombre | default('') }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Municipio:</b> {{ persona.municipio.nombre | default('') }}
+                </h5>
+            </div>
+            <div class="col-5">
+                <h5 class="mb-0"><b>Estructura:</b> {{ persona.estructura.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Responsabilidad:</b> {{ persona.responsabilidad.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Usuario:</b> {{ persona.usuario.email | default('') }}</h5>
+            </div>
+        </div>
+        <hr>
+
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaEstructura) }}
+                    {{ form_widget(form.categoriaEstructura) }}
+                    {{ form_errors(form.categoriaEstructura) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.responsabilidad) }}
+                    {{ form_widget(form.responsabilidad) }}
+                    {{ form_errors(form.responsabilidad) }}
+                </div>
+            </div>
+
+
+            <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+                <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_persona_index') }}"
+                   data-title=""
+                   data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+                <button class="btn btn-primary">Aceptar</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#plantilla_provincia').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_municipio_dado_provincia', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#plantilla_municipio option').remove();
+                    $('#plantilla_municipio').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#plantilla_municipio').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+
+        $('#plantilla_categoriaEstructura').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_estructura_dado_categoria', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#plantilla_estructura option').remove();
+                    $('#plantilla_estructura').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#plantilla_estructura').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+        $('#plantilla_estructura').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_responsabilidad_dado_estructura', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#plantilla_responsabilidad option').remove();
+                    $('#plantilla_responsabilidad').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#plantilla_responsabilidad').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+    </script>
+{% endblock %}

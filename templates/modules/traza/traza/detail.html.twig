@@ -1,0 +1,69 @@
+<h5 class="mb-0"><b><p style="font-size: 22px; font-weight: bold; margin-top: 5px;">Datos generales</p></b>
+    <div class="row">
+        <div class="col-4">
+            <h5 class="mb-0"><b>Fecha:</b> {{ traza.creado | date('d/m/Y H:s') }}</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="mb-0"><b>Usuario:</b> <a
+                        href="{% if traza.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ traza.persona.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                        target="_blank">
+
+                </a>
+                &nbsp; {{ traza.persona.primerNombre ~ ' ' ~ traza.persona.segundoNombre ~' '~ traza.persona.primerApellido ~ ' ' ~ traza.persona.segundoApellido }}
+            </h5>
+        </div>
+        <div class="col-2" style="margin-top: -6%;margin-left: 90%;">
+            <img src="{% if traza.persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ traza.persona.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                 class="img-circle" style="width: 80px;height: 80px; object-fit: cover">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h5 class="mb-0"><b>Acción:</b> {{ traza.accion.nombre|default('') }}</h5>
+        </div>
+        <div class="col-4">
+            <h5 class="mb-0"><b>Tipo de traza:</b> {{ traza.tipoTraza.nombre|default('') }}</h5>
+        </div>
+        <div class="col-4">
+            <h5 class="mb-0"><b>Acción:</b> {{ traza.accion.nombre|default('') }}</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h5 class="mb-0"><b>Objeto:</b> {{ traza.objeto.nombre|default('') }}</h5>
+        </div>
+        <div class="col-4">
+            <h5 class="mb-0"><b>Ip:</b> {{ traza.ip|default('') }}</h5>
+        </div>
+        <div class="col-4">
+            <h5 class="mb-0"><b>Navegador:</b> {{ traza.navegador|default('') }}</h5>
+        </div>
+        <div class="col-4">
+            <h5 class="mb-0"><b>Sistema operativo:</b> {{ traza.sistemaOperativo |default('') }}</h5>
+        </div>
+    </div>
+
+    <hr>
+    <h5 class="mb-0"><b><p style="font-size: 22px; font-weight: bold; margin-top: 5px;">Datos específicos </p></b>
+
+        <table class="table table-bordered table-striped dataTable">
+            <thead class="table-custom-header">
+            <tr>
+                <th>No.</th>
+                <th>Elemento</th>
+                <th>Antes</th>
+                <th>Después</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, item in  registros %}
+                <tr>
+                    <td width="1%">{{ loop.index }}</td>
+                    <td width="7%">{{ key  }}</td>
+                    <td width="7%">{{ item['anterior'] | default('') }}</td>
+                    <td width="7%">{{ item['actual'] | default('') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>

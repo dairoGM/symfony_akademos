@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/select2.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> #}
+
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/icheck-bootstrap.min.css') }}">
+
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/HoldOn.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fullCalendar/main.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/SimpleLineMES/simple-line-icons-es.css') }}">
+
+
+{#    <link rel="icon" type="image/x-icon"#}
+{#          href="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}">#}
+
+
+    <!-- Theme style -->
+    <style>
+        .btn-primary {
+            color: #fff;
+            background-color: #134679;
+            border-color: #134679;
+            box-shadow: none;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+
+        label span.invalid-feedback {
+            display: none !important;
+        }
+
+        label.required:after {
+            content: "*";
+            color: red;
+        }
+
+        label {
+            margin-bottom: 2px !important;
+        }
+
+        [class*=sidebar-dark-] {
+            background-color: #f7f7f7;
+        }
+
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active, .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+
+            background-color: #682423;
+            color: #fff;
+        }
+
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link, .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link {
+
+
+            background-color: #91969f;
+            color: #fff;
+        }
+
+        [class*=sidebar-dark-] .nav-sidebar > .nav-item.menu-open > .nav-link, [class*=sidebar-dark-] .nav-sidebar > .nav-item:hover > .nav-link, [class*=sidebar-dark-] .nav-sidebar > .nav-item > .nav-link:focus {
+            background-color: rgb(104 36 35 / 62%);
+            color: #fff;
+        }
+
+
+        [class*=sidebar-dark] .brand-link {
+            border-bottom: 1px solid #73767847;
+        }
+
+        [class*=sidebar-dark] .user-panel {
+            border-bottom: 1px solid #73767847;
+        }
+
+        .main-header {
+            border-bottom: none;
+        }
+
+        .navbar-white {
+            background-color: #f7f7f7;
+            color: #1f2d3d;
+        }
+
+        .content-wrapper {
+            background-color: #ffffff;
+        }
+
+        .control-sidebar {
+            /*bottom: calc(3.5rem + 1px);*/
+            position: absolute;
+            /*top: calc(3.5rem + 1px);*/
+            bottom: 0;
+            top: 0;
+            z-index: 1035;
+            background-color: #eceaf8;
+        }
+
+        .aside-header {
+            background-color: #bf4446;
+        }
+
+        .aside-header > img {
+            width: 20%;
+            margin-bottom: 3%;
+        }
+
+        .aside-header > i {
+            color: white;
+            position: absolute;
+            right: 16px;
+            top: 12px;
+        }
+
+        .control-sidebar, .control-sidebar::before {
+            width: 280px !important;
+        }
+
+
+        .item-icon-card {
+            margin: 5px;
+            background-color: #e7e2e7d4;
+            border-radius: 5px;
+            width: 43px;
+            height: 43px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #682423;
+            margin-left: 0;
+        }
+
+        .card-stadistics {
+            border-radius: 20px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(50px circle at 5% -11%, #e9e5e92e 50%, transparent 51%), radial-gradient(71px circle at 90% 95%, #dce3100a 50%, transparent 51%), radial-gradient(37px circle at 67% 11%, #1024e303 50%, transparent 51%);
+            background-color: #f9f8f9;
+        }
+
+
+        .item-icon-card > i {
+            font-size: 19px;
+        }
+
+        .progress-bar {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -ms-flex-pack: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            background-color: #3b893d;
+            transition: width .6s ease;
+        }
+
+        .box-type-green {
+            background-color: #edfbeb;
+            border-left: 4px solid #58b553;
+        }
+
+        .box-type-green .progress-bar {
+            background-color: #58b553;
+        }
+
+        .box-type-green .box-type-text {
+            color: #58b553;
+        }
+
+        .box-type-red {
+            background-color: #fff2f7;
+            border-left: 4px solid #e46d62;
+        }
+
+        .box-type-red .progress-bar {
+            background-color: #e46d62;
+        }
+
+        .box-type-red .box-type-text {
+            color: #e46d62;
+        }
+
+        .box-type-orange {
+            background-color: #fbfbe8;
+            border-left: 4px solid #eb9e40;
+        }
+
+        .box-type-orange .progress-bar {
+            background-color: #eb9e40;
+        }
+
+        .box-type-orange .box-type-text {
+            color: #eb9e40;
+        }
+
+        .box-type-ne {
+            background-color: #f1f1f1;
+            border-left: 4px solid #868686;
+        }
+
+        .box-type-ne .progress-bar {
+            background-color: #868686;
+        }
+
+        .box-type-ne .box-type-text {
+            color: #868686;
+        }
+
+        .box-type-text {
+            font-weight: 600;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            background-color: #682423;
+        }
+
+        .dark-mode .small-box {
+            color: black;
+        }
+
+        .btn-primary {
+            background-color: #682423;
+            border-color: white;
+        }
+
+        .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #682423cf;
+            border-color: white;
+        }
+
+        .btn-primary.disabled, .btn-primary:disabled {
+            color: #fff;
+            background-color: #844d4c;
+            border-color: #844d4c;
+        }
+
+        .btn-primary:hover {
+            background-color: #682423;
+            border-color: #682423;
+        }
+
+        /*@media (min-width: 992px){*/
+        /*    .sidebar-mini.sidebar-collapse .brand-text, .sidebar-mini.sidebar-collapse .sidebar .nav-sidebar .nav-link p, .sidebar-mini.sidebar-collapse .sidebar .user-panel>.info {*/
+        /*        margin-left: -10px;*/
+        /*        -webkit-animation-name: fadeOut;*/
+        /*        animation-name: fadeOut;*/
+        /*        -webkit-animation-duration: .3s;*/
+        /*        animation-duration: .3s;*/
+        /*        -webkit-animation-fill-mode: both;*/
+        /*        animation-fill-mode: both;*/
+        /*        visibility: hidden;*/
+        /*        border-bottom: none !important;*/
+        /*        display: none;*/
+        /*    }*/
+        /*    [class*=sidebar-dark] .brand-link {*/
+        /*        border-bottom: 1px solid #134679;*/
+        /*    }*/
+        /*    }*/
+
+        .layout-navbar-fixed .wrapper .sidebar-dark-primary .brand-link:not([class*=navbar]) {
+            background-color: #f7f7f7;
+        }
+
+
+        .todo-list > li {
+            border-radius: 2px;
+            background-color: #1346790d;
+            border-left: 4px solid #e9ecef;
+            color: #495057;
+            margin-bottom: 7px;
+            padding: 10px;
+        }
+
+
+    </style>
+
+    {% block stylesheets %}
+        {# {{ encore_entry_link_tags('app') }} #}
+    {% endblock %}
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item menuAmburguesa">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="d-sm-inline-block">
+                <a href="{{ path('app_home') }}"
+                   class="nav-link  {% if 'app_dash_board' in app.request.get('_route') %} active {% endif %} "
+                   data-toggle="tooltip" data-placement="top" title="Inicio"><i
+                            class="nav-icon fas fa-home"></i></a>
+            </li>
+{#            <li class="d-sm-inline-block">#}
+{#                <a href="{{ path('app_calendario') }}"#}
+{#                   class="nav-link  {% if 'app_calendario' in app.request.get('_route') %} active {% endif %} "#}
+{#                   data-toggle="tooltip" data-placement="top" title="Planificación"><i#}
+{#                            class="nav-icon fas fa-calendar"></i></a>#}
+{#            </li>#}
+{#            <li class="d-sm-inline-block">#}
+{#                <a href="{{ path('app_todo_lista_cliente') }}"#}
+{#                   class="nav-link  {% if 'app_todo_lista_cliente' in app.request.get('_route') %} active {% endif %} "#}
+{#                   data-toggle="tooltip" data-placement="top" title=" Lista de chequeo"><i#}
+{#                            class="nav-icon fas fa-tasks"></i></a>#}
+{#            </li>#}
+
+
+            {# <li class="nav-item d-none d-sm-inline-block"> #}
+            {# #}
+            {# </li> #}
+            {# <li class="nav-item d-none d-sm-inline-block"> #}
+            {# <a href="#" class="nav-link">Contact</a> #}
+            {# </li> #}
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Navbar Search -->
+            {# <li class="nav-item"> #}
+            {# <a class="nav-link" data-widget="navbar-search" href="#" role="button"> #}
+            {# <i class="fas fa-search"></i> #}
+            {# </a> #}
+            {# <div class="navbar-search-block "> #}
+            {# <form class="form-inline"> #}
+            {# <div class="input-group input-group-sm"> #}
+            {# <input class="form-control form-control-navbar" type="text" placeholder="Buscar" #}
+            {# value="{{ app.request.get('search') }}" name="search"> #}
+            {# <div class="input-group-append"> #}
+            {# <button class="btn btn-navbar" type="submit"> #}
+            {# <i class="fas fa-search"></i> #}
+            {# </button> #}
+            {# <button class="btn btn-navbar" type="button" data-widget="navbar-search"> #}
+            {# <i class="fas fa-times"></i> #}
+            {# </button> #}
+            {# </div> #}
+            {# </div> #}
+            {# </form> #}
+            {# </div> #}
+            {# </li> #}
+
+            {# {% if 'app_dash_board' in app.request.get('_route') %} #}
+            {# <li class="nav-item"> #}
+            {# <a class="nav-link filter-dash-buttom" role="button"> #}
+            {# <i class="fas fa-filter"></i> #}
+            {# </a> #}
+            {# </li> #}
+            {# {% endif %} #}
+
+
+            <!-- Messages Dropdown Menu -->
+            <li class="nav-item dropdown">
+{#                <a class="nav-link" data-toggle="dropdown" href="#">#}
+{#                    <i class="far fa-comments"></i>#}
+{#                    <span id="chat_cant_mensages" class="badge badge-danger navbar-badge"></span>#}
+{#                </a>#}
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <div id="lastmsg"></div>
+                    {# <a href="#" class="dropdown-item"> #}
+                    {# <!-- Message Start --> #}
+                    {# <div class="media"> #}
+                    {# <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle"> #}
+                    {# <div class="media-body"> #}
+                    {# <h3 class="dropdown-item-title"> #}
+                    {# Brad Diesel #}
+                    {# <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span> #}
+                    {# </h3> #}
+                    {# <p class="text-sm">Call me whenever you can...</p> #}
+                    {# <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> #}
+                    {# </div> #}
+                    {# </div> #}
+                    {# <!-- Message End --> #}
+                    {# </a> #}
+                    {# <div class="dropdown-divider"></div> #}
+                    {# <a href="#" class="dropdown-item"> #}
+                    {# <!-- Message Start --> #}
+                    {# <div class="media"> #}
+                    {# <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3"> #}
+                    {# <div class="media-body"> #}
+                    {# <h3 class="dropdown-item-title"> #}
+                    {# John Pierce #}
+                    {# <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span> #}
+                    {# </h3> #}
+                    {# <p class="text-sm">I got your message bro</p> #}
+                    {# <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> #}
+                    {# </div> #}
+                    {# </div> #}
+                    {# <!-- Message End --> #}
+                    {# </a> #}
+                    {# <div class="dropdown-divider"></div> #}
+                    {# <a href="#" class="dropdown-item"> #}
+                    {# <!-- Message Start --> #}
+                    {# <div class="media"> #}
+                    {# <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3"> #}
+                    {# <div class="media-body"> #}
+                    {# <h3 class="dropdown-item-title"> #}
+                    {# Nora Silvester #}
+                    {# <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span> #}
+                    {# </h3> #}
+                    {# <p class="text-sm">The subject goes here</p> #}
+                    {# <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> #}
+                    {# </div> #}
+                    {# </div> #}
+                    {# <!-- Message End --> #}
+                    {# </a> #}
+                    <div class="dropdown-divider"></div>
+{#                    <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir#}
+{#                        al chat</a>#}
+                </div>
+            </li>
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link nbtn" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer">
+
+                </div>
+            </li>
+            {# <li class="nav-item"> #}
+            {# <a class="nav-link" data-widget="fullscreen" href="#" role="button"> #}
+            {# <i class="fas fa-expand-arrows-alt"></i> #}
+            {# </a> #}
+            {# </li> #}
+            <li class="nav-item">
+                <a class="nav-link sid" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                    <i class="fas fa-ellipsis-v"></i>
+                </a>
+            </li>
+            {# <li class="nav-item"> #}
+            {# <a class="nav-link" href="{{ path('app_logout') }}" role="button"> #}
+            {# <i class="fas fa-sign-out-alt"></i> #}
+            {# </a> #}
+            {# </li> #}
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    {% block sidebar %}
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="#" class="brand-link">
+{#                <img src="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}"#}
+{#                     alt="AdminLTE Logo" class="brand-image img-circle" style="opacity: .8">#}
+                <span class="brand-text font-weight-light" style="color: #4a4b4c; font-weight: bold !important;">NOMBRE SISTEMA</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                {# <div class="user-panel mt-3 pb-3 mb-3 d-flex"> #}
+                {# <div class="image"> #}
+                {# <img src="{{ asset('assets/images/user3-128x128.jpg') }}" class="img-circle elevation-2" alt="User Image"> #}
+                {# </div> #}
+                {# <div class="info"> #}
+                {# <a href="#" class="d-block">{{ app.user.email }}</a> #}
+                {# </div> #}
+                {# </div> #}
+
+                {# <!-- SidebarSearch Form --> #}
+                {# <div class="form-inline"> #}
+                {# <div class="input-group" data-widget="sidebar-search"> #}
+                {# <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search"> #}
+                {# <div class="input-group-append"> #}
+                {# <button class="btn btn-sidebar"> #}
+                {# <i class="fas fa-search fa-fw"></i> #}
+                {# </button> #}
+                {# </div> #}
+                {# </div> #}
+                {# </div> #}
+
+                <!-- Sidebar Menu -->
+                {{ render(controller(
+                    'App\\Controller\\Client\\ClientMenuController::index')) }}
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+    {% endblock %}
+
+    <!-- Content Wrapper. Contains page content -->
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        {# <div class="content-header"> #}
+        {# <div class="container-fluid"> #}
+        {# <div class="row mb-2"> #}
+        {# <div class="col-sm-6"> #}
+        {# <h1 class="m-0">Starter Page</h1> #}
+        {# </div><!-- /.col --> #}
+        {# <div class="col-sm-6"> #}
+        {# <ol class="breadcrumb float-sm-right"> #}
+        {# <li class="breadcrumb-item"><a href="#">Home</a></li> #}
+        {# <li class="breadcrumb-item active">Starter Page</li> #}
+        {# </ol> #}
+        {# </div><!-- /.col --> #}
+        {# </div><!-- /.row --> #}
+        {# </div><!-- /.container-fluid --> #}
+        {# </div> #}
+        {# <!-- /.content-header --> #}
+
+        <!-- Main content -->
+        <div class="content pt-4">
+            <div class="alert alert-warning alert-dismissible fade show movile d-none" role="alert">
+                <strong>Bienvenido {{ app.user.email }}!</strong> Usted se encuentra en un dispositivo móvil, para
+                mejorar su experiencia gire su pantalla.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container-fluid">
+                {% block body %}{% endblock %}
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3 aside-header">
+            <i class="fas fa-times" data-widget="control-sidebar" data-slide="true" href="#" role="button"></i>
+
+            {# <img src="{{ asset('assets/images/usuario.png') }}" alt="AdminLTE Logo" class="brand-image img-circle" #}
+            {# style="opacity: .8"> #}
+            <img src="{% if  app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}"
+                 class="img-circle"
+                 style="width: 40px;height: 40px; object-fit: cover">
+            <h5 class="mb-0" style="font-size: 16px">{{ app.session.get('nombre_usuario_autenticado') }}</h5>
+            <h6 class="mb-0"
+                style="color: #b7b8ba; font-size: 13px">{{ app.session.get('responsabilidad_usuario_autenticado') | upper }}</h6>
+        </div>
+        <ul class="nav nav-pills nav-sidebar flex-column p-2" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+
+{#            <li class="nav-item">#}
+{#                <a href="{{ path('app_calendario') }}" class="nav-link nav-link-menu"#}
+{#                   style="padding-left: 4px; padding-right: 4px">#}
+{#                    <i class="nav-icon fas fa-calendar"></i>#}
+{#                    <p>#}
+{#                        Planificación#}
+{#                    </p>#}
+{#                </a>#}
+
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a href="{{ path('app_todo_lista_cliente') }}" class="nav-link nav-link-menu"#}
+{#                   style="padding-left: 4px; padding-right: 4px">#}
+{#                    <i class="nav-icon fas fa-tasks"></i>#}
+{#                    <p>#}
+{#                        Lista de chequeo#}
+{#                    </p>#}
+{#                </a>#}
+
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a href="{{ path('app_analisis_comparativo') }}" class="nav-link nav-link-menu"#}
+{#                   style="padding-left: 4px; padding-right: 4px">#}
+{#                    <i class="nav-icon fas fa-check-square"></i>#}
+{#                    <p>#}
+{#                        Análisis comparativo#}
+{#                    </p>#}
+{#                </a>#}
+
+{#            </li>#}
+            {# <li class="nav-item"> #}
+            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
+            {# <i class="nav-icon fas fa-check-square"></i> #}
+            {# <p> #}
+            {# Alerta de situaciones #}
+            {# </p> #}
+            {# </a> #}
+            {# </li> #}
+{#            <li class="nav-item">#}
+{#                <a href="https://channels.epe.rimed.cu/" target="_blank" class="nav-link"#}
+{#                   style="padding-left: 4px; padding-right: 4px">#}
+{#                    <i class="nav-icon fas fa-check-square"></i>#}
+{#                    <p>#}
+{#                        Comunicaciones#}
+{#                    </p>#}
+{#                </a>#}
+{#            </li>#}
+            {# <li class="nav-item"> #}
+            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
+            {# <i class="nav-icon fas fa-check-square"></i> #}
+            {# <p> #}
+            {# Crear cuadro de mando #}
+            {# </p> #}
+            {# </a> #}
+            {# </li> #}
+            {# <li class="nav-item"> #}
+            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
+            {# <i class="nav-icon fas fa-check-square"></i> #}
+            {# <p> #}
+            {# Modo oscuro #}
+            {# </p> #}
+            {# </a> #}
+            {# </li> #}
+            <li class="nav-item">
+                <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ path('app_logout') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                        Salir
+                    </p>
+                </a>
+            </li>
+
+
+        </ul>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    {# <footer class="main-footer"> #}
+    {# <!-- To the right --> #}
+    {# <div class="float-right d-none d-sm-inline"> #}
+    {# Anything you want #}
+    {# </div> #}
+    {# <!-- Default to the left --> #}
+    {# <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved. #}
+    {# </footer> #}
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/jquery/jqurey-ui.min.js') }}"></script>
+
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<script src="{{ asset('assets/fullCalendar/popper.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
+
+<script src="{{ asset('assets/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/HoldOn.js') }}"></script>
+
+<script src="{{ asset('assets/fullCalendar/moment.min.js') }}"></script>
+
+<script src="{{ asset('assets/fullCalendar/main.js') }}"></script>
+<script src="{{ asset('assets/fullCalendar/locales-all.js') }}"></script>
+<script src="{{ asset('assets/bootbox.min.js') }}"></script>
+
+<script src="{{ asset('assets/select2.min.js') }}"></script>
+
+<script src="{{ asset('assets/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('assets/highcharts/modules/exporting.js') }}"></script>
+<script src="{{ asset('assets/highcharts/modules/export-data.js') }}"></script>
+
+<script src="{{ asset('assets/toastr/toastr.min.js') }}"></script>
+
+
+{# <script src="https://code.highcharts.com/modules/exporting.js"></script> #}
+{# <script src="https://code.highcharts.com/modules/export-data.js"></script> #}
+{# <script src="https://code.highcharts.com/modules/accessibility.js"></script> #}
+
+{% block javascripts %}{% endblock %}
+<script>
+
+
+    $(document).ready(function () {
+        $(".dataTable").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false
+        });
+
+        $('select').select2()
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+
+        $('.content-wrapper,.main-sidebar').on('click', function () {
+            if ($('.control-sidebar').css('display') == 'block') {
+                $('.sid').click();
+            }
+
+        })
+
+        $(".nav-link-menu").toArray().forEach(e => {
+            let href = $(e).attr('href')
+            if ('{{ app.request.pathinfo }}'.includes(href)) {
+                $($(e)).addClass('active')
+                if ($($(e).parent().parent()).hasClass('nav-treeview')) {
+                    $($(e).parent().parent().parent()).addClass('menu-open')
+                    $($(e).parent().parent().parent().children()).addClass('active')
+                }
+            }
+        })
+
+        function loadNotifications() {
+
+            //Load Notificaciones
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "{{ path('app_notificaciones_usuario') }}",
+                dataType: "html",
+                success: function (res) {
+
+                    $('#notificacionesContainer').html(res)
+                    $('.cantidadNotificacionesBadge').text($('.cantidadContainer').text())
+
+                },
+                error: function (err) {
+
+                    toastr.error(err);
+                }
+            });
+         }
+
+        loadNotifications();
+
+        setInterval(function () {
+            loadNotifications()
+        }, 60000)
+
+        $(document).on('click', '.notificationRemove', function (e) {
+            e.preventDefault()
+
+            setTimeout(function () {
+                $('.nbtn').click()
+
+            }, 1)
+
+            $.ajax({
+                type: "GET",
+                cache: false,
+                url: $(this).data('url'),
+                dataType: "html",
+                success: function (res) {
+                    // $('.nd').addClass('show')
+                    loadNotifications()
+                    $(".tooltip").tooltip("hide");
+
+                },
+                error: function (err) {
+
+                    toastr.error(err);
+                }
+            });
+        })
+
+
+        $('li.dropdown button').on('click', function (event) {
+            $(this).parent().toggleClass('open');
+        });
+
+
+    })
+
+    $(document).on('click', '.elementRemove', function () {
+
+        let url = $(this).data('url')
+        bootbox.confirm({
+            message: "¿Está seguro que desea realizar la acción?",
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirmar',
+                    className: 'btn-primary'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    window.location.href = url;
+                }
+            }
+        });
+    })
+
+    $(document).on('click', '.filter-dash-buttom', function () {
+
+        $('#filterDashboard').modal('show')
+    })
+
+
+    $('#planUserBase').change(function () {
+        let url = "{{ path('app_change_filter_plan_user', {'id':'id_r'}) }}";
+        url = url.replace('id_r', $(this).val());
+
+        HoldOn.open({
+            theme: "sk-bounce",
+            message: 'Por favor espere...',
+            textColor: "white"
+        });
+
+        $.ajax({
+            type: "POST",
+            cache: false,
+            url: url,
+            dataType: "json",
+
+            success: function (res) {
+
+                window.location.href = '{{ path('app_dash_board') }}'
+
+            },
+            error: function (err) {
+
+                toastr.error(err);
+                HoldOn.close()
+            }
+        });
+    })
+
+    $(document).on('hidden.bs.modal', function (event) {
+        if ($('.modal:visible').length) {
+            $('body').addClass('modal-open');
+        }
+    });
+
+    let details = navigator.userAgent;
+
+    /* Creating a regular expression
+    containing some mobile devices keywords
+    to search it in details string*/
+    let regexp = /android|iphone|kindle|ipad/i;
+
+    /* Using test() method to search regexp in details
+    it returns boolean value*/
+    let isMobileDevice = regexp.test(details);
+
+    if (isMobileDevice) {
+
+        if (getOrientation() === 'Landscape') {
+
+            $('.movile').addClass('d-none')
+        } else {
+            $('.movile').removeClass('d-none')
+        }
+
+    }
+
+    window.addEventListener("orientationchange", () => {
+
+        if (getOrientation() === 'Landscape') {
+            $('.movile').removeClass('d-none')
+        } else {
+            $('.movile').addClass('d-none')
+        }
+    });
+
+    function getOrientation() {
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            var current_mode = 'Portrait';
+        } else if (window.matchMedia("(orientation: landscape)").matches) {
+            var current_mode = 'Landscape';
+        } else {
+            var current_mode = window.innerWidth < window.innerHeight ? "Portrait" : "Landscape";
+        }
+        return current_mode
+    };
+
+
+</script>
+</body>
+</html>

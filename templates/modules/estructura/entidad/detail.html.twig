@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Tipo de entidad:</b> {{ item.tipoEntidad.nombre  | default('') }}</h5>
+        <h5 class="mb-0"><b>Código:</b> {{ item.codigo| default('') }}</h5>
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre| default('') }}</h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Siglas:</b> {{ item.siglas | default('') }}</h5>
+        <h5 class="mb-0"><b>Subordinado a:</b> {{ item.estructura.nombre | default('') }}</h5>
+        {% if '1' == item.activo %}
+            <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
+        {% else %}
+            <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Provincia:</b> {{ item.provincia.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion | default('') }}</h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Municipio:</b> {{ item.municipio.nombre | default('') }}</h5>
+
+    </div>
+</div>
+

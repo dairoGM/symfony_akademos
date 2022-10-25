@@ -1,0 +1,66 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de notificaciones</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_notificaciones_usuario_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Fecha</th>
+                    <th>Envía</th>
+                    <th>Recibe</th>
+                    <th>Texto</th>
+                    <th>Url</th>
+                    <th>Leído</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1">{{ loop.index }}</td>
+                        <td width="8%">{{ item.fechaCreado | date('d/m/Y H:s a') }}</td>
+                        <td width="15%">{{ item.usuarioEnvia.email | default('') }}</td>
+                        <td width="15%">{{ item.usuarioRecive.email | default('') }}</td>
+                        <td>{{ item.texto }}</td>
+                        <td><a target="_blank" href="{{ item.url }}">{{ item.url }}</a></td>
+                        <td width="2%" class="-text-center">
+                            {% if '1' == item.leido %}
+                                <span class="ms-status -active">Sí</span>
+                            {% else %}
+                                <span class="ms-status">No</span>
+                            {% endif %}
+                        </td>
+                        <td width="2%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_notificaciones_usuario_eliminar2', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}

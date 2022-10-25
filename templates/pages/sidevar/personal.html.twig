@@ -1,0 +1,112 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('app_admin_home') }}"
+               class="nav-link nav-link-menu  {% if 'app_admin_home' in app.request.get('_route') %} active {% endif %}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Inicio
+                </p>
+            </a>
+        </li>
+
+
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Personal
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_persona_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Personas</p>
+                    </a>
+                </li>
+{#                <li class="nav-item">#}
+{#                    <a href="{{ path('app_responsable_index') }}"#}
+{#                       class="nav-link nav-link-menu">#}
+{#                        <p>Responsables</p>#}
+{#                    </a>#}
+{#                </li>#}
+            </ul>
+
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Configuración
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_categoria_docente_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Categorías docentes</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_categoria_investigativa_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Categorías investigativas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_carrera_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Carreras</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_tipo_organizacion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Tipos de organizaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_organizacion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Organizaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_profesion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Profesiones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_grado_academico_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Grados académicos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_nivel_escolar_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Niveles escolares</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_clasificacion_persona_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Clasificaciones de personas</p>
+                    </a>
+                </li>
+            </ul>
+
+        </li>
+    </ul>
+</nav>

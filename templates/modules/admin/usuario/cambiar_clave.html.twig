@@ -1,0 +1,77 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Cambiar contraseña{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Cambiar contraseña</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.passwordPlainText.first) }}
+                    {{ form_widget(form.passwordPlainText.first) }}<span
+                            class="fa fa-fw fa-eye password-icon show-password"></span>
+                    {{ form_errors(form.passwordPlainText.first) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.passwordPlainText.second) }}
+                    {{ form_widget(form.passwordPlainText.second) }}
+                    {{ form_errors(form.passwordPlainText.second) }}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+ {% block stylesheets %}
+     <style>
+         .password-icon {
+             float: right;
+             position: relative;
+             margin: -25px 10px 0 0;
+             cursor: pointer;
+         }
+     </style>
+ {% endblock %}
+
+ {% block javascripts %}
+     <script>
+         window.addEventListener("load", function () {
+             // icono para mostrar contraseña
+             showPassword = document.querySelector('.show-password');
+             showPassword.addEventListener('click', () => {
+
+                 // elementos input de tipo clave
+                 password1 = $('#passwordPlainText_first');
+                 password2 = $('#passwordPlainText_second');
+
+                 if (password1.attr('type') === "text") {
+                     password1.attr('type', "password")
+                     password2.attr('type', "password")
+                     showPassword.classList.remove('fa-eye-slash');
+                 } else {
+                     password1.attr('type', "text")
+                     password2.attr('type', "text")
+                     showPassword.classList.toggle("fa-eye-slash");
+                 }
+             })
+         });
+     </script>
+ {% endblock %}

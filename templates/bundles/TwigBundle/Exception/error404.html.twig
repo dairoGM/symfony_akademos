@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free/css/all.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> #}
+
+
+</head>
+<body>
+<div class="container" style="display: flex;height: 100vh; justify-content: center; align-items: center; flex-direction: column">
+    <img src="{{ asset('undraw_bug_fixing_oc7a.png') }}" style="width: 50%">
+    <h1 class="text-danger">Página no encontrada (404)</h1>
+
+    <p class="text-muted">
+        No se pudo encontrar la página solicitada. Rectifique su url o <a href="{{ path('app_home') }}">Regresar al inicio</a>.
+    </p>
+</div>
+
+</body>
+</html>

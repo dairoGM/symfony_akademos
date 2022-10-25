@@ -1,0 +1,24 @@
+<head>
+    <title>{% block title %}Welcome{% endblock %}</title>
+    <meta charset='UTF-8'>
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"
+          media="screen,projection"/>
+    {% block stylesheets %}
+    {% endblock %}
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+{% block body %}
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="padding: 15px 30px;">
+        <a style="font-family: Ubuntu;font-size: 12px;" title="Logout" class="navbar-nav"
+           href="{{ path('app_logout') }}">Logout</a>
+
+
+    </nav>
+    <div id="app"></div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

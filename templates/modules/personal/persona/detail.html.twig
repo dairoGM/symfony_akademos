@@ -1,0 +1,107 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-2">
+                <h5 class="mb-0"><a href="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }} {% else %} /assets/images/usuario.png {% endif %}" target="_blank">
+                        <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}" class="img-circle" style="width: 120px;height: 120px; object-fit: cover">
+                    </a></h5>
+            </div>
+            <div class="col-5">
+                <h5 class="mb-0"><b>Nombre:</b> {{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</h5>
+                <h5 class="mb-0">
+                    <b>CI:</b> {{ item.carnetIdentidad }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Provincia:</b> {{ item.provincia.nombre | default('') }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Municipio:</b> {{ item.municipio.nombre | default('') }}
+                </h5>
+            </div>
+            <div class="col-5">
+                <h5 class="mb-0"><b>Estructura:</b> {{ item.estructura.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Responsabilidad:</b> {{ item.responsabilidad.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Usuario:</b> {{ item.usuario.email | default('') }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title font-weight-bold">
+            <i class="ion ion-clipboard mr-1"></i>
+            Plantillas
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-striped dataTable1">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Estructura</th>
+                    <th>Responsabilidad</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in plantillas %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.estructura.nombre | default('') }}</td>
+                        <td>{{ item.responsabilidad.nombre | default('') }}</td>
+                        <td>
+                            {% if '1' == item.activo %}
+                                Habilitada
+                            {% else %}
+                                Deshabilitada
+                            {% endif %}
+                        </td>
+                        <td>{{ item.creado | date('d/m/Y') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script>
+        $(".dataTable1").DataTable({
+            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "responsive": true, "lengthChange": true, "autoWidth": false,
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "No existen resultados",
+                "sInfo": "Registros del _START_ al _END_ de  _TOTAL_ ",
+                "sInfoEmpty": "Rregistros del 0 al 0 de  0 ",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copy": "Copiar",
+                    "colvis": "Visibilidad"
+                }
+            }
+        });
+    </script>
+{% endblock %}

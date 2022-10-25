@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .tools{
+            display: none;
+        }
+
+        .card:hover .tools{
+            display: block;
+        }
+
+        .tools { animation: fadeIn 1s;cursor: pointer }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+         .content-wrapper, .main-header{
+             margin-left: 0 !important;
+         }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+
+    {% if app.request.get('search') %}
+        <div class="alert alert-light alert-dismissible fade show" role="alert">
+            Resultados para la busqueda:<strong> {{ app.request.get('search') }} </strong> <a
+                    href="{{ path('app_notificaciones_usuario_todas') }}" class="ml-2 text-danger">Click
+                para eliminar búsqueda</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+
+    <!-- Small boxes (Stat box) -->
+    {% for n in notificaciones %}
+        <div class="col-12 card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                        <i class="fas fa-envelope text-muted mr-2"></i><span>{{ n.texto }}</span>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        {% set diferencia = n.fechaCreado.diff(date('now')) %}
+                        {% set restante = diferencia.days %}
+
+                        {% if restante == 1 %}
+
+                            <span class="float-right text-muted text-sm"><i class="far fa-clock"></i> Hace 1 día</span>
+                        {% endif %}
+                        {% if restante == 0 %}
+                            <span class="float-right text-muted text-sm"><i class="far fa-clock"></i> Hoy</span>
+                        {% endif %}
+                        {% if restante != 0 and restante != 1 %}
+                            <span class="float-right text-muted text-sm"><i class="far fa-clock"></i> Hace {{ restante }} días</span>
+                        {% endif %}
+                        <div class="tools">
+{#                            <i class="float-right fa fa-eye-slash mr-2 text-primary"></i>#}
+                            <i class="float-right fa fa-trash text-danger mr-2 elementRemove" data-url="{{ path('app_notificaciones_usuario_eliminar', {'id': n.id}) }}"></i>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    {% endfor %}
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script>
+    $('.menuAmburguesa').remove()
+</script>
+{% endblock %}
+

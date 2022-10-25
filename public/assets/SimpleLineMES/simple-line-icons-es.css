@@ -1,0 +1,871 @@
+.if {
+    display: inline-block;
+    font-family: Simple-Line-Icons;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    border: 1px solid transparent;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}
+/* makes the font 33% larger relative to the icon container */
+.if-lg {
+    font-size: 1.33333333em;
+    line-height: 0.75em;
+    vertical-align: -15%;
+}
+.if-2x {
+    font-size: 2em;
+}
+.if-3x {
+    font-size: 3em;
+}
+.if-4x {
+    font-size: 4em;
+}
+.if-5x {
+    font-size: 5em;
+}
+.if-fw {
+    width: 1.28571429em;
+    text-align: center;
+}
+.if-ul {
+    padding-left: 0;
+    margin-left: 2.14285714em;
+    list-style-type: none;
+}
+.if-ul > li {
+    position: relative;
+}
+.if-li {
+    position: absolute;
+    left: -2.14285714em;
+    width: 2.14285714em;
+    top: 0.14285714em;
+    text-align: center;
+}
+.if-li.if-lg {
+    left: -1.85714286em;
+}
+.if-border {
+    padding: .2em .25em .15em;
+    border: solid 0.08em #eeeeee;
+    border-radius: .1em;
+}
+.pull-right {
+    float: right;
+}
+.pull-left {
+    float: left;
+}
+.if.pull-left {
+    margin-right: .3em;
+}
+.if.pull-right {
+    margin-left: .3em;
+}
+.if-spin {
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+.if-rotate-90 {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.if-rotate-180 {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.if-rotate-270 {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+.if-flip-horizontal {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+    -webkit-transform: scale(-1, 1);
+    -moz-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+.if-flip-vertical {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+    -webkit-transform: scale(1, -1);
+    -moz-transform: scale(1, -1);
+    -ms-transform: scale(1, -1);
+    -o-transform: scale(1, -1);
+    transform: scale(1, -1);
+}
+.if-stack {
+    position: relative;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+}
+.if-stack-1x,
+.if-stack-2x {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+.if-stack-1x {
+    line-height: inherit;
+}
+.if-stack-2x {
+    font-size: 2em;
+}
+.if-inverse {
+    color: #ffffff;
+}
+
+.if-buscar:before {
+    content: "\e090";
+}
+.if-mapa:before {
+    content: "\e033";
+}
+.if-microfono:before {
+    content: "\e063";
+}
+.if-camara:before {
+    content: "\e07f";
+}
+.if-configuracion:before {
+    content: "\e09a";
+}
+.if-seleccionar:before {
+    content: "\e0a2";
+}
+.if-cerrar:before {
+    content: "\e0a3";
+}
+.if-guardar:before {
+    content: "\e0a5";
+}
+.if-copiara:before {
+    content: "\e0a4";
+}
+.if-femenino:before {
+    content: "\e000";
+}
+.if-masusuario:before {
+    content: "\e002";
+}
+.if-seguirusuario:before {
+    content: "\e003";
+}	
+.if-dejarusuario:before {
+    content: "\e004";
+}
+.if-premio:before {
+    content: "\e006";
+}
+.if-celular:before {
+    content: "\e010";
+}
+.if-web:before {
+    content: "\e011";
+}
+.if-avion:before {
+    content: "\e012";
+}	
+.if-agenda:before {
+    content: "\e013";
+}
+.if-bigote:before {
+    content: "\e014";
+}
+.if-mouse:before {
+    content: "\e015";
+}
+.if-magnetismo:before {
+    content: "\e016";
+}
+.if-energia:before {
+    content: "\e020";
+}
+.if-emoticonos:before {
+    content: "\e021";
+}
+.if-disco:before {
+    content: "\e022";
+}
+.if-mover:before {
+    content: "\e023";
+}
+.if-recortar:before {
+    content: "\e024";
+}
+.if-tarjeta:before {
+    content: "\e025";
+}
+.if-experimento:before {
+    content: "\e026";
+}
+.if-masculino:before {
+    content: "\e005";
+}
+.if-medidor:before {
+    content: "\e007";
+}
+.if-youtube:before {
+    content: "\e008";
+}
+.if-twitter:before {
+    content: "\e009";
+}
+.if-tumblr:before {
+    content: "\e00A";
+}
+.if-facebook:before {
+    content: "\e00B";
+}
+.if-dropbox:before {
+    content: "\e00C";
+}
+.if-dribble:before {
+    content: "\e00D";
+}
+.if-escudo:before {
+    content: "\e00E";
+}
+.if-tablet:before {
+    content: "\e00F";
+}
+.if-varita:before {
+    content: "\e017";
+}
+.if-periodo:before {
+    content: "\e018";
+}
+.if-graduados:before {
+    content: "\e019";
+}
+.if-fantasma:before {
+    content: "\e01A";
+}
+.if-juegos:before {
+    content: "\e01B";
+}
+.if-fuego:before {
+    content: "\e01C";
+}
+.if-espejuelos:before {
+    content: "\e01D";
+}
+.if-sobreabierto:before {
+    content: "\e01E";
+}
+.if-sobreycarta:before {
+    content: "\e01F";
+}
+.if-aviso:before {
+    content: "\e027";
+}
+.if-ofertas:before {
+    content: "\e028";
+}
+.if-ancla:before {
+    content: "\e029";
+}
+.if-billetera:before {
+    content: "\e02A";
+}
+.if-vector:before {
+    content: "\e02B";
+}
+.if-notificaciones:before {
+    content: "\e02C";
+}
+.if-complementos:before {
+    content: "\e02D";
+}
+.if-imprimir:before {
+    content: "\e02E";
+}
+.if-regalo:before {
+    content: "\e02F";
+}
+.if-listadesonidos:before {
+    content: "\e030";
+}
+.if-pin:before {
+    content: "\e031";
+}
+.if-imagenes:before {
+    content: "\e032";
+}
+.if-capas:before {
+    content: "\e034";
+}
+.if-bolso:before {
+    content: "\e035";
+}
+.if-mundo:before {
+    content: "\e036";
+}
+.if-areas:before {
+    content: "\e037";
+}
+.if-fotograma:before {
+    content: "\e038";
+}
+.if-carpeta1:before {
+    content: "\e039";
+}
+.if-pelicula:before {
+    content: "\e03A";
+}
+.if-rss:before {
+    content: "\e03B";
+}
+.if-aymicrofonos:before {
+    content: "\e03C";
+}
+.if-audifonos:before {
+    content: "\e03D";
+}
+.if-gota:before {
+    content: "\e03E";
+}
+.if-gaveta:before {
+    content: "\e03F";
+}
+.if-documentos:before {
+    content: "\e040";
+}
+.if-direcciones:before {
+    content: "\e041";
+}
+.if-direccion:before {
+    content: "\e042";
+}
+.if-diamante:before {
+    content: "\e043";
+}
+.if-cafe:before {
+    content: "\e044";
+}
+.if-brujula:before {
+    content: "\e045";
+}
+.if-llamadasaliente:before {
+    content: "\e046";
+}
+.if-llamadaentrante:before {
+    content: "\e047";
+}
+.if-telefono:before {
+    content: "\e048";
+}
+.if-calculadora:before {
+    content: "\e049";
+}
+.if-chats:before {
+    content: "\e04A";
+}
+.if-portafolio:before {
+    content: "\e04B";
+}
+.if-leer:before {
+    content: "\e04C";
+}    
+.if-carroconcompras:before {
+    content: "\e04D";
+}
+.if-carrodecompras:before {
+    content: "\e04E";
+}
+.if-jaba:before {
+    content: "\e04F";
+}
+.if-atras:before {
+    content: "\e050";
+}
+.if-delante:before {
+    content: "\e051";
+}
+.if-herramientas:before {
+    content: "\e052";
+}
+.if-paraguas:before {
+    content: "\e053";
+}
+.if-eliminar:before {
+    content: "\e054";
+}
+.if-etiquetas:before {
+    content: "\e055";
+}
+.if-ayuda:before {
+    content: "\e056";
+}
+.if-expandir:before {
+    content: "\e057";
+}
+.if-contraer:before {
+    content: "\e058";
+}
+.if-aleatorio:before {
+    content: "\e059";
+}
+.if-exportar:before {
+    content: "\e05A";
+}
+.if-compartir:before {
+    content: "\e05B";
+}
+.if-optimizar:before {
+    content: "\e05C";
+}
+.if-preguntar:before {
+    content: "\e05D";
+}
+.if-gdepastel:before {
+    content: "\e05e";
+}    
+.if-editar:before {
+    content: "\e05F";
+}
+.if-notas:before {
+    content: "\e060";
+}
+.if-musica:before {
+    content: "\e061";
+}
+.if-pistadesonido:before {
+    content: "\e062";
+}
+.if-microfono:before {
+    content: "\e063";
+}
+.if-repetir:before {
+    content: "\e064";
+}
+.if-lista:before {
+    content: "\e067";
+}
+.if-megusta:before {
+    content: "\e068";
+}
+.if-inicio:before {
+    content: "\e069";
+}
+.if-aplicaciones:before {
+    content: "\e06A";
+}
+.if-grafica:before {
+    content: "\e06B";
+}
+.if-ajustes:before {
+    content: "\e06C";
+}
+.if-nomegusta:before {
+    content: "\e06D";
+}
+.if-cursor:before {
+    content: "\e06E";
+}
+.if-pistaanterior:before {
+    content: "\e06F";
+}
+.if-retrocederpista:before {
+    content: "\e070";
+}
+.if-play:before {
+    content: "\e071";
+}
+.if-pause:before {
+    content: "\e072";
+}
+.if-adelantarpista:before {
+    content: "\e073";
+}
+.if-pistasiguiente:before {
+    content: "\e074";
+}
+.if-calendario:before {
+    content: "\e075";
+}
+.if-ideas:before {
+    content: "\e076";
+}
+.if-estadisticas:before {
+    content: "\e077";
+}
+.if-arriba:before {
+    content: "\e078";
+}
+.if-derecha:before {
+    content: "\e079";
+}
+.if-izquierda:before {
+    content: "\e07A";
+}
+.if-abajo:before {
+    content: "\e07B";
+}
+.if-desactivar:before {
+    content: "\e07C";
+}
+.if-comentarios:before {
+    content: "\e07D";
+}
+.if-video:before {
+    content: "\e07E";
+}
+.if-aprobar:before {
+    content: "\e080";
+}
+.if-horario:before {
+    content: "\e081";
+}
+.if-rechazar:before {
+    content: "\e082";
+}
+.if-bajardelanube:before {
+    content: "\e083";
+}
+.if-subiralanube:before {
+    content: "\e084";
+}
+.if-documento:before {
+    content: "\e085";
+}
+.if-correo:before {
+    content: "\e086";
+}
+.if-ver:before {
+    content: "\e087";
+}
+.if-bandera:before {
+    content: "\e088";
+}
+.if-carpeta2:before {
+    content: "\e089";
+}
+.if-corazon:before {
+    content: "\e08A";
+}
+.if-informacion:before {
+    content: "\e08B";
+}
+.if-contraseña:before {
+    content: "\e08C";
+}
+.if-link:before {
+    content: "\e08D";
+}
+.if-cerrado:before {
+    content: "\e08E";
+}
+.if-abierto:before {
+    content: "\e08F";
+}
+.if-aumentarzoom:before {
+    content: "\e091";
+}
+.if-reducirzoom:before {
+    content: "\e092";
+}
+.if-adjuntar:before {
+    content: "\e093";
+}
+.if-enviar:before {
+    content: "\e094";
+}
+.if-registrar:before {
+    content: "\e095";
+}
+.if-ubicacion:before {
+    content: "\e096";
+}
+.if-encender:before {
+    content: "\e097";
+}
+.if-actualizar:before {
+    content: "\e098";
+}
+.if-restablecer:before {
+    content: "\e099";
+}
+.if-favorito:before {
+    content: "\e09B";
+}
+.if-sfemenino:before {
+    content: "\e09C";
+}
+.if-smasculino:before {
+    content: "\e09D";
+}
+.if-centro:before {
+    content: "\e09E";
+}
+.if-volumen1:before {
+    content: "\e09F";
+}
+.if-volumen2:before {
+    content: "\e0A0";
+}
+.if-volumenoff:before {
+    content: "\e0A1";
+}
+.if-amigos:before {
+    content: "\e001";
+}
+.if-descargar:before {
+    content: "\e0A6";
+}
+.if-accesibilidad:before {
+    content: "\e0A7";
+}
+.if-atribuir:before {
+    content: "\e0A8";
+}
+.if-renovar:before {
+    content: "\e0A9";
+}
+.if-becasint:before {
+    content: "\e0AA";
+}
+.if-becasext:before {
+    content: "\e0AB";
+}
+.if-detalles:before {
+    content: "\e0AC";
+}
+.if-flujo:before {
+    content: "\e0AD";
+}
+.if-tareas:before {
+    content: "\e0AE";
+}
+.if-oascendente:before {
+    content: "\e0AF";
+}
+.if-odescendente:before {
+    content: "\e0B0";
+}
+.if-reporte:before {
+    content: "\e0B1";
+}
+.if-menu:before {
+    content: "\e0B2";
+}
+.if-presupuesto:before {
+    content: "\e0B3";
+}
+.if-cursosies:before {
+    content: "\e0B4";
+}
+.if-cursospaises:before {
+    content: "\e0B5";
+}
+.if-responsabilidad:before {
+    content: "\e0B6";
+}
+.if-selautomatica:before {
+    content: "\e0B7";
+}
+.if-planificacion:before {
+    content: "\e0B8";
+}
+.if-selgeneral:before {
+    content: "\e0B9";
+}
+.if-nuevacarpeta:before {
+    content: "\e0BA";
+}
+.if-nuevaarea:before {
+    content: "\e0BB";
+}
+.if-registraroferext:before {
+    content: "\e0BC";
+}
+.if-pantallacompleta:before {
+    content: "\e0BD";
+}
+.if-prioridad1:before {
+    content: "\e0BE";
+}
+.if-prioridad2:before {
+    content: "\e0BF";
+}
+.if-prioridad3:before {
+    content: "\e0C0";
+}
+.if-expediente:before {
+    content: "\e0c1";
+}
+.if-ventanacompleta:before {
+    content: "\e0C2";
+}
+.if-detallesdearea:before {
+    content: "\e0C3";
+}
+.if-detallesdetarea:before {
+    content: "\e0C4";
+}
+.if-cambiarpuntaje:before {
+    content: "\e0C5";
+}
+.if-pdf:before {
+    content: "\e0C6";
+}
+.if-word:before {
+    content: "\e0C8";
+}
+.if-excel:before {
+    content: "\e0C9";
+}
+.if-altocontraste:before {
+    content: "\e0CA";
+}
+.if-mapadelsitio:before {
+    content: "\e0D0";
+}
+.if-alineacion:before {
+    content: "\e0D1";
+}
+.if-importar:before {
+    content: "\e0D2";
+}
+.if-exportar-pdf:before {
+    content: "\e0D3";
+}
+.if-exportar-excel:before {
+    content: "\e0D4";
+}
+.if-exportar-zip:before {
+    content: "\e0D5";
+}
+.if-exportar-word:before {
+    content: "\e0D6";
+}
+.if-zip:before {
+    content: "\e0D7";
+}
+.if-decreto-creacion:before {
+    content: "\e0D8";
+}
+.if-iniciar-sesion:before {
+    content: "\e0D9";
+}
+.if-cerrar-sesion:before {
+    content: "\e0DA";
+}
+.if-registrar-op:before {
+    content: "\e0DB";
+}
+.if-registrar-op-tercero:before {
+    content: "\e0DC";
+}
+.if-pago:before {
+    content: "\e0DD";
+}
+.if-agregar-grupo:before {
+    content: "\e0DE";
+}
+.if-estructura:before {
+    content: "\e0DF";
+}
+.if-general:before {
+    content: "\e0E0";
+}
+.if-traza:before {
+    content: "\e0E1";
+}
+.if-candidatura:before {
+    content: "\e0E2";
+}
+.if-reintegrar:before {
+    content: "\e0E3";
+}
+.if-distribuir:before {
+    content: "\e0E4";
+}
+.if-lista-datos:before {
+    content: "\e0E5";
+}
+.if-detallado:before {
+    content: "\e0E6";
+}
+.if-acceso-directo:before {
+    content: "\e0E7";
+}
+.if-exportar-op-pdf:before {
+    content: "\e0E8";
+}
+.if-exportar-oficio-asociado-op-pdf:before {
+    content: "\e0E9";
+}
+.if-exportar-compromiso-honra-zip:before {
+    content: "\e0EA";
+}
+.if-exportar-compromiso-honra-pdf:before {
+    content: "\e0EB";
+}
+.if-exportar-ficha-renovacion-por-ies-zip:before {
+    content: "\e0EC";
+}
+.if-exportar-candidatos-seleccionado-por-ies-zip:before {
+    content: "\e0ED";
+}
+.if-exportar-lista-becarios-para-renovacion-zip:before {
+    content: "\e0EE";
+}

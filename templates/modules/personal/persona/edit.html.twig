@@ -1,0 +1,509 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar persona{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Modificar persona</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos personales</p></b>
+            </h5>
+            <hr style="margin-bottom: 20px">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.carnetIdentidad) }}
+                    {{ form_widget(form.carnetIdentidad) }}
+                    {{ form_errors(form.carnetIdentidad) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.numeroSerieCarnetIdentidad) }}
+                    {{ form_widget(form.numeroSerieCarnetIdentidad) }}
+                    {{ form_errors(form.numeroSerieCarnetIdentidad) }}
+                </div>
+                <div class="col-4 form-group">
+                    <div class="row">
+                        <div class="col-10">
+                            {{ form_label(form.foto) }}
+                            {{ form_widget(form.foto) }}
+                            {{ form_errors(form.foto) }}
+                        </div>
+                        <div class="col-2">
+                            <div id="image-holder"></div>
+
+                            {% if persona.foto != null %}
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ persona.foto }}"
+                                     class="img-circle imgp" alt="{{ persona.primerNombre }}"
+                                     style="width: 40px; height: 40px; position: absolute; bottom: 0;">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2 form-group">
+                    {{ form_label(form.primerNombre) }}
+                    {{ form_widget(form.primerNombre) }}
+                    {{ form_errors(form.primerNombre) }}
+                </div>
+                <div class="col-2 form-group">
+                    {{ form_label(form.segundoNombre) }}
+                    {{ form_widget(form.segundoNombre) }}
+                    {{ form_errors(form.segundoNombre) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.primerApellido) }}
+                    {{ form_widget(form.primerApellido) }}
+                    {{ form_errors(form.primerApellido) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.segundoApellido) }}
+                    {{ form_widget(form.segundoApellido) }}
+                    {{ form_errors(form.segundoApellido) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.sexo) }}
+                    {{ form_widget(form.sexo) }}
+                    {{ form_errors(form.sexo) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.provincia) }}
+                    {{ form_widget(form.provincia) }}
+                    {{ form_errors(form.provincia) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.municipio) }}
+                    {{ form_widget(form.municipio) }}
+                    {{ form_errors(form.municipio) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 form-group">
+                    {{ form_label(form.direccion) }}
+                    {{ form_widget(form.direccion) }}
+                    {{ form_errors(form.direccion) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaNacimiento) }}
+                    {{ form_widget(form.fechaNacimiento) }}
+                    {{ form_errors(form.fechaNacimiento) }}
+                </div>
+            </div>
+
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos laborales</p></b>
+            </h5>
+            <hr style="margin-bottom: 20px">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaEstructura) }}
+                    {{ form_widget(form.categoriaEstructura) }}
+                    {{ form_errors(form.categoriaEstructura) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.responsabilidad) }}
+                    {{ form_widget(form.responsabilidad) }}
+                    {{ form_errors(form.responsabilidad) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.clasificacionPersona) }}
+                    {{ form_widget(form.clasificacionPersona) }}
+                    {{ form_errors(form.clasificacionPersona) }}
+                </div>
+            </div>
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos de acceso</p></b>
+            </h5>
+            <hr style="margin-bottom: 20px">
+
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.usuario) }}
+                    {{ form_widget(form.usuario) }}
+                    {{ form_errors(form.usuario) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.contrasena) }}
+                    {{ form_widget(form.contrasena) }}<span class="fa fa-fw fa-eye password-icon show-password"></span>
+                    {{ form_errors(form.contrasena) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.contrasena2) }}
+                    {{ form_widget(form.contrasena2) }}
+                    {{ form_errors(form.contrasena2) }}
+                </div>
+            </div>
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos de contacto</p>
+                </b></h5>
+            <hr style="margin-bottom: 20px">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.email) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.email) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.celular) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.celular) }}
+                        {{ form_errors(form.celular) }}
+                    </div>
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.telefono) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.telefono) }}
+                        {{ form_errors(form.telefono) }}
+                    </div>
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.twitter) }}
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i> <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-twitter" viewBox="0 0 16 16">
+                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                    </svg></i></span>
+                        </div>
+                        {{ form_widget(form.twitter) }}
+                        {{ form_errors(form.twitter) }}
+                    </div>
+                </div>
+            </div>
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos de superación</p>
+                </b></h5>
+
+            <hr style="margin-bottom: 20px">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.nivelEscolar) }}
+                    {{ form_widget(form.nivelEscolar) }}
+                    {{ form_errors(form.nivelEscolar) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaDocente) }}
+                    {{ form_widget(form.categoriaDocente) }}
+                    {{ form_errors(form.categoriaDocente) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.profesion) }}
+                    {{ form_widget(form.profesion) }}
+                    {{ form_errors(form.profesion) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.gradoAcademico) }}
+                    {{ form_widget(form.gradoAcademico) }}
+                    {{ form_errors(form.gradoAcademico) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaInvestigativa) }}
+                    {{ form_widget(form.categoriaInvestigativa) }}
+                    {{ form_errors(form.categoriaInvestigativa) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.carrera) }}
+                    {{ form_widget(form.carrera) }}
+                    {{ form_errors(form.carrera) }}
+                </div>
+            </div>
+            {% if tipoOrganizacion|length > 0 %}
+                <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Afiliaciones</p>
+                    </b></h5>
+                <hr style="margin-bottom: 20px">
+                <br>
+
+                <div class="row">
+                    {% for tipo in tipoOrganizacion %}
+                        <div class="col-6 ">
+                            <h5 class="mb-0"><b><p style="font-size: 18px;font-weight: bold;margin-top: -32px;">
+                                        {{ tipo.nombre }}</p>
+                                </b></h5>
+                            {% for item in organizaciones %}
+                                {% if item.tipoOrganizacion.id == tipo.id %}
+                                    <label> <input {% if item.id in organizacionesAsociadas %} checked {% endif %}
+                                                type="checkbox" id="{{ item.id }}"
+                                                name="persona[organizacion][{{ item.id }}]"
+                                                value="{{ item.id }}">&nbsp;( {{ item.siglas|default('-') }}
+                                        ) {{ item.nombre }}
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="row">
+
+            </div>
+
+
+            <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+                <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_persona_index') }}"
+                   data-title=""
+                   data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+                <button class="btn btn-primary">Aceptar</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+ {% block stylesheets %}
+     <style>
+         .password-icon {
+             float: right;
+             position: relative;
+             margin: -25px 10px 0 0;
+             cursor: pointer;
+         }
+     </style>
+ {% endblock %}
+{% block javascripts %}
+    <script>
+        $('#persona_carnetIdentidad').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 11 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+
+        var fechaNacimiento = "{% if persona.fechaNacimiento is empty %}  {{ persona.fechaNacimiento | default('') }} {% else %}  {{ persona.fechaNacimiento|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#persona_fechaNacimiento').val(fechaNacimiento.replace(' ', ''));
+
+        $('#persona_municipio').val({{ persona.municipio.id | default(null) }});
+        $('#persona_estructura').val({{ persona.estructura.id | default(null) }});
+        $('#persona_responsabilidad').val({{ persona.responsabilidad.id | default(null) }});
+
+
+        $('#persona_carnetIdentidad').focusout(function (e) {
+            $.post("{{ path('app_persona_existe_ci') }}",
+                {
+                    carnetIdentidad: $('#persona_carnetIdentidad').val()
+                },
+                function (data) {
+                    if (data) {
+                        toastr.warning("EL Carné de identidad " + $('#persona_carnetIdentidad').val() + " ya existe. ");
+                        $('#persona_carnetIdentidad').val(null)
+                    } else {
+                        if ($('#persona_carnetIdentidad').val().length == 11) {
+                            var dia = $('#persona_carnetIdentidad').val()[4] + '' + $('#persona_carnetIdentidad').val()[5];
+                            var mes = $('#persona_carnetIdentidad').val()[2] + '' + $('#persona_carnetIdentidad').val()[3];
+                            var anno = $('#persona_carnetIdentidad').val()[0] + '' + $('#persona_carnetIdentidad').val()[1];
+                            if (parseInt($('#persona_carnetIdentidad').val()[0]) == 0) {
+                                anno = "20" + anno
+                            } else if (parseInt($('#persona_carnetIdentidad').val()[0]) == 2) {
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 1) {
+                                    anno = "2021"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 2) {
+                                    anno = "2022"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 3) {
+                                    anno = "2023"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 4) {
+                                    anno = "2024"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 5) {
+                                    anno = "2025"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 6) {
+                                    anno = "2026"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 7) {
+                                    anno = "2027"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 8) {
+                                    anno = "2028"
+                                }
+                                if (parseInt($('#persona_carnetIdentidad').val()[1]) == 9) {
+                                    anno = "2029"
+                                }
+                            } else {
+                                anno = "19" + anno
+                            }
+                            $('#persona_fechaNacimiento').val(dia + '/' + mes + '/' + anno);
+                        }
+                    }
+                });
+        })
+
+
+        $('#persona_numeroSerieCarnetIdentidad').focusout(function (e) {
+            $.post("{{ path('app_persona_existe_serie_ci') }}",
+                {
+                    numeroSerieCarnetIdentidad: $('#persona_numeroSerieCarnetIdentidad').val()
+                },
+                function (data) {
+                    if (data) {
+                        toastr.warning("EL número de serie del CI " + $('#persona_numeroSerieCarnetIdentidad').val() + " ya existe. ");
+                        $('#persona_numeroSerieCarnetIdentidad').val(null)
+                    }
+                });
+        })
+
+        $('[data-mask]').inputmask()
+        $('#persona_provincia').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_municipio_dado_provincia', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#persona_municipio option').remove();
+                    $('#persona_municipio').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#persona_municipio').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+
+        $('#persona_categoriaEstructura').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_estructura_dado_categoria', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#persona_estructura option').remove();
+                    $('#persona_estructura').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#persona_estructura').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+        $('#persona_estructura').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_responsabilidad_dado_estructura', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#persona_responsabilidad option').remove();
+                    $('#persona_responsabilidad').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#persona_responsabilidad').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+        $('#persona_usuario').val('{{ usuarioPersona }}');
+        $('#persona_fechaNacimiento').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#persona_foto").on('change', function () {
+            //Get count of selected files
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+
+                            $('.imgp').remove()
+                            $("<img />", {
+                                "src": e.target.result,
+                                "class": "thumb-image   img-circle",
+                                "style": 'width: 40px; height: 40px; position: absolute; bottom: 0;'
+                            }).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
+
+
+        $('#persona_usuario').focusout(function (e) {
+            if ($('#persona_usuario').val() != "") {
+                $.post("{{ path('app_persona_validar_usuario') }}",
+                    {
+                        usuario: $('#persona_usuario').val()
+                    },
+                    function (data) {
+                        if (!data) {
+                            toastr.warning("El usuario " + $('#persona_usuario').val() + " no es institucional. Debe contener @gobart.gob.cu");
+                            $('#persona_usuario').val(null)
+                        }
+                    });
+            }
+        })
+        window.addEventListener("load", function () {
+            // icono para mostrar contraseña
+            showPassword = document.querySelector('.show-password');
+            showPassword.addEventListener('click', () => {
+
+                // elementos input de tipo clave
+                password1 = $('#persona_contrasena');
+                password2 = $('#persona_contrasena2');
+
+                if (password1.attr('type') === "text") {
+                    password1.attr('type', "password")
+                    password2.attr('type', "password")
+                    showPassword.classList.remove('fa-eye-slash');
+                } else {
+                    password1.attr('type', "text")
+                    password2.attr('type', "text")
+                    showPassword.classList.toggle("fa-eye-slash");
+                }
+            })
+        });
+    </script>
+{% endblock %}

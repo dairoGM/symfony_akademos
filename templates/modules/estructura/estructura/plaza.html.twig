@@ -1,0 +1,87 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asociar composición a estructura{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Asociar composición a estructura</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="mb-0"><b> Categoría de estructura
+                            :</b> {{ estructura.categoriaEstructura.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b> Tipo de estructura :</b> {{ estructura.tipoEstructura.nombre| default('') }}
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Nombre:</b> {{ estructura.nombre }}</h5>
+                    <h5 class="mb-0"><b>Siglas:</b> {{ estructura.siglas }}</h5>
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b> Subordinado a:</b> {{ estructura.estructura.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Fecha de activación:</b> {{ estructura.fechaActivacion | date('d/m/Y') }}</h5>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.responsabilidad) }}
+                    {{ form_widget(form.responsabilidad) }}
+                    {{ form_errors(form.responsabilidad) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.cantidad) }}
+                    {{ form_widget(form.cantidad) }}
+                    {{ form_errors(form.cantidad) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_estructura_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+
+    <div class="card shadow-sm">
+        <table class="table table-bordered table-striped dataTable">
+            <thead class="table-custom-header">
+            <tr>
+                <th>No.</th>
+                <th>Responsabilidad</th>
+                <th>Cantidad</th>
+                <th class="text-center">Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in registros %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.responsabilidad.nombre | default('') }}</td>
+                    <td>{{ item.cantidad }}</td>
+
+                    <td class="text-center">
+                        <button class="btn btn-outline-danger elementRemove" title="Eliminar"
+                                data-url="{{ path('app_estructura_eliminar_plaza', {'id': item.id}) }}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+{% endblock %}

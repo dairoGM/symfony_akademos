@@ -1,0 +1,124 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('app_admin_home') }}"
+               class="nav-link nav-link-menu  {% if 'app_admin_home' in app.request.get('_route') %} active {% endif %}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Inicio
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Planificación
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_plan_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Planes generales</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_plan_ejecutado_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Planes ejecutados</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_planificacion_incumplimiento_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Incumplimientos</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Criterio de medida
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{ path('app_tipo_evaluacion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Tipos de evaluaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_forma_evaluacion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Formas de evaluaciones</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('app_evaluacion_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Evaluaciones</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Configuración
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_unidad_medida_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Unidades de medidas</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="{{ path('app_objetivo_general_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Objetivos generales</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_objetivo_especifico_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Grupo de indicadores</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_indicador_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Indicadores</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+    </ul>
+</nav>

@@ -1,0 +1,65 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de usuarios</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a title="Adicionar" class="btn btn-primary" href="{{ path('app_usuario_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
+                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_usuario_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                    <a title="Exportar a excel" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_usuario_exportar_excel') }}"><i class="fa fa-file-excel"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Correo</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in usuarios %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.email }}</td>
+                        <td class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_usuario_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de usuario">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                            <a title="Modificar" class="btn btn-outline-primary"
+                               href="{{ path('app_usuario_modificar', {'id': item.id}) }}"><i class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_usuario_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}

@@ -1,0 +1,290 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar estructura{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Modificar estructura</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.tipoEstructura) }}
+                    {{ form_widget(form.tipoEstructura) }}
+                    {{ form_errors(form.tipoEstructura) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.siglas) }}
+                    {{ form_widget(form.siglas) }}
+                    {{ form_errors(form.siglas) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaEstructura) }}
+                    {{ form_widget(form.categoriaEstructura) }}
+                    {{ form_errors(form.categoriaEstructura) }}
+                </div>
+
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaActivacion) }}
+                    {{ form_widget(form.fechaActivacion) }}
+                    {{ form_errors(form.fechaActivacion) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.telefono) }}
+                    {{ form_widget(form.telefono) }}
+                    {{ form_errors(form.telefono) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email) }}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="col-4 form-group">
+                    {{ form_label(form.direccion) }}
+                    {{ form_widget(form.direccion) }}
+                    {{ form_errors(form.direccion) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.provincia) }}
+                    {{ form_widget(form.provincia) }}
+                    {{ form_errors(form.provincia) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.municipio) }}
+                    {{ form_widget(form.municipio) }}
+                    {{ form_errors(form.municipio) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.ubicacion) }}
+                    {{ form_widget(form.ubicacion) }}
+                    {{ form_errors(form.ubicacion) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_estructura_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+
+        <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetail"
+             aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="modalDetailLabel">Seleccionar ubicación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modalDetailBody">
+                        <div id="map"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary aceptar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var fechaActivacion = "{% if estructura.fechaActivacion is empty %}  {{ estructura.fechaActivacion | default('') }} {% else %}  {{ estructura.fechaActivacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#estructura_fechaActivacion').val(fechaActivacion.replace(' ', ''));
+
+        $('#estructura_municipio').val({{ estructura.municipio.id }});
+        $('[data-mask]').inputmask();
+
+        $('#estructura_provincia').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_municipio_dado_provincia', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#estructura_municipio option').remove();
+                    $('#estructura_municipio').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#estructura_municipio').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+
+        $(document).ready(function () {
+            $('#estructura_siglas').on('keydown keypress', function (e) {
+                if (e.key.length === 1) {
+                    if ($(this).val().length < 3 /*&& !isNaN(parseFloat(e.key))*/) {
+                        $(this).val($(this).val() + e.key);
+                    }
+                    return false;
+                }
+            });
+
+
+            let mymap = '';
+            let defaultLocation = '22.798971336311112, -82.76412963867189';
+            let defaultZoom = 10;
+            let locationMap = '';
+            let map_current_location = '';
+            let marker = '';
+            $('#estructura_ubicacion').click(function () {
+                $('#modalDetail').modal('show')
+
+
+                setTimeout(function () {
+
+                    map_current_location = $('#estructura_ubicacion').val() ? $('#estructura_ubicacion').val() : '22.81258, -82.758293'
+
+                    let options = {
+                        icon: 'fa-circle',
+                        iconColor: '#ffffff',
+                        markerColor: 'blue',
+                        shape: 'circle',
+                        prefix: 'fa'
+                    };
+
+
+                    if ($('#estructura_ubicacion').val() !== '' && $('#estructura_ubicacion').val() !== null) {
+                        defaultLocation = $('#estructura_ubicacion').val();
+                        defaultZoom = 10;
+                    }
+
+                    if (mymap === '') {
+
+                        mymap = L.map('map').setView(L.latLng(defaultLocation.split(',').map(v => parseFloat(v))), defaultZoom);
+
+                        initFullScreem();
+                    }
+
+                    if ($('#estructura_ubicacion').val() !== '' && $('#estructura_ubicacion').val() !== null) {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))), options);
+                        } else {
+                            updateMarker(marker, L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))).lat, L.latLng($('#estructura_ubicacion').val().split(',').map(v => parseFloat(v))).lng)
+                        }
+
+
+                    } else {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng(22.81258, -82.758293), options);
+                        } else {
+                            updateMarker(marker, 22.81258, -82.758293)
+                        }
+                    }
+
+                    marker.addTo(mymap);
+
+
+                    L.tileLayer('https://map.epe.rimed.cu/tile/{z}/{x}/{y}.png', {
+                        attribution: '',
+                        maxZoom: 18,
+                        // id: 'mapbox/streets-v11',
+                        // tileSize: 512,
+                        // zoomOffset: -1,
+                        // accessToken: 'your.mapbox.access.token'
+                    }).addTo(mymap);
+
+                    mymap.addEventListener('click', (e) => {
+
+                        map_current_location = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+                        locationMap = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+
+                        // update marker location
+                        updateMarker(marker, e.latlng.lat, e.latlng.lng);
+
+
+                    });
+
+
+                    function updateMarker(marker, lat, lng) {
+                        marker.setLatLng([lat, lng])
+                            .bindPopup(marker.getLatLng().toString())
+                            .openPopup();
+                    }
+
+                    function create_extramarker(latlng, options) {
+                        // Creates a red marker with the coffee icon
+                        let markerIcon = L.ExtraMarkers.icon(
+                            options
+                        );
+
+
+                        return L.marker(latlng, {icon: markerIcon});
+                    }
+
+                    function initFullScreem() {
+                        L.control.fullscreen({
+                            position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                            title: 'Show fullscreen', // change the title of the button, default Full Screen
+                            titleCancel: 'Exit fullscreen', // change the title of the button when fullscreen is on, default Exit Full Screen
+                            content: null, // change the content of the button, can be HTML, default null
+                            forceSeparateButton: true, // force seperate button to detach from zoom buttons, default false
+                            fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
+                        }).addTo(mymap);
+                    }
+                }, 500)
+
+
+            })
+
+            $('.aceptar').click(function () {
+                $('#estructura_ubicacion').val(map_current_location)
+                $('#modalDetail').modal('hide')
+            })
+
+            $('#estructura_fechaActivacion').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+        })
+
+    </script>
+{% endblock %}

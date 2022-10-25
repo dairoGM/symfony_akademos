@@ -1,0 +1,92 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    env_config: '%env(ENV_CONFIG)%'
+    estructura_1: '%env(ESTRUCTURA_1)%'
+    tipo_plan_anual: '%env(TIPO_PLAN_ANUAL)%'
+    tipo_plan_mensual: '%env(TIPO_PLAN_MENSUAL)%'
+    estado_inicial_plan: '%env(ESTADO_INICIAL_PLAN)%'
+    
+    xsl_path: '%kernel.project_dir%/public/xsl/'
+    xml_temp: '%kernel.project_dir%/public/temp/'
+    pdf_temp: '%kernel.project_dir%/public/temp/'
+    fop_exc: '%kernel.project_dir%/bin/fop/fop'
+
+    accion_registrar: '%env(accion_registrar)%'
+    accion_modificar: '%env(accion_modificar)%'
+    accion_eliminar: '%env(accion_eliminar)%'
+    accion_inicio_sesion: '%env(accion_inicio_sesion)%'
+    accion_cierre_sesion: '%env(accion_cierre_sesion)%'
+
+    tipo_traza_sesion: '%env(tipo_traza_sesion)%'
+    tipo_traza_negocio: '%env(tipo_traza_negocio)%'
+
+    objeto_plan: '%env(objeto_plan)%'
+    objeto_autenticacion: '%env(objeto_autenticacion)%'
+    objeto_indicador: '%env(objeto_indicador)%'
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+            - '../src/Services/ReportFop.php'
+            - '../src/ExtendSys/'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    #chat.event.security_authentication_success:
+    #    class: App\EventListener\AuthenticationChatListener
+    #    tags:
+    #        - { name: kernel.event_listener, event: security.authentication.success, method: onLoginChat }
+
+    idxboost_api.event.authentication_success_listener:
+        class: App\EventListener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+
+    App\EventListener\CustomLogoutListener:
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              dispatcher: security.event_dispatcher.main
+
+    idxboost_api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack', '@service_container' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    idxboost_api.event.jwt_decoded_listener:
+        class: App\EventListener\JWTDecodedListener
+        arguments: [ '@request_stack', '@service_container' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+
+    doctrine_listener.prepersist:
+        class: App\EventListener\DoctrineListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+

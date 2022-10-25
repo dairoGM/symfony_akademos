@@ -1,0 +1,76 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Reporte personalizado{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de reportes</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_reporte_custom_create') }}" ><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item['reporte'].nombre }}</td>
+                        <td>
+                            {% if item['persona'] %}
+
+                                <a href="{% if item['persona'].foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item['persona'].foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                   target="_blank">
+                                    <img src="{% if item['persona'].foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item['persona'].foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                         class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
+                                </a>
+                                {{ item['persona'].primerNombre ~ ' ' ~ item['persona'].segundoNombre ~' '~ item['persona'].primerApellido ~ ' ' ~ item['persona'].segundoApellido }}
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            <a class="btn btn-outline-primary"  title="Detalles"
+                               href="{{ path('app_reporte_custom_detalles', {'id': item['reporte'].id}) }}"><i
+                                        class="fa fa-eye"></i>
+                            </a>
+
+                            {% if item['reporte'].usuario.id == app.user.id %}
+                                <a class="btn btn-outline-primary"  title="Modificar"
+                                   href="{{ path('app_reporte_custom_modificar', {'id': item['reporte'].id}) }}"><i
+                                            class="fa fa-edit"></i>
+                                </a>
+                                <button class="btn btn-outline-danger elementRemove" title="Eliminar"
+                                        data-url="{{ path('app_reporte_custom_eliminar', {'id': item['reporte'].id}) }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+{% endblock %}
