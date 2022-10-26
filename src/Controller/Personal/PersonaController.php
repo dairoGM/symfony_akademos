@@ -463,7 +463,7 @@ class PersonaController extends AbstractController
     {
         try {
             $valido = false;
-            if (strpos($request->request->get('usuario'), '@gobart.gob.cu') !== false) {
+            if (strpos($request->request->get('usuario'), '@mes.gob.cu') !== false) {
                 $valido = true;
             }
 

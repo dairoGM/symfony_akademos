@@ -70,7 +70,6 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_FUNC", "Gestionar funcionalidades", "Gestionar funcionalidades del sistema");
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_MODULE", "Gestionar módulos", "Gestionar módulos del sistema");
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_ROLES", "Gestionar roles", "Gestionar los roles del sistema");    
-        $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_CHAT", "Gestionar chat", "Gestionar y sincronizar los usuarios del chat");  
 
         return $functionalities;
     }
