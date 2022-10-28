@@ -369,14 +369,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     {% include 'pages/sidevar/administracion.html.twig' %}
                 {% endif %}
 
-                {% if app.request.pathinfo|split('/')[1] == 'plan_actividades' %}
-                    {% include 'pages/sidevar/plan_actividades.html.twig' %}
-                {% endif %}
-
-                {% if app.request.pathinfo|split('/')[1] == 'planificacion' %}
-                    {% include 'pages/sidevar/planificacion.html.twig' %}
-                {% endif %}
-
                 {% if app.request.pathinfo|split('/')[1] == 'reporte' %}
                     {% include 'pages/sidevar/reporte.html.twig' %}
                 {% endif %}
