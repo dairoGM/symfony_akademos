@@ -70,3 +70,10 @@
 {% endblock %}
 
 
+{% block javascripts %}
+    <script>
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('descripcion');
+        localStorage.removeItem('activo');
+    </script>
+{% endblock %}

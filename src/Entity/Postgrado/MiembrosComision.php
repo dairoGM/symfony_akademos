@@ -15,19 +15,19 @@ class MiembrosComision extends BaseEntity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Comision")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Comision $comision;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Personal\Persona")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?Persona $miembro;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="RolComision")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?RolComision $rolComision;
 
