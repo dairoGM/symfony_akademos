@@ -18,6 +18,8 @@ use App\Entity\Planificacion\Formula;
 use App\Entity\Planificacion\TipoPlan;
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\EstadoPrograma;
+use App\Entity\Postgrado\ModalidadPrograma;
+use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -189,6 +191,19 @@ class AppFixtures extends Fixture
             $manager->persist($estado_programa);
         }
 
+        $tbn_modalidad_programa = ['Tiempo completo', 'Tiempo paracial'];
+        foreach ($tbn_modalidad_programa as $value) {
+            $modalidad_programa = new ModalidadPrograma();
+            $modalidad_programa->setNombre($value);
+            $manager->persist($modalidad_programa);
+        }
+
+        $tbn_presencialidad_programa = ['Presencial', 'Semipresencial', 'A distancia'];
+        foreach ($tbn_presencialidad_programa as $value) {
+            $presencialidad_programa = new PresencialidadPrograma();
+            $presencialidad_programa->setNombre($value);
+            $manager->persist($presencialidad_programa);
+        }
         $manager->flush();
     }
 
