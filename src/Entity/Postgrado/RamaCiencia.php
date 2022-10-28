@@ -11,5 +11,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RamaCiencia extends BaseNomenclator
 {
+    /**
+     * @ORM\Column(type="string", nullable=false, length="3")
+     */
+    private ?string $siglas=null;
 
+
+    public function getSiglas()
+    {
+        return $this->siglas;
+    }
+
+    public function setSiglas($siglas)
+    {
+        $this->siglas = $siglas;
+
+        return $this;
+    }
 }

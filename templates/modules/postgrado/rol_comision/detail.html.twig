@@ -1,7 +1,6 @@
 <div class="row">
     <div class="col-6">
-        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre | default('')}}</h5>
-        <h5 class="mb-0"><b>Siglas:</b> {{ item.siglas | default('') }}</h5>
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
     </div>
     <div class="col-6">
         {% if '1' == item.activo %}

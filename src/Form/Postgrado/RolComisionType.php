@@ -2,7 +2,7 @@
 
 namespace App\Form\Postgrado;
 
-use App\Entity\Postgrado\RamaCiencia;
+use App\Entity\Postgrado\RolComision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -11,17 +11,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RamaCienciaType extends AbstractType
+class RolComisionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('nombre', TextType::class, [
-                'constraints' => [
-                    new NotBlank()
-                ]
-            ])
-            ->add('siglas', TextType::class, [
                 'constraints' => [
                     new NotBlank()
                 ]
@@ -39,7 +34,7 @@ class RamaCienciaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => RamaCiencia::class,
+            'data_class' => RolComision::class,
         ]);
     }
 }

@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Ramas de la ciencia{% endblock %}
+{% block title %}Rol comisión{% endblock %}
 
 {% block body %}
 
@@ -10,8 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de ramas de la ciencia</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_rama_ciencia_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de roles comisión</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_rol_comision_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -24,7 +24,6 @@
                 <tr>
                     <th>No.</th>
                     <th>Nombre</th>
-                    <th>Siglas</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -33,8 +32,7 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.nombre | default('') }}</td>
-                        <td width="9%">{{ item.siglas | default('') }}</td>
+                        <td>{{ item.nombre }}</td>
                         <td width="3%" class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
@@ -44,17 +42,17 @@
                         </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_rama_ciencia_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la ramas de la ciencia">
+                                    data-url="{{ path('app_rol_comision_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles del rol comisión">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_rama_ciencia_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_rol_comision_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_rama_ciencia_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_rol_comision_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
