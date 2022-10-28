@@ -10,6 +10,7 @@ use App\Entity\Security\User;
 use App\Form\Postgrado\ComisionType;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Postgrado\ComisionRepository;
+use App\Repository\Postgrado\MiembrosComisionRepository;
 use App\Repository\Postgrado\RolComisionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,52 +51,52 @@ class ComisionController extends AbstractController
      */
     public function registrar(Request $request, EntityManagerInterface $em, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
     {
-//        try {
-        $comisionEntity = new Comision();
-        $form = $this->createForm(ComisionType::class, $comisionEntity, ['action' => 'registrar']);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comisionRepository->add($comisionEntity, true);
+        try {
+            $comisionEntity = new Comision();
+            $form = $this->createForm(ComisionType::class, $comisionEntity, ['action' => 'registrar']);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comisionRepository->add($comisionEntity, true);
 
-            if ($request->getSession()->has('array_personas_asignadas')) {
-                foreach ($request->getSession()->get('array_personas_asignadas') as $value) {
-                    $miembroComisionEntity = new MiembrosComision();
-                    $miembroComisionEntity->setMiembro($personaRepository->find($value['id_persona']));
-                    $miembroComisionEntity->setRolComision($rolComisionRepository->find($value['id_rol']));
-                    $miembroComisionEntity->setComision($comisionEntity);
-                    $em->persist($miembroComisionEntity);
+                if ($request->getSession()->has('array_personas_asignadas')) {
+                    foreach ($request->getSession()->get('array_personas_asignadas') as $value) {
+                        $miembroComisionEntity = new MiembrosComision();
+                        $miembroComisionEntity->setMiembro($personaRepository->find($value['id_persona']));
+                        $miembroComisionEntity->setRolComision($rolComisionRepository->find($value['id_rol']));
+                        $miembroComisionEntity->setComision($comisionEntity);
+                        $em->persist($miembroComisionEntity);
+                    }
+                    $em->flush();
                 }
-                $em->flush();
+
+
+                $request->getSession()->remove('array_personas_asignadas');
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                return $this->redirectToRoute('app_comision_index', [], Response::HTTP_SEE_OTHER);
             }
 
-
-            $request->getSession()->remove('array_personas_asignadas');
-            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_comision_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $personasSeleccionadas = $request->getSession()->has('array_personas_asignadas') ? $request->getSession()->get('array_personas_asignadas') : [];
-        $asignadas = [];
-        $arrayIdAsignados = [];
-        if (count($personasSeleccionadas) > 0) {
-            foreach ($personasSeleccionadas as $value) {
-                $item = $personaRepository->find($value['id_persona']);
-                $item->rolComision = $value['nombre_rol'];
-                $asignadas[] = $item;
-                $arrayIdAsignados[] = $value['id_persona'];
+            $personasSeleccionadas = $request->getSession()->has('array_personas_asignadas') ? $request->getSession()->get('array_personas_asignadas') : [];
+            $asignadas = [];
+            $arrayIdAsignados = [];
+            if (count($personasSeleccionadas) > 0) {
+                foreach ($personasSeleccionadas as $value) {
+                    $item = $personaRepository->find($value['id_persona']);
+                    $item->rolComision = $value['nombre_rol'];
+                    $asignadas[] = $item;
+                    $arrayIdAsignados[] = $value['id_persona'];
+                }
             }
-        }
 
-        return $this->render('modules/postgrado/comision/new.html.twig', [
-            'form' => $form->createView(),
-            'personas' => $personaRepository->getPersonasNoAsignadasDadoArrayIdPersonas($arrayIdAsignados),
-            'asignadas' => $asignadas,
-            'rolComision' => $rolComisionRepository->findBy(['activo' => true], ['nombre' => 'asc'])
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_comision_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+            return $this->render('modules/postgrado/comision/new.html.twig', [
+                'form' => $form->createView(),
+                'personas' => $personaRepository->getPersonasNoAsignadasDadoArrayIdPersonas($arrayIdAsignados),
+                'asignadas' => $asignadas,
+                'rolComision' => $rolComisionRepository->findBy(['activo' => true], ['nombre' => 'asc'])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_comision_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -179,14 +180,15 @@ class ComisionController extends AbstractController
     /**
      * @Route("/{id}/detail", name="app_comision_detail", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $comision
-     * @param ComisionRepository $comisionRepository
+     * @param Comision $comision
+     * @param MiembrosComisionRepository $miembrosComisionRepository
      * @return Response
      */
-    public function detail(Request $request, Comision $comision)
+    public function detail(Request $request, Comision $comision, MiembrosComisionRepository $miembrosComisionRepository)
     {
         return $this->render('modules/postgrado/comision/detail.html.twig', [
             'item' => $comision,
+            'asignadas' => $miembrosComisionRepository->findBy(['comision' => $comision->getId()]),
         ]);
     }
 
