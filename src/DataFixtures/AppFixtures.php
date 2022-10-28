@@ -16,6 +16,8 @@ use App\Entity\Personal\Sexo;
 use App\Entity\Planificacion\EstadoPlan;
 use App\Entity\Planificacion\Formula;
 use App\Entity\Planificacion\TipoPlan;
+use App\Entity\Postgrado\CategoriaCategorizacion;
+use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -171,6 +173,21 @@ class AppFixtures extends Fixture
         $persona->setSegundoApellido('123');
         $manager->persist($persona);
 
+
+        $tbn_categoria_categorizacion = ['A', 'B', 'C', 'D'];
+        foreach ($tbn_categoria_categorizacion as $value) {
+            $categoria_categorizacion = new CategoriaCategorizacion();
+            $categoria_categorizacion->setNombre($value);
+            $categoria_categorizacion->setSiglas($value);
+            $manager->persist($categoria_categorizacion);
+        }
+
+        $tbn_estado_programa = ['Nuevo', 'En revisión', 'Aprobado'];
+        foreach ($tbn_estado_programa as $value) {
+            $estado_programa = new EstadoPrograma();
+            $estado_programa->setNombre($value);
+            $manager->persist($estado_programa);
+        }
 
         $manager->flush();
     }
