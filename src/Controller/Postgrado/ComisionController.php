@@ -5,8 +5,6 @@ namespace App\Controller\Postgrado;
 use App\Entity\Personal\Persona;
 use App\Entity\Postgrado\Comision;
 use App\Entity\Postgrado\MiembrosComision;
-use App\Entity\Postgrado\RolComision;
-use App\Entity\Security\User;
 use App\Form\Postgrado\ComisionType;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Postgrado\ComisionRepository;
@@ -18,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/postgrado/comision")
@@ -103,10 +100,9 @@ class ComisionController extends AbstractController
     /**
      * @Route("/asociar_persona", name="app_comision_asociar_persona_registrar", methods={"GET", "POST"})
      * @param Request $request
-     * @param PersonaRepository $personaRepository
      * @return Response
      */
-    public function asociarPersona(Request $request, PersonaRepository $personaRepository)
+    public function asociarPersona(Request $request)
     {
         try {
             $arrayIds = $request->request->get('arrayId');
@@ -151,11 +147,14 @@ class ComisionController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_comision_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $comision
+     * @param MiembrosComisionRepository $miembrosComisionRepository
+     * @param Comision $comision
      * @param ComisionRepository $comisionRepository
+     * @param RolComisionRepository $rolComisionRepository
+     * @param PersonaRepository $personaRepository
      * @return Response
      */
-    public function modificar(Request $request, Comision $comision, ComisionRepository $comisionRepository)
+    public function modificar(Request $request, MiembrosComisionRepository $miembrosComisionRepository, Comision $comision, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
     {
         try {
             $form = $this->createForm(ComisionType::class, $comision, ['action' => 'modificar']);
@@ -166,25 +165,94 @@ class ComisionController extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_comision_index', [], Response::HTTP_SEE_OTHER);
             }
+            $request->getSession()->set('idComision', $comision->getId());
+            $arrayIdAsignados = [];
+            $asignadas = [];
+            $temp = $miembrosComisionRepository->findBy(['comision' => $comision->getId()]);
+            foreach ($temp as $value) {
+                $arrayIdAsignados[] = $value->getMiembro()->getId();
+                $item = $value->getMiembro();
+                $item->rolComision = $value->getRolComision()->getNombre();
+                $asignadas[] = $item;
+            }
+
 
             return $this->render('modules/postgrado/comision/edit.html.twig', [
                 'form' => $form->createView(),
+                'personas' => $personaRepository->getPersonasNoAsignadasDadoArrayIdPersonas($arrayIdAsignados),
+                'asignadas' => $asignadas,
+                'rolComision' => $rolComisionRepository->findBy(['activo' => true], ['nombre' => 'asc']),
+                'comision' => $comision
             ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_comision_modificar', ['id' => $comision->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/asociar_persona_modificar", name="app_comision_asociar_persona_modificar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param PersonaRepository $personaRepository
+     * @param RolComisionRepository $rolComisionRepository
+     * @param ComisionRepository $comisionRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function asociarPersonaModificar(Request $request, PersonaRepository $personaRepository, RolComisionRepository $rolComisionRepository, ComisionRepository $comisionRepository, EntityManagerInterface $em)
+    {
+        try {
+            $arrayIds = $request->request->get('arrayId');
+            if (is_array($arrayIds)) {
+                foreach ($arrayIds as $value) {
+                    $miembroComisionEntity = new MiembrosComision();
+                    $miembroComisionEntity->setMiembro($personaRepository->find($value['id_persona']));
+                    $miembroComisionEntity->setRolComision($rolComisionRepository->find($value['id_rol']));
+                    $miembroComisionEntity->setComision($comisionRepository->find($request->getSession()->get('idComision')));
+                    $em->persist($miembroComisionEntity);
+                }
+                $em->flush();
+            }
+            return $this->json('OK');
+        } catch (\Exception $exception) {
+            return $this->json(true);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_persona_asignada_modificar", name="app_comision_eliminar_persona_asignada_modificar", methods={"GET"})
+     * @param Request $request
+     * @param Persona $persona
+     * @param PersonaRepository $personaRepository
+     * @param MiembrosComisionRepository $miembrosComisionRepository
+     * @return Response
+     */
+    public function eliminarPersonaAsignadaModificar(Request $request, Persona $persona, PersonaRepository $personaRepository, MiembrosComisionRepository $miembrosComisionRepository)
+    {
+        try {
+            $comision = $request->getSession()->get('idComision');
+            if ($personaRepository->find($persona->getId()) instanceof Persona) {
+                $miembro = $miembrosComisionRepository->findOneBy(['miembro' => $persona->getId(), 'comision' => $comision]);
+                $miembrosComisionRepository->remove($miembro, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_comision_modificar', ['id' => $comision], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_comision_modificar', ['id' => $comision], Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_comision_modificar', ['id' => $comision], Response::HTTP_SEE_OTHER);
         }
     }
 
-
     /**
      * @Route("/{id}/detail", name="app_comision_detail", methods={"GET", "POST"})
-     * @param Request $request
      * @param Comision $comision
      * @param MiembrosComisionRepository $miembrosComisionRepository
      * @return Response
      */
-    public function detail(Request $request, Comision $comision, MiembrosComisionRepository $miembrosComisionRepository)
+    public function detail(Comision $comision, MiembrosComisionRepository $miembrosComisionRepository)
     {
         return $this->render('modules/postgrado/comision/detail.html.twig', [
             'item' => $comision,
