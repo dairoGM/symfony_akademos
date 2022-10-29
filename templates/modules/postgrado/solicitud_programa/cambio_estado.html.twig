@@ -63,7 +63,7 @@
                         <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
                               class="cargar-archivo"> </span>
                         {{ form_errors(form.resolucionPrograma) }}
-                        <a target="_blank"
+                        <a id="doc_container" target="_blank"
                            href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
@@ -138,14 +138,26 @@
         });
 
         $('#btn_aceptar').on('click', function () {
-            console.log($('#cambio_estado_programa_estadoPrograma').val());
             if ($('#cambio_estado_programa_estadoPrograma').val() != 3) {
                 $('[id*=cambio_estado]').attr('required', false)
+                $('[id=cambio_estado_programa_annoAcreditacion]').attr('required', false)
+                $('[id=cambio_estado_programa_fechaProximaAcreditacion]').attr('required', false)
             } else {
                 $('[id*=cambio_estado]').attr('required', true)
             }
+
+            if($('#doc_container').attr('href') ==""){
+                $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', true)
+            } else {
+                $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', false)
+            }
         });
 
+        if($('#doc_container').attr('href') ==""){
+            $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', true)
+        } else {
+            $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', false)
+        }
 
     </script>
 {% endblock %}
