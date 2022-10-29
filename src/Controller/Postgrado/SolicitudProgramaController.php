@@ -145,12 +145,14 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function eliminar(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function eliminar(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository, TraceService $traceService)
     {
         try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudPrograma) {
                 $solicitudProgramaRepository->remove($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+
+                $traceService->registrar($this->getParameter('accion_eliminar'), $this->getParameter('objeto_solicitud_programa'), null, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
             $this->addFlash('error', 'Error en la entrada de datos');
