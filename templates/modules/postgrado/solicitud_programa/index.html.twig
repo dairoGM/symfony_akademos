@@ -53,10 +53,6 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_solicitud_programa_eliminar', {'id': item.id}) }}">
-                                <i class="fa fa-trash"></i>
-                            </button>
                             <a title="Descargar programa" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">
                                 <i
@@ -72,6 +68,10 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-address-card"></i>
                             </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_solicitud_programa_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}
