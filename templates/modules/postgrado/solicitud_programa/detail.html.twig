@@ -1,0 +1,52 @@
+<div class="card-header">
+    <h3 class="card-title font-weight-bold">
+        <i class="ion ion-clipboard mr-1"></i>
+        Datos del programa
+    </h3>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <h5 class="mb-0"><b>Nombre del programa:</b> {{ item.nombre }}</h5>
+                <h5 class="mb-0"><b>Rama de la ciencia:</b> {{ item.ramaCiencia.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Modalidad:</b> {{ item.modalidadPrograma.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Presencialidad:</b> {{ item.presencialidadPrograma.nombre| default('') }}</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="mb-0"><b>Tipo de programa:</b> {{ item.tipoPrograma.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Universidad:</b> {{ item.universidad.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Programa: </b> <a target="_blank"
+                                                      href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">{{ item.docPrograma }}</a>
+                </h5>
+                {% if '1' == item.activo %}
+                    <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
+                {% else %}
+                    <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-header">
+    <h3 class="card-title font-weight-bold">
+        <i class="ion ion-clipboard mr-1"></i>
+        Datos del coordinador
+    </h3>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <h5 class="mb-0"><b>Nombre y apellidos:</b> {{ item.nombreCoordinador| default('') }}</h5>
+            </div>
+            <div class="col-4">
+                <h5 class="mb-0"><b>Correo:</b> {{ item.correoCoordinador| default('') }}</h5>
+            </div>
+            <div class="col-4">
+                <h5 class="mb-0"><b>Teléfono:</b> {{ item.telefonoCoordinador| default('') }}</h5>
+            </div>
+        </div>
+    </div>
+</div>

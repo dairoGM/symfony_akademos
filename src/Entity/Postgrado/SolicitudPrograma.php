@@ -5,13 +5,19 @@ namespace App\Entity\Postgrado;
 use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="postgrado.tbd_solicitud_programa")
  */
 class SolicitudPrograma extends BaseNomenclator
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="EstadoPrograma")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?EstadoPrograma $estadoPrograma;
+
     /**
      * @ORM\ManyToOne(targetEntity="Comision")
      * @ORM\JoinColumn(nullable=true)
@@ -278,6 +284,31 @@ class SolicitudPrograma extends BaseNomenclator
     public function setComision($comision)
     {
         $this->comision = $comision;
+
+        return $this;
+    }
+
+    public function getDocPrograma()
+    {
+        return $this->docPrograma;
+    }
+
+    public function setDocPrograma($docPrograma)
+    {
+        $this->docPrograma = $docPrograma;
+
+        return $this;
+    }
+
+
+    public function getEstadoPrograma()
+    {
+        return $this->estadoPrograma;
+    }
+
+    public function setEstadoPrograma($estadoPrograma)
+    {
+        $this->estadoPrograma = $estadoPrograma;
 
         return $this;
     }

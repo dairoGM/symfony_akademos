@@ -1,0 +1,105 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar solicitud de programa{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Adicionar solicitud de programa</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoPrograma) }}
+                    {{ form_widget(form.tipoPrograma) }}
+                    {{ form_errors(form.tipoPrograma) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.ramaCiencia) }}
+                    {{ form_widget(form.ramaCiencia) }}
+                    {{ form_errors(form.ramaCiencia) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.universidad) }}
+                    {{ form_widget(form.universidad) }}
+                    {{ form_errors(form.universidad) }}
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.docPrograma) }}
+                    {{ form_widget(form.docPrograma) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.docPrograma) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.modalidadPrograma) }}
+                    {{ form_widget(form.modalidadPrograma) }}
+                    {{ form_errors(form.modalidadPrograma) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.presencialidadPrograma) }}
+                    {{ form_widget(form.presencialidadPrograma) }}
+                    {{ form_errors(form.presencialidadPrograma) }}
+                </div>
+            </div>
+            <h6 class="mb-0"><b><p
+                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+                        Datos del coordinador</p>
+                </b></h6>
+            <hr style="margin-bottom: 5px;padding-left: 1%">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreCoordinador) }}
+                    {{ form_widget(form.nombreCoordinador) }}
+                    {{ form_errors(form.nombreCoordinador) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.correoCoordinador) }}
+                    {{ form_widget(form.correoCoordinador) }}
+                    {{ form_errors(form.correoCoordinador) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.telefonoCoordinador) }}
+                    {{ form_widget(form.telefonoCoordinador) }}
+                    {{ form_errors(form.telefonoCoordinador) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        $('#solicitud_programa_docPrograma').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
+    </script>
+{% endblock %}
