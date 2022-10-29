@@ -6,6 +6,7 @@ use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="postgrado.tbd_solicitud_programa")
@@ -85,6 +86,11 @@ class SolicitudPrograma extends BaseNomenclator
      */
     private ?NivelAcreditacion $nivelAcreditacion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="CategoriaCategorizacion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?CategoriaCategorizacion $categoriaCategorizacion;
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
@@ -309,6 +315,17 @@ class SolicitudPrograma extends BaseNomenclator
     public function setEstadoPrograma($estadoPrograma)
     {
         $this->estadoPrograma = $estadoPrograma;
+
+        return $this;
+    }
+    public function getCategoriaCategorizacion()
+    {
+        return $this->categoriaCategorizacion;
+    }
+
+    public function setCategoriaCategorizacion($categoriaCategorizacion)
+    {
+        $this->categoriaCategorizacion = $categoriaCategorizacion;
 
         return $this;
     }

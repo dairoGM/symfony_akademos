@@ -19,7 +19,10 @@ use App\Entity\Planificacion\TipoPlan;
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Postgrado\ModalidadPrograma;
+use App\Entity\Postgrado\NivelAcreditacion;
 use App\Entity\Postgrado\PresencialidadPrograma;
+use App\Entity\Postgrado\TipoPrograma;
+use App\Entity\Postgrado\Universidad;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -203,6 +206,31 @@ class AppFixtures extends Fixture
             $presencialidad_programa = new PresencialidadPrograma();
             $presencialidad_programa->setNombre($value);
             $manager->persist($presencialidad_programa);
+        }
+
+        $tbn_tipo_programa = ['Maestría', 'Doctorado', 'Especialidad'];
+        foreach ($tbn_tipo_programa as $value) {
+            $tipo_programa = new TipoPrograma();
+            $tipo_programa->setNombre($value);
+            $manager->persist($tipo_programa);
+        }
+        $tbd_universidad = [[
+            'nombre' => 'Universidad de las Ciencias Informatica',
+            'siglas' => 'UCI'
+        ]];
+        foreach ($tbd_universidad as $value) {
+            $universidad = new Universidad();
+            $universidad->setNombre($value['nombre']);
+            $universidad->setSiglas($value['siglas']);
+            $manager->persist($universidad);
+        }
+
+
+        $tbn_nivel_acreditacion = ['Autorizado', 'Calificado', 'Certificado', 'De excelencia'];
+        foreach ($tbn_nivel_acreditacion as $value) {
+            $nivel_acreditacion = new NivelAcreditacion();
+            $nivel_acreditacion->setNombre($value);
+            $manager->persist($nivel_acreditacion);
         }
         $manager->flush();
     }

@@ -49,7 +49,7 @@ class SolicitudProgramaType extends AbstractType
             ->add('docPrograma', FileType::class, [
                 'label' => 'Adjuntar programa',
                 'mapped' => false,
-                'required' => $options['action']=='registrar',
+                'required' => $options['action'] == 'registrar',
             ])
             ->add('universidad', EntityType::class, [
                 'class' => Universidad::class,
@@ -61,6 +61,7 @@ class SolicitudProgramaType extends AbstractType
                 'empty_data' => null
             ])
             ->add('tipoPrograma', EntityType::class, [
+                'label' => 'Tipo de programa',
                 'class' => TipoPrograma::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
@@ -70,6 +71,7 @@ class SolicitudProgramaType extends AbstractType
                 'empty_data' => null
             ])
             ->add('ramaCiencia', EntityType::class, [
+                'label' => 'Rama de la ciencia',
                 'class' => RamaCiencia::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {

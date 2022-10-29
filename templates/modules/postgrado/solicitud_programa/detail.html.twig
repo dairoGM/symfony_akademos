@@ -19,11 +19,8 @@
                 <h5 class="mb-0"><b>Programa: </b> <a target="_blank"
                                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">{{ item.docPrograma }}</a>
                 </h5>
-                {% if '1' == item.activo %}
-                    <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
-                {% else %}
-                    <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
-                {% endif %}
+                <h5 class="mb-0"><b>Estado del programa:</b> {{ item.estadoPrograma.nombre| default('') }}
+                </h5>
             </div>
         </div>
     </div>

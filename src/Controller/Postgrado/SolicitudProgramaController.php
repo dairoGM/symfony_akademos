@@ -4,6 +4,7 @@ namespace App\Controller\Postgrado;
 
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Security\User;
+use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
 use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
@@ -151,4 +152,34 @@ class SolicitudProgramaController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{id}/cambiar_estado", name="app_solicitud_programa_cambiar_estado", methods={"GET", "POST"})
+     * @param Request $request
+     * @param SolicitudPrograma $solicitudPrograma
+     * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function cambiarEstado(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    {
+//        try {
+            $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y H:i', str_replace(' ', '', $request->request->all()['solicitud_programa']['fechaProximaAcreditacion'])));
+
+                $solicitudProgramaRepository->edit($solicitudPrograma);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+//        }
+    }
 }
