@@ -63,11 +63,13 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-clock"></i>
                             </a>
-                            <a title="Asignar comisión"
-                               href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-address-card"></i>
-                            </a>
+                            {% if item.estadoPrograma.id == 3 %}
+                                <a title="Asignar comisión"
+                                   href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-address-card"></i>
+                                </a>
+                            {% endif %}
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_solicitud_programa_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>

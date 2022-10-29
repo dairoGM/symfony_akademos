@@ -191,6 +191,7 @@ class SolicitudProgramaController extends AbstractController
                 $solicitudPrograma->setFechaProximaAcreditacion(null);
                 $solicitudPrograma->setDescripcion(null);
                 $solicitudPrograma->setResolucionPrograma(null);
+                $solicitudPrograma->setCodigoPrograma(null);
             }
 
 
