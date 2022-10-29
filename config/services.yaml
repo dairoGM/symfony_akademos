@@ -26,7 +26,7 @@ parameters:
 
     objeto_plan: '%env(objeto_plan)%'
     objeto_autenticacion: '%env(objeto_autenticacion)%'
-    objeto_indicador: '%env(objeto_indicador)%'
+    objeto_solicitud_programa: '%env(objeto_solicitud_programa)%'
 
 
 services:

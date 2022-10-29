@@ -23,13 +23,13 @@ class SolicitudPrograma extends BaseNomenclator
      * @ORM\ManyToOne(targetEntity="Comision")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Comision $comision;
+    private ?Comision $comision = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Universidad")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private ?Universidad $universidad;
+    private ?Universidad $universidad = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoPrograma")
@@ -84,13 +84,13 @@ class SolicitudPrograma extends BaseNomenclator
      * @ORM\ManyToOne(targetEntity="NivelAcreditacion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?NivelAcreditacion $nivelAcreditacion;
+    private ?NivelAcreditacion $nivelAcreditacion = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="CategoriaCategorizacion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?CategoriaCategorizacion $categoriaCategorizacion;
+    private ?CategoriaCategorizacion $categoriaCategorizacion = null;
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
@@ -318,6 +318,7 @@ class SolicitudPrograma extends BaseNomenclator
 
         return $this;
     }
+
     public function getCategoriaCategorizacion()
     {
         return $this->categoriaCategorizacion;

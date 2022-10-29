@@ -9,6 +9,7 @@ use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
 use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Services\TraceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +42,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function registrar(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
+    public function registrar(Request $request, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
         try {
             $solicitudPrograma = new SolicitudPrograma();
@@ -57,6 +58,8 @@ class SolicitudProgramaController extends AbstractController
                     $file->move("uploads/solicitud_programa", $file_name);
                 }
                 $solicitudProgramaRepository->add($solicitudPrograma, true);
+                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
+
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
@@ -75,13 +78,14 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_solicitud_programa_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $solicitudPrograma
+     * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function modificar(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function modificar(Request $request, TraceService $traceService, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
+            $dataAnterior = \App\Services\DoctrineHelper::toArray($solicitudPrograma);
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -100,7 +104,11 @@ class SolicitudProgramaController extends AbstractController
                     $file->move("uploads/solicitud_programa", $file_name);
                 }
 
-                $solicitudProgramaRepository->edit($solicitudPrograma);
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                $traceService->registrar($this->getParameter('accion_modificar'), $this->getParameter('objeto_solicitud_programa'), $dataAnterior, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
+
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -163,54 +171,52 @@ class SolicitudProgramaController extends AbstractController
     public function cambiarEstado(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
-        $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+            $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
+                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
 
-            if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
-                if ($solicitudPrograma->getResolucionPrograma() != null) {
-                    if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
-                        unlink('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
+                if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
+                    if ($solicitudPrograma->getResolucionPrograma() != null) {
+                        if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
+                            unlink('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
+                        }
                     }
+
+                    $file = $form['resolucionPrograma']->getData();
+                    $ext = explode('.', $_FILES['cambio_estado_programa']['name']['resolucionPrograma']);
+                    $file_name = $_FILES['cambio_estado_programa']['name']['resolucionPrograma'];
+                    $solicitudPrograma->setResolucionPrograma($file_name);
+                    $file->move("uploads/resolucion_programa", $file_name);
                 }
 
-                $file = $form['resolucionPrograma']->getData();
-                $ext = explode('.', $_FILES['cambio_estado_programa']['name']['resolucionPrograma']);
-                $file_name = $_FILES['cambio_estado_programa']['name']['resolucionPrograma'];
-                $solicitudPrograma->setResolucionPrograma($file_name);
-                $file->move("uploads/resolucion_programa", $file_name);
+
+                if ($solicitudPrograma->getEstadoPrograma()->getId() != 3) {
+                    $solicitudPrograma->setCategoriaCategorizacion(null);
+                    $solicitudPrograma->setAnnoAcreditacion(null);
+                    $solicitudPrograma->setNivelAcreditacion(null);
+                    $solicitudPrograma->setFechaProximaAcreditacion(null);
+                    $solicitudPrograma->setDescripcion(null);
+                    $solicitudPrograma->setResolucionPrograma(null);
+                    $solicitudPrograma->setCodigoPrograma(null);
+                }
+
+
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
 
-
-            if ($solicitudPrograma->getEstadoPrograma()->getId() != 3) {
-                $solicitudPrograma->setCategoriaCategorizacion(null);
-                $solicitudPrograma->setAnnoAcreditacion(null);
-                $solicitudPrograma->setNivelAcreditacion(null);
-                $solicitudPrograma->setFechaProximaAcreditacion(null);
-                $solicitudPrograma->setDescripcion(null);
-                $solicitudPrograma->setResolucionPrograma(null);
-                $solicitudPrograma->setCodigoPrograma(null);
-            }
-
-
-            $solicitudProgramaRepository->edit($solicitudPrograma, true);
-            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
-            'form' => $form->createView(),
-            'solicitudPrograma' => $solicitudPrograma
-        ]);
+            return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
         }
     }
-
-
 
 
     /**
