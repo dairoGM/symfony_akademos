@@ -5,6 +5,7 @@ namespace App\Controller\Postgrado;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Security\User;
 use App\Form\Postgrado\CambioEstadoProgramaType;
+use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
 use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
@@ -161,14 +162,13 @@ class SolicitudProgramaController extends AbstractController
      */
     public function cambiarEstado(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
-//        try {
+        try {
         $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
 
-//            pr($request->request->all());
             if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
                 if ($solicitudPrograma->getResolucionPrograma() != null) {
                     if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
@@ -203,9 +203,41 @@ class SolicitudProgramaController extends AbstractController
             'form' => $form->createView(),
             'solicitudPrograma' => $solicitudPrograma
         ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
+
+
+
+
+    /**
+     * @Route("/{id}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
+     * @param Request $request
+     * @param SolicitudPrograma $solicitudPrograma
+     * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function asignarComision(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    {
+        try {
+            $form = $this->createForm(ComisionProgramaType::class, $solicitudPrograma);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/postgrado/solicitud_programa/asignar_comision.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_asignar_comision', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
 }
