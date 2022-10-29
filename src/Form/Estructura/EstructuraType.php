@@ -38,18 +38,18 @@ class EstructuraType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('siglas', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('fechaActivacion', TextType::class, [
                 'label' => 'Fecha de activación',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 'mapped'=>false,
                 'attr' => [
@@ -98,7 +98,7 @@ class EstructuraType extends AbstractType
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 "attr" => [
                     "data-inputmask" => '"mask": "(999) 999-9999"',
@@ -108,7 +108,7 @@ class EstructuraType extends AbstractType
             ->add('direccion', TextType::class, [
                 'label' => 'Dirección',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('provincia', EntityType::class, [
@@ -134,7 +134,7 @@ class EstructuraType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ]);
     }

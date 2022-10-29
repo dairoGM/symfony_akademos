@@ -29,7 +29,7 @@ class PlazaType extends AbstractType
         $builder
             ->add('cantidad', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 'data' => 1
             ])
@@ -42,7 +42,7 @@ class PlazaType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
             ]);
 

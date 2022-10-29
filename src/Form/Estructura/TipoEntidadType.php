@@ -23,12 +23,12 @@ class TipoEntidadType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('color', ColorType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
@@ -44,7 +44,6 @@ class TipoEntidadType extends AbstractType
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
-//                'multiple' => true,
                 'required' => false
             ])
             ->add('activo', CheckboxType::class, [

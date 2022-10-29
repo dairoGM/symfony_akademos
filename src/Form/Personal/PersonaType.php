@@ -57,13 +57,13 @@ class PersonaType extends AbstractType
             ->add('carnetIdentidad', TextType::class, [
                 'label' => 'Carné de identidad',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('numeroSerieCarnetIdentidad', TextType::class, [
                 'label' => 'Número de serie del ci',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])->add('twitter', TextType::class, [
                 'required' => false
@@ -71,7 +71,7 @@ class PersonaType extends AbstractType
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('segundoNombre', TextType::class, [
@@ -81,13 +81,13 @@ class PersonaType extends AbstractType
             ->add('primerApellido', TextType::class, [
                 'label' => 'Primer apellido',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('segundoApellido', TextType::class, [
                 'label' => 'Segundo apellido',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('fechaNacimiento', TextType::class, [

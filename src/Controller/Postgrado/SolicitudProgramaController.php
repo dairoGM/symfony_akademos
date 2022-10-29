@@ -162,21 +162,47 @@ class SolicitudProgramaController extends AbstractController
     public function cambiarEstado(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
 //        try {
-            $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+        $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y H:i', str_replace(' ', '', $request->request->all()['solicitud_programa']['fechaProximaAcreditacion'])));
+            $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
 
-                $solicitudProgramaRepository->edit($solicitudPrograma);
-                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+//            pr($request->request->all());
+            if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
+                if ($solicitudPrograma->getResolucionPrograma() != null) {
+                    if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
+                        unlink('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
+                    }
+                }
+
+                $file = $form['resolucionPrograma']->getData();
+                $ext = explode('.', $_FILES['cambio_estado_programa']['name']['resolucionPrograma']);
+                $file_name = $_FILES['cambio_estado_programa']['name']['resolucionPrograma'];
+                $solicitudPrograma->setResolucionPrograma($file_name);
+                $file->move("uploads/resolucion_programa", $file_name);
             }
 
-            return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
-                'form' => $form->createView(),
-                'solicitudPrograma' => $solicitudPrograma
-            ]);
+
+            if ($solicitudPrograma->getEstadoPrograma()->getId() != 3) {
+                $solicitudPrograma->setCategoriaCategorizacion(null);
+                $solicitudPrograma->setAnnoAcreditacion(null);
+                $solicitudPrograma->setNivelAcreditacion(null);
+                $solicitudPrograma->setFechaProximaAcreditacion(null);
+                $solicitudPrograma->setDescripcion(null);
+                $solicitudPrograma->setResolucionPrograma(null);
+            }
+
+
+            $solicitudProgramaRepository->edit($solicitudPrograma, true);
+            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
+            'form' => $form->createView(),
+            'solicitudPrograma' => $solicitudPrograma
+        ]);
 //        } catch (\Exception $exception) {
 //            $this->addFlash('error', $exception->getMessage());
 //            return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);

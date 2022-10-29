@@ -25,25 +25,25 @@ class SolicitudProgramaType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('nombreCoordinador', TextType::class, [
                 'label' => 'Nombre y apellidos',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('correoCoordinador', EmailType::class, [
                 'label' => 'Correo',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('telefonoCoordinador', TextType::class, [
                 'label' => 'Teléfono',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('docPrograma', FileType::class, [

@@ -23,7 +23,7 @@ class RolType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('descripcion', TextareaType::class, [

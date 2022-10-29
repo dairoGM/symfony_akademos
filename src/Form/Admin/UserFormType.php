@@ -26,7 +26,7 @@ class UserFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])              
             ->add('userRoles', EntityType::class, [

@@ -38,17 +38,17 @@ class EntidadType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])->add('siglas', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 "attr" => [
                     "data-inputmask" => '"mask": "(999) 999-9999"',
@@ -58,17 +58,17 @@ class EntidadType extends AbstractType
             ->add('direccion', TextType::class, [
                 'label' => 'Dirección',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])->add('codigo', TextType::class, [
                 'label' => 'Código',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('tipoEntidad', EntityType::class, [

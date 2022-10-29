@@ -63,6 +63,8 @@
                         <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
                               class="cargar-archivo"> </span>
                         {{ form_errors(form.resolucionPrograma) }}
+                        <a target="_blank"
+                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                         {{ form_label(form.categoriaCategorizacion) }}
@@ -100,13 +102,18 @@
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-            <button class="btn btn-primary">Aceptar</button>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        var fecha = "{% if solicitudPrograma.fechaProximaAcreditacion is empty %}  {{ solicitudPrograma.fechaProximaAcreditacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#cambio_estado_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
+
+
         $('#cambio_estado_programa_resolucionPrograma').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
@@ -120,6 +127,25 @@
                 $('#datosEstado').css('display', 'none');
             }
         });
+        if ($('#cambio_estado_programa_estadoPrograma').val() == 3) {
+            $('#datosEstado').css('display', 'block');
+        } else {
+            $('#datosEstado').css('display', 'none');
+        }
+
+        $('#cambio_estado_programa_fechaProximaAcreditacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#btn_aceptar').on('click', function () {
+            console.log($('#cambio_estado_programa_estadoPrograma').val());
+            if ($('#cambio_estado_programa_estadoPrograma').val() != 3) {
+                $('[id*=cambio_estado]').attr('required', false)
+            } else {
+                $('[id*=cambio_estado]').attr('required', true)
+            }
+        });
+
 
     </script>
 {% endblock %}

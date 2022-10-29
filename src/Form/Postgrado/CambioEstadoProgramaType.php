@@ -24,12 +24,12 @@ class CambioEstadoProgramaType extends AbstractType
             ->add('annoAcreditacion', TextType::class, [
                 'label' => 'Año de acreditación',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])->add('codigoPrograma', TextType::class, [
                 'label' => 'Código',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
@@ -75,7 +75,7 @@ class CambioEstadoProgramaType extends AbstractType
                 'label' => 'Fecha de próxima de acreditación',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 'attr' => [
                     'class' => 'date-time-picker'

@@ -26,7 +26,7 @@ class CambiarClaveFormType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Contraseña no coincide.',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 'required' => true,
                 'first_options'  => ['label' => 'Nueva contraseña'],
