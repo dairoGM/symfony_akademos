@@ -4,28 +4,7 @@
         Datos del programa
     </h3>
 </div>
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-6">
-                <h5 class="mb-0"><b>Nombre del programa:</b> {{ item.nombre }}</h5>
-                <h5 class="mb-0"><b>Rama de la ciencia:</b> {{ item.ramaCiencia.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Programa original de:</b> {{ item.originalDe.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Modalidad:</b> {{ item.modalidadPrograma.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Presencialidad:</b> {{ item.presencialidadPrograma.nombre| default('') }}</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="mb-0"><b>Tipo de programa:</b> {{ item.tipoPrograma.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Universidad:</b> {{ item.universidad.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Programa: </b> <a target="_blank"
-                                                      href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">{{ item.docPrograma }}</a>
-                </h5>
-                <h5 class="mb-0"><b>Estado del programa:</b> {{ item.estadoPrograma.nombre| default('') }}
-                </h5>
-            </div>
-        </div>
-    </div>
-</div>
+{{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': item }) }}
 
 <div class="card-header">
     <h3 class="card-title font-weight-bold">
