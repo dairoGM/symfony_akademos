@@ -10,6 +10,7 @@
             <div class="col-6">
                 <h5 class="mb-0"><b>Nombre del programa:</b> {{ item.nombre }}</h5>
                 <h5 class="mb-0"><b>Rama de la ciencia:</b> {{ item.ramaCiencia.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Programa original de:</b> {{ item.originalDe.nombre| default('') }}</h5>
                 <h5 class="mb-0"><b>Modalidad:</b> {{ item.modalidadPrograma.nombre| default('') }}</h5>
                 <h5 class="mb-0"><b>Presencialidad:</b> {{ item.presencialidadPrograma.nombre| default('') }}</h5>
             </div>

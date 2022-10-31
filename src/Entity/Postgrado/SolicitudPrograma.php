@@ -32,6 +32,12 @@ class SolicitudPrograma extends BaseNomenclator
     private ?Universidad $universidad = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Universidad")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Universidad $originalDe = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="TipoPrograma")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -330,4 +336,18 @@ class SolicitudPrograma extends BaseNomenclator
 
         return $this;
     }
+
+    public function getOriginalDe()
+    {
+        return $this->originalDe;
+    }
+
+    public function setOriginalDe($originalDe)
+    {
+        $this->originalDe = $originalDe;
+
+        return $this;
+    }
+
+
 }
