@@ -121,7 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
 
         .aside-header {
-            background-color: #bf4446;
+            background-color: #0E375F;
         }
 
         .aside-header > img {
@@ -475,10 +475,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="{{ path('app_home') }}" class="brand-link">
 {#                <img src="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}"#}
 {#                     alt="AdminLTE Logo" class="brand-image img-circle" style="opacity: .8">#}
-                <span class="brand-text font-weight-light" style="color: #4a4b4c; font-weight: bold !important;">AKADEMOS</span>
+                <img  src="{{ asset('images/logo_principal.png') }}" >
+{#                <span class="brand-text font-weight-light" style="color: #4a4b4c; font-weight: bold !important;">AKADEMOS</span>#}
             </a>
 
             <!-- Sidebar -->
