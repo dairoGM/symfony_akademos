@@ -208,19 +208,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'postgrado' %} active {% endif %}">Postgrado</a>
                     </li>
                 {% endif %}
-                {#                {% if hasRoles('ROLE_HOME_ACTV') %}#}
-                {#                    <li class=" d-none d-sm-inline-block">#}
-                {#                        <a href="{{ path('app_plan_actividades_portada') }}"#}
-                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'plan_actividades' %} active {% endif %}">Plan#}
-                {#                            de actividades</a>#}
-                {#                    </li>#}
-                {#                {% endif %}#}
-                {#                {% if hasRoles('ROLE_HOME_PLAN') %}#}
-                {#                    <li class=" d-none d-sm-inline-block">#}
-                {#                        <a href="{{ path('app_planificacion_portada') }}"#}
-                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'planificacion' %} active {% endif %}">Planeación</a>#}
-                {#                    </li>#}
-                {#                {% endif %}#}
+
+                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                    <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_institucion_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">instituciones</a>
+                    </li>
+                {% endif %}
+
+
                 {% if hasRoles('ROLE_HOME_REPORT') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_reporte_portada') }}"
@@ -330,7 +326,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{ path('app_admin_home') }}" class="brand-link">
-{#            <img  src="{{ asset('images/logo_principal.png') }}" >#}
+            {#            <img  src="{{ asset('images/logo_principal.png') }}" >#}
             <span class="brand-text font-weight-light" style="font-weight: bold !important;">AKADEMOS</span>
         </a>
 
@@ -361,6 +357,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 {% if app.request.pathinfo|split('/')[1] == 'postgrado' %}
                     {% include 'pages/sidevar/postgrado.html.twig' %}
+                {% endif %}
+
+                {% if app.request.pathinfo|split('/')[1] == 'institucion' %}
+                    {% include 'pages/sidevar/institucion.html.twig' %}
                 {% endif %}
 
                 {% if app.request.pathinfo|split('/')[1] == 'administracion' %}
