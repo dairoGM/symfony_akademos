@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class RamaCiencia extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=false, length="3")
+     * @ORM\Column(type="string", nullable=true, length="3")
      */
     private ?string $siglas=null;
 

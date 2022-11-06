@@ -65,9 +65,10 @@ class PersonaType extends AbstractType
                 'constraints' => [
                     new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
-            ])->add('twitter', TextType::class, [
-                'required' => false
             ])
+//            ->add('twitter', TextType::class, [
+//                'required' => false
+//            ])
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
                 'constraints' => [

@@ -10,7 +10,10 @@ use App\Entity\Estructura\Provincia;
 use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
 use App\Entity\Institucion\TipoInstitucion;
+use App\Entity\Personal\CategoriaDocente;
 use App\Entity\Personal\ClasificacionPersona;
+use App\Entity\Personal\GradoAcademico;
+use App\Entity\Personal\NivelEscolar;
 use App\Entity\Personal\Persona;
 use App\Entity\Personal\Sexo;
 
@@ -22,6 +25,7 @@ use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Postgrado\ModalidadPrograma;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\PresencialidadPrograma;
+use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\TipoPrograma;
 use App\Entity\Postgrado\Universidad;
 use App\Entity\Security\Rol;
@@ -260,6 +264,67 @@ class AppFixtures extends Fixture
             $item->setNombre($value['nombre']);
             $item->setDuracion($value['duracion']);
             $manager->persist($item);
+        }
+
+
+        $tbn_rama_ciencia = ['Ciencias formales', 'Ciencias naturales', 'Ciencias humanas', 'Ciencias sociales', 'Ciencias aplicadas'];
+        foreach ($tbn_rama_ciencia as $value) {
+            $rama_ciencia = new RamaCiencia();
+            $rama_ciencia->setNombre($value);
+            $manager->persist($rama_ciencia);
+        }
+
+        $tbn_categoria_docente = ['Instructor', 'Asistente', 'Auxiliar', 'Titular'];
+        foreach ($tbn_categoria_docente as $value) {
+            $categoria_docente = new CategoriaDocente();
+            $categoria_docente->setNombre($value);
+            $manager->persist($categoria_docente);
+        }
+        $tbn_grado_academico[] = [
+            'nombre' => 'Máster en artes',
+            'siglas' => 'Ms.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Doctor',
+            'siglas' => 'Dr. C.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Especialidad de postgrado',
+            'siglas' => 'Esp.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Máster en ciencias',
+            'siglas' => 'M.Sc.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Doctora',
+            'siglas' => 'Dr. C.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Doctora en ciencias',
+            'siglas' => 'Dr. C.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Doctor en ciencias',
+            'siglas' => 'Dr. C.'
+        ];
+        $tbn_grado_academico[] = [
+            'nombre' => 'Máster',
+            'siglas' => 'M.Sc.'
+        ];
+
+        foreach ($tbn_grado_academico as $value) {
+            $grado_academico = new GradoAcademico();
+            $grado_academico->setNombre($value['nombre']);
+            $grado_academico->setSiglas($value['siglas']);
+            $manager->persist($grado_academico);
+        }
+
+        $tbn_nivel_escolar = ['Universitario', 'Preuniversitario', 'Técnico Medio', 'Docente Nivel Medio', 'Secundaria', 'Primaria', 'Obrero Calificado'];
+        foreach ($tbn_nivel_escolar as $value) {
+            $nivel_escolar = new NivelEscolar();
+            $nivel_escolar->setNombre($value);
+            $manager->persist($nivel_escolar);
         }
         $manager->flush();
     }

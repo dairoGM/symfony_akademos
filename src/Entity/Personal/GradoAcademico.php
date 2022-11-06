@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class GradoAcademico extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=false, length="3")
+     * @ORM\Column(type="string", nullable=false, length="8")
      */
     private ?string $siglas;   
 
