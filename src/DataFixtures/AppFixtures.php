@@ -11,12 +11,14 @@ use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
 use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\CategoriaDocente;
+use App\Entity\Personal\CategoriaInvestigativa;
 use App\Entity\Personal\ClasificacionPersona;
 use App\Entity\Personal\GradoAcademico;
 use App\Entity\Personal\NivelEscolar;
 use App\Entity\Personal\Persona;
 use App\Entity\Personal\Sexo;
 
+use App\Entity\Personal\TipoOrganizacion;
 use App\Entity\Planificacion\EstadoPlan;
 use App\Entity\Planificacion\Formula;
 use App\Entity\Planificacion\TipoPlan;
@@ -326,6 +328,21 @@ class AppFixtures extends Fixture
             $nivel_escolar->setNombre($value);
             $manager->persist($nivel_escolar);
         }
+
+        $tbn_categoria_investigativa = ['Investigador Titular', 'Investigador Auxiliar', 'Investigador Agregado', 'Aspirante a Investigador'];
+        foreach ($tbn_categoria_investigativa as $value) {
+            $categoria_investigativa = new CategoriaInvestigativa();
+            $categoria_investigativa->setNombre($value);
+            $manager->persist($categoria_investigativa);
+        }
+
+        $tbn_tipo_organizacion = ['Organizaciones políticas', 'Organizaciones de masa'];
+        foreach ($tbn_tipo_organizacion as $value) {
+            $tipo_organizacion = new TipoOrganizacion();
+            $tipo_organizacion->setNombre($value);
+            $manager->persist($tipo_organizacion);
+        }
+
         $manager->flush();
     }
 
