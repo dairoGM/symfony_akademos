@@ -87,7 +87,7 @@ class SolicitudPrograma extends BaseNomenclator
     private ?string $codigoPrograma = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="NivelAcreditacion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\NivelAcreditacion")
      * @ORM\JoinColumn(nullable=true)
      */
     private ?NivelAcreditacion $nivelAcreditacion = null;

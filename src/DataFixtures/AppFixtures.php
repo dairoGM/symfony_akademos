@@ -9,6 +9,7 @@ use App\Entity\Estructura\Municipio;
 use App\Entity\Estructura\Provincia;
 use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
+use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\ClasificacionPersona;
 use App\Entity\Personal\Persona;
 use App\Entity\Personal\Sexo;
@@ -19,7 +20,7 @@ use App\Entity\Planificacion\TipoPlan;
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Postgrado\ModalidadPrograma;
-use App\Entity\Postgrado\NivelAcreditacion;
+use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\TipoPrograma;
 use App\Entity\Postgrado\Universidad;
@@ -226,11 +227,39 @@ class AppFixtures extends Fixture
         }
 
 
-        $tbn_nivel_acreditacion = ['Autorizado', 'Calificado', 'Certificado', 'De excelencia'];
-        foreach ($tbn_nivel_acreditacion as $value) {
-            $nivel_acreditacion = new NivelAcreditacion();
-            $nivel_acreditacion->setNombre($value);
-            $manager->persist($nivel_acreditacion);
+        $tipoInstitucion[] = [
+            'nombre' => 'Entidad de Ciencia Tecnología e Innovación',
+            'siglas' => 'ECTI',
+        ];
+        $tipoInstitucion[] = [
+            'nombre' => 'Institución de Educación Superior',
+            'siglas' => 'IES',
+        ];
+        foreach ($tipoInstitucion as $value) {
+            $item = new TipoInstitucion();
+            $item->setNombre($value['nombre']);
+            $item->setSiglas($value['siglas']);
+            $manager->persist($item);
+        }
+
+
+        $nivelAcreditacion[] = [
+            'nombre' => 'Calificada',
+            'duracion' => '4',
+        ];
+        $nivelAcreditacion[] = [
+            'nombre' => 'Certificada',
+            'duracion' => '5',
+        ];
+        $nivelAcreditacion[] = [
+            'nombre' => 'De excelencia',
+            'duracion' => '7',
+        ];
+        foreach ($nivelAcreditacion as $value) {
+            $item = new NivelAcreditacion();
+            $item->setNombre($value['nombre']);
+            $item->setDuracion($value['duracion']);
+            $manager->persist($item);
         }
         $manager->flush();
     }
