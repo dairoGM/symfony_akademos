@@ -16,11 +16,6 @@ class RedSocial extends BaseNomenclator
      */
     private ?string $logo = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length="10")
-     */
-    private ?string $perfil = null;
-
 
     public function getLogo()
     {
@@ -33,17 +28,5 @@ class RedSocial extends BaseNomenclator
 
         return $this;
     }
-
-
-    public function getPerfil()
-    {
-        return $this->perfil;
-    }
-
-    public function setPerfil($perfil)
-    {
-        $this->logo = $perfil;
-
-        return $this;
-    }
 }
+
