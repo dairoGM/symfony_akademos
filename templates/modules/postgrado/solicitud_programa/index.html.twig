@@ -48,7 +48,7 @@
                                     data-title="Detalles de la solicitud del programa">
                                 <i class="fa fa-eye "></i>
                             </button>
-                            {% if item.estadoPrograma.id != 4  %}
+                            {% if item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 %}
                                 <a title="Modificar"
                                    href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -68,6 +68,11 @@
                                 </a>
                             {% endif %}
                             {% if item.estadoPrograma.id == 2 %}
+                                <a title="Dictamenes"
+                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-paperclip"></i>
+                                </a>
                                 <a title="Votar"
                                    href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -82,7 +87,7 @@
                                             class="fa fa-check"></i>
                                 </a>
                                 <a title="No aprobar"
-                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-times"></i>
                                 </a>

@@ -14,13 +14,13 @@ class SolicitudProgramaComision extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Comision")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Comision $comision = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolicitudPrograma")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?SolicitudPrograma $solicitudPrograma = null;
 

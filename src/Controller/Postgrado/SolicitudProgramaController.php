@@ -8,6 +8,7 @@ use App\Entity\Security\User;
 use App\Form\Postgrado\AprobarProgramaType;
 use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\ComisionProgramaType;
+use App\Form\Postgrado\NoAprobarProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
 use App\Repository\Postgrado\ComisionRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
@@ -152,7 +153,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function eliminar(SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository, TraceService $traceService)
     {
-        try {
+//        try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudPrograma) {
                 $solicitudProgramaRepository->remove($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
@@ -162,10 +163,10 @@ class SolicitudProgramaController extends AbstractController
             }
             $this->addFlash('error', 'Error en la entrada de datos');
             return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
     /**
@@ -220,6 +221,53 @@ class SolicitudProgramaController extends AbstractController
             }
 
             return $this->render('modules/postgrado/solicitud_programa/aprobar.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/no-aprobar", name="app_solicitud_programa_no_aprobar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaRepository $estadoProgramaRepository
+     * @param SolicitudPrograma $solicitudPrograma
+     * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function noAprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    {
+        try {
+            $form = $this->createForm(NoAprobarProgramaType::class, $solicitudPrograma);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($_FILES['no_aprobar_programa']['name']['dictamenFinal'])) {
+                    if ($solicitudPrograma->getDictamenFinal() != null) {
+                        if (file_exists('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
+                            unlink('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
+                        }
+                    }
+
+                    $file = $form['dictamenFinal']->getData();
+                    $ext = explode('.', $_FILES['no_aprobar_programa']['name']['dictamenFinal']);
+                    $file_name = $_FILES['no_aprobar_programa']['name']['dictamenFinal'];
+                    $solicitudPrograma->setDictamenFinal($file_name);
+                    $file->move("uploads/dictamen_final", $file_name);
+                }
+
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(5));
+
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/postgrado/solicitud_programa/no_aprobar.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma
             ]);
