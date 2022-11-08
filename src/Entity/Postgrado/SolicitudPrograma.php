@@ -20,11 +20,6 @@ class SolicitudPrograma extends BaseNomenclator
      */
     private ?EstadoPrograma $estadoPrograma;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Comision")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private ?Comision $comision = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Universidad")
@@ -289,17 +284,6 @@ class SolicitudPrograma extends BaseNomenclator
         return $this;
     }
 
-    public function getComision()
-    {
-        return $this->comision;
-    }
-
-    public function setComision($comision)
-    {
-        $this->comision = $comision;
-
-        return $this;
-    }
 
     public function getDocPrograma()
     {

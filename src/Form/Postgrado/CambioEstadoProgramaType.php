@@ -2,6 +2,7 @@
 
 namespace App\Form\Postgrado;
 
+use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Institucion\NivelAcreditacion;
@@ -44,19 +45,9 @@ class CambioEstadoProgramaType extends AbstractType
                 'mapped' => false,
                 'required' => true,
             ])
-            ->add('estadoPrograma', EntityType::class, [
-                'label' => 'Estado',
-                'class' => EstadoPrograma::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
-            ->add('categoriaCategorizacion', EntityType::class, [
-                'label' => 'Categoría de categorización',
-                'class' => CategoriaCategorizacion::class,
+            ->add('categoriaAcreditacion', EntityType::class, [
+                'label' => 'Categoría de acreditación',
+                'class' => CategoriaAcreditacion::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');

@@ -48,26 +48,43 @@
                                     data-title="Detalles de la solicitud del programa">
                                 <i class="fa fa-eye "></i>
                             </button>
-
-                            <a title="Modificar" href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-edit"></i>
-                            </a>
+                            {% if item.estadoPrograma.id != 4  %}
+                                <a title="Modificar"
+                                   href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-edit"></i>
+                                </a>
+                            {% endif %}
                             <a title="Descargar programa" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">
                                 <i
                                         class="fa fa-download"></i>
                             </a>
-                            <a title="Cambiar estado"
-                               href="{{ path('app_solicitud_programa_cambiar_estado', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-clock"></i>
-                            </a>
-                            {% if item.estadoPrograma.id == 3 %}
+                            {% if item.estadoPrograma.id == 1 %}
                                 <a title="Asignar comisión"
                                    href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-address-card"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoPrograma.id == 2 %}
+                                <a title="Votar"
+                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-hand-pointer"></i>
+                                </a>
+                            {% endif %}
+
+                            {% if item.estadoPrograma.id == 3 %}
+                                <a title="Aprobar"
+                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-check"></i>
+                                </a>
+                                <a title="No aprobar"
+                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-times"></i>
                                 </a>
                             {% endif %}
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"

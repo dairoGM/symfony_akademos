@@ -3,11 +3,14 @@
 namespace App\Controller\Postgrado;
 
 use App\Entity\Postgrado\SolicitudPrograma;
+use App\Entity\Postgrado\SolicitudProgramaComision;
 use App\Entity\Security\User;
 use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
+use App\Repository\Postgrado\ComisionRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
+use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
 use App\Services\TraceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -165,21 +168,20 @@ class SolicitudProgramaController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/cambiar_estado", name="app_solicitud_programa_cambiar_estado", methods={"GET", "POST"})
+     * @Route("/{id}/aprobar", name="app_solicitud_programa_aprobar", methods={"GET", "POST"})
      * @param Request $request
+     * @param EstadoProgramaRepository $estadoProgramaRepository
      * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function cambiarEstado(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function aprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
             $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
-
             $form->handleRequest($request);
 
-            if ($form->isSubmitted()) {
-
+            if ($form->isSubmitted() && $form->isValid()) {
                 $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
 
                 if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
@@ -209,28 +211,20 @@ class SolicitudProgramaController extends AbstractController
                     $file->move("uploads/dictamen_final", $file_name);
                 }
 
-                if ($solicitudPrograma->getEstadoPrograma()->getId() != 3) {
-                    $solicitudPrograma->setCategoriaCategorizacion(null);
-                    $solicitudPrograma->setAnnoAcreditacion(null);
-                    $solicitudPrograma->setFechaProximaAcreditacion(null);
-                    $solicitudPrograma->setDescripcion(null);
-                    $solicitudPrograma->setResolucionPrograma(null);
-                    $solicitudPrograma->setCodigoPrograma(null);
-                }
-
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(4));
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('modules/postgrado/solicitud_programa/cambio_estado.html.twig', [
+            return $this->render('modules/postgrado/solicitud_programa/aprobar.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_cambiar_estado', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -238,28 +232,54 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/{id}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
      * @param Request $request
-     * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @param EstadoProgramaRepository $estadoProgramaRepository
+     * @param SolicitudPrograma $solicitudPrograma
+     * @param ComisionRepository $comisionRepository
+     * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asignarComision(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function asignarComision(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
     {
         try {
-            $form = $this->createForm(ComisionProgramaType::class, $solicitudPrograma);
+            $form = $this->createForm(ComisionProgramaType::class);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $comisiones = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+                if (is_array($comisiones) && count($comisiones) > 0) {
+                    foreach ($comisiones as $values) {
+                        $solicitudProgramaComisionRepository->remove($values, true);
+                    }
+                }
+
+                foreach ($request->request->all()['comision_programa']['comision'] as $value) {
+                    $nueva = new SolicitudProgramaComision();
+                    $nueva->setSolicitudPrograma($solicitudPrograma);
+                    $nueva->setComision($comisionRepository->find($value));
+                    $solicitudProgramaComisionRepository->add($nueva, true);
+                }
+
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(2));
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
+            $temp = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            $comisionesAsignadas = [];
+            foreach ($temp as $value) {
+                $comisionesAsignadas[] = (string)$value->getComision()->getId();
+            }
+            $comisiones = implode(',', $comisionesAsignadas);
 
             return $this->render('modules/postgrado/solicitud_programa/asignar_comision.html.twig', [
                 'form' => $form->createView(),
-                'solicitudPrograma' => $solicitudPrograma
+                'solicitudPrograma' => $solicitudPrograma,
+                'comisiones' => $comisiones
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_asignar_comision', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 

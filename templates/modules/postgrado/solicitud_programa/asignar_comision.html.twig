@@ -34,3 +34,10 @@
         {{ form_end(form) }}
     </div>
 {% endblock %}
+{% block javascripts %}
+    <script>
+        var oe = "{{ comisiones }}";
+        $('#comision_programa_comision').val(oe.split(',')).trigger('change');
+
+    </script>
+{% endblock %}

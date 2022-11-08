@@ -7,6 +7,7 @@ use App\Entity\Postgrado\Comision;
 use App\Entity\Postgrado\EstadoPrograma;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\SolicitudPrograma;
+use App\Entity\Postgrado\SolicitudProgramaComision;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,15 +31,11 @@ class ComisionProgramaType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'multiple' => true,
             ]);
 
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => SolicitudPrograma::class,
-        ]);
-    }
+
 }

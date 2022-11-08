@@ -1,0 +1,107 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Aprobar programa{% endblock %}
+
+{% block body %}
+
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Aprobar programa</h3>
+            </div>
+        </div>
+
+        {{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': solicitudPrograma }) }}
+
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.codigoPrograma) }}
+                    {{ form_widget(form.codigoPrograma) }}
+                    {{ form_errors(form.codigoPrograma) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.annoAcreditacion) }}
+                    {{ form_widget(form.annoAcreditacion) }}
+                    {{ form_errors(form.annoAcreditacion) }}
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaProximaAcreditacion) }}
+                    {{ form_widget(form.fechaProximaAcreditacion) }}
+                    {{ form_errors(form.fechaProximaAcreditacion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.resolucionPrograma) }}
+                    {{ form_widget(form.resolucionPrograma) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.resolucionPrograma) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.dictamenFinal) }}
+                    {{ form_widget(form.dictamenFinal) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
+                    {{ form_errors(form.dictamenFinal) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/dictamen_final/{{ solicitudPrograma.dictamenFinal }}">{{ solicitudPrograma.dictamenFinal }}</a>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcion) }}
+                    {{ form_widget(form.descripcion) }}
+                    {{ form_errors(form.descripcion) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        var fecha = "{% if solicitudPrograma.fechaProximaAcreditacion is empty %}  {{ solicitudPrograma.fechaProximaAcreditacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#cambio_estado_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
+
+
+        $('#cambio_estado_programa_resolucionPrograma').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
+        $('#cambio_estado_programa_dictamenFinal').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+        $('#cambio_estado_programa_fechaProximaAcreditacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+
+    </script>
+{% endblock %}
