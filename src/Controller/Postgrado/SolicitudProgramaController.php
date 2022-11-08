@@ -5,6 +5,7 @@ namespace App\Controller\Postgrado;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\SolicitudProgramaComision;
 use App\Entity\Security\User;
+use App\Form\Postgrado\AprobarProgramaType;
 use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\SolicitudProgramaType;
@@ -178,13 +179,13 @@ class SolicitudProgramaController extends AbstractController
     public function aprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
-            $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
+            $form = $this->createForm(AprobarProgramaType::class, $solicitudPrograma);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
+                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_programa']['fechaProximaAcreditacion']));
 
-                if (!empty($_FILES['cambio_estado_programa']['name']['resolucionPrograma'])) {
+                if (!empty($_FILES['aprobar_programa']['name']['resolucionPrograma'])) {
                     if ($solicitudPrograma->getResolucionPrograma() != null) {
                         if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
                             unlink('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
@@ -192,12 +193,12 @@ class SolicitudProgramaController extends AbstractController
                     }
 
                     $file = $form['resolucionPrograma']->getData();
-                    $ext = explode('.', $_FILES['cambio_estado_programa']['name']['resolucionPrograma']);
-                    $file_name = $_FILES['cambio_estado_programa']['name']['resolucionPrograma'];
+                    $ext = explode('.', $_FILES['aprobar_programa']['name']['resolucionPrograma']);
+                    $file_name = $_FILES['aprobar_programa']['name']['resolucionPrograma'];
                     $solicitudPrograma->setResolucionPrograma($file_name);
                     $file->move("uploads/resolucion_programa", $file_name);
                 }
-                if (!empty($_FILES['cambio_estado_programa']['name']['dictamenFinal'])) {
+                if (!empty($_FILES['aprobar_programa']['name']['dictamenFinal'])) {
                     if ($solicitudPrograma->getDictamenFinal() != null) {
                         if (file_exists('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
                             unlink('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
@@ -205,8 +206,8 @@ class SolicitudProgramaController extends AbstractController
                     }
 
                     $file = $form['dictamenFinal']->getData();
-                    $ext = explode('.', $_FILES['cambio_estado_programa']['name']['dictamenFinal']);
-                    $file_name = $_FILES['cambio_estado_programa']['name']['dictamenFinal'];
+                    $ext = explode('.', $_FILES['aprobar_programa']['name']['dictamenFinal']);
+                    $file_name = $_FILES['aprobar_programa']['name']['dictamenFinal'];
                     $solicitudPrograma->setDictamenFinal($file_name);
                     $file->move("uploads/dictamen_final", $file_name);
                 }

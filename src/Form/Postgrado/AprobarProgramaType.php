@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class CambioEstadoProgramaType extends AbstractType
+class AprobarProgramaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

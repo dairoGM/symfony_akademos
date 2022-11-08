@@ -86,7 +86,7 @@
     <script>
 
         var fecha = "{% if solicitudPrograma.fechaProximaAcreditacion is empty %}  {{ solicitudPrograma.fechaProximaAcreditacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
-        $('#cambio_estado_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
+        $('#aprobar_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
 
 
         $('#cambio_estado_programa_resolucionPrograma').change(function () {
@@ -98,7 +98,7 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
-        $('#cambio_estado_programa_fechaProximaAcreditacion').datetimepicker({
+        $('#aprobar_programa_fechaProximaAcreditacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
 
