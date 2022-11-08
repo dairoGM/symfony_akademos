@@ -6,6 +6,7 @@ use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Institucion\CategoriaAcreditacion;
 
 /**
  * @ORM\Entity
@@ -86,34 +87,19 @@ class SolicitudPrograma extends BaseNomenclator
      */
     private ?string $codigoPrograma = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\NivelAcreditacion")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private ?NivelAcreditacion $nivelAcreditacion = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CategoriaCategorizacion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\CategoriaAcreditacion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?CategoriaCategorizacion $categoriaCategorizacion = null;
+    private ?CategoriaAcreditacion $categoriaAcreditacion = null;
+
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $fechaProximaAcreditacion;
-
-    public function getNivelAcreditacion()
-    {
-        return $this->nivelAcreditacion;
-    }
-
-    public function setNivelAcreditacion($nivelAcreditacion)
-    {
-        $this->nivelAcreditacion = $nivelAcreditacion;
-
-        return $this;
-    }
+    private $fechaProximaAcreditacion;
 
 
     public function getFechaProximaAcreditacion()
@@ -217,6 +203,10 @@ class SolicitudPrograma extends BaseNomenclator
      */
     private ?string $resolucionPrograma = null;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $dictamenFinal = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="4")
@@ -249,6 +239,17 @@ class SolicitudPrograma extends BaseNomenclator
         return $this;
     }
 
+    public function getDictamenFinal()
+    {
+        return $this->dictamenFinal;
+    }
+
+    public function setDictamenFinal($dictamenFinal)
+    {
+        $this->dictamenFinal = $dictamenFinal;
+
+        return $this;
+    }
 
     public function getRamaCiencia()
     {
@@ -325,17 +326,6 @@ class SolicitudPrograma extends BaseNomenclator
         return $this;
     }
 
-    public function getCategoriaCategorizacion()
-    {
-        return $this->categoriaCategorizacion;
-    }
-
-    public function setCategoriaCategorizacion($categoriaCategorizacion)
-    {
-        $this->categoriaCategorizacion = $categoriaCategorizacion;
-
-        return $this;
-    }
 
     public function getOriginalDe()
     {
@@ -349,5 +339,16 @@ class SolicitudPrograma extends BaseNomenclator
         return $this;
     }
 
+    public function getCategoriaAcreditacion()
+    {
+        return $this->categoriaAcreditacion;
+    }
+
+    public function setCategoriaAcreditacion($categoriaAcreditacion)
+    {
+        $this->categoriaAcreditacion = $categoriaAcreditacion;
+
+        return $this;
+    }
 
 }

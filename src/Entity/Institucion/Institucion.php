@@ -37,10 +37,10 @@ class Institucion extends BaseNomenclator
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="NivelAcreditacion")
+     * @ORM\ManyToOne(targetEntity="CategoriaAcreditacion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?NivelAcreditacion $nivelAcreditacion;
+    private ?CategoriaAcreditacion $categoriaAcreditacion;
 
 
     /**
@@ -340,21 +340,21 @@ class Institucion extends BaseNomenclator
 
 
     /**
-     * Get the value of nivelAcreditacion
+     * Get the value of categoriaAcreditacion
      */
-    public function getNivelAcreditacion()
+    public function getCategoriaAcreditacion()
     {
-        return $this->nivelAcreditacion;
+        return $this->categoriaAcreditacion;
     }
 
     /**
-     * Set the value of nivelAcreditacion
+     * Set the value of categoriaAcreditacion
      *
      * @return  self
      */
-    public function setNivelAcreditacion($nivelAcreditacion)
+    public function setCategoriaAcreditacion($categoriaAcreditacion)
     {
-        $this->nivelAcreditacion = $nivelAcreditacion;
+        $this->categoriaAcreditacion = $categoriaAcreditacion;
 
         return $this;
     }

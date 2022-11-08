@@ -9,6 +9,7 @@ use App\Entity\Estructura\Municipio;
 use App\Entity\Estructura\Provincia;
 use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
+use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\CategoriaDocente;
 use App\Entity\Personal\CategoriaInvestigativa;
@@ -194,14 +195,14 @@ class AppFixtures extends Fixture
             $manager->persist($categoria_categorizacion);
         }
 
-        $tbn_estado_programa = ['Nuevo', 'En revisión', 'Aprobado'];
+        $tbn_estado_programa = ['Nuevo', 'En revisión', 'Aprobado por comisión', 'Aprobado', 'No aprobado'];
         foreach ($tbn_estado_programa as $value) {
             $estado_programa = new EstadoPrograma();
             $estado_programa->setNombre($value);
             $manager->persist($estado_programa);
         }
 
-        $tbn_modalidad_programa = ['Tiempo completo', 'Tiempo paracial'];
+        $tbn_modalidad_programa = ['Tiempo completo', 'Tiempo parcial'];
         foreach ($tbn_modalidad_programa as $value) {
             $modalidad_programa = new ModalidadPrograma();
             $modalidad_programa->setNombre($value);
@@ -215,7 +216,7 @@ class AppFixtures extends Fixture
             $manager->persist($presencialidad_programa);
         }
 
-        $tbn_tipo_programa = ['Maestría', 'Doctorado', 'Especialidad'];
+        $tbn_tipo_programa = ['Curso', 'Entrenamiento', 'Diplomado', 'Maestría', 'Especialidad', 'Doctorado'];
         foreach ($tbn_tipo_programa as $value) {
             $tipo_programa = new TipoPrograma();
             $tipo_programa->setNombre($value);
@@ -249,27 +250,35 @@ class AppFixtures extends Fixture
         }
 
 
-        $nivelAcreditacion[] = [
+        $categoriaAcreditacion[] = [
             'nombre' => 'Calificada',
             'duracion' => '4',
         ];
-        $nivelAcreditacion[] = [
+        $categoriaAcreditacion[] = [
             'nombre' => 'Certificada',
             'duracion' => '5',
         ];
-        $nivelAcreditacion[] = [
+        $categoriaAcreditacion[] = [
             'nombre' => 'De excelencia',
             'duracion' => '7',
         ];
-        foreach ($nivelAcreditacion as $value) {
-            $item = new NivelAcreditacion();
+        foreach ($categoriaAcreditacion as $value) {
+            $item = new CategoriaAcreditacion();
             $item->setNombre($value['nombre']);
             $item->setDuracion($value['duracion']);
             $manager->persist($item);
         }
 
 
-        $tbn_rama_ciencia = ['Ciencias formales', 'Ciencias naturales', 'Ciencias humanas', 'Ciencias sociales', 'Ciencias aplicadas'];
+        $tbn_rama_ciencia = ['CNE-Ciencias Naturales y Exactas',
+            'CT-Ciencias Técnicas',
+            'CA-Ciencias Agropecuarias',
+            'CE-Ciencias Económicas',
+            'CBM-Ciencias Biomédicas',
+            'CSH- Ciencias Sociales y Humanidades',
+            'CP- Ciencias Pedagógicas',
+            'CM- Ciencias Militares'
+        ];
         foreach ($tbn_rama_ciencia as $value) {
             $rama_ciencia = new RamaCiencia();
             $rama_ciencia->setNombre($value);

@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Cambiar estado del programa{% endblock %}
+{% block title %}Aprobar programa{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-                <h3 class="card-title text-bold text-gray">Cambiar estado del programa</h3>
+                <h3 class="card-title text-bold text-gray">Aprobar programa</h3>
             </div>
         </div>
 
@@ -53,14 +53,14 @@
                         {{ form_errors(form.annoAcreditacion) }}
                     </div>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                        {{ form_label(form.nivelAcreditacion) }}
-                        {{ form_widget(form.nivelAcreditacion) }}
-                        {{ form_errors(form.nivelAcreditacion) }}
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                         {{ form_label(form.fechaProximaAcreditacion) }}
                         {{ form_widget(form.fechaProximaAcreditacion) }}
                         {{ form_errors(form.fechaProximaAcreditacion) }}
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                        {{ form_label(form.dictamenFinal) }}
+                        {{ form_widget(form.dictamenFinal) }}
+                        {{ form_errors(form.dictamenFinal) }}
                     </div>
                 </div>
                 <div class="row">
@@ -116,18 +116,19 @@
                 $('[id*=cambio_estado]').attr('required', false)
                 $('[id=cambio_estado_programa_annoAcreditacion]').attr('required', false)
                 $('[id=cambio_estado_programa_fechaProximaAcreditacion]').attr('required', false)
+                $('[id=cambio_estado_programa_codigoPrograma]').attr('required', false)
             } else {
                 $('[id*=cambio_estado]').attr('required', true)
             }
 
-            if($('#doc_container').attr('href') ==""){
+            if ($('#doc_container').attr('href') == "") {
                 $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', true)
             } else {
                 $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', false)
             }
         });
 
-        if($('#doc_container').attr('href') ==""){
+        if ($('#doc_container').attr('href') == "") {
             $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', true)
         } else {
             $('[id*=cambio_estado_programa_resolucionPrograma]').attr('required', false)

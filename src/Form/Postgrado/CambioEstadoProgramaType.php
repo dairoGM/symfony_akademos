@@ -4,7 +4,7 @@ namespace App\Form\Postgrado;
 
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\EstadoPrograma;
-use App\Entity\Postgrado\NivelAcreditacion;
+use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\SolicitudPrograma;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -27,11 +27,11 @@ class CambioEstadoProgramaType extends AbstractType
             ->add('codigoPrograma', TextType::class, [
                 'label' => 'Código',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
-                'label' => 'Dictamen / Descripción',
+                'label' => 'Descripción',
                 'required' => false,
             ])
             ->add('resolucionPrograma', FileType::class, [
@@ -39,19 +39,14 @@ class CambioEstadoProgramaType extends AbstractType
                 'mapped' => false,
                 'required' => true,
             ])
+            ->add('dictamenFinal', FileType::class, [
+                'label' => 'Dictamen',
+                'mapped' => false,
+                'required' => true,
+            ])
             ->add('estadoPrograma', EntityType::class, [
                 'label' => 'Estado',
                 'class' => EstadoPrograma::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
-            ->add('nivelAcreditacion', EntityType::class, [
-                'label' => 'Nivel de acreditación',
-                'class' => NivelAcreditacion::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');

@@ -10,8 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de niveles de acreditación</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_nivel_acreditacion_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de categoriaes de acreditación</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_categoria_acreditacion_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -44,17 +44,17 @@
                         </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_nivel_acreditacion_detail', {'id' : item.id}) }}"
+                                    data-url="{{ path('app_categoria_acreditacion_detail', {'id' : item.id}) }}"
                                     data-title="Detalles del tipo de institución">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_nivel_acreditacion_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_categoria_acreditacion_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_nivel_acreditacion_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_categoria_acreditacion_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>

@@ -39,7 +39,9 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/registrar", name="app_solicitud_programa_registrar", methods={"GET", "POST"})
      * @param Request $request
+     * @param TraceService $traceService
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @param EstadoProgramaRepository $estadoProgramaRepository
      * @return Response
      */
     public function registrar(Request $request, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
@@ -78,6 +80,7 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_solicitud_programa_modificar", methods={"GET", "POST"})
      * @param Request $request
+     * @param TraceService $traceService
      * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
@@ -126,12 +129,10 @@ class SolicitudProgramaController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_solicitud_programa_detail", methods={"GET", "POST"})
-     * @param Request $request
-     * @param User $solicitudPrograma
-     * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @param SolicitudPrograma $solicitudPrograma
      * @return Response
      */
-    public function detail(Request $request, SolicitudPrograma $solicitudPrograma)
+    public function detail(SolicitudPrograma $solicitudPrograma)
     {
         return $this->render('modules/postgrado/solicitud_programa/detail.html.twig', [
             'item' => $solicitudPrograma,
@@ -140,12 +141,12 @@ class SolicitudProgramaController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_solicitud_programa_eliminar", methods={"GET"})
-     * @param Request $request
      * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
+     * @param TraceService $traceService
      * @return Response
      */
-    public function eliminar(Request $request, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository, TraceService $traceService)
+    public function eliminar(SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository, TraceService $traceService)
     {
         try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudPrograma) {
@@ -174,8 +175,10 @@ class SolicitudProgramaController extends AbstractController
     {
         try {
             $form = $this->createForm(CambioEstadoProgramaType::class, $solicitudPrograma);
+
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->isSubmitted()) {
 
                 $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['cambio_estado_programa']['fechaProximaAcreditacion']));
 
@@ -192,12 +195,23 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setResolucionPrograma($file_name);
                     $file->move("uploads/resolucion_programa", $file_name);
                 }
+                if (!empty($_FILES['cambio_estado_programa']['name']['dictamenFinal'])) {
+                    if ($solicitudPrograma->getDictamenFinal() != null) {
+                        if (file_exists('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
+                            unlink('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
+                        }
+                    }
 
+                    $file = $form['dictamenFinal']->getData();
+                    $ext = explode('.', $_FILES['cambio_estado_programa']['name']['dictamenFinal']);
+                    $file_name = $_FILES['cambio_estado_programa']['name']['dictamenFinal'];
+                    $solicitudPrograma->setDictamenFinal($file_name);
+                    $file->move("uploads/dictamen_final", $file_name);
+                }
 
                 if ($solicitudPrograma->getEstadoPrograma()->getId() != 3) {
                     $solicitudPrograma->setCategoriaCategorizacion(null);
                     $solicitudPrograma->setAnnoAcreditacion(null);
-                    $solicitudPrograma->setNivelAcreditacion(null);
                     $solicitudPrograma->setFechaProximaAcreditacion(null);
                     $solicitudPrograma->setDescripcion(null);
                     $solicitudPrograma->setResolucionPrograma(null);

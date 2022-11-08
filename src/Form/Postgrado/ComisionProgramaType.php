@@ -5,7 +5,7 @@ namespace App\Form\Postgrado;
 use App\Entity\Postgrado\CategoriaCategorizacion;
 use App\Entity\Postgrado\Comision;
 use App\Entity\Postgrado\EstadoPrograma;
-use App\Entity\Postgrado\NivelAcreditacion;
+use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\SolicitudPrograma;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

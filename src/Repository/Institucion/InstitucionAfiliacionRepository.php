@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\InstitucionAfiliacion;
+namespace App\Repository\Institucion;
 
-use App\Entity\InstitucionAfiliacion\InstitucionAfiliacion;
+use App\Entity\Institucion\InstitucionAfiliacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
