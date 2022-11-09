@@ -153,7 +153,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function eliminar(SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository, TraceService $traceService)
     {
-//        try {
+        try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudPrograma) {
                 $solicitudProgramaRepository->remove($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
@@ -163,10 +163,10 @@ class SolicitudProgramaController extends AbstractController
             }
             $this->addFlash('error', 'Error en la entrada de datos');
             return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
