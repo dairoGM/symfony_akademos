@@ -10,6 +10,10 @@ use App\Entity\Estructura\Provincia;
 use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
 use App\Entity\Institucion\CategoriaAcreditacion;
+use App\Entity\Institucion\Institucion;
+use App\Entity\Institucion\RedSocial;
+use App\Entity\Institucion\RolRedes;
+use App\Entity\Institucion\Visibilidad;
 use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\CategoriaDocente;
 use App\Entity\Personal\CategoriaInvestigativa;
@@ -222,16 +226,18 @@ class AppFixtures extends Fixture
             $tipo_programa->setNombre($value);
             $manager->persist($tipo_programa);
         }
-        $tbd_universidad = [[
-            'nombre' => 'Universidad de las Ciencias Informatica',
-            'siglas' => 'UCI'
-        ]];
-        foreach ($tbd_universidad as $value) {
-            $universidad = new Universidad();
-            $universidad->setNombre($value['nombre']);
-            $universidad->setSiglas($value['siglas']);
-            $manager->persist($universidad);
-        }
+
+        $universidad = new Institucion();
+        $universidad->setNombre('Universidad de las Ciencias Informatica');
+        $universidad->setSiglas('UCI');
+        $universidad->setLema('Lema');
+        $universidad->setMision('Mision');
+        $universidad->setVision('Vision');
+        $universidad->setRector('Rector');
+        $universidad->setLogo('Logo.png');
+        $universidad->setOrganigrama('Organigrama.png');
+        $universidad->setFechaFundacion(new \DateTime());
+        $manager->persist($universidad);
 
 
         $tipoInstitucion[] = [
@@ -350,6 +356,53 @@ class AppFixtures extends Fixture
             $tipo_organizacion = new TipoOrganizacion();
             $tipo_organizacion->setNombre($value);
             $manager->persist($tipo_organizacion);
+        }
+
+
+        $tbn_redes_sociales = [
+            'Facebook',
+            'Youtube',
+            'Whatsapp',
+            'Instagram',
+            'WeChat',
+            'TikTok',
+            'Facebook Messenger',
+            'Telegram',
+            'Snapchat',
+            'Douyin',
+            'Kuaishou',
+            'Sina Weibo',
+            'QQ',
+            'Twitter',
+            'Pinterest',
+            'Reddit',
+            'Quora'
+        ];
+        foreach ($tbn_redes_sociales as $value) {
+            $redSocial = new RedSocial();
+            $redSocial->setNombre($value);
+            $manager->persist($redSocial);
+        }
+
+        $tbn_rol_redes = [
+            'Coordina',
+            'Participa',
+        ];
+        foreach ($tbn_rol_redes as $value) {
+            $rolRedes = new RolRedes();
+            $rolRedes->setNombre($value);
+            $manager->persist($rolRedes);
+        }
+
+        $tbn_visibilidad = [
+            'Reduni',
+            'Nacional',
+            'Internacional',
+        ];
+        foreach ($tbn_visibilidad as $value) {
+            $visibilidad = new Visibilidad();
+            $visibilidad->setNombre($value);
+            $manager->persist($visibilidad);
         }
 
         $manager->flush();

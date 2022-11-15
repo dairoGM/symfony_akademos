@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Institucion\CategoriaAcreditacion;
+use App\Entity\Institucion\Institucion;
 
 /**
  * @ORM\Entity
@@ -22,16 +23,16 @@ class SolicitudPrograma extends BaseNomenclator
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Universidad")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Universidad $universidad = null;
+    private ?Institucion $universidad = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Universidad")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Universidad $originalDe = null;
+    private ?Institucion $originalDe = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoPrograma")
@@ -272,19 +273,6 @@ class SolicitudPrograma extends BaseNomenclator
     }
 
 
-    public function getUniversidad()
-    {
-        return $this->universidad;
-    }
-
-    public function setUniversidad($universidad)
-    {
-        $this->universidad = $universidad;
-
-        return $this;
-    }
-
-
     public function getDocPrograma()
     {
         return $this->docPrograma;
@@ -311,18 +299,6 @@ class SolicitudPrograma extends BaseNomenclator
     }
 
 
-    public function getOriginalDe()
-    {
-        return $this->originalDe;
-    }
-
-    public function setOriginalDe($originalDe)
-    {
-        $this->originalDe = $originalDe;
-
-        return $this;
-    }
-
     public function getCategoriaAcreditacion()
     {
         return $this->categoriaAcreditacion;
@@ -334,5 +310,40 @@ class SolicitudPrograma extends BaseNomenclator
 
         return $this;
     }
+
+    /**
+     * @return Institucion|null
+     */
+    public function getUniversidad(): ?Institucion
+    {
+        return $this->universidad;
+    }
+
+    /**
+     * @param Institucion|null $universidad
+     */
+    public function setUniversidad(?Institucion $universidad): void
+    {
+        $this->universidad = $universidad;
+    }
+
+    /**
+     * @return Institucion|null
+     */
+    public function getOriginalDe(): ?Institucion
+    {
+        return $this->originalDe;
+    }
+
+    /**
+     * @param Institucion|null $originalDe
+     */
+    public function setOriginalDe(?Institucion $originalDe): void
+    {
+        $this->originalDe = $originalDe;
+    }
+
+
+
 
 }

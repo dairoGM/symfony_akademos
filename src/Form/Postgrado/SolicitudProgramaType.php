@@ -2,6 +2,7 @@
 
 namespace App\Form\Postgrado;
 
+use App\Entity\Institucion\Institucion;
 use App\Entity\Postgrado\ModalidadPrograma;
 use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\RamaCiencia;
@@ -52,7 +53,7 @@ class SolicitudProgramaType extends AbstractType
                 'required' => $options['action'] == 'registrar',
             ])
             ->add('universidad', EntityType::class, [
-                'class' => Universidad::class,
+                'class' => Institucion::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
@@ -62,7 +63,7 @@ class SolicitudProgramaType extends AbstractType
             ])
             ->add('originalDe', EntityType::class, [
                 'label' => 'Programa original de',
-                'class' => Universidad::class,
+                'class' => Institucion::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');

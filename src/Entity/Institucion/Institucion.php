@@ -3,6 +3,7 @@
 namespace App\Entity\Institucion;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Personal\GradoAcademico;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -13,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Institucion extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=false, length="10")
+     * @ORM\Column(type="string", nullable=false, length="255")
      */
     private ?string $logo = null;
 
@@ -28,6 +29,11 @@ class Institucion extends BaseNomenclator
      */
     private ?string $rector = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Personal\GradoAcademico")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?GradoAcademico $gradoAcademicoRector = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoInstitucion")
@@ -41,6 +47,11 @@ class Institucion extends BaseNomenclator
      * @ORM\JoinColumn(nullable=true)
      */
     private ?CategoriaAcreditacion $categoriaAcreditacion;
+
+    /**
+     * @ORM\Column(type="string", nullable=false, length="255")
+     */
+    private ?string $organigrama = null;
 
 
     /**
@@ -65,10 +76,6 @@ class Institucion extends BaseNomenclator
      */
     private ?string $vision = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length="255")
-     */
-    private ?string $ranking = null;
 
 
     /**
@@ -154,22 +161,6 @@ class Institucion extends BaseNomenclator
     /**
      * @return string|null
      */
-    public function getRanking(): ?string
-    {
-        return $this->ranking;
-    }
-
-    /**
-     * @param string|null $ranking
-     */
-    public function setRanking(?string $ranking): void
-    {
-        $this->ranking = $ranking;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getCorreo(): ?string
     {
         return $this->correo;
@@ -230,6 +221,18 @@ class Institucion extends BaseNomenclator
     public function setLogo($logo)
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getOrganigrama()
+    {
+        return $this->organigrama;
+    }
+
+    public function setOrganigrama($organigrama)
+    {
+        $this->organigrama = $organigrama;
 
         return $this;
     }
@@ -355,6 +358,18 @@ class Institucion extends BaseNomenclator
     public function setCategoriaAcreditacion($categoriaAcreditacion)
     {
         $this->categoriaAcreditacion = $categoriaAcreditacion;
+
+        return $this;
+    }
+
+    public function getGradoAcademico()
+    {
+        return $this->gradoAcademico;
+    }
+
+    public function setGradoAcademico($gradoAcademico)
+    {
+        $this->gradoAcademico = $gradoAcademico;
 
         return $this;
     }
