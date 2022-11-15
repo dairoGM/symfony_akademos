@@ -69,7 +69,7 @@ class TipoInstitucionController extends AbstractController
      */
     public function modificar(Request $request, TipoInstitucion $tipoInstitucion, TipoInstitucionRepository $tipoInstitucionRepository)
     {
-//        try {
+        try {
             $form = $this->createForm(TipoInstitucionType::class, $tipoInstitucion, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -82,10 +82,10 @@ class TipoInstitucionController extends AbstractController
             return $this->render('modules/institucion/tipo_institucion/edit.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_tipo_institucion_modificar', ['id' => $tipoInstitucion], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_tipo_institucion_modificar', ['id' => $tipoInstitucion], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
