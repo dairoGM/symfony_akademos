@@ -1,7 +1,14 @@
 {% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Adicionar institución{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
 
+{% endblock %}
 {% block body %}
 
     <div class="card shadow-sm">
@@ -151,9 +158,32 @@
             <button class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
+
+        <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetail"
+             aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="modalDetailLabel">Seleccionar ubicación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modalDetailBody">
+                        <div id="map"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary aceptar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
+
+
 
 {% block javascripts %}
     <script>
@@ -171,6 +201,124 @@
         $('#institucion_fechaFundacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
+
+
+
+        $(document).ready(function () {
+            let mymap = '';
+            let defaultLocation = '22.798971336311112, -82.76412963867189';
+            let defaultZoom = 10;
+            let locationMap = '';
+            let map_current_location = '';
+            let marker = '';
+            $('#institucion_coordenadasSedePrincipal').click(function () {
+                $('#modalDetail').modal('show')
+
+
+                setTimeout(function () {
+
+                    map_current_location = $('#institucion_coordenadasSedePrincipal').val() ? $('#institucion_coordenadasSedePrincipal').val() : '22.81258, -82.758293'
+
+                    let options = {
+                        icon: 'fa-circle',
+                        iconColor: '#ffffff',
+                        markerColor: 'blue',
+                        shape: 'circle',
+                        prefix: 'fa'
+                    };
+
+
+                    if ($('#institucion_coordenadasSedePrincipal').val() !== '' && $('#institucion_coordenadasSedePrincipal').val() !== null) {
+                        defaultLocation = $('#institucion_coordenadasSedePrincipal').val();
+                        defaultZoom = 10;
+                    }
+
+                    if (mymap === '') {
+
+                        mymap = L.map('map').setView(L.latLng(defaultLocation.split(',').map(v => parseFloat(v))), defaultZoom);
+
+                        initFullScreem();
+                    }
+
+                    if ($('#institucion_coordenadasSedePrincipal').val() !== '' && $('#institucion_coordenadasSedePrincipal').val() !== null) {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng($('#institucion_coordenadasSedePrincipal').val().split(',').map(v => parseFloat(v))), options);
+                        } else {
+                            updateMarker(marker, L.latLng($('#institucion_coordenadasSedePrincipal').val().split(',').map(v => parseFloat(v))).lat, L.latLng($('#institucion_coordenadasSedePrincipal').val().split(',').map(v => parseFloat(v))).lng)
+                        }
+
+
+                    } else {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng(22.81258, -82.758293), options);
+                        } else {
+                            updateMarker(marker, 22.81258, -82.758293)
+                        }
+                    }
+
+
+                    marker.addTo(mymap);
+
+
+                    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmVzdHk5MzA2IiwiYSI6ImNsM2x0c21oYzBmbHUzcHF1bmhiZjVscnUifQ.qhpQLdO9ZXK8qnWjHBh7hg', {
+                        attribution: '',
+                        maxZoom: 18,
+                        id: 'mapbox/streets-v11',
+                        // tileSize: 512,
+                        // zoomOffset: -1,
+                        // accessToken: 'your.mapbox.access.token'
+                    }).addTo(mymap);
+
+                    mymap.addEventListener('click', (e) => {
+
+                        map_current_location = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+                        locationMap = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+
+                        // update marker location
+                        updateMarker(marker, e.latlng.lat, e.latlng.lng);
+
+
+                    });
+
+
+                    function updateMarker(marker, lat, lng) {
+                        marker.setLatLng([lat, lng])
+                            .bindPopup(marker.getLatLng().toString())
+                            .openPopup();
+                    }
+
+                    function create_extramarker(latlng, options) {
+                        // Creates a red marker with the coffee icon
+                        let markerIcon = L.ExtraMarkers.icon(
+                            options
+                        );
+
+
+                        return L.marker(latlng, {icon: markerIcon});
+                    }
+
+                    function initFullScreem() {
+                        L.control.fullscreen({
+                            position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                            title: 'Show fullscreen', // change the title of the button, default Full Screen
+                            titleCancel: 'Exit fullscreen', // change the title of the button when fullscreen is on, default Exit Full Screen
+                            content: null, // change the content of the button, can be HTML, default null
+                            forceSeparateButton: true, // force seperate button to detach from zoom buttons, default false
+                            fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
+                        }).addTo(mymap);
+                    }
+                }, 500)
+
+
+            })
+
+            $('.aceptar').click(function () {
+                $('#institucion_coordenadasSedePrincipal').val(map_current_location)
+                $('#modalDetail').modal('hide')
+            })
+
+
+        })
 
 
     </script>
