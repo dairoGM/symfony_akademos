@@ -26,10 +26,15 @@
                     {{ form_widget(form.siglas) }}
                     {{ form_errors(form.siglas) }}
                 </div>
-                <div class="col-4 form-group">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.logo) }}
                     {{ form_widget(form.logo) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
                     {{ form_errors(form.logo) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ institucion.logo }}">{{ institucion.logo }}</a>
                 </div>
             </div>
 
@@ -54,7 +59,11 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.organigrama) }}
                     {{ form_widget(form.organigrama) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
                     {{ form_errors(form.organigrama) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/organigrama/{{ institucion.organigrama }}">{{ institucion.organigrama }}</a>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.fechaFundacion) }}
@@ -147,4 +156,26 @@
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var fecha = "{% if institucion.fechaFundacion is empty %}  {{ institucion.fechaFundacion | default('') }} {% else %}  {{ institucion.fechaFundacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#institucion_fechaFundacion').val(fecha.replace(' ', ''));
+
+        $('#institucion_logo').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('#institucion_organigrama').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+
+
+        $('#institucion_fechaFundacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+
+    </script>
 {% endblock %}

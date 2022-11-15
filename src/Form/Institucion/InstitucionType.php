@@ -94,19 +94,19 @@ class InstitucionType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('direccionSedePrincipal', EmailType::class, [
+            ->add('direccionSedePrincipal', TextType::class, [
                 'label' => 'Dirección (Sede principal)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('coordenadasSedePrincipal', EmailType::class, [
+            ->add('coordenadasSedePrincipal', TextType::class, [
                 'label' => 'Coordenadas (Sede principal)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('campusUniversitario', EmailType::class, [
+            ->add('campusUniversitario', TextType::class, [
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]

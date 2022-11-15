@@ -38,14 +38,29 @@ class InstitucionController extends AbstractController
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function registrar(Request $request, InstitucionRepository $tipoInstitucionRepository)
+    public function registrar(Request $request, InstitucionRepository $institucionRepository)
     {
-//        try {
-            $catDocenteEntity = new Institucion();
-            $form = $this->createForm(InstitucionType::class, $catDocenteEntity, ['action' => 'registrar']);
+        try {
+            $institucion = new Institucion();
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'registrar']);
             $form->handleRequest($request);
+
             if ($form->isSubmitted() && $form->isValid()) {
-                $tipoInstitucionRepository->add($catDocenteEntity, true);
+                $institucion->setFechaFundacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['institucion']['fechaFundacion']));
+
+                if (!empty($_FILES['institucion']['name']['logo'])) {
+                    $file = $form['logo']->getData();
+                    $file_name = $_FILES['institucion']['name']['logo'];
+                    $institucion->setLogo($file_name);
+                    $file->move("uploads/institucion/logo", $file_name);
+                }
+                if (!empty($_FILES['institucion']['name']['organigrama'])) {
+                    $file = $form['organigrama']->getData();
+                    $file_name = $_FILES['institucion']['name']['organigrama'];
+                    $institucion->setOrganigrama($file_name);
+                    $file->move("uploads/institucion/organigrama", $file_name);
+                }
+                $institucionRepository->add($institucion, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -53,38 +68,39 @@ class InstitucionController extends AbstractController
             return $this->render('modules/institucion/institucion/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
     /**
      * @Route("/{id}/modificar", name="app_institucion_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $tipoInstitucion
+     * @param User $institucion
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function modificar(Request $request, Institucion $tipoInstitucion, InstitucionRepository $tipoInstitucionRepository)
+    public function modificar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository)
     {
         try {
-            $form = $this->createForm(InstitucionType::class, $tipoInstitucion, ['action' => 'modificar']);
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $tipoInstitucionRepository->edit($tipoInstitucion);
+                $tipoInstitucionRepository->edit($institucion);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('modules/institucion/institucion/edit.html.twig', [
                 'form' => $form->createView(),
+                'institucion' => $institucion
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_institucion_modificar', ['id' => $tipoInstitucion], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
