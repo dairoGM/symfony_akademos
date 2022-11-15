@@ -11,6 +11,7 @@ use App\Entity\Estructura\Responsabilidad;
 use App\Entity\Estructura\TipoEstructura;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
+use App\Entity\Institucion\RecursosHumanos;
 use App\Entity\Institucion\RedSocial;
 use App\Entity\Institucion\RolRedes;
 use App\Entity\Institucion\Visibilidad;
@@ -404,6 +405,23 @@ class AppFixtures extends Fixture
             $visibilidad->setNombre($value);
             $manager->persist($visibilidad);
         }
+
+
+        $tbn_recursos_humanos = [
+            'Trabajadores',
+            'Profesores',
+            'Estudiantes',
+            'Doctores',
+            'Masters',
+            'Profesores Titulares',
+            'Profesores Auxiliares',
+        ];
+        foreach ($tbn_recursos_humanos as $value) {
+            $recursos_humanos = new RecursosHumanos();
+            $recursos_humanos->setNombre($value);
+            $manager->persist($recursos_humanos);
+        }
+
 
         $manager->flush();
     }
