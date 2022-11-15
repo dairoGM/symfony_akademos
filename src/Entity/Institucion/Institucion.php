@@ -362,14 +362,14 @@ class Institucion extends BaseNomenclator
         return $this;
     }
 
-    public function getGradoAcademico()
+    public function getGradoAcademicoRector()
     {
-        return $this->gradoAcademico;
+        return $this->gradoAcademicoRector;
     }
 
-    public function setGradoAcademico($gradoAcademico)
+    public function setGradoAcademicoRector($gradoAcademicoRector)
     {
-        $this->gradoAcademico = $gradoAcademico;
+        $this->gradoAcademicoRector = $gradoAcademicoRector;
 
         return $this;
     }

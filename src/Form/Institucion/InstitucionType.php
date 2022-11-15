@@ -28,10 +28,10 @@ class InstitucionType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('descripcion', TextareaType::class, [
-                'label' => 'Descripción',
-                'required' => false,
-            ])
+//            ->add('descripcion', TextareaType::class, [
+//                'label' => 'Descripción',
+//                'required' => false,
+//            ])
             ->add('activo', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Habilitado'

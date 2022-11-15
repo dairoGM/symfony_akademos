@@ -1,0 +1,150 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar institución{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Modificar institución</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.siglas) }}
+                    {{ form_widget(form.siglas) }}
+                    {{ form_errors(form.siglas) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.logo) }}
+                    {{ form_widget(form.logo) }}
+                    {{ form_errors(form.logo) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoInstitucion) }}
+                    {{ form_widget(form.tipoInstitucion) }}
+                    {{ form_errors(form.tipoInstitucion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.gradoAcademicoRector) }}
+                    {{ form_widget(form.gradoAcademicoRector) }}
+                    {{ form_errors(form.gradoAcademicoRector) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.rector) }}
+                    {{ form_widget(form.rector) }}
+                    {{ form_errors(form.rector) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.organigrama) }}
+                    {{ form_widget(form.organigrama) }}
+                    {{ form_errors(form.organigrama) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaFundacion) }}
+                    {{ form_widget(form.fechaFundacion) }}
+                    {{ form_errors(form.fechaFundacion) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.lema) }}
+                    {{ form_widget(form.lema) }}
+                    {{ form_errors(form.lema) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.mision) }}
+                    {{ form_widget(form.mision) }}
+                    {{ form_errors(form.mision) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.vision) }}
+                    {{ form_widget(form.vision) }}
+                    {{ form_errors(form.vision) }}
+                </div>
+            </div>
+            <h6 class="mb-0"><b><p
+                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+                        Datos de contacto</p>
+                </b></h6>
+            <hr style="margin-bottom: 5px;padding-left: 1%">
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.sitioWeb) }}
+                    {{ form_widget(form.sitioWeb) }}
+                    {{ form_errors(form.sitioWeb) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.telefono) }}
+                    {{ form_widget(form.telefono) }}
+                    {{ form_errors(form.telefono) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.correo) }}
+                    {{ form_widget(form.correo) }}
+                    {{ form_errors(form.correo) }}
+                </div>
+            </div>
+            <h6 class="mb-0"><b><p
+                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+                        Localización</p>
+                </b></h6>
+            <hr style="margin-bottom: 5px;padding-left: 1%">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.direccionSedePrincipal) }}
+                    {{ form_widget(form.direccionSedePrincipal) }}
+                    {{ form_errors(form.direccionSedePrincipal) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.coordenadasSedePrincipal) }}
+                    {{ form_widget(form.coordenadasSedePrincipal) }}
+                    {{ form_errors(form.coordenadasSedePrincipal) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.campusUniversitario) }}
+                    {{ form_widget(form.campusUniversitario) }}
+                    {{ form_errors(form.campusUniversitario) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_institucion_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
