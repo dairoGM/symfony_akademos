@@ -1,0 +1,225 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar Sedes{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar Sedes</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreSede) }}
+                    {{ form_widget(form.nombreSede) }}
+                    {{ form_errors(form.nombreSede) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.direccionSede) }}
+                    {{ form_widget(form.direccionSede) }}
+                    {{ form_errors(form.direccionSede) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.coordenadasSede) }}
+                    {{ form_widget(form.coordenadasSede) }}
+                    {{ form_errors(form.coordenadasSede) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: 95%">
+                    <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+
+        <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetail"
+             aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="modalDetailLabel">Seleccionar ubicación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modalDetailBody">
+                        <div id="map"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary aceptar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Coordenadas</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombreSede | default('') }}</td>
+                        <td>{{ item.direccionSede | default('') }}</td>
+                        <td width="18%">{{ item.coordenadasSede | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_institucion_eliminar_sede', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            let mymap = '';
+            let defaultLocation = '22.798971336311112, -82.76412963867189';
+            let defaultZoom = 10;
+            let locationMap = '';
+            let map_current_location = '';
+            let marker = '';
+            $('#institucion_sedes_coordenadasSede').click(function () {
+                $('#modalDetail').modal('show')
+
+
+                setTimeout(function () {
+
+                    map_current_location = $('#institucion_sedes_coordenadasSede').val() ? $('#institucion_sedes_coordenadasSede').val() : '22.81258, -82.758293'
+
+                    let options = {
+                        icon: 'fa-circle',
+                        iconColor: '#ffffff',
+                        markerColor: 'blue',
+                        shape: 'circle',
+                        prefix: 'fa'
+                    };
+
+
+                    if ($('#institucion_sedes_coordenadasSede').val() !== '' && $('#institucion_sedes_coordenadasSede').val() !== null) {
+                        defaultLocation = $('#institucion_sedes_coordenadasSede').val();
+                        defaultZoom = 10;
+                    }
+
+                    if (mymap === '') {
+
+                        mymap = L.map('map').setView(L.latLng(defaultLocation.split(',').map(v => parseFloat(v))), defaultZoom);
+
+                        initFullScreem();
+                    }
+
+                    if ($('#institucion_sedes_coordenadasSede').val() !== '' && $('#institucion_sedes_coordenadasSede').val() !== null) {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng($('#institucion_sedes_coordenadasSede').val().split(',').map(v => parseFloat(v))), options);
+                        } else {
+                            updateMarker(marker, L.latLng($('#institucion_sedes_coordenadasSede').val().split(',').map(v => parseFloat(v))).lat, L.latLng($('#institucion_sedes_coordenadasSede').val().split(',').map(v => parseFloat(v))).lng)
+                        }
+
+
+                    } else {
+                        if (marker === '') {
+                            marker = create_extramarker(L.latLng(22.81258, -82.758293), options);
+                        } else {
+                            updateMarker(marker, 22.81258, -82.758293)
+                        }
+                    }
+
+
+                    marker.addTo(mymap);
+
+
+                    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmVzdHk5MzA2IiwiYSI6ImNsM2x0c21oYzBmbHUzcHF1bmhiZjVscnUifQ.qhpQLdO9ZXK8qnWjHBh7hg', {
+                        attribution: '',
+                        maxZoom: 18,
+                        id: 'mapbox/streets-v11',
+                        // tileSize: 512,
+                        // zoomOffset: -1,
+                        // accessToken: 'your.mapbox.access.token'
+                    }).addTo(mymap);
+
+                    mymap.addEventListener('click', (e) => {
+
+                        map_current_location = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+                        locationMap = e.latlng.lat.toString() + ', ' + e.latlng.lng.toString();
+
+                        // update marker location
+                        updateMarker(marker, e.latlng.lat, e.latlng.lng);
+
+
+                    });
+
+
+                    function updateMarker(marker, lat, lng) {
+                        marker.setLatLng([lat, lng])
+                            .bindPopup(marker.getLatLng().toString())
+                            .openPopup();
+                    }
+
+                    function create_extramarker(latlng, options) {
+                        // Creates a red marker with the coffee icon
+                        let markerIcon = L.ExtraMarkers.icon(
+                            options
+                        );
+
+
+                        return L.marker(latlng, {icon: markerIcon});
+                    }
+
+                    function initFullScreem() {
+                        L.control.fullscreen({
+                            position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+                            title: 'Show fullscreen', // change the title of the button, default Full Screen
+                            titleCancel: 'Exit fullscreen', // change the title of the button when fullscreen is on, default Exit Full Screen
+                            content: null, // change the content of the button, can be HTML, default null
+                            forceSeparateButton: true, // force seperate button to detach from zoom buttons, default false
+                            fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
+                        }).addTo(mymap);
+                    }
+                }, 500)
+
+
+            })
+
+            $('.aceptar').click(function () {
+                $('#institucion_sedes_coordenadasSede').val(map_current_location)
+                $('#modalDetail').modal('hide')
+            })
+
+
+        })
+
+    </script>
+{% endblock %}

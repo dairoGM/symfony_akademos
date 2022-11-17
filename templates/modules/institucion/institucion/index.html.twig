@@ -42,7 +42,7 @@
                                 <span class="ms-status">Deshabilitado</span>
                             {% endif %}
                         </td>
-                        <td width="15%" class="text-center">
+                        <td width="20%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_institucion_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la institución">
@@ -62,6 +62,11 @@
                                     href="{{ path('app_institucion_asignar_centros_estudio', {'id': item.id}) }}"
                                     class="btn btn-outline-primary"><i
                                         class="fa fa-university"></i>
+                            </a>
+                            <a title="Asociar sedes de la institución"
+                                    href="{{ path('app_institucion_asignar_sede', {'id': item.id}) }}"
+                                    class="btn btn-outline-primary"><i
+                                        class="fa fa-universal-access"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_institucion_eliminar', {'id': item.id}) }}">
