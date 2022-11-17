@@ -3,8 +3,15 @@
 namespace App\Controller\Institucion;
 
 use App\Entity\Institucion\Institucion;
+use App\Entity\Institucion\InstitucionCentrosEstudios;
+use App\Entity\Institucion\InstitucionFacultades;
 use App\Entity\Security\User;
+use App\Form\Institucion\InstitucionCentrosEstudiosType;
+use App\Form\Institucion\InstitucionFacultadesType;
 use App\Form\Institucion\InstitucionType;
+use App\Form\Institucion\NombreDescripcionType;
+use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
+use App\Repository\Institucion\InstitucionFacultadesRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,5 +148,167 @@ class InstitucionController extends AbstractController
             return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
         }
     }
+
+
+    /**
+     * @Route("/{id}/asignar_facultades", name="app_institucion_asignar_facultades", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionFacultadesRepository $institucionFacultadesRepository
+     * @return Response
+     */
+    public function asignarFacultad(Request $request, Institucion $institucion, InstitucionFacultadesRepository $institucionFacultadesRepository)
+    {
+        try {
+            $entidad = new InstitucionFacultades();
+            $form = $this->createForm(InstitucionFacultadesType::class, $entidad);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId(), 'nombreFacultad' => $request->request->all()['institucion_facultades']['nombreFacultad']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $institucionFacultadesRepository->add($entidad, true);
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_facultades.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_facultad", name="app_institucion_eliminar_facultad", methods={"GET"})
+     * @param Request $request
+     * @param InstitucionFacultades $institucionFacultades
+     * @param InstitucionRepository $institucionFacultadesRepositoryy
+     * @return Response
+     */
+    public function eliminarFacultad(Request $request, InstitucionFacultades $institucionFacultades, InstitucionFacultadesRepository $institucionFacultadesRepositoryy)
+    {
+        try {
+            if ($institucionFacultades instanceof InstitucionFacultades) {
+                $institucionFacultadesRepositoryy->remove($institucionFacultades, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucionFacultades->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucionFacultades->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucionFacultades->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/asignar_centros_estudio", name="app_institucion_asignar_centros_estudio", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository
+     * @return Response
+     */
+    public function asignarCentrosEstudios(Request $request, Institucion $institucion, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository)
+    {
+//        try {
+            $entidad = new InstitucionCentrosEstudios();
+            $form = $this->createForm(InstitucionCentrosEstudiosType::class, $entidad);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $institucionCentrosEstudiosRepository->findBy(['institucion' => $institucion->getId(), 'nombreCentroEstudio' => $request->request->all()['institucion_centros_estudios']['nombreCentroEstudio']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $institucionCentrosEstudiosRepository->add($entidad, true);
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_centros_estudios.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $institucionCentrosEstudiosRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+//        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_centro_estudio", name="app_institucion_eliminar_centro_estudio", methods={"GET"})
+     * @param Request $request
+     * @param InstitucionFacultades $institucionCentroEstudio
+     * @param InstitucionRepository $institucionCentrosEstudiosRepository
+     * @return Response
+     */
+    public function eliminarCentroEstudio(Request $request, InstitucionCentrosEstudios $institucionCentroEstudio, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository)
+    {
+        try {
+            if ($institucionCentroEstudio instanceof InstitucionCentrosEstudios) {
+                $institucionCentrosEstudiosRepository->remove($institucionCentroEstudio, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucionCentroEstudio->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucionCentroEstudio->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_centros_estudio', ['id' => $institucionCentroEstudio->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

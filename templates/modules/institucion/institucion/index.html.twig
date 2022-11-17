@@ -53,6 +53,16 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
+                            <a title="Asociar facultades"
+                               href="{{ path('app_institucion_asignar_facultades', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-wrench"></i>
+                            </a>
+                            <a title="Asociar centros de estudios"
+                                    href="{{ path('app_institucion_asignar_centros_estudio', {'id': item.id}) }}"
+                                    class="btn btn-outline-primary"><i
+                                        class="fa fa-university"></i>
+                            </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_institucion_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>

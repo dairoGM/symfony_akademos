@@ -25,7 +25,7 @@ class InstitucionFacultades extends BaseEntity
 
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="255")
+     * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $descripcionFacultad = null;
 
