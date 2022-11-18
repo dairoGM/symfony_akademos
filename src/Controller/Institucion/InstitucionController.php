@@ -174,7 +174,7 @@ class InstitucionController extends AbstractController
      */
     public function asignarFacultad(Request $request, Institucion $institucion, InstitucionFacultadesRepository $institucionFacultadesRepository)
     {
-//        try {
+        try {
             $entidad = new InstitucionFacultades();
             $form = $this->createForm(InstitucionFacultadesType::class, $entidad);
             $form->handleRequest($request);
@@ -197,10 +197,10 @@ class InstitucionController extends AbstractController
                 'institucion' => $institucion,
                 'registros' => $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId()])
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_facultades', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
