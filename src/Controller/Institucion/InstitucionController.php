@@ -6,6 +6,7 @@ use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\InstitucionCentrosEstudios;
 use App\Entity\Institucion\InstitucionEditorial;
 use App\Entity\Institucion\InstitucionFacultades;
+use App\Entity\Institucion\InstitucionRedes;
 use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\Institucion\InstitucionSedes;
 use App\Entity\Security\User;
@@ -13,12 +14,14 @@ use App\Form\Institucion\InstitucionCentrosEstudiosType;
 use App\Form\Institucion\InstitucionEditorialesType;
 use App\Form\Institucion\InstitucionFacultadesType;
 use App\Form\Institucion\InstitucionRedesSocialesType;
+use App\Form\Institucion\InstitucionRedesType;
 use App\Form\Institucion\InstitucionSedesType;
 use App\Form\Institucion\InstitucionType;
 use App\Form\Institucion\NombreDescripcionType;
 use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
+use App\Repository\Institucion\InstitucionRedesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
@@ -324,8 +327,8 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/{id}/eliminar_sede", name="app_institucion_eliminar_sede", methods={"GET"})
      * @param Request $request
-     * @param InstitucionFacultades $institucionSedes
-     * @param InstitucionRepository $institucionSedesRepository
+     * @param InstitucionSedes $institucionSedes
+     * @param InstitucionSedesRepository $institucionSedesRepository
      * @return Response
      */
     public function eliminarSede(Request $request, InstitucionSedes $institucionSedes, InstitucionSedesRepository $institucionSedesRepository)
@@ -468,6 +471,74 @@ class InstitucionController extends AbstractController
             return $this->redirectToRoute('app_institucion_asignar_editoriales', ['id' => $institucionEditorial->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
         }
     }
+
+
+    /**
+     * @Route("/{id}/asignar_redes", name="app_institucion_asignar_redes", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionFacultadesRepository $redesRepository
+     * @return Response
+     */
+    public function asignarRedes(Request $request, Institucion $institucion, InstitucionRedesRepository $redesRepository)
+    {
+        try {
+            $entidad = new InstitucionRedes();
+            $form = $this->createForm(InstitucionRedesType::class, $entidad);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $exist = $redesRepository->findBy(['institucion' => $institucion->getId(), 'nombreRed' => $request->request->all()['institucion_redes']['nombreRed']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $redesRepository->add($entidad, true);
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_redes.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $redesRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_red", name="app_institucion_eliminar_red", methods={"GET"})
+     * @param Request $request
+     * @param InstitucionRedes $institucionRedes
+     * @param InstitucionRedesRepository $institucionRedesRepository
+     * @return Response
+     */
+    public function eliminarRed(Request $request, InstitucionRedes $institucionRedes, InstitucionRedesRepository $institucionRedesRepository)
+    {
+        try {
+            if ($institucionRedes instanceof InstitucionRedes) {
+                $institucionRedesRepository->remove($institucionRedes, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucionRedes->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucionRedes->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_redes', ['id' => $institucionRedes->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+
+
+
 
 
 }
