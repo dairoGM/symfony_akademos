@@ -10,15 +10,13 @@
 
 {% endblock %}
 {% block body %}
-
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
                 <h3 class="card-title text-bold text-gray">Asignar redes sociales</h3>
-
             </div>
         </div>
+        {{ include('modules/institucion/institucion/short_details.html.twig', { 'item': institucion }) }}
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">

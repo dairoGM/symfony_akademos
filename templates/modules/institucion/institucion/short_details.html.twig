@@ -1,0 +1,25 @@
+<div class="row" style="padding-top: 1%">
+    <div class="col-1" style="padding-left: 1%">
+        <h5 class="mb-0"><a
+                    href="{% if item.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.logo }} {% else %} /assets/images/usuario.png {% endif %}"
+                    target="_blank">
+                <img src="{% if item.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.logo }}{% else %} /assets/images/usuario.png {% endif %}"
+                     style="width: 120px;height: 120px; object-fit: cover">
+            </a></h5>
+    </div>
+    <div class="col-5">
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
+        <h5 class="mb-0"><b>Siglas:</b> {{ item.siglas }}</h5>
+        <h5 class="mb-0"><b>Tipo de intitución:</b> {{ item.tipoInstitucion.nombre|default('') }}</h5>
+        <h5 class="mb-0"><b>Sitio web:</b> {{ item.sitioWeb|default('') }}  </h5>
+        <h5 class="mb-0"><b>Correo:</b> {{ item.correo|default('') }}</h5>
+    </div>
+    <div class="col-5">
+        <h5 class="mb-0"><b>Rector: </b>{{ item.gradoAcademicoRector.siglas | default('') }} {{ item.rector }}</h5>
+        <h5 class="mb-0"><b>Categoría de acreditación:</b> {{ item.categoriaAcreditacion.nombre|default('') }}</h5>
+        <h5 class="mb-0"><b>Fecha de fundación:</b> {{ item.fechaFundacion | date('d/m/Y') }}</h5>
+        <h5 class="mb-0"><b>Lema:</b> {{ item.lema|default('') }}  </h5>
+        <h5 class="mb-0"><b>Campus universitario:</b> {{ item.campusUniversitario|default('') }}</h5>
+    </div>
+</div>
+<hr>

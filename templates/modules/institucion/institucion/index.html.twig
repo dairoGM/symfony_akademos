@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Instituciones{% endblock %}
+{% block title %}IES{% endblock %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado Instituciones</h3>
+                <h3 class="card-title text-bold text-gray">Listado de IES</h3>
                 <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_institucion_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
@@ -23,8 +23,10 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Logo</th>
                     <th>Nombre</th>
                     <th>Siglas</th>
+                    <th>Rector</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -33,8 +35,17 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td width="1%">
+                            <a
+                                    href="{% if item.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.logo }} {% else %} /assets/images/usuario.png {% endif %}"
+                                    target="_blank">
+                                <img src="{% if item.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.logo }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     style="width: 45px;height: 45px; object-fit: cover">
+                            </a>
+                        </td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.siglas }}</td>
+                        <td>{{ item.gradoAcademicoRector.siglas | default('') }} {{ item.rector }}</td>
                         <td width="3%" class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
