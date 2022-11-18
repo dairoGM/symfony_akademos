@@ -21,7 +21,7 @@ class Provincia extends BaseNomenclator
     private ?int $codigo;
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="3")
+     * @ORM\Column(type="string", nullable=false, length="8")
      * @Assert\Regex(
      *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,

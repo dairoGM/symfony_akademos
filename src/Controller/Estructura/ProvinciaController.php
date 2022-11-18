@@ -26,7 +26,7 @@ class ProvinciaController extends AbstractController
     {
         try {
             return $this->render('modules/estructura/provincia/index.html.twig', [
-                'provincias' => $provinciaRepository->findBy([], ['nombre' => 'asc']),
+                'provincias' => $provinciaRepository->findBy([], ['codigo' => 'asc']),
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());

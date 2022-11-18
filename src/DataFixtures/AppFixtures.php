@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Catalogo\Pais;
 use App\Entity\Estructura\CategoriaEstructura;
 use App\Entity\Estructura\CategoriaResponsabilidad;
 use App\Entity\Estructura\Estructura;
@@ -35,7 +36,6 @@ use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\TipoPrograma;
-use App\Entity\Postgrado\Universidad;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -46,6 +46,7 @@ use App\Repository\Personal\SexoRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
@@ -59,9 +60,93 @@ class AppFixtures extends Fixture
         $this->passwordEncoder = $encoder;
     }
 
+    private $csvParsingOptionsProvince = array(
+        'finder_in' => 'Resources/',
+        'finder_name' => 'provincias.csv',
+        'ignoreFirstLine' => true
+    );
+    private $csvParsingOptionsMunicipaly = array(
+        'finder_in' => 'Resources/',
+        'finder_name' => 'municipios.csv',
+        'ignoreFirstLine' => true
+    );
+
     public function load(ObjectManager $manager)
     {
+        $ignoreFirstLine = $this->csvParsingOptionsProvince['ignoreFirstLine'];
+        $finder = new Finder();
+        $finder->files()
+            ->in($this->csvParsingOptionsProvince['finder_in'])
+            ->name($this->csvParsingOptionsProvince['finder_name']);
 
+        foreach ($finder as $file) {
+            $csv = $file;
+        }
+        if (($handle = fopen($csv->getRealPath(), "r")) !== FALSE) {
+            $i = 0;
+            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
+                $i++;
+                if ($ignoreFirstLine && $i == 1) {
+                    continue;
+                }
+                $provincias[] = $data[0];
+            }
+            fclose($handle);
+        }
+
+        $provinciaInial = null;
+        foreach ($provincias as $value) {
+            $datosProvincia = explode(',', $value);
+            $provincia = new Provincia();
+            $provincia->setNombre(str_replace('"', "", $datosProvincia[1]));
+            $provincia->setCodigo($datosProvincia[0]);
+            $provincia->setSiglas(str_replace('"', "", $datosProvincia[2]));
+            $manager->persist($provincia);
+
+            if ($datosProvincia[0] == 23) {
+                $provinciaInial = $provincia;
+            }
+
+        }
+        $manager->flush();
+
+
+        $ignoreFirstLine = $this->csvParsingOptionsMunicipaly['ignoreFirstLine'];
+        $finder = new Finder();
+        $finder->files()
+            ->in($this->csvParsingOptionsMunicipaly['finder_in'])
+            ->name($this->csvParsingOptionsMunicipaly['finder_name']);
+
+        foreach ($finder as $file) {
+            $csv = $file;
+        }
+        if (($handle = fopen($csv->getRealPath(), "r")) !== FALSE) {
+            $i = 0;
+            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
+                $i++;
+                if ($ignoreFirstLine && $i == 1) {
+                    continue;
+                }
+                $municipios[] = $data[0];
+            }
+            fclose($handle);
+        }
+
+        $municipioInial = null;
+        foreach ($municipios as $value) {
+            $datosMunicipios = explode(',', $value);
+
+
+            $municipio = new Municipio();
+            $municipio->setNombre(str_replace('"', '', $datosMunicipios[1]));
+            $municipio->setCodigo($datosMunicipios[0]);
+            $municipio->setProvincia($this->em->getRepository(Provincia::class)->findOneBy(['codigo' => intval($datosMunicipios[3])]));
+            $manager->persist($municipio);
+
+            if ($datosMunicipios[0] == 2312) {
+                $municipioInial = $municipio;
+            }
+        }
 
         $sexos[] = [
             'nombre' => 'Masculino',
@@ -96,19 +181,6 @@ class AppFixtures extends Fixture
             $tipo_traza->setNombre($value);
             $manager->persist($tipo_traza);
         }
-
-        $provincia = new Provincia();
-        $provincia->setNombre('Provincia Inicial');
-        $provincia->setSiglas('PI1');
-        $provincia->setCodigo('001');
-        $manager->persist($provincia);
-
-        $municipio = new Municipio();
-        $municipio->setNombre('Provincia Inicial');
-        $municipio->setProvincia($provincia);
-        $municipio->setCodigo('001');
-        $manager->persist($municipio);
-
 
         $rol = new Rol();
         $rol->setNombre('Administrador');
@@ -157,8 +229,8 @@ class AppFixtures extends Fixture
             $estructura->setEmail('admin@est-inicial.com');
             $estructura->setDireccion($value);
             $estructura->setSiglas('INI');
-            $estructura->setProvincia($provincia);
-            $estructura->setMunicipio($municipio);
+            $estructura->setProvincia($provinciaInial);
+            $estructura->setMunicipio($municipioInial);
             $estructura->setFechaActivacion(new \DateTime());
             $manager->persist($estructura);
 
@@ -182,8 +254,8 @@ class AppFixtures extends Fixture
         $persona->setEmail('admin@admin.cu');
         $persona->setCarnetIdentidad('00000000000');
         $persona->setNumeroSerieCarnetIdentidad('FDA000');
-        $persona->setProvincia($provincia);
-        $persona->setMunicipio($municipio);
+        $persona->setProvincia($provinciaInial);
+        $persona->setMunicipio($municipioInial);
         $persona->setClasificacionPersona($clasificacionPersona);
         $persona->setUsuario($user);
         $persona->setPrimerNombre('Admin');
@@ -390,7 +462,7 @@ class AppFixtures extends Fixture
             'Participa',
         ];
         foreach ($tbn_rol_redes as $value) {
-            $rolRedes = new RolRedes();
+            $rolRedes = new RolRedesNacional();
             $rolRedes->setNombre($value);
             $manager->persist($rolRedes);
         }

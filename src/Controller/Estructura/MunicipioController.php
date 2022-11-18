@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/estructura/municipio") 
+ * @Route("/estructura/municipio")
  */
 class MunicipioController extends AbstractController
 {
@@ -30,7 +30,7 @@ class MunicipioController extends AbstractController
     {
         try {
             return $this->render('modules/estructura/municipio/index.html.twig', [
-                'registros' => $municipioRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+                'registros' => $municipioRepository->findBy([], ['codigo' => 'asc', 'activo' => 'desc', 'id' => 'desc']),
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -95,7 +95,6 @@ class MunicipioController extends AbstractController
             return $this->redirectToRoute('app_municipio_modificar', ['id' => $municipio], Response::HTTP_SEE_OTHER);
         }
     }
-
 
 
     /**

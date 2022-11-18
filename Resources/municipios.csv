@@ -1,0 +1,169 @@
+"codigo","nombre_provincia","siglas","codigo_padre"
+2101,"Sandino","",21
+2102,"Mantua","",21
+2103,"Minas de Matahambre","",21
+2104,"Viñales","",21
+2105,"La Palma","",21
+2106,"Los Palacios","",21
+2107,"Consolación del Sur","",21
+2108,"Pinar del Río","",21
+2109,"San Luis","",21
+2110,"San Juan y Martínez","",21
+2111,"Guane","",21
+2201,"Bahía Honda","",22
+2202,"Mariel","",22
+2203,"Guanajay","",22
+2204,"Caimito","",22
+2205,"Bauta","",22
+2206,"San Antonio de los Baños","",22
+2207,"Güira de Melena","",22
+2208,"Alquízar","",22
+2209,"Artemisa","",22
+2210,"Candelaria","",22
+2211,"San Cristóbal","",22
+2301,"Playa","",23
+2302,"Plaza de la Revolución","",23
+2303,"Centro Habana","",23
+2304,"La Habana Vieja","",23
+2305,"Regla","",23
+2306,"La Habana del Este","",23
+2307,"Guanabacoa","",23
+2308,"San Miguel del Padrón","",23
+2309,"Diez de Octubre","",23
+2310,"Cerro","",23
+2311,"Marianao","",23
+2312,"La Lisa","",23
+2313,"Boyeros","",23
+2314,"Arroyo Naranjo","",23
+2315,"Cotorro","",23
+2401,"Bejucal","",24
+2402,"San José de las Lajas","",24
+2403,"Jaruco","",24
+2404,"Santa Cruz del Norte","",24
+2405,"Madruga","",24
+2406,"Nueva Paz","",24
+2407,"San Nicolás","",24
+2408,"Güines","",24
+2409,"Melena del Sur","",24
+2410,"Batabanó","",24
+2411,"Quivicán","",24
+2501,"Matanzas","",25
+2502,"Cárdenas","",25
+2503,"Martí","",25
+2504,"Colón","",25
+2505,"Perico","",25
+2506,"Jovellanos","",25
+2507,"Pedro Betancourt","",25
+2508,"Limonar","",25
+2509,"Unión de Reyes","",25
+2510,"Ciénaga de Zapata","",25
+2511,"Jagüey Grande","",25
+2512,"Calimete","",25
+2513,"Los Arabos","",25
+2601,"Corralillo","",26
+2602,"Quemado de Güines","",26
+2603,"Sagua la Grande","",26
+2604,"Encrucijada","",26
+2605,"Camajuaní","",26
+2606,"Caibarién","",26
+2607,"Remedios","",26
+2608,"Placetas","",26
+2609,"Santa Clara","",26
+2610,"Cifuentes","",26
+2611,"Santo Domingo","",26
+2612,"Ranchuelo","",26
+2613,"Manicaragua","",26
+2701,"Aguada de Pasajeros","",27
+2702,"Rodas","",27
+2703,"Palmira","",27
+2704,"Santa Isabel de las Lajas","",27
+2705,"Cruces","",27
+2706,"Cumanayagua","",27
+2707,"Cienfuegos","",27
+2708,"Abreus","",27
+2801,"Yaguajay","",28
+2802,"Jatibonico","",28
+2803,"Taguasco","",28
+2804,"Cabaiguán","",28
+2805,"Fomento","",28
+2806,"Trinidad","",28
+2807,"Sancti Spíritus","",28
+2808,"La Sierpe","",28
+2901,"Chambas","",29
+2902,"Morón","",29
+2903,"Bolivia","",29
+2904,"Primero de Enero","",29
+2905,"Ciro Redondo","",29
+2906,"Florencia","",29
+2907,"Majagua","",29
+2908,"Ciego de Ávila","",29
+2909,"Venezuela","",29
+2910,"Baraguá","",29
+3001,"Carlos Manuel de Céspedes","",30
+3002,"Esmeralda","",30
+3003,"Sierra de Cubitas","",30
+3004,"Minas","",30
+3005,"Nuevitas","",30
+3006,"Guáimaro","",30
+3007,"Sibanicú","",30
+3008,"Camagüey","",30
+3009,"Florida","",30
+3010,"Vertientes","",30
+3011,"Jimaguayú","",30
+3012,"Najasa","",30
+3013,"Santa Cruz del Sur","",30
+3101,"Manatí","",31
+3102,"Puerto Padre","",31
+3103,"Jesús Menéndez","",31
+3104,"Majibacoa","",31
+3105,"Las Tunas","",31
+3106,"Jobabo","",31
+3107,"Colombia","",31
+3108,"Amancio Rodríguez","",31
+3201,"Gibara","",32
+3202,"Rafael Freyre","",32
+3203,"Banes","",32
+3204,"Antilla","",32
+3205,"Báguanos","",32
+3206,"Holguín","",32
+3207,"Calixto García","",32
+3208,"Cacocum","",32
+3209,"Urbano Noris","",32
+3210,"Cueto","",32
+3211,"Mayarí","",32
+3212,"Frank País","",32
+3213,"Sagua de Tánamo","",32
+3214,"Moa","",32
+3301,"Río Cauto","",33
+3302,"Cauto Cristo","",33
+3303,"Jiguaní","",33
+3304,"Bayamo","",33
+3305,"Yara","",33
+3306,"Manzanillo","",33
+3307,"Campechuela","",33
+3308,"Media Luna","",33
+3309,"Niquero","",33
+3310,"Pilón","",33
+3311,"Bartolomé Masó","",33
+3312,"Buey Arriba","",33
+3313,"Guisa","",33
+3401,"Contramaestre","",34
+3402,"Julio Antonio Mella","",34
+3403,"San Luis","",34
+3404,"Segundo Frente Oriental","",34
+3405,"Songo La Maya","",34
+3406,"Santiago de Cuba","",34
+3407,"Palma Soriano","",34
+3408,"Tercer Frente Oriental","",34
+3409,"Guamá","",34
+3501,"El Salvador","",35
+3502,"Manuel Tames","",35
+3503,"Yateras","",35
+3504,"Baracoa","",35
+3505,"Punta de Maisí","",35
+3506,"Imías","",35
+3507,"San Antonio del Sur","",35
+3508,"Caimanera","",35
+3509,"Guantánamo","",35
+3510,"Niceto Pérez","",35
+4001,"Isla de la Juventud","",40
