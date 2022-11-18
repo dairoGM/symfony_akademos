@@ -8,6 +8,7 @@ use App\Entity\Institucion\InstitucionEditorial;
 use App\Entity\Institucion\InstitucionFacultades;
 use App\Entity\Institucion\InstitucionRedes;
 use App\Entity\Institucion\InstitucionRedesSociales;
+use App\Entity\Institucion\InstitucionRevistaCientifica;
 use App\Entity\Institucion\InstitucionSedes;
 use App\Entity\Security\User;
 use App\Form\Institucion\InstitucionCentrosEstudiosType;
@@ -15,6 +16,7 @@ use App\Form\Institucion\InstitucionEditorialesType;
 use App\Form\Institucion\InstitucionFacultadesType;
 use App\Form\Institucion\InstitucionRedesSocialesType;
 use App\Form\Institucion\InstitucionRedesType;
+use App\Form\Institucion\InstitucionRevistaCientificaType;
 use App\Form\Institucion\InstitucionSedesType;
 use App\Form\Institucion\InstitucionType;
 use App\Form\Institucion\NombreDescripcionType;
@@ -24,6 +26,7 @@ use App\Repository\Institucion\InstitucionFacultadesRepository;
 use App\Repository\Institucion\InstitucionRedesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
+use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -536,9 +539,66 @@ class InstitucionController extends AbstractController
     }
 
 
+    /**
+     * @Route("/{id}/asignar_revistas", name="app_institucion_asignar_revistas", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository
+     * @return Response
+     */
+    public function asignarRevistas(Request $request, Institucion $institucion, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository)
+    {
+        try {
+            $entidad = new InstitucionRevistaCientifica();
+            $form = $this->createForm(InstitucionRevistaCientificaType::class, $entidad);
+            $form->handleRequest($request);
 
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $institucionRevistaCientificaRepository->findBy(['institucion' => $institucion->getId(), 'nombreRevista' => $request->request->all()['institucion_revista_cientifica']['nombreRevista']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $institucionRevistaCientificaRepository->add($entidad, true);
 
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
 
+            return $this->render('modules/institucion/institucion/asignar_revistas.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $institucionRevistaCientificaRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_revista", name="app_institucion_eliminar_revista", methods={"GET"})
+     * @param Request $request
+     * @param InstitucionRevistaCientifica $institucionRevistaCientifica
+     * @param InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository
+     * @return Response
+     */
+    public function eliminarRevista(Request $request, InstitucionRevistaCientifica $institucionRevistaCientifica, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository)
+    {
+        try {
+            if ($institucionRevistaCientifica instanceof InstitucionRevistaCientifica) {
+                $institucionRevistaCientificaRepository->remove($institucionRevistaCientifica, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucionRevistaCientifica->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucionRevistaCientifica->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_revistas', ['id' => $institucionRevistaCientifica->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
 
 
 }

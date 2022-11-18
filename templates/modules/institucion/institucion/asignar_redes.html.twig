@@ -1,0 +1,89 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar redes nacionales e internacionales{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar redes nacionales e internacionales</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreRed) }}
+                    {{ form_widget(form.nombreRed) }}
+                    {{ form_errors(form.nombreRed) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.RolRedes) }}
+                    {{ form_widget(form.RolRedes) }}
+                    {{ form_errors(form.RolRedes) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.descripcionRed) }}
+                    {{ form_widget(form.descripcionRed) }}
+                    {{ form_errors(form.descripcionRed) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: 95%">
+                    <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre de la red</th>
+                    <th>Rol</th>
+                    <th>Descripción</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombreRed | default('') }}</td>
+                        <td>{{ item.RolRedes.nombre | default('') }}</td>
+                        <td>{{ item.descripcionRed | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_institucion_eliminar_red', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+
+    </script>
+{% endblock %}

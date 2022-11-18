@@ -1,0 +1,101 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar revistas científicas{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar revistas científicas</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreRevista) }}
+                    {{ form_widget(form.nombreRevista) }}
+                    {{ form_errors(form.nombreRevista) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.visibilidad) }}
+                    {{ form_widget(form.visibilidad) }}
+                    {{ form_errors(form.visibilidad) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.indexadaEn) }}
+                    {{ form_widget(form.indexadaEn) }}
+                    {{ form_errors(form.indexadaEn) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.direccionElectronicaRevista) }}
+                    {{ form_widget(form.direccionElectronicaRevista) }}
+                    {{ form_errors(form.direccionElectronicaRevista) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.descripcionRevista) }}
+                    {{ form_widget(form.descripcionRevista) }}
+                    {{ form_errors(form.descripcionRevista) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: 67%;">
+                    <button style="margin-top: -17%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Visibilidad</th>
+                    <th>Indexada en</th>
+                    <th>Dirección electrónica</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombreRevista | default('') }}</td>
+                        <td>{{ item.visibilidad.nombre | default('') }}</td>
+                        <td>{{ item.indexadaEn | default('') }}</td>
+                        <td>{{ item.direccionElectronicaRevista | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_institucion_eliminar_revista', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+
+    </script>
+{% endblock %}

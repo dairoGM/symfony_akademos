@@ -19,7 +19,7 @@ class InstitucionRedesSociales extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Institucion")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Institucion $institucion;
 

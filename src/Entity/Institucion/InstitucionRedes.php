@@ -13,7 +13,7 @@ class InstitucionRedes extends BaseEntity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Institucion")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Institucion $institucion;
 
@@ -30,10 +30,10 @@ class InstitucionRedes extends BaseEntity
     private ?string $descripcionRed = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="RolRedes")
+     * @ORM\ManyToOne(targetEntity="RolRedesNacional")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?RolRedes $rolRedes;
+    private ?RolRedesNacional $rolRedes;
 
 
     /**
@@ -56,7 +56,7 @@ class InstitucionRedes extends BaseEntity
     /**
      * @return Institucion|null
      */
-    public function getRolRedes(): ?RolRedes
+    public function getRolRedes(): ?RolRedesNacional
     {
         return $this->rolRedes;
     }
@@ -64,7 +64,7 @@ class InstitucionRedes extends BaseEntity
     /**
      * @param Institucion|null $rolRedes
      */
-    public function setRolRedes(?RolRedes $rolRedes): void
+    public function setRolRedes(?RolRedesNacional $rolRedes): void
     {
         $this->rolRedes = $rolRedes;
     }

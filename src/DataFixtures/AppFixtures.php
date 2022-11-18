@@ -13,7 +13,7 @@ use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\RecursosHumanos;
 use App\Entity\Institucion\RedSocial;
-use App\Entity\Institucion\RolRedes;
+use App\Entity\Institucion\RolRedesNacional;
 use App\Entity\Institucion\Visibilidad;
 use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\CategoriaDocente;
