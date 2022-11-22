@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar rol comisión{% endblock %}
+{% block title %}Adicionar rol{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar rol comisión</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar rol </h3>
 
             </div>
         </div>
@@ -20,6 +20,11 @@
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.copep) }}
+                    {{ form_widget(form.copep) }}
+                    {{ form_errors(form.copep) }}
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.activo) }}

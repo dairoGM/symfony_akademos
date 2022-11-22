@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modificar comisión{% endblock %}
+{% block title %}Adicionar copep{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Modificar comisión</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar copep</h3>
 
             </div>
         </div>
@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+
         <h6 style="padding-left: 1%" class="mb-0"><b><p style="font-size: 20px; font-weight: bold; margin-top: 5px;">
                     Miembros</p>
             </b></h6>
@@ -48,7 +49,8 @@
                     <th>Foto</th>
                     <th>Nombre y apellidos</th>
                     <th>Rol</th>
-
+                    <th>Universidad</th>
+                    <th>Correo</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,12 +72,14 @@
                             <select id="asignados_{{ item.id }}_rol"
                                     name="asignados_{{ item.id }}_rol">
                                 <option value="">Seleccione</option>
-                                {% for resp in rolComision %}
+                                {% for resp in rolCopep %}
                                     <option value="{{ resp.id }}">{{ resp.nombre }} </option>
                                 {% endfor %}
 
                             </select>
                         </td>
+                        <td>{{ item.universidad.nombre | default('') }}</td>
+                        <td>{{ item.email | default('') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -93,6 +97,8 @@
                     <th>Foto</th>
                     <th>Nombre y apellidos</th>
                     <th>Rol</th>
+                    <th>Universidad</th>
+                    <th>Correo</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -109,10 +115,11 @@
                             </a></td>
                         <td>{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
                         <td>{{ item.rolComision | default('') }}</td>
-
+                        <td>{{ item.universidad.nombre | default('') }}</td>
+                        <td>{{ item.email | default('') }}</td>
                         <td style="width: 3%" class="text-center">
                             <a title="Eliminar" class="btn btn-outline-danger elementRemove"
-                               data-url="{{ path('app_comision_eliminar_persona_asignada_modificar', {'id': item.id}) }}"
+                               data-url="{{ path('app_copep_eliminar_persona_asignada_registrar', {'id': item.id}) }}"
                                data-title=""
                                data-content="¿Está seguro que desea realizar la acción?" type="button"><i
                                         class="fa fa-trash"></i></a>
@@ -127,19 +134,27 @@
 
 
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_comision_index') }}" data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_copep_index') }}" data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
     </div>
+
 {% endblock %}
 
 {% block javascripts %}
     <script>
+        $('#copep_nombre').val(localStorage.getItem('nombre'));
+        $('#copep_descripcion').val(localStorage.getItem('descripcion'));
+        $('#copep_activo').val(localStorage.getItem('activo'));
 
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
+
+            localStorage.setItem('nombre', $('#copep_nombre').val());
+            localStorage.setItem('descripcion', $('#copep_descripcion').val());
+            localStorage.setItem('activo', $('#copep_activo').val());
             var flag = true;
             if ($('input[id*=asignados_]').length > 0) {
                 var arrayId = [];
@@ -155,7 +170,7 @@
 
                         } else {
                             flag = false;
-                            toastr.warning("El rol es obligatorio por cada miembro de la comisión.");
+                            toastr.warning("El rol es obligatorio por cada miembro de la copep.");
                             return;
                         }
                     }
@@ -168,13 +183,13 @@
                         message: 'Por favor espere...',
                         textColor: "white"
                     });
-                    $.post("{{ path('app_comision_asociar_persona_modificar') }}",
+                    $.post("{{ path('app_copep_asociar_persona_registrar') }}",
                         {
                             arrayId: arrayId
                         },
                         function (data) {
                             HoldOn.close()
-                            $(window).attr('location', "{{ path('app_comision_modificar', {'id': comision.id}) }}")
+                            $(window).attr('location', "{{ path('app_copep_registrar') }}")
                         });
                 } else {
                     HoldOn.close()

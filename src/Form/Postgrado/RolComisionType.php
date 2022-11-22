@@ -18,7 +18,7 @@ class RolComisionType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
@@ -28,6 +28,9 @@ class RolComisionType extends AbstractType
             ->add('activo', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Habilitado'
+            ])
+            ->add('copep', CheckboxType::class, [
+                'required' => false,
             ]);
     }
 

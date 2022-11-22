@@ -349,7 +349,8 @@ class AppFixtures extends Fixture
         }
 
 
-        $tbn_rama_ciencia = ['CNE-Ciencias Naturales y Exactas',
+        $tbn_rama_ciencia = [
+            'CNE-Ciencias Naturales y Exactas',
             'CT-Ciencias Técnicas',
             'CA-Ciencias Agropecuarias',
             'CE-Ciencias Económicas',
@@ -360,7 +361,9 @@ class AppFixtures extends Fixture
         ];
         foreach ($tbn_rama_ciencia as $value) {
             $rama_ciencia = new RamaCiencia();
-            $rama_ciencia->setNombre($value);
+            $temp = explode('-', $value);
+            $rama_ciencia->setNombre($temp[1]);
+            $rama_ciencia->setSiglas($temp[0]);
             $manager->persist($rama_ciencia);
         }
 

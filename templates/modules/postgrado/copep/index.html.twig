@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Rol{% endblock %}
+{% block title %}Copep{% endblock %}
 
 {% block body %}
 
@@ -10,8 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de roles</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_rol_comision_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de Copep</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_copep_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -24,7 +24,6 @@
                 <tr>
                     <th>No.</th>
                     <th>Nombre</th>
-                    <th>Copep</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -35,13 +34,6 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
                         <td width="3%" class="-text-center">
-                            {% if '1' == item.copep %}
-                                <span class="ms-status -active">Habilitado</span>
-                            {% else %}
-                                <span class="ms-status">Deshabilitado</span>
-                            {% endif %}
-                        </td>
-                        <td width="3%" class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
                             {% else %}
@@ -50,17 +42,17 @@
                         </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_rol_comision_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles del rol">
+                                    data-url="{{ path('app_copep_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la copep">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_rol_comision_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_copep_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_rol_comision_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_copep_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -78,3 +70,10 @@
 {% endblock %}
 
 
+{% block javascripts %}
+    <script>
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('descripcion');
+        localStorage.removeItem('activo');
+    </script>
+{% endblock %}
