@@ -30,16 +30,11 @@
                         <p>Solicitudes de programas</p>
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a href="{{ path('app_copep_index') }}"
+                    <a href="{{ path('app_programas_aprobados_index') }}"
                        class="nav-link nav-link-menu">
-                        <p>Copep</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_comision_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Comisiones</p>
+                        <p>Programas aprobados</p>
                     </a>
                 </li>
             </ul>
@@ -54,6 +49,18 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_copep_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Copep</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_comision_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Comisiones</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ path('app_tipo_programa_index') }}"
                        class="nav-link nav-link-menu">

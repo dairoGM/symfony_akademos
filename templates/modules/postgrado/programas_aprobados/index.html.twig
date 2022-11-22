@@ -1,0 +1,67 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Programas aprobados{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de programas aprobados</h3>
+{#                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}"><i#}
+{#                            class="fa fa-plus"></i>#}
+{#                </a>#}
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Tipo de programa</th>
+                    <th>Código</th>
+                    <th>Universidad</th>
+                    <th>Resolución</th>
+                    <th>Coordinador</th>
+                    <th>Categoría de acreditación</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoPrograma.nombre | default('') }}</td>
+                        <td>{{ item.codigo | default('') }}</td>
+                        <td>{{ item.universidad.nombre | default('') }}</td>
+                        <td> </td>
+                        <td>{{ item.nombreCoordinador | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                        <td width="5%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles del programa">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
