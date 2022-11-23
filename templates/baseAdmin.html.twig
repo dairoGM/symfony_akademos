@@ -184,24 +184,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                {% if hasRoles('ROLE_HOME_ADMIN') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_administracion_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'administracion' %} active {% endif %}">Administración</a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_personal_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'personal' %} active {% endif %}">Personal</a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_STRUCT') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_estructura_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'estructura' %} active {% endif %}">Estructura</a>
-                    </li>
-                {% endif %}
+                {#                {% if hasRoles('ROLE_HOME_ADMIN') %}#}
+                {#                    <li class=" d-none d-sm-inline-block">#}
+                {#                        <a href="{{ path('app_administracion_portada') }}"#}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'administracion' %} active {% endif %}">Administración</a>#}
+                {#                    </li>#}
+                {#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_PERSONAL') %}#}
+                {#                    <li class=" d-none d-sm-inline-block">#}
+                {#                        <a href="{{ path('app_personal_portada') }}"#}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'personal' %} active {% endif %}">Personal</a>#}
+                {#                    </li>#}
+                {#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_STRUCT') %}#}
+                {#                    <li class=" d-none d-sm-inline-block">#}
+                {#                        <a href="{{ path('app_estructura_portada') }}"#}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'estructura' %} active {% endif %}">Estructura</a>#}
+                {#                    </li>#}
+                {#                {% endif %}#}
                 {% if hasRoles('ROLE_HOME_PERSONAL') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_postgrado_portada') }}"
@@ -234,11 +234,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-
+                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_personal_portada') }}">
+                            <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom"
+                               title="Personal"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if hasRoles('ROLE_HOME_STRUCT') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_estructura_portada') }}">
+                            <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom"
+                               title="Estructura"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if hasRoles('ROLE_HOME_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_administracion_portada') }}">
+                            <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom"
+                               title="Administración"></i>
+                        </a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_dash_board') }}">
-                        <i class="fas fa-globe" data-toggle="tooltip" data-placement="bottom"
-                           title="Tablero de control"></i>
+                        <i class="fas fa-home" data-toggle="tooltip" data-placement="bottom"
+                           title="Dashboard"></i>
                     </a>
                 </li>
                 <!-- Navbar Search -->
@@ -290,8 +313,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         {# <!-- Message End --> #}
                         {# </a> #}
                         <div class="dropdown-divider"></div>
-                        <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir
-                            al chat</a>
+                        {#                        <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir#}
+                        {#                            al chat</a>#}
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
@@ -302,16 +325,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer"></div>
                 </li>
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">#}
-                {#                        <i class="fas fa-expand-arrows-alt"></i>#}
-                {#                    </a>#}
-                {#                </li>#}
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
-                {#                        <i class="fas fa-th-large"></i>#}
-                {#                    </a>#}
-                {#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">#}
+{#                        <i class="fas fa-expand-arrows-alt"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
+{#                        <i class="fas fa-th-large"></i>#}
+{#                    </a>#}
+{#                </li>#}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}" role="button">
                         <i class="fas fa-sign-out-alt"></i>

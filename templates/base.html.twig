@@ -36,8 +36,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('assets/SimpleLineMES/simple-line-icons-es.css') }}">
 
 
-{#    <link rel="icon" type="image/x-icon"#}
-{#          href="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}">#}
+    {#    <link rel="icon" type="image/x-icon"#}
+    {#          href="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}">#}
 
 
     <!-- Theme style -->
@@ -320,23 +320,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="d-sm-inline-block">
-                <a href="{{ path('app_home') }}"
-                   class="nav-link  {% if 'app_dash_board' in app.request.get('_route') %} active {% endif %} "
-                   data-toggle="tooltip" data-placement="top" title="Inicio"><i
-                            class="nav-icon fas fa-home"></i></a>
+{#                <a href="{{ path('app_home') }}"#}
+{#                   class="nav-link  {% if 'app_dash_board' in app.request.get('_route') %} active {% endif %} "#}
+{#                   data-toggle="tooltip" data-placement="top" title="Inicio"><i#}
+{#                            class="nav-icon fas fa-home"></i></a>#}
             </li>
-{#            <li class="d-sm-inline-block">#}
-{#                <a href="{{ path('app_calendario') }}"#}
-{#                   class="nav-link  {% if 'app_calendario' in app.request.get('_route') %} active {% endif %} "#}
-{#                   data-toggle="tooltip" data-placement="top" title="Planificación"><i#}
-{#                            class="nav-icon fas fa-calendar"></i></a>#}
-{#            </li>#}
-{#            <li class="d-sm-inline-block">#}
-{#                <a href="{{ path('app_todo_lista_cliente') }}"#}
-{#                   class="nav-link  {% if 'app_todo_lista_cliente' in app.request.get('_route') %} active {% endif %} "#}
-{#                   data-toggle="tooltip" data-placement="top" title=" Lista de chequeo"><i#}
-{#                            class="nav-icon fas fa-tasks"></i></a>#}
-{#            </li>#}
+            {#            <li class="d-sm-inline-block">#}
+            {#                <a href="{{ path('app_calendario') }}"#}
+            {#                   class="nav-link  {% if 'app_calendario' in app.request.get('_route') %} active {% endif %} "#}
+            {#                   data-toggle="tooltip" data-placement="top" title="Planificación"><i#}
+            {#                            class="nav-icon fas fa-calendar"></i></a>#}
+            {#            </li>#}
+            {#            <li class="d-sm-inline-block">#}
+            {#                <a href="{{ path('app_todo_lista_cliente') }}"#}
+            {#                   class="nav-link  {% if 'app_todo_lista_cliente' in app.request.get('_route') %} active {% endif %} "#}
+            {#                   data-toggle="tooltip" data-placement="top" title=" Lista de chequeo"><i#}
+            {#                            class="nav-icon fas fa-tasks"></i></a>#}
+            {#            </li>#}
 
 
             {# <li class="nav-item d-none d-sm-inline-block"> #}
@@ -383,10 +383,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
-{#                <a class="nav-link" data-toggle="dropdown" href="#">#}
-{#                    <i class="far fa-comments"></i>#}
-{#                    <span id="chat_cant_mensages" class="badge badge-danger navbar-badge"></span>#}
-{#                </a>#}
+                {#                <a class="nav-link" data-toggle="dropdown" href="#">#}
+                {#                    <i class="far fa-comments"></i>#}
+                {#                    <span id="chat_cant_mensages" class="badge badge-danger navbar-badge"></span>#}
+                {#                </a>#}
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <div id="lastmsg"></div>
                     {# <a href="#" class="dropdown-item"> #}
@@ -437,19 +437,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     {# <!-- Message End --> #}
                     {# </a> #}
                     <div class="dropdown-divider"></div>
-{#                    <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir#}
-{#                        al chat</a>#}
+                    {#                    <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir#}
+                    {#                        al chat</a>#}
                 </div>
             </li>
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
-                <a class="nav-link nbtn" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span>
+                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_personal_portada') }}">
+                    <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom"
+                       title="Personal"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer">
+            </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_STRUCT') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_estructura_portada') }}">
+                        <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom"
+                           title="Estructura"></i>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_administracion_portada') }}">
+                        <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom"
+                           title="Administración"></i>
+                    </a>
+                </li>
+            {% endif %}
 
-                </div>
+{#            <a class="nav-link nbtn" data-toggle="dropdown" href="#">#}
+{#                <i class="far fa-bell"></i>#}
+{#                <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span>#}
+{#            </a>#}
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer">
+
+            </div>
             </li>
             {# <li class="nav-item"> #}
             {# <a class="nav-link" data-widget="fullscreen" href="#" role="button"> #}
@@ -476,10 +501,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ path('app_home') }}" class="brand-link">
-{#                <img src="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}"#}
-{#                     alt="AdminLTE Logo" class="brand-image img-circle" style="opacity: .8">#}
-                <img  src="{{ asset('images/logo_principal.png') }}" >
-{#                <span class="brand-text font-weight-light" style="color: #4a4b4c; font-weight: bold !important;">AKADEMOS</span>#}
+                {#                <img src="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}"#}
+                {#                     alt="AdminLTE Logo" class="brand-image img-circle" style="opacity: .8">#}
+                <img src="{{ asset('images/logo_principal.png') }}">
+                {#                <span class="brand-text font-weight-light" style="color: #4a4b4c; font-weight: bold !important;">AKADEMOS</span>#}
             </a>
 
             <!-- Sidebar -->
@@ -574,36 +599,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
 
-{#            <li class="nav-item">#}
-{#                <a href="{{ path('app_calendario') }}" class="nav-link nav-link-menu"#}
-{#                   style="padding-left: 4px; padding-right: 4px">#}
-{#                    <i class="nav-icon fas fa-calendar"></i>#}
-{#                    <p>#}
-{#                        Planificación#}
-{#                    </p>#}
-{#                </a>#}
+            {#            <li class="nav-item">#}
+            {#                <a href="{{ path('app_calendario') }}" class="nav-link nav-link-menu"#}
+            {#                   style="padding-left: 4px; padding-right: 4px">#}
+            {#                    <i class="nav-icon fas fa-calendar"></i>#}
+            {#                    <p>#}
+            {#                        Planificación#}
+            {#                    </p>#}
+            {#                </a>#}
 
-{#            </li>#}
-{#            <li class="nav-item">#}
-{#                <a href="{{ path('app_todo_lista_cliente') }}" class="nav-link nav-link-menu"#}
-{#                   style="padding-left: 4px; padding-right: 4px">#}
-{#                    <i class="nav-icon fas fa-tasks"></i>#}
-{#                    <p>#}
-{#                        Lista de chequeo#}
-{#                    </p>#}
-{#                </a>#}
+            {#            </li>#}
+            {#            <li class="nav-item">#}
+            {#                <a href="{{ path('app_todo_lista_cliente') }}" class="nav-link nav-link-menu"#}
+            {#                   style="padding-left: 4px; padding-right: 4px">#}
+            {#                    <i class="nav-icon fas fa-tasks"></i>#}
+            {#                    <p>#}
+            {#                        Lista de chequeo#}
+            {#                    </p>#}
+            {#                </a>#}
 
-{#            </li>#}
-{#            <li class="nav-item">#}
-{#                <a href="{{ path('app_analisis_comparativo') }}" class="nav-link nav-link-menu"#}
-{#                   style="padding-left: 4px; padding-right: 4px">#}
-{#                    <i class="nav-icon fas fa-check-square"></i>#}
-{#                    <p>#}
-{#                        Análisis comparativo#}
-{#                    </p>#}
-{#                </a>#}
+            {#            </li>#}
+            {#            <li class="nav-item">#}
+            {#                <a href="{{ path('app_analisis_comparativo') }}" class="nav-link nav-link-menu"#}
+            {#                   style="padding-left: 4px; padding-right: 4px">#}
+            {#                    <i class="nav-icon fas fa-check-square"></i>#}
+            {#                    <p>#}
+            {#                        Análisis comparativo#}
+            {#                    </p>#}
+            {#                </a>#}
 
-{#            </li>#}
+            {#            </li>#}
             {# <li class="nav-item"> #}
             {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
             {# <i class="nav-icon fas fa-check-square"></i> #}
@@ -612,15 +637,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             {# </p> #}
             {# </a> #}
             {# </li> #}
-{#            <li class="nav-item">#}
-{#                <a href="https://channels.epe.rimed.cu/" target="_blank" class="nav-link"#}
-{#                   style="padding-left: 4px; padding-right: 4px">#}
-{#                    <i class="nav-icon fas fa-check-square"></i>#}
-{#                    <p>#}
-{#                        Comunicaciones#}
-{#                    </p>#}
-{#                </a>#}
-{#            </li>#}
+            {#            <li class="nav-item">#}
+            {#                <a href="https://channels.epe.rimed.cu/" target="_blank" class="nav-link"#}
+            {#                   style="padding-left: 4px; padding-right: 4px">#}
+            {#                    <i class="nav-icon fas fa-check-square"></i>#}
+            {#                    <p>#}
+            {#                        Comunicaciones#}
+            {#                    </p>#}
+            {#                </a>#}
+            {#            </li>#}
             {# <li class="nav-item"> #}
             {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
             {# <i class="nav-icon fas fa-check-square"></i> #}
@@ -768,7 +793,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     toastr.error(err);
                 }
             });
-         }
+        }
 
         loadNotifications();
 
