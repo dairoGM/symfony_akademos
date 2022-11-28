@@ -1,0 +1,126 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Programas de formación{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    {% include 'pages/modalDetail.html.twig' %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Programas de formación</h3>
+            </div>
+        </div>
+        {{ include('modules/institucion/institucion/short_details.html.twig', { 'item': institucion }) }}
+        <!-- /.card-header -->
+
+        {#        <div class="card-body">#}
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                    <li class="nav-item" id="option1">
+                        <a class="nav-link {% if option == 'option1' %} active {% endif %}"
+                           style="width: 120px; padding-left: 25px"
+                           id="tab1" data-toggle="pill"
+                           href="{{ path('app_institucion_programas_formacion', {'id': institucion.id, 'option':'option1'}) }}"
+                           role="tab" aria-controls="custom-tabs-four-home"
+                           aria-selected="true">Carreras</a>
+                    </li>
+                    <li class="nav-item" id="option2">
+                        <a class="nav-link {% if option == 'option2' %} active {% endif %}"
+                           style="width: 120px; padding-left: 25px"
+                           id="tab2" data-toggle="pill"
+                           href="{{ path('app_institucion_programas_formacion', {'id': institucion.id, 'option':'option2'}) }}"
+                           role="tab" aria-controls="custom-tabs-four-profile"
+                           aria-selected="true">Postgrados</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+                    <div class="tab-pane fade {% if option == 'option1' %} active show {% endif %}"
+                         id="custom-tabs-four-home" role="tabpanel"
+                         aria-labelledby="custom-tabs-four-home-tab">
+                        <table class="table table-bordered table-striped dataTable" id="tbl-carrera">
+                            <thead class="table-custom-header">
+                            <tr>
+                                <th>No.</th>
+                                <th>Carrera</th>
+                                <th class="text-center">Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in carreras %}
+                                <tr>
+                                    <td width="1%">{{ loop.index }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td width="10%" class="text-center">
+                                        <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                                data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
+                                                data-title="Detalles de la solicitud del programa">
+                                            <i class="fa fa-eye "></i>
+                                        </button>
+                                    </td> <td width="10%" class="text-center">
+                                        <button title="Detalles"
+                                                class="btn btn-outline-primary modalDetailAction"
+                                                data-url="{{ path('app_institucion_detail', {'id' : item.id}) }}"
+                                                data-title="Detalles de la institución">
+                                            <i class="fa fa-eye "></i>
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade {% if option == 'option2' %} active show {% endif %}"
+                         id="custom-tabs-four-profile" role="tabpanel"
+                         aria-labelledby="custom-tabs-four-profile-tab">
+                        <table class="table table-bordered table-striped dataTable" id="tbl-postgrados">
+                            <thead class="table-custom-header">
+                            <tr>
+                                <th>No.</th>
+                                <th>Programa de postgrado</th>
+                                <th class="text-center">Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in postgrados %}
+                                <tr>
+                                    <td width="1%">{{ loop.index }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td width="10%" class="text-center">
+                                        <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                                data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
+                                                data-title="Detalles de la solicitud del programa">
+                                            <i class="fa fa-eye "></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#tab1').click(function (e) {
+            window.location.href = e.currentTarget.href;
+        })
+        $('#tab2').click(function (e) {
+            window.location.href = e.currentTarget.href;
+        })
+
+    </script>
+{% endblock %}

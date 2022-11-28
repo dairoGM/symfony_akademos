@@ -28,6 +28,7 @@ use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
+use App\Repository\Postgrado\SolicitudProgramaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -600,5 +601,32 @@ class InstitucionController extends AbstractController
         }
     }
 
-
+    /**
+     * @Route("/{id}/programas_formacion/{option}", name="app_institucion_programas_formacion", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @return Response
+     */
+    public function programasFormacion(Request $request, Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository)
+    {
+//        try {
+        $postgrados = [];
+        $carreras = [];
+        if ($option == 'option1') {
+            $carreras = [];
+        }
+        if ($option == 'option2') {
+            $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId()]);
+        }
+        return $this->render('modules/institucion/institucion/listar_programas_formacion.html.twig', [
+            'carreras' => $carreras,
+            'postgrados' => $postgrados,
+            'institucion' => $institucion,
+            'option' => $option
+        ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
+//        }
+    }
 }
