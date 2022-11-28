@@ -1,0 +1,71 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar recursos humanos{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    {% include 'pages/modalDetail.html.twig' %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Asignar recursos humanos</h3>
+            </div>
+        </div>
+        {{ include('modules/institucion/institucion/short_details.html.twig', { 'item': institucion }) }}
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable" id="tbl-carrera">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Recursos humanos</th>
+                    <th>Cantidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in recursosHumanos %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td width="20%"><input style="width: 100%" type="text" id="rh_{{ item.id }}"
+                                               name="rh_{{ item.id }}"
+                                               value="{{ recursosHumanosAsignados[item.id] | default(0) }}"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('input[id*="rh_"]').on('blur', function (e) {
+            var valor = $(this).val();
+            var id = e.currentTarget.id.split('_')[1];
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_institucion_asignar_recursos_humanos', {'id': institucion.id}) }}",
+                {
+                    id: id,
+                    valor: valor,
+                },
+                function (data) {
+                console.log(data);
+                    toastr.success("El elemento ha sido modificado correctamente.");
+                    // setTimeout(function () {
+                    //     $(window).attr('location', window.location)
+                    // }, 500);
+                    HoldOn.close()
+                });
+        })
+    </script>
+{% endblock %}

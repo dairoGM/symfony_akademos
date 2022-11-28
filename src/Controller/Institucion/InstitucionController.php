@@ -6,6 +6,7 @@ use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\InstitucionCentrosEstudios;
 use App\Entity\Institucion\InstitucionEditorial;
 use App\Entity\Institucion\InstitucionFacultades;
+use App\Entity\Institucion\InstitucionRecursoHumano;
 use App\Entity\Institucion\InstitucionRedes;
 use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\Institucion\InstitucionRevistaCientifica;
@@ -23,11 +24,13 @@ use App\Form\Institucion\NombreDescripcionType;
 use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
+use App\Repository\Institucion\InstitucionRecursoHumanoRepository;
 use App\Repository\Institucion\InstitucionRedesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
+use App\Repository\Institucion\RecursosHumanosRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -609,24 +612,68 @@ class InstitucionController extends AbstractController
      */
     public function programasFormacion(Request $request, Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
-//        try {
-        $postgrados = [];
-        $carreras = [];
-        if ($option == 'option1') {
+        try {
+            $postgrados = [];
             $carreras = [];
+            if ($option == 'option1') {
+                $carreras = [];
+            }
+            if ($option == 'option2') {
+                $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId()]);
+            }
+            return $this->render('modules/institucion/institucion/listar_programas_formacion.html.twig', [
+                'carreras' => $carreras,
+                'postgrados' => $postgrados,
+                'institucion' => $institucion,
+                'option' => $option
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
         }
-        if ($option == 'option2') {
-            $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId()]);
-        }
-        return $this->render('modules/institucion/institucion/listar_programas_formacion.html.twig', [
-            'carreras' => $carreras,
-            'postgrados' => $postgrados,
-            'institucion' => $institucion,
-            'option' => $option
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
-//        }
     }
+
+    /**
+     * @Route("/{id}/asignar_recursos_humanos", name="app_institucion_asignar_recursos_humanos", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param RecursosHumanosRepository $recursosHumanosRepository
+     * @param InstitucionRecursoHumanoRepository $institucionRecursoHumano
+     * @return Response
+     */
+    public function asignarRecursosHumanos(Request $request, Institucion $institucion, RecursosHumanosRepository $recursosHumanosRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository)
+    {
+        try {
+            $allPost = $request->request->all();
+            if (isset($allPost['id']) && !empty($allPost['id']) && isset($allPost['valor']) && !empty($allPost['valor'])) {
+                $entidad = $institucionRecursoHumanoRepository->findOneBy(['institucion' => $institucion->getId(), 'recursoHumano' => $allPost['id']]);
+                if (empty($entidad)) {
+                    $entidad = new InstitucionRecursoHumano();
+                }
+                $entidad->setInstitucion($institucion);
+                $entidad->setCantidad($allPost['valor']);
+                $entidad->setRecursoHumano($recursosHumanosRepository->find($allPost['id']));
+                $institucionRecursoHumanoRepository->edit($entidad, true);
+            }
+
+
+            $recursosHumanosAsignados = [];
+            $rrhhAsignados = $institucionRecursoHumanoRepository->findBy(['institucion' => $institucion->getId()]);
+            if (is_array($rrhhAsignados)) {
+                foreach ($rrhhAsignados as $value) {
+                    $recursosHumanosAsignados[$value->getRecursoHumano()->getId()] = $value->getCantidad();
+                }
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_recursos_humanos.html.twig', [
+                'institucion' => $institucion,
+                'recursosHumanos' => $recursosHumanosRepository->findBy(['activo' => true]),
+                'recursosHumanosAsignados' => $recursosHumanosAsignados
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
+        }
+    }
+
 }
