@@ -35,6 +35,7 @@ use App\Entity\Postgrado\ModalidadPrograma;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\RamaCiencia;
+use App\Entity\Postgrado\RolComision;
 use App\Entity\Postgrado\TipoPrograma;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
@@ -272,7 +273,7 @@ class AppFixtures extends Fixture
             $manager->persist($categoria_categorizacion);
         }
 
-        $tbn_estado_programa = ['Nuevo', 'En revisión', 'Aprobado por comisión', 'Aprobado', 'No aprobado'];
+        $tbn_estado_programa = ['Nuevo', 'En revisión', 'Analizado por comisión', 'Revisado', 'Aprobado', 'Rechazado'];
         foreach ($tbn_estado_programa as $value) {
             $estado_programa = new EstadoPrograma();
             $estado_programa->setNombre($value);
@@ -495,6 +496,17 @@ class AppFixtures extends Fixture
             $recursos_humanos = new RecursosHumanos();
             $recursos_humanos->setNombre($value);
             $manager->persist($recursos_humanos);
+        }
+
+
+        $rolComision[] = [
+            'Jefe de comisión',
+            'Miembro'
+        ];
+        foreach ($rolComision as $value) {
+            $item = new RolComision();
+            $item->setNombre($value);
+            $manager->persist($item);
         }
 
 

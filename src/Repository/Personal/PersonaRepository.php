@@ -89,13 +89,13 @@ class PersonaRepository extends ServiceEntityRepository
             $qb->andWhere('qb.id NOT IN (:string)');
             $qb->setParameter('string', $arrayIdPersons, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
         }
-        $subQuery = $this->getEntityManager()->getRepository('App\Entity\Postgrado\MiembrosCopep')->createQueryBuilder('subQb')
-            ->select('p.id')
-            ->innerJoin('subQb.miembro', 'p')
-            ->innerJoin('subQb.copep', 'e')
-            ->andWhere("e.activo = true");
-        $exp = $qb->expr()->in('qb.id', $subQuery->getDQL());
-        $qb->andWhere($exp);
+//        $subQuery = $this->getEntityManager()->getRepository('App\Entity\Postgrado\MiembrosCopep')->createQueryBuilder('subQb')
+//            ->select('p.id')
+//            ->innerJoin('subQb.miembro', 'p')
+//            ->innerJoin('subQb.copep', 'e')
+//            ->andWhere("e.activo = true");
+//        $exp = $qb->expr()->in('qb.id', $subQuery->getDQL());
+//        $qb->andWhere($exp);
 
         $qb->orderBy('qb.primerNombre');
         $resul = $qb->getQuery()->getResult();

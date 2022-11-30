@@ -2,17 +2,25 @@
 
 namespace App\Controller\Postgrado;
 
+use App\Entity\NotificacionesUsuario;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\SolicitudProgramaComision;
+use App\Entity\Postgrado\SolicitudProgramaDictamen;
 use App\Entity\Security\User;
 use App\Form\Postgrado\AprobarProgramaType;
 use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\NoAprobarProgramaType;
+use App\Form\Postgrado\SolicitudProgramaDictamenType;
 use App\Form\Postgrado\SolicitudProgramaType;
+use App\Repository\NotificacionesUsuarioRepository;
+use App\Repository\Personal\PersonaRepository;
 use App\Repository\Postgrado\ComisionRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
+use App\Repository\Postgrado\MiembrosComisionRepository;
+use App\Repository\Postgrado\RolComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
+use App\Repository\Postgrado\SolicitudProgramaDictamenRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
 use App\Services\TraceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -281,6 +289,8 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/{id}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
      * @param Request $request
+     * @param MiembrosComisionRepository $miembrosComisionRepository
+     * @param NotificacionesUsuarioRepository $notificacionesUsuarioRepository
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @param EstadoProgramaRepository $estadoProgramaRepository
      * @param SolicitudPrograma $solicitudPrograma
@@ -288,7 +298,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asignarComision(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
+    public function asignarComision(Request $request, MiembrosComisionRepository $miembrosComisionRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
     {
         try {
             $form = $this->createForm(ComisionProgramaType::class);
@@ -306,6 +316,19 @@ class SolicitudProgramaController extends AbstractController
                     $nueva->setSolicitudPrograma($solicitudPrograma);
                     $nueva->setComision($comisionRepository->find($value));
                     $solicitudProgramaComisionRepository->add($nueva, true);
+
+                    /*Notificacion*/
+                    $miembros = $miembrosComisionRepository->findBy(['comision' => $value]);
+                    if (is_array($miembros)) {
+                        foreach ($miembros as $valueMiembros) {
+                            $nuevaNotificacion = new NotificacionesUsuario();
+                            $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
+                            $nuevaNotificacion->setLeido(false);
+                            $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudPrograma->getNombre() . ' le ha sido asignada para revisión.');
+                            $nuevaNotificacion->setUsuarioEnvia($this->getUser());
+                            $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                        }
+                    }
                 }
 
                 $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(2));
@@ -332,4 +355,91 @@ class SolicitudProgramaController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/{id}/asociar_dictamen", name="app_solicitud_programa_asociar_dictamen", methods={"GET", "POST"})
+     * @param Request $request
+     * @param SolicitudPrograma $solicitudPrograma
+     * @param SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository
+     * @return Response
+     */
+    public function asociarDictamen(Request $request, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
+    {
+        try {
+            $entidad = new SolicitudProgramaDictamen();
+            $comisiones = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            $array = [];
+            foreach ($comisiones as $values) {
+                if (!in_array($values->getComision()->getId(), $array)) {
+                    $array[] = $values->getComision()->getId();
+                }
+            }
+            $choices = [
+                'arrayIdsComision' => $array
+            ];
+
+            $form = $this->createForm(SolicitudProgramaDictamenType::class, $entidad, $choices);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId(), 'rolComision' => $request->request->all()['solicitud_programa_dictamen']['rolComision']]);
+                if (empty($exist)) {
+                    if (!empty($_FILES['solicitud_programa_dictamen']['name']['dictamen'])) {
+                        $file = $form['dictamen']->getData();
+                        $file_name = $_FILES['solicitud_programa_dictamen']['name']['dictamen'];
+                        $entidad->setDictamen($file_name);
+                        $file->move("uploads/solicitud_programa/dictamen", $file_name);
+                    }
+
+
+                    $entidad->setSolicitudPrograma($solicitudPrograma);
+                    $entidad->setComision($comisionRepository->find($request->request->all()['solicitud_programa_dictamen']['comision']));
+                    $entidad->setRolComision($rolComisionRepository->find($request->request->all()['solicitud_programa_dictamen']['rolComision']));
+                    $solicitudProgramaDictamenRepository->add($entidad, true);
+
+
+                    //validar que la cantidad de dictamenes asignados con el rol de jefe de comision sea igual que la cantidad de comision
+
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/postgrado/solicitud_programa/asociar_dictamen.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma,
+                'personaAutenticada' => $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]),
+                'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_dictamen", name="app_solicitud_programa_eliminar_dictamen", methods={"GET"})
+     * @param Request $request
+     * @param SolicitudProgramaDictamen $solicitudProgramaDictamen
+     * @param SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository
+     * @return Response
+     */
+    public function eliminarDictamen(Request $request, SolicitudProgramaDictamen $solicitudProgramaDictamen, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
+    {
+        try {
+            if ($solicitudProgramaDictamen instanceof SolicitudProgramaDictamen) {
+                $solicitudProgramaDictamenRepository->remove($solicitudProgramaDictamen, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
 }

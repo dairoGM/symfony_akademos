@@ -1,0 +1,100 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asociar dictamen{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asociar dictamen</h3>
+
+            </div>
+        </div>
+        {{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': solicitudPrograma }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.dictamen) }}
+                    {{ form_widget(form.dictamen) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.dictamen) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.comision) }}
+                    {{ form_widget(form.comision) }}
+                    {{ form_errors(form.comision) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.rolComision) }}
+                    {{ form_widget(form.rolComision) }}
+                    {{ form_errors(form.rolComision) }}
+                </div>
+                <div style="margin-left: 95%" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Dictamen</th>
+                    <th>Comisión</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Rol en comisión</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+
+
+                        <td><a title="Descargar" target="_blank"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/dictamen/{{ item.dictamen }}">{{ item.dictamen }}</a>
+                        </td>
+                        <td>{{ item.comision.nombre | default('') }}</td>
+                        <td>{{ personaAutenticada.primerNombre | default('') ~' '~ personaAutenticada.segundoNombre | default('') ~ ' '~ personaAutenticada.primerApellido | default('') ~ ' '~ personaAutenticada.segundoApellido | default('') }}</td>
+                        <td>{{ item.rolComision.nombre | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#solicitud_programa_dictamen_dictamen').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
+    </script>
+{% endblock %}

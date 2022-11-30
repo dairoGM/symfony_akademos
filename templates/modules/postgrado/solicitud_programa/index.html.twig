@@ -69,15 +69,15 @@
                             {% endif %}
                             {% if item.estadoPrograma.id == 2 %}
                                 <a title="Dictamenes"
-                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   href="{{ path('app_solicitud_programa_asociar_dictamen', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-paperclip"></i>
                                 </a>
-                                <a title="Votar"
-                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-hand-pointer"></i>
-                                </a>
+{#                                <a title="Votar"#}
+{#                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"#}
+{#                                   class="btn btn-outline-primary"><i#}
+{#                                            class="fa fa-hand-pointer"></i>#}
+{#                                </a>#}
                             {% endif %}
 
                             {% if item.estadoPrograma.id == 3 %}
