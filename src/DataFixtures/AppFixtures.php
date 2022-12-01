@@ -499,8 +499,9 @@ class AppFixtures extends Fixture
         }
 
 
-        $rolComision[] = [
+        $rolComision = [
             'Jefe de comisión',
+            'Secretario(a)',
             'Miembro'
         ];
         foreach ($rolComision as $value) {

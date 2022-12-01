@@ -18,6 +18,7 @@ use App\Repository\Personal\PersonaRepository;
 use App\Repository\Postgrado\ComisionRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Postgrado\MiembrosComisionRepository;
+use App\Repository\Postgrado\MiembrosCopepRepository;
 use App\Repository\Postgrado\RolComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaDictamenRepository;
@@ -359,11 +360,16 @@ class SolicitudProgramaController extends AbstractController
     /**
      * @Route("/{id}/asociar_dictamen", name="app_solicitud_programa_asociar_dictamen", methods={"GET", "POST"})
      * @param Request $request
+     * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
+     * @param PersonaRepository $personaRepository
+     * @param ComisionRepository $comisionRepository
+     * @param RolComisionRepository $rolComisionRepository
      * @param SolicitudPrograma $solicitudPrograma
      * @param SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository
+     * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asociarDictamen(Request $request, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
+    public function asociarDictamen(Request $request, MiembrosCopepRepository $miembrosCopepRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
     {
         try {
             $entidad = new SolicitudProgramaDictamen();
@@ -397,8 +403,24 @@ class SolicitudProgramaController extends AbstractController
                     $entidad->setRolComision($rolComisionRepository->find($request->request->all()['solicitud_programa_dictamen']['rolComision']));
                     $solicitudProgramaDictamenRepository->add($entidad, true);
 
-
                     //validar que la cantidad de dictamenes asignados con el rol de jefe de comision sea igual que la cantidad de comision
+                    $cantidadComisiones = count($solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]));
+                    $cantidadDictamenRolJefe = count($solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId(), 'rolComision' => 1]));
+
+                    if ($cantidadComisiones == $cantidadDictamenRolJefe) {
+                        $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(3)); //Analizado por comisión
+                        $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                    }
+                    /*Notificacion (Notificar a la presidenta y al secretario del la copep)*/
+                    $presidentaSecretarioCopep = $miembrosCopepRepository->getPresidenteSecretario([1, 2]);
+                    foreach ($presidentaSecretarioCopep as $valueMiembros) {
+                        $nuevaNotificacion = new NotificacionesUsuario();
+                        $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
+                        $nuevaNotificacion->setLeido(false);
+                        $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudPrograma->getNombre() . ' ya tiene todos los dictamenes correspondiente y estan listos para revisar.');
+                        $nuevaNotificacion->setUsuarioEnvia($this->getUser());
+                        $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                    }
 
 
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -427,11 +449,22 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository
      * @return Response
      */
-    public function eliminarDictamen(Request $request, SolicitudProgramaDictamen $solicitudProgramaDictamen, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
+    public function eliminarDictamen(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, SolicitudProgramaDictamen $solicitudProgramaDictamen, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
     {
         try {
             if ($solicitudProgramaDictamen instanceof SolicitudProgramaDictamen) {
                 $solicitudProgramaDictamenRepository->remove($solicitudProgramaDictamen, true);
+
+
+                $cantidadComisiones = count($solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()]));
+                $cantidadDictamenRolJefe = count($solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId(), 'rolComision' => 1]));
+
+                if ($cantidadComisiones != $cantidadDictamenRolJefe) {
+                    $solicitudProgramaDictamen->getSolicitudPrograma()->setEstadoPrograma($estadoProgramaRepository->find(2));
+                    $solicitudProgramaRepository->edit($solicitudProgramaDictamen->getSolicitudPrograma(), true);
+                }
+
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
             }
