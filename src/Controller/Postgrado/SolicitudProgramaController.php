@@ -3,9 +3,11 @@
 namespace App\Controller\Postgrado;
 
 use App\Entity\NotificacionesUsuario;
+use App\Entity\Personal\Persona;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\SolicitudProgramaComision;
 use App\Entity\Postgrado\SolicitudProgramaDictamen;
+use App\Entity\Postgrado\SolicitudProgramaVotacion;
 use App\Entity\Security\User;
 use App\Form\Postgrado\AprobarProgramaType;
 use App\Form\Postgrado\CambioEstadoProgramaType;
@@ -24,6 +26,7 @@ use App\Repository\Postgrado\RolComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaDictamenRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Repository\Postgrado\SolicitudProgramaVotacionRepository;
 use App\Services\TraceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -389,7 +392,7 @@ class SolicitudProgramaController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $exist = $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId(), 'rolComision' => $request->request->all()['solicitud_programa_dictamen']['rolComision']]);
+                $exist = $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId(), 'rolComision' => $request->request->all()['solicitud_programa_dictamen']['rolComision'], 'comision' => $request->request->all()['solicitud_programa_dictamen']['comision']]);
                 if (empty($exist)) {
                     if (!empty($_FILES['solicitud_programa_dictamen']['name']['dictamen'])) {
                         $file = $form['dictamen']->getData();
@@ -489,9 +492,9 @@ class SolicitudProgramaController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!empty($_FILES['revision_dictamen']['name']['dictamenFinal'])) {
-                    $file = $form['dictamenFinal']->getData();
-                    $file_name = $_FILES['revision_dictamen']['name']['dictamenFinal'];
+                if (!empty($_FILES['revision_dictamen']['name']['dictamenGeneral'])) {
+                    $file = $form['dictamenGeneral']->getData();
+                    $file_name = $_FILES['revision_dictamen']['name']['dictamenGeneral'];
                     $solicitudPrograma->setDictamenFinal($file_name);
                     $file->move("uploads/solicitud_programa/dictamen_general", $file_name);
                 }
@@ -507,9 +510,8 @@ class SolicitudProgramaController extends AbstractController
                     $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
                 }
 
-                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(4));
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(4));//Revisado
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
-
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
@@ -527,6 +529,72 @@ class SolicitudProgramaController extends AbstractController
     }
 
 
+    /**
+     * @Route("/{id}/votacion", name="app_solicitud_programa_votacion", methods={"GET", "POST"})
+     * @param SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository
+     * @param SolicitudPrograma $solicitudPrograma
+     * @return Response
+     */
+    public function votacion(SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, PersonaRepository $personaRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
+    {
+        try {
+            $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+            $miembroCopep = $miembrosCopepRepository->getMiembroCopepDadoIdPersona($personaAutenticada->getId());
+
+            return $this->render('modules/postgrado/solicitud_programa/votacion.html.twig', [
+                    'solicitudPrograma' => $solicitudPrograma,
+                    'miembroCopep' => $miembroCopep,
+                    'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])]
+            );
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_votacion', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/votar", name="app_solicitud_programa_votacion_guardar", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function votar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, SolicitudProgramaRepository $solicitudProgramaRepository, MiembrosCopepRepository $miembrosCopepRepository)
+    {
+        try {
+            $allPost = $request->request->all();
+            $existe = $solicitudProgramaVotacionRepository->findBy(['miembrosCopep' => $allPost['miembroCopep'], 'solicitudPrograma' => $allPost['solicitudPrograma']]);
+            if (isset($existe[0])) {
+                $solicitudProgramaVotacionRepository->remove($existe[0], true);
+            }
+
+            $solicitudProgramaEntidad = $solicitudProgramaRepository->find($allPost['solicitudPrograma']);
+            $nuevo = new SolicitudProgramaVotacion();
+            $nuevo->setSolicitudPrograma($solicitudProgramaEntidad);
+            $nuevo->setVoto(boolval($allPost['voto']));
+            $nuevo->setMiembrosCopep($miembrosCopepRepository->find($allPost['miembroCopep']));
+            $solicitudProgramaVotacionRepository->add($nuevo, true);
+
+
+            $cantidadMiembrosCopep = count($miembrosCopepRepository->getMiembros());
+            $cantidadVotosSi = count($solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $allPost['solicitudPrograma'], 'voto' => true]));
+            $cantidadVotosNo = count($solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $allPost['solicitudPrograma'], 'voto' => false]));
+
+
+            if ($cantidadVotosSi > ($cantidadMiembrosCopep / 2) + 1) {
+                $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(5));// 'Aprobado'
+                $solicitudProgramaRepository->edit($solicitudProgramaEntidad, true);
+
+            } else if ($cantidadVotosNo > ($cantidadMiembrosCopep / 2) + 1) {
+                $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(6));// 'Rechazado'
+                $solicitudProgramaRepository->edit($solicitudProgramaEntidad, true);
+            }
+
+
+            return $this->json(true);
+        } catch (\Exception $exception) {
+            return $this->json(false);
+        }
+    }
 }
 
 

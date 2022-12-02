@@ -1,0 +1,107 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Votación por la solicitud de programa{% endblock %}
+{% block stylesheets %}
+    <style>
+
+
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Votación por la solicitud de programa</h3>
+
+            </div>
+        </div>
+        {{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': solicitudPrograma }) }}
+
+        <!-- /.card-header -->
+
+        <div class="card-body">
+            <div style="font-size: 20px">
+                <label style="padding-left: 46%">Voto</label>
+                <div class="row" style="margin-left: 45%">
+                    <div style="padding-top: 2%">
+                        <div style="cursor: pointer" class="form-check form-check-inline">
+                            <input style="cursor: pointer" class="form-check-input" type="radio" name="voto"
+                                   id="voto_si"
+                                   value="1">
+                            <label style="cursor: pointer" class="form-check-label" for="voto_si">Sí</label>
+                        </div>
+                        <div style="cursor: pointer" class="form-check form-check-inline">
+                            <input style="cursor: pointer" class="form-check-input" type="radio" name="voto"
+                                   id="voto_no"
+                                   value="0">
+                            <label style="cursor: pointer" class="form-check-label" for="voto_no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Voto</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.miembrosCopep.miembro.primerNombre | default('') }}</td>
+                        <td width="8%"><center> {% if item.voto %} Si {% else %} No {% endif %} </center></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $("input[name='voto']").change(function (e) {
+            bootbox.confirm({
+                title: 'Confirmación',
+                message: '¿Está seguro que desea realizar la acción?',
+                buttons: {
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirmar',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.post("{{ path('app_solicitud_programa_votacion_guardar') }}",
+                            {
+                                voto: $("input[name='voto']:checked").val(),
+                                solicitudPrograma: '{{ solicitudPrograma.id }}',
+                                miembroCopep: '{{ miembroCopep }}',
+                            },
+                            function (data) {
+                                if (data) {
+                                    toastr.success("La acción ha sido realizada satisfactoriamente. ");
+                                    // window.location.href = window.location
+                                }
+                            });
+                    } else {
+                        $("input[name='voto']").prop('checked', false)
+                    }
+                }
+            });
+        })
+
+    </script>
+{% endblock %}

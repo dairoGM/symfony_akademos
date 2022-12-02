@@ -48,6 +48,20 @@ class MiembrosCopepRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getMiembroCopepDadoIdPersona($personaId)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('qb.id')
+            ->innerJoin('qb.copep', 'c')
+            ->innerJoin('qb.miembro', 'm')
+            ->innerJoin('qb.rolComision', 'rc')
+            ->where("c.activo = true and m.id = $personaId");
+
+        $resul = $qb->getQuery()->getResult();
+        return isset($resul[0]) ? $resul[0]['id'] : null;
+    }
+
     public function getMiembros()
     {
         $qb = $this->createQueryBuilder('qb')

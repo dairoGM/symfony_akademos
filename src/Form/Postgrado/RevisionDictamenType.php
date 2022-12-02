@@ -22,7 +22,7 @@ class RevisionDictamenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dictamenFinal', FileType::class, [
+            ->add('dictamenGeneral', FileType::class, [
                 'label' => 'Dictamen general',
                 'mapped' => false,
                 'required' => true,

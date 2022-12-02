@@ -73,11 +73,13 @@
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-paperclip"></i>
                                 </a>
-{#                                <a title="Votar"#}
-{#                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"#}
-{#                                   class="btn btn-outline-primary"><i#}
-{#                                            class="fa fa-hand-pointer"></i>#}
-{#                                </a>#}
+                            {% endif %}
+                            {% if item.estadoPrograma.id == 4 %}
+                                <a title="Votar"
+                                   href="{{ path('app_solicitud_programa_votacion', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-hand-pointer"></i>
+                                </a>
                             {% endif %}
 
                             {% if item.estadoPrograma.id == 3 %}
@@ -87,12 +89,14 @@
                                             class="fa fa-book-open"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoPrograma.id == 4 %}
+                            {% if item.estadoPrograma.id == 5 %}
                                 <a title="Aprobar"
                                    href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-check"></i>
                                 </a>
+                            {% endif %}
+                            {% if item.estadoPrograma.id == 6 %}
                                 <a title="No aprobar"
                                    href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i

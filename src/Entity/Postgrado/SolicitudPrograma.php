@@ -202,6 +202,11 @@ class SolicitudPrograma extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
+    private ?string $dictamenGeneral = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
     private ?string $dictamenFinal = null;
 
     /**
@@ -220,6 +225,22 @@ class SolicitudPrograma extends BaseNomenclator
         $this->annoAcreditacion = $annoAcreditacion;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDictamenGeneral(): ?string
+    {
+        return $this->dictamenGeneral;
+    }
+
+    /**
+     * @param string|null $dictamenGeneral
+     */
+    public function setDictamenGeneral(?string $dictamenGeneral): void
+    {
+        $this->dictamenGeneral = $dictamenGeneral;
     }
 
 
