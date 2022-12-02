@@ -39,7 +39,7 @@ class TipoOrganismoController extends AbstractController
      */
     public function registrar(Request $request, TipoOrganismoRepository $tipoProgramaRepository)
     {
-//        try {
+        try {
             $catDocenteEntity = new TipoOrganismo();
             $form = $this->createForm(TipoOrganismoType::class, $catDocenteEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -52,10 +52,10 @@ class TipoOrganismoController extends AbstractController
             return $this->render('modules/pregrado/tipo_organismo/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_tipo_organismo_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_tipo_organismo_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
