@@ -74,8 +74,13 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.fechaFundacion) }}
-                    {{ form_widget(form.fechaFundacion) }}
-                    {{ form_errors(form.fechaFundacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaFundacion) }}
+                        {{ form_errors(form.fechaFundacion) }}
+                    </div>
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.categoriaAcreditacion) }}
@@ -112,20 +117,38 @@
             <hr style="margin-bottom: 5px;padding-left: 1%">
 
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+
+                <div class="col-4 form-group">
                     {{ form_label(form.sitioWeb) }}
-                    {{ form_widget(form.sitioWeb) }}
-                    {{ form_errors(form.sitioWeb) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                        </div>
+                        {{ form_widget(form.sitioWeb) }}
+                        {{ form_errors(form.sitioWeb) }}
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+
+
+                <div class="col-4 form-group">
                     {{ form_label(form.telefono) }}
-                    {{ form_widget(form.telefono) }}
-                    {{ form_errors(form.telefono) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.telefono) }}
+                        {{ form_errors(form.telefono) }}
+                    </div>
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.correo) }}
-                    {{ form_widget(form.correo) }}
-                    {{ form_errors(form.correo) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.correo) }}
+                        {{ form_errors(form.correo) }}
+                    </div>
                 </div>
             </div>
             <h6 class="mb-0"><b><p

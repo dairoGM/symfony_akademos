@@ -38,10 +38,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-4 form-group">
                     {{ form_label(form.direccionElectronicaRevista) }}
-                    {{ form_widget(form.direccionElectronicaRevista) }}
-                    {{ form_errors(form.direccionElectronicaRevista) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.direccionElectronicaRevista) }}
+                        {{ form_errors(form.direccionElectronicaRevista) }}
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.descripcionRevista) }}

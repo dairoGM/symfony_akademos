@@ -75,15 +75,25 @@
                     {{ form_widget(form.nombreCoordinador) }}
                     {{ form_errors(form.nombreCoordinador) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-4 form-group">
                     {{ form_label(form.correoCoordinador) }}
-                    {{ form_widget(form.correoCoordinador) }}
-                    {{ form_errors(form.correoCoordinador) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.correoCoordinador) }}
+                        {{ form_errors(form.correoCoordinador) }}
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-4 form-group">
                     {{ form_label(form.telefonoCoordinador) }}
-                    {{ form_widget(form.telefonoCoordinador) }}
-                    {{ form_errors(form.telefonoCoordinador) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.telefonoCoordinador) }}
+                        {{ form_errors(form.telefonoCoordinador) }}
+                    </div>
                 </div>
             </div>
         </div>

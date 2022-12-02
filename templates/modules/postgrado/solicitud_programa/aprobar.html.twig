@@ -39,10 +39,15 @@
 
             </div>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-4 form-group">
                     {{ form_label(form.fechaProximaAcreditacion) }}
-                    {{ form_widget(form.fechaProximaAcreditacion) }}
-                    {{ form_errors(form.fechaProximaAcreditacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaProximaAcreditacion) }}
+                        {{ form_errors(form.fechaProximaAcreditacion) }}
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.resolucionPrograma) }}

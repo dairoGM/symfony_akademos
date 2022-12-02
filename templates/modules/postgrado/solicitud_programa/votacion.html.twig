@@ -22,17 +22,40 @@
         <!-- /.card-header -->
 
         <div class="card-body">
+
+            {#            <div class="col-sm-6">#}
+
+            {#                <div class="form-group clearfix">#}
+            {#                    <div class="icheck-success d-inline">#}
+            {#                        <input type="radio" name="r3" checked="" id="radioSuccess1">#}
+            {#                        <label for="radioSuccess1">#}
+            {#                        </label>#}
+            {#                    </div>#}
+            {#                    <div class="icheck-danger d-inline">#}
+            {#                        <input type="radio" name="r3" id="radioSuccess2">#}
+            {#                        <label for="radioSuccess2">#}
+            {#                        </label>#}
+            {#                    </div>#}
+            {#                    <div class="icheck-success d-inline">#}
+            {#                        <input type="radio" name="r3" disabled="" id="radioSuccess3">#}
+            {#                        <label for="radioSuccess3">#}
+            {#                            Success radio#}
+            {#                        </label>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+
             <div style="font-size: 20px">
                 <label style="padding-left: 46%">Voto</label>
                 <div class="row" style="margin-left: 45%">
                     <div style="padding-top: 2%">
-                        <div style="cursor: pointer" class="form-check form-check-inline">
+                        <div style="cursor: pointer" class="form-check icheck-success d-inline">
                             <input style="cursor: pointer" class="form-check-input" type="radio" name="voto"
                                    id="voto_si"
                                    value="1">
                             <label style="cursor: pointer" class="form-check-label" for="voto_si">Sí</label>
                         </div>
-                        <div style="cursor: pointer" class="form-check form-check-inline">
+                        <div style="cursor: pointer; padding-left: 10%" class="form-check form-check-inline icheck-danger d-inline">
                             <input style="cursor: pointer" class="form-check-input" type="radio" name="voto"
                                    id="voto_no"
                                    value="0">
@@ -48,6 +71,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Foto</th>
                     <th>Nombre y apellidos</th>
                     <th>Voto</th>
                 </tr>
@@ -56,8 +80,18 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.miembrosCopep.miembro.primerNombre | default('') }}</td>
-                        <td width="8%"><center> {% if item.voto %} Si {% else %} No {% endif %} </center></td>
+                        <td width="2%">
+                            <a href="{% if item.miembrosCopep.miembro.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.miembrosCopep.miembro.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                               target="_blank">
+                                <img src="{% if item.miembrosCopep.miembro.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.miembrosCopep.miembro.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
+                            </a></td>
+                        <td>{{ item.miembrosCopep.miembro.primerNombre ~ ' ' ~ item.miembrosCopep.miembro.segundoNombre ~' '~ item.miembrosCopep.miembro.primerApellido ~ ' ' ~ item.miembrosCopep.miembro.segundoApellido }}</td>
+                        <td width="8%">
+                            <center> {% if item.voto %} <span
+                                        style="color: #28A745;font-weight: bold">Sí</span> {% else %}
+                                    <span style="color: #DC3545;font-weight: bold">No</span> {% endif %} </center>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -93,7 +127,7 @@
                             function (data) {
                                 if (data) {
                                     toastr.success("La acción ha sido realizada satisfactoriamente. ");
-                                    // window.location.href = window.location
+                                    window.location.href = window.location
                                 }
                             });
                     } else {

@@ -544,7 +544,7 @@ class SolicitudProgramaController extends AbstractController
             return $this->render('modules/postgrado/solicitud_programa/votacion.html.twig', [
                     'solicitudPrograma' => $solicitudPrograma,
                     'miembroCopep' => $miembroCopep,
-                    'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])]
+                    'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()], ['creado' => 'desc'])]
             );
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
