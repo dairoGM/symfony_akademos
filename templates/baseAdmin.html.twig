@@ -204,6 +204,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {#                {% endif %}#}
                 {% if hasRoles('ROLE_HOME_PERSONAL') %}
                     <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_pregrado_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Pregrado</a>
+                    </li>
+                {% endif %}
+
+                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                    <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_postgrado_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'postgrado' %} active {% endif %}">Postgrado</a>
                     </li>
@@ -325,16 +332,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer"></div>
                 </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">#}
-{#                        <i class="fas fa-expand-arrows-alt"></i>#}
-{#                    </a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
-{#                        <i class="fas fa-th-large"></i>#}
-{#                    </a>#}
-{#                </li>#}
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">#}
+                {#                        <i class="fas fa-expand-arrows-alt"></i>#}
+                {#                    </a>#}
+                {#                </li>#}
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
+                {#                        <i class="fas fa-th-large"></i>#}
+                {#                    </a>#}
+                {#                </li>#}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}" role="button">
                         <i class="fas fa-sign-out-alt"></i>
@@ -380,6 +387,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 {% if app.request.pathinfo|split('/')[1] == 'postgrado' %}
                     {% include 'pages/sidevar/postgrado.html.twig' %}
+                {% endif %}
+
+                {% if app.request.pathinfo|split('/')[1] == 'pregrado' %}
+                    {% include 'pages/sidevar/pregrado.html.twig' %}
                 {% endif %}
 
                 {% if app.request.pathinfo|split('/')[1] == 'institucion' %}

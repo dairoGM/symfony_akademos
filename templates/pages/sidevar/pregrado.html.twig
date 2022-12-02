@@ -1,0 +1,54 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('app_admin_home') }}"
+               class="nav-link nav-link-menu  {% if 'app_admin_home' in app.request.get('_route') %} active {% endif %}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Inicio
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Programas
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_solicitud_programa_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Solicitudes de programas</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#"
+               class="nav-link nav-link-menu">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    Configuración
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ path('app_tipo_programa_academico_index') }}"
+                       class="nav-link nav-link-menu">
+                        <p>Tipos de programas académicos</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

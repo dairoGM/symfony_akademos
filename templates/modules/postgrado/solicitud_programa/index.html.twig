@@ -81,6 +81,13 @@
                             {% endif %}
 
                             {% if item.estadoPrograma.id == 3 %}
+                                <a title="Revisar dictámenes"
+                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-book-open"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoPrograma.id == 4 %}
                                 <a title="Aprobar"
                                    href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
