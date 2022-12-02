@@ -1,0 +1,82 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Revisión de dictamenes{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Revisión de dictamenes</h3>
+
+            </div>
+        </div>
+        {{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': solicitudPrograma }) }}
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Comisión</th>
+                    <th>Dictamen</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.comision.nombre | default('') }}</td>
+                        <td><a style="cursor: pointer" title="Descargar" target="_blank"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/dictamen/{{ item.dictamen }}">{{ item.dictamen }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        </div>
+
+
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.dictamenFinal) }}
+                    {{ form_widget(form.dictamenFinal) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.dictamenFinal) }}
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+
+        {{ form_end(form) }}
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#revision_dictamen_dictamenFinal').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
+    </script>
+{% endblock %}

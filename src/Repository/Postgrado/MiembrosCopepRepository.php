@@ -48,7 +48,17 @@ class MiembrosCopepRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getMiembros()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->innerJoin('qb.copep', 'c')
+            ->innerJoin('qb.miembro', 'm')
+            ->innerJoin('qb.rolComision', 'rc')
+            ->where("c.activo = true");
 
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 
     public function getPresidenteSecretario($rolPresindeteSecretario)
     {

@@ -11,6 +11,7 @@ use App\Form\Postgrado\AprobarProgramaType;
 use App\Form\Postgrado\CambioEstadoProgramaType;
 use App\Form\Postgrado\ComisionProgramaType;
 use App\Form\Postgrado\NoAprobarProgramaType;
+use App\Form\Postgrado\RevisionDictamenType;
 use App\Form\Postgrado\SolicitudProgramaDictamenType;
 use App\Form\Postgrado\SolicitudProgramaType;
 use App\Repository\NotificacionesUsuarioRepository;
@@ -455,7 +456,6 @@ class SolicitudProgramaController extends AbstractController
             if ($solicitudProgramaDictamen instanceof SolicitudProgramaDictamen) {
                 $solicitudProgramaDictamenRepository->remove($solicitudProgramaDictamen, true);
 
-
                 $cantidadComisiones = count($solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()]));
                 $cantidadDictamenRolJefe = count($solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId(), 'rolComision' => 1]));
 
@@ -463,7 +463,6 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudProgramaDictamen->getSolicitudPrograma()->setEstadoPrograma($estadoProgramaRepository->find(2));
                     $solicitudProgramaRepository->edit($solicitudProgramaDictamen->getSolicitudPrograma(), true);
                 }
-
 
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
@@ -475,4 +474,60 @@ class SolicitudProgramaController extends AbstractController
             return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudProgramaDictamen->getSolicitudPrograma()->getId()], Response::HTTP_SEE_OTHER);
         }
     }
+
+
+    /**
+     * @Route("/{id}/revisar_dictamenes", name="app_solicitud_programa_revisar_dictamenes", methods={"GET", "POST"})
+     * @param Request $request
+     * @param SolicitudPrograma $solicitudPrograma
+     * @return Response
+     */
+    public function revisionDictamen(Request $request, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaRepository $solicitudProgramaRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
+    {
+        try {
+            $form = $this->createForm(RevisionDictamenType::class, $solicitudPrograma);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($_FILES['revision_dictamen']['name']['dictamenFinal'])) {
+                    $file = $form['dictamenFinal']->getData();
+                    $file_name = $_FILES['revision_dictamen']['name']['dictamenFinal'];
+                    $solicitudPrograma->setDictamenFinal($file_name);
+                    $file->move("uploads/solicitud_programa/dictamen_general", $file_name);
+                }
+
+                /*Notificacion*/
+                $presidentaSecretarioCopep = $miembrosCopepRepository->getMiembros();
+                foreach ($presidentaSecretarioCopep as $valueMiembros) {
+                    $nuevaNotificacion = new NotificacionesUsuario();
+                    $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
+                    $nuevaNotificacion->setLeido(false);
+                    $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudPrograma->getNombre() . ' esta lista para someter a votación.');
+                    $nuevaNotificacion->setUsuarioEnvia($this->getUser());
+                    $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                }
+
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(4));
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+
+            }
+
+            return $this->render('modules/postgrado/solicitud_programa/revisar_dictamen.html.twig', ['form' => $form->createView(),
+                    'solicitudPrograma' => $solicitudPrograma,
+                    'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])]
+            );
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_revisar_dictamenes', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
 }
+
+
+
