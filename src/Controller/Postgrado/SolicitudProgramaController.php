@@ -226,7 +226,7 @@ class SolicitudProgramaController extends AbstractController
                     $file->move("uploads/dictamen_final", $file_name);
                 }
 
-                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(4));
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(5));
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');

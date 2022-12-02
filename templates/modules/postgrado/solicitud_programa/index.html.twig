@@ -55,11 +55,11 @@
                                             class="fa fa-edit"></i>
                                 </a>
                             {% endif %}
-                            <a title="Descargar programa" target="_blank" class="btn btn-outline-primary"
-                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">
-                                <i
-                                        class="fa fa-download"></i>
-                            </a>
+{#                            <a title="Descargar programa" target="_blank" class="btn btn-outline-primary"#}
+{#                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">#}
+{#                                <i#}
+{#                                        class="fa fa-download"></i>#}
+{#                            </a>#}
                             {% if item.estadoPrograma.id == 1 %}
                                 <a title="Asignar comisión"
                                    href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
@@ -97,7 +97,7 @@
                                 </a>
                             {% endif %}
                             {% if item.estadoPrograma.id == 6 %}
-                                <a title="No aprobar"
+                                <a title="Rechazar"
                                    href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-times"></i>

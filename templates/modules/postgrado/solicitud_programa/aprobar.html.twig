@@ -94,12 +94,12 @@
         $('#aprobar_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
 
 
-        $('#cambio_estado_programa_resolucionPrograma').change(function () {
+        $('#aprobar_programa_resolucionPrograma').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
 
-        $('#cambio_estado_programa_dictamenFinal').change(function () {
+        $('#aprobar_programa_dictamenFinal').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
