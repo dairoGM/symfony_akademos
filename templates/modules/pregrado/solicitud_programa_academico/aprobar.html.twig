@@ -1,0 +1,110 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Aprobar programa{% endblock %}
+
+{% block body %}
+
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Aprobar programa</h3>
+            </div>
+        </div>
+
+        {{ include('modules/pregrado/solicitud_programa_academico/detail.html.twig', { 'item': solicitudPrograma }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cartaAprobacion) }}
+                    {{ form_widget(form.cartaAprobacion) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.cartaAprobacion) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ solicitudPrograma.cartaAprobacion }}">{{ solicitudPrograma.cartaAprobacion }}</a>
+                </div>
+
+
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaAprobacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaAprobacion) }}
+                        {{ form_errors(form.fechaAprobacion) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoDiurno) }}
+                    {{ form_widget(form.duracionCursoDiurno) }}
+                    {{ form_errors(form.duracionCursoDiurno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoPorEncuentro) }}
+                    {{ form_widget(form.duracionCursoPorEncuentro) }}
+                    {{ form_errors(form.duracionCursoPorEncuentro) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcionAprobacion) }}
+                    {{ form_widget(form.descripcionAprobacion) }}
+                    {{ form_errors(form.descripcionAprobacion) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_academico_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        var fecha = "{% if solicitudPrograma.fechaAprobacion is empty %}  {{ solicitudPrograma.fechaAprobacion | default('') }} {% else %}  {{ solicitudPrograma.fechaAprobacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#aprobar_solicitud_programa_academico_fechaAprobacion').val(fecha.replace(' ', ''));
+
+
+        $('#aprobar_solicitud_programa_academico_cartaAprobacion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
+        $('#aprobar_solicitud_programa_academico_fechaAprobacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno").bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+        $("#aprobar_solicitud_programa_academico_duracionCursoPorEncuentro").bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -38,12 +38,12 @@ class AprobarProgramaType extends AbstractType
             ->add('resolucionPrograma', FileType::class, [
                 'label' => 'Resolución del programa',
                 'mapped' => false,
-                'required' => true,
+                'required' => $options['resolucionPrograma'] == 'registrar',
             ])
             ->add('dictamenFinal', FileType::class, [
                 'label' => 'Dictamen',
                 'mapped' => false,
-                'required' => true,
+                'required' => $options['dictamenFinal'] == 'registrar',
             ])
             ->add('categoriaAcreditacion', EntityType::class, [
                 'label' => 'Categoría de acreditación',
@@ -69,6 +69,10 @@ class AprobarProgramaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SolicitudPrograma::class,
+            'resolucionPrograma' => null,
+            'dictamenFinal' => null,
         ]);
+
+
     }
 }

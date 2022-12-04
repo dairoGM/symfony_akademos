@@ -55,15 +55,17 @@
                                         class="fa fa-edit"></i>
                             </a>
                             <a title="Aprobar"
-                               href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                               href="{{ path('app_solicitud_programa_academico_aprobar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-check"></i>
                             </a>
-                            <a title="Rechazar"
-                               href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-times"></i>
-                            </a>
+{#                            {% if item.estadoProgramaAcademico.id  != 3 %}#}
+                                <a title="Rechazar"
+                                   href="{{ path('app_solicitud_programa_academico_rechazar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-times"></i>
+                                </a>
+{#                            {% endif %}#}
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_solicitud_programa_academico_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>

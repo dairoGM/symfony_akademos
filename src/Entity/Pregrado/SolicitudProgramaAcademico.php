@@ -6,8 +6,6 @@ use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\Institucion\CategoriaAcreditacion;
-use App\Entity\Institucion\Institucion;
 
 /**
  * @ORM\Entity
@@ -64,19 +62,38 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $fechaAprobacionn;
+    private $fechaAprobacion;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Regex(
+     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           match=   true,
+     *           message= "Caracteres no válidos, por favor verifique."
+     * )
+     */
+    private ?string $descripcionAprobacion = null;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Regex(
+     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           match=   true,
+     *           message= "Caracteres no válidos, por favor verifique."
+     * )
+     */
+    private ?string $descripcionNoAprobacion = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, length="255")
+     */
+    private ?int $duracionCursoDiurno = null;
 
 
     /**
      * @ORM\Column(type="integer", nullable=true, length="255")
      */
-    private ?integer $duracionCursoDiurno = null;
-
-
-    /**
-     * @ORM\Column(type="integer", nullable=true, length="255")
-     */
-    private ?integer $duracionCursoPorEncuentro = null;
+    private ?int $duracionCursoPorEncuentro = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -198,17 +215,17 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     /**
      * @return mixed
      */
-    public function getFechaAprobacionn()
+    public function getFechaAprobacion()
     {
-        return $this->fechaAprobacionn;
+        return $this->fechaAprobacion;
     }
 
     /**
-     * @param mixed $fechaAprobacionn
+     * @param mixed $fechaAprobacion
      */
-    public function setFechaAprobacionn($fechaAprobacionn): void
+    public function setFechaAprobacion($fechaAprobacion): void
     {
-        $this->fechaAprobacionn = $fechaAprobacionn;
+        $this->fechaAprobacion = $fechaAprobacion;
     }
 
     /**
@@ -243,6 +260,8 @@ class SolicitudProgramaAcademico extends BaseNomenclator
         $this->duracionCursoPorEncuentro = $duracionCursoPorEncuentro;
     }
 
+
+
     /**
      * @return string|null
      */
@@ -257,6 +276,38 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setDictamen(?string $dictamen): void
     {
         $this->dictamen = $dictamen;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcionAprobacion(): ?string
+    {
+        return $this->descripcionAprobacion;
+    }
+
+    /**
+     * @param string|null $descripcionAprobacion
+     */
+    public function setDescripcionAprobacion(?string $descripcionAprobacion): void
+    {
+        $this->descripcionAprobacion = $descripcionAprobacion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcionNoAprobacion(): ?string
+    {
+        return $this->descripcionNoAprobacion;
+    }
+
+    /**
+     * @param string|null $descripcionNoAprobacion
+     */
+    public function setDescripcionNoAprobacion(?string $descripcionNoAprobacion): void
+    {
+        $this->descripcionNoAprobacion = $descripcionNoAprobacion;
     }
 
 

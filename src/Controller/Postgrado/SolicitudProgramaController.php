@@ -193,7 +193,13 @@ class SolicitudProgramaController extends AbstractController
     public function aprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
-            $form = $this->createForm(AprobarProgramaType::class, $solicitudPrograma);
+            $choices = [
+                'resolucionPrograma' => empty($solicitudPrograma->getResolucionPrograma()) ? 'registrar' : 'modificar',
+                'dictamenFinal' => empty($solicitudPrograma->getDictamenFinal()) ? 'registrar' : 'modificar'
+            ];
+
+
+            $form = $this->createForm(AprobarProgramaType::class, $solicitudPrograma, $choices);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

@@ -2,9 +2,10 @@
 
 namespace App\Controller\Pregrado;
 
-use App\Entity\Pregrado\EstadoProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
+use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
+use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
@@ -140,5 +141,107 @@ class SolicitudProgramaAcademicoController extends AbstractController
             return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
         }
     }
+
+
+    /**
+     * @Route("/{id}/aprobar", name="app_solicitud_programa_academico_aprobar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
+     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function aprobar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    {
+        try {
+            $choices = [
+                'cartaAprobacion' => empty($solicitudPrograma->getCartaAprobacion()) ? 'registrar' : 'modificar'
+            ];
+
+            $form = $this->createForm(AprobarSolicitudProgramaAcademicoType::class, $solicitudPrograma, $choices);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_solicitud_programa_academico']['fechaAprobacion']));
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(2));
+                if (!empty($_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'])) {
+                    if ($solicitudPrograma->getCartaAprobacion() != null) {
+                        if (file_exists('uploads/pregrado/carta_aprobacion/' . $solicitudPrograma->getCartaAprobacion())) {
+                            unlink('uploads/pregrado/carta_aprobacion/' . $solicitudPrograma->getCartaAprobacion());
+                        }
+                    }
+
+                    $file = $form['cartaAprobacion']->getData();
+                    $ext = explode('.', $_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion']);
+                    $file_name = $_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'];
+                    $solicitudPrograma->setCartaAprobacion($file_name);
+                    $file->move("uploads/pregrado/carta_aprobacion/", $file_name);
+                }
+
+
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/pregrado/solicitud_programa_academico/aprobar.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/rechazar", name="app_solicitud_programa_academico_rechazar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
+     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function rechazar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    {
+//        try {
+        $choices = [
+            'dictamen' => empty($solicitudPrograma->getDictamen()) ? 'registrar' : 'modificar'
+        ];
+        $form = $this->createForm(NoAprobarSolicitudProgramaAcademicoType::class, $solicitudPrograma, $choices);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(3));
+            if (!empty($_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'])) {
+                if ($solicitudPrograma->getDictamen() != null) {
+                    if (file_exists('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen())) {
+                        unlink('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen());
+                    }
+                }
+
+                $file = $form['dictamen']->getData();
+                $ext = explode('.', $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen']);
+                $file_name = $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'];
+                $solicitudPrograma->setDictamen($file_name);
+                $file->move("uploads/pregrado/dictamen/", $file_name);
+            }
+
+
+            $solicitudProgramaRepository->edit($solicitudPrograma, true);
+            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('modules/pregrado/solicitud_programa_academico/no_aprobar.html.twig', [
+            'form' => $form->createView(),
+            'solicitudPrograma' => $solicitudPrograma
+        ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+//        }
+    }
+
 
 }
