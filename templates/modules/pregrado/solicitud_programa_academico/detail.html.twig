@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Tipo de programa académico:</b> {{ item.tipoProgramaAcademico.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Resolución: </b> <a target="_blank"
+                                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">{{ item.resolucion }}</a>
+        </h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Fundamentación: </b> <a target="_blank"
+                                                    href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ item.fundamentacion }}">{{ item.fundamentacion }}</a>
+        </h5>
+    </div>
+</div>
+
+

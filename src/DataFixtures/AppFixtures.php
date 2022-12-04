@@ -37,6 +37,7 @@ use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\RolComision;
 use App\Entity\Postgrado\TipoPrograma;
+use App\Entity\Pregrado\EstadoProgramaAcademico;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -510,6 +511,13 @@ class AppFixtures extends Fixture
             $manager->persist($item);
         }
 
+
+        $tbn_estado_programa_academico = ['Solicitado', 'Aprobado', 'Rechazado'];
+        foreach ($tbn_estado_programa_academico as $value) {
+            $estado_programa_academico = new EstadoProgramaAcademico();
+            $estado_programa_academico->setNombre($value);
+            $manager->persist($estado_programa_academico);
+        }
 
         $manager->flush();
     }
