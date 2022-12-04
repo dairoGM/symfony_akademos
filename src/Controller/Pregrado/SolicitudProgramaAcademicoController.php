@@ -205,7 +205,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function rechazar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-//        try {
+        try {
         $choices = [
             'dictamen' => empty($solicitudPrograma->getDictamen()) ? 'registrar' : 'modificar'
         ];
@@ -237,10 +237,10 @@ class SolicitudProgramaAcademicoController extends AbstractController
             'form' => $form->createView(),
             'solicitudPrograma' => $solicitudPrograma
         ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 

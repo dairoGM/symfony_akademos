@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Solicitudes de programas académicos aprobados{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de solicitudes de programas académicos aprobados</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Programa académico</th>
+                    <th>Tipo de programa académico</th>
+                    <th>Organismo demandante</th>
+                    <th>Fecha de aprobación</th>
+                    <th>Centro rector</th>
+                    <th>Duración del curso diurno</th>
+                    <th>Duración del curso por encuentro</th>
+
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
+                        <td>{{ item.organismoDemandante.nombre | default('') }}</td>
+                        {% if item.fechaAprobacion is not null %}
+                            <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td></td>
+                        <td>{{ item.duracionCursoDiurno | default('') }} años</td>
+                        <td>{{ item.duracionCursoPorEncuentro | default('') }} años</td>
+                        <td width="15%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_solicitud_programa_academico_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la solicitud de programa académico aprobada">
+                                <i class="fa fa-eye "></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
