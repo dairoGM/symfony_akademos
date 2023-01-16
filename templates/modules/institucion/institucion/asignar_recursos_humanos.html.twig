@@ -33,7 +33,7 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
                         <td width="20%"><input style="width: 100%" type="text" id="rh_{{ item.id }}"
-                                               name="rh_{{ item.id }}"
+                                               name="rh_{{ item.id }}" maxlength=4" minlength="1"
                                                value="{{ recursosHumanosAsignados[item.id] | default(0) }}"></td>
                     </tr>
                 {% endfor %}
@@ -45,6 +45,18 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        $('[id*=rh_]').bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
         $('input[id*="rh_"]').on('blur', function (e) {
             var valor = $(this).val();
             var id = e.currentTarget.id.split('_')[1];
