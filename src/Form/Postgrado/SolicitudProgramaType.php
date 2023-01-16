@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SolicitudProgramaType extends AbstractType
@@ -44,6 +45,7 @@ class SolicitudProgramaType extends AbstractType
             ->add('telefonoCoordinador', TextType::class, [
                 'label' => 'Teléfono',
                 'constraints' => [
+                    new Length(["max" => 8, 'maxMessage' => 'El número maximo de caracteres es {{ limit }}']),
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
