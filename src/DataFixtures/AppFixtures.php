@@ -340,7 +340,7 @@ class AppFixtures extends Fixture
             'duracion' => '5',
         ];
         $categoriaAcreditacion[] = [
-            'nombre' => 'De excelencia',
+            'nombre' => 'Excelencia',
             'duracion' => '7',
         ];
         foreach ($categoriaAcreditacion as $value) {
