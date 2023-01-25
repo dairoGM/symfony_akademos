@@ -19,7 +19,7 @@ class ApiInstitucionesController extends AbstractController
     /**
      * @Route("/listar_instituciones", name="Api_listarInstituciones", methods={"POST", "OPTIONS"}, defaults={"_format":"json"})
      * @param Request $request
-     * @param IdiomaRepository $institucionRepository
+     * @param InstitucionRepository $institucionRepository
      * @return JsonResponse
      */
     public function listarInstituciones(Request $request, InstitucionRepository $institucionRepository)
@@ -65,7 +65,7 @@ class ApiInstitucionesController extends AbstractController
     /**
      * @Route("/listar_editorial", name="Api_listarEditorial", methods={"POST", "OPTIONS"}, defaults={"_format":"json"})
      * @param Request $request
-     * @param InstitucionRevistaCientificaRepository $editorial
+     * @param InstitucionEditorialRepository $editorial
      * @return JsonResponse
      */
     public function listarEditorial(Request $request, InstitucionEditorialRepository $editorial)
