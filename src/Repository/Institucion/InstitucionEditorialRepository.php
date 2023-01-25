@@ -48,4 +48,21 @@ class InstitucionEditorialRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    public function getEditoriales()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('
+                    qb.nombreEditorial,
+                    qb.direccionElectronicaEditorial,
+                    qb.descripcionEditorial,                
+                    i.nombre as nombreInstitucion,
+                    i.siglas as siglasIntitucion
+                    ')
+            ->innerJoin('qb.institucion', 'i');
+        $qb->orderBy('qb.nombreEditorial');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

@@ -48,4 +48,24 @@ class InstitucionRevistaCientificaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getRevistasCiencificas()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('
+                    qb.nombreRevista,
+                    qb.indexadaEn,
+                    qb.direccionElectronicaRevista,
+                    qb.descripcionRevista,
+                    v.nombre as visibilidad,
+                    i.nombre as nombreInstitucion,
+                    i.siglas as siglasIntitucion
+                    ')
+            ->innerJoin('qb.institucion', 'i')
+            ->leftJoin('qb.visibilidad', 'v');
+        $qb->orderBy('qb.nombreRevista');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
 }

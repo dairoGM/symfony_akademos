@@ -43,7 +43,7 @@
                                      style="width: 45px;height: 45px; object-fit: cover">
                             </a>
                         </td>
-                        <td>{{ item.nombre }}</td>
+                        <td>({{ item.codigo | default('-')}}) {{ item.nombre }}</td>
                         <td>{{ item.siglas }}</td>
                         <td>{{ item.gradoAcademicoRector.siglas | default('') }} {{ item.rector }}</td>
                         <td width="3%" class="-text-center">

@@ -23,6 +23,10 @@ class Institucion extends BaseNomenclator
      */
     private ?string $siglas = null;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length="20")
+     */
+    private ?string $codigo = null;
 
     /**
      * @ORM\Column(type="string", nullable=false, length="255")
@@ -372,6 +376,22 @@ class Institucion extends BaseNomenclator
         $this->gradoAcademicoRector = $gradoAcademicoRector;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCodigo(): ?string
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * @param string|null $codigo
+     */
+    public function setCodigo(?string $codigo): void
+    {
+        $this->codigo = $codigo;
     }
 
 
