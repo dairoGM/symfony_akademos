@@ -115,6 +115,34 @@ class InstitucionController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                if (!empty($form['logo']->getData())) {
+                    if ($institucion->getLogo() != null) {
+                        if (file_exists('uploads/institucion/logo/' . $institucion->getLogo())) {
+                            unlink('uploads/institucion/logo/' . $institucion->getLogo());
+                        }
+                    }
+                    $file = $form['logo']->getData();
+                    $file_name = $_FILES['institucion']['name']['logo'];
+                    $institucion->setLogo($file_name);
+                    $file->move("uploads/institucion/logo", $file_name);
+                }
+
+
+                if (!empty($_FILES['institucion']['name']['organigrama'])) {
+                    if ($institucion->getOrganigrama() != null) {
+                        if (file_exists('uploads/institucion/organigrama/' . $institucion->getOrganigrama())) {
+                            unlink('uploads/institucion/organigrama/' . $institucion->getOrganigrama());
+                        }
+                    }
+                    $file = $form['organigrama']->getData();
+                    $file_name = $_FILES['institucion']['name']['organigrama'];
+
+                    $institucion->setOrganigrama($file_name);
+                    $file->move("uploads/institucion/organigrama", $file_name);
+                }
+
+
                 $tipoInstitucionRepository->edit($institucion);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
