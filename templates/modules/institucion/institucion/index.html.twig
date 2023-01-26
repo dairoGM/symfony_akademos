@@ -43,7 +43,7 @@
                                      style="width: 45px;height: 45px; object-fit: cover">
                             </a>
                         </td>
-                        <td>({{ item.codigo | default('-')}}) {{ item.nombre }}</td>
+                        <td>({{ item.codigo | default('-') }}) {{ item.nombre }}</td>
                         <td>{{ item.siglas }}</td>
                         <td>{{ item.gradoAcademicoRector.siglas | default('') }} {{ item.rector }}</td>
                         <td width="3%" class="-text-center">
@@ -108,6 +108,11 @@
                                href="{{ path('app_institucion_asignar_recursos_humanos', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-user-friends"></i>
+                            </a>
+                            <a title="Internacionalización"
+                                   href="{{ path('app_institucion_internacionalizacion', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                        class="fa fa-map-marked"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_institucion_eliminar', {'id': item.id}) }}">

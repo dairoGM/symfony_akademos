@@ -32,6 +32,7 @@ use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
 use App\Repository\Institucion\RecursosHumanosRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -704,4 +705,26 @@ class InstitucionController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{id}/internacionalizacion", name="app_institucion_internacionalizacion", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param Utils $utils
+     * @return Response
+     */
+    public function internacionalizacion(Request $request, Institucion $institucion, Utils $utils)
+    {
+//        try {
+            return $this->render('modules/institucion/institucion/internacionalizacion.html.twig', [
+                'institucion' => $institucion,
+                'mecanismosColaboracion' => $utils->obtenerMecanismosColaboracion($institucion->getCodigo()),
+                'programasColaboracion' => $utils->obtenerProgramasColaboracion($institucion->getCodigo()),
+                'proyectos' => $utils->obtenerProyectos($institucion->getCodigo()),
+                'membresias' => $utils->obtenerMembresias($institucion->getCodigo()),
+            ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
+//        }
+    }
 }

@@ -92,97 +92,6 @@ class Utils
         return $codigo;
     }
 
-    public function procesarObjetivosGeneral($planObjetivoGeneralRepository)
-    {
-        $final = [];
-        foreach ($planObjetivoGeneralRepository as $value) {
-            $final[] = (string)$value->getObjetivoGeneral()->getId();
-        }
-        return implode(',', $final);
-    }
-
-    public function procesarObjetivosEspecificos($planObjetivoEspecificoRepository)
-    {
-        $final = [];
-        foreach ($planObjetivoEspecificoRepository as $value) {
-            $final[] = (string)$value->getObjetivoEspecifico()->getId();
-        }
-        return implode(',', $final);
-    }
-
-
-    public function getInformacionPlan1($planIndicadorRepository, $planIndicadorResponsableRepository, $planId)
-    {
-        $final = [];
-        $objGral = [];
-        $objGralId = [];
-        $objEsp = [];
-        $objEspId = [];
-        $indic = [];
-        $indicId = [];
-
-        $planValor = [];
-        $formaEvaluacion = [];
-        foreach ($planIndicadorRepository as $value) {
-            if (!in_array($value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId(), $objGralId)) {
-                $objGral[] = $value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral();
-                $objGralId[] = $value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId();
-            }
-
-            if (!in_array($value->getIndicador()->getObjetivoEspecifico()->getId(), $objEspId)) {
-                $objEsp[$value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId()][] = $value->getIndicador()->getObjetivoEspecifico();
-                $objEspId[] = $value->getIndicador()->getObjetivoEspecifico()->getId();
-            }
-
-            if (!in_array($value->getIndicador()->getId(), $indicId)) {
-                $indic[$value->getIndicador()->getObjetivoEspecifico()->getId()][] = $value->getIndicador();
-                $indicId[] = $value->getIndicador()->getId();
-            }
-            $planValor[$value->getIndicador()->getId()] = $value->getPlanValor();
-
-            $formaEvaluacion[$value->getIndicador()->getId()] = (method_exists($value->getFormaEvaluacion(), 'getId')) ? $value->getFormaEvaluacion()->getId() : null;
-            $formaEvaluacionNombres[$value->getIndicador()->getId()] = (method_exists($value->getFormaEvaluacion(), 'getNombre')) ? $value->getFormaEvaluacion()->getNombre() : null;
-        }
-
-        foreach ($objGral as $value) {
-            $item = null;
-            $item['idObjetivoGeneral'] = $value->getId();
-            $item['nombreObjetivoGeneral'] = $value->getNombre();
-
-            $objEspec = [];
-            foreach ($objEsp[$value->getId()] as $value2) {
-                $itemOE['idObjetivoEspecifico'] = $value2->getId();
-                $itemOE['nombreObjetivoEspecifico'] = $value2->getNombre();
-
-                $indicadores = [];
-                foreach ($indic[$value2->getId()] as $value3) {
-                    $itemI['idIndicador'] = $value3->getId();
-                    $itemI['codigoIndicador'] = $value3->getCodigo();
-                    $itemI['nombreIndicador'] = $value3->getNombre();
-                    $itemI['unidadMedida'] = $value3->getUnidadMedida()->getSiglas();
-
-
-                    $itemI['valorPlan'] = $planValor[$value3->getId()];
-                    $itemI['formaEvaluacion'] = $formaEvaluacion[$value3->getId()];
-                    $itemI['formaEvaluacionNombre'] = $formaEvaluacionNombres[$value3->getId()];
-                    $arrayResponsables = [];
-                    $arrayResponsablesNombre = [];
-                    foreach ($planIndicadorResponsableRepository->findBy(['indicador' => $value3->getId(), 'plan' => $planId, 'activo'=>true]) as $value) {
-                        $arrayResponsables[] = $value->getResponsable()->getId();
-                        $arrayResponsablesNombre[] = $value->getResponsable()->getPrimerNombre() . ' ' . $value->getResponsable()->getSegundoNombre() . ' ' . $value->getResponsable()->getPrimerApellido() . ' ' . $value->getResponsable()->getSegundoApellido();
-                    }
-                    $itemI['responsables'] = $arrayResponsables;
-                    $itemI['responsablesNombre'] = $arrayResponsablesNombre;
-                    $indicadores[] = $itemI;
-                }
-                $itemOE['indicadores'] = $indicadores;
-                $objEspec[] = $itemOE;
-            }
-            $item['objetivosEspecificos'] = $objEspec;
-            $final[] = $item;
-        }
-        return $final;
-    }
 
     /**
      * @return string
@@ -566,101 +475,6 @@ class Utils
     }
 
 
-    public function getInformacionPlanDesglose($planId, $planIndicadorRepository, $planIndicadorRepository1, $periodo)
-    {
-        $final = [];
-        $objGral = [];
-        $objGralId = [];
-        $objEsp = [];
-        $objEspId = [];
-        $indic = [];
-        $indicId = [];
-
-        $planValor = [];
-        $formaEvaluacion = [];
-        $plan = [];
-        /* @var $value PlanIndicador */
-        foreach ($planIndicadorRepository as $value) {
-            if (!in_array($value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId(), $objGralId)) {
-                $objGral[] = $value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral();
-                $objGralId[] = $value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId();
-            }
-
-            if (!in_array($value->getIndicador()->getObjetivoEspecifico()->getId(), $objEspId)) {
-                $objEsp[$value->getIndicador()->getObjetivoEspecifico()->getObjetivoGeneral()->getId()][] = $value->getIndicador()->getObjetivoEspecifico();
-                $objEspId[] = $value->getIndicador()->getObjetivoEspecifico()->getId();
-            }
-
-            if (!in_array($value->getIndicador()->getId(), $indicId)) {
-                $indic[$value->getIndicador()->getObjetivoEspecifico()->getId()][] = $value->getIndicador();
-                $indicId[] = $value->getIndicador()->getId();
-            }
-            $planValor[$value->getIndicador()->getId()] = $value->getPlanValor();
-        }
-
-        foreach ($objGral as $value) {
-            $item = null;
-            $item['idObjetivoGeneral'] = $value->getId();
-            $item['nombreObjetivoGeneral'] = $value->getNombre();
-
-            $objEspec = null;
-            foreach ($objEsp[$value->getId()] as $value2) {
-                $itemOE['idObjetivoEspecifico'] = $value2->getId();
-                $itemOE['nombreObjetivoEspecifico'] = $value2->getNombre();
-
-                $indicadores = null;
-                foreach ($indic[$value2->getId()] as $value3) {
-                    $itemI['idIndicador'] = $value3->getId();
-                    $itemI['codigoIndicador'] = $value3->getCodigo();
-                    $itemI['nombreIndicador'] = $value3->getNombre();
-                    $itemI['unidadMedida'] = $value3->getUnidadMedida()->getSiglas();
-                    $itemI['valorPlan'] = $planValor[$value3->getId()];
-                    $itemI['periodo'] = $periodo;
-                    $itemI['planesMensual'] = $this->getPlanPorIndicador($value3->getId(), $planIndicadorRepository1, $planId);
-                    $itemI['realesMensual'] = $this->getRealPorIndicador($value3->getId(), $planIndicadorRepository1, $planId);
-                    $itemI['evaluacion'] = $this->getEvaluacionPorIndicador($value3->getId(), $planIndicadorRepository1, $planId);
-                    $indicadores[] = $itemI;
-                }
-                $itemOE['indicadores'] = $indicadores;
-                $objEspec[] = $itemOE;
-            }
-            $item['objetivosEspecificos'] = $objEspec;
-            $final[] = $item;
-        }
-//        pr($final);
-        return $final;
-    }
-
-    public function getPlanPorIndicador($indicadorId, $planIndicadorRepository, $planId)
-    {
-        $final = [];
-        $planes = $planIndicadorRepository->getPlanesMensuales($indicadorId, $planId);
-        foreach ($planes as $value) {
-            $final[explode('/', $value['periodo'])[0]] = $value['planValor'];
-        }
-        return $final;
-    }
-
-    public function getRealPorIndicador($indicadorId, $planIndicadorRepository, $planId)
-    {
-        $final = [];
-        $planes = $planIndicadorRepository->getPlanesMensuales($indicadorId, $planId);
-        foreach ($planes as $value) {
-            $final[explode('/', $value['periodo'])[0]] = $value['planReal'];
-        }
-        return $final;
-    }
-
-    public function getEvaluacionPorIndicador($indicadorId, $planIndicadorRepository, $planId)
-    {
-        $final = [];
-        $planes = $planIndicadorRepository->getPlanesMensuales($indicadorId, $planId);
-        foreach ($planes as $value) {
-            $final[explode('/', $value['periodo'])[0]] = $value['evaluacionTxt'];
-        }
-        return $final;
-    }
-
     public function getDatosPersonaDadoIdUsuario($idUsuario)
     {
         return $this->em->getRepository(Persona::class)->findOneBy(['usuario' => $idUsuario]);
@@ -684,48 +498,6 @@ class Utils
         return $arrayEstructuras;
     }
 
-    public function getArrayPeriodp($evaluacion, $anno)
-    {
-        $arrayPeriodo = [];
-        foreach ($evaluacion as $value) {
-            $arrayPeriodo[] = $value . '/' . $anno;
-        }
-        return $arrayPeriodo;
-    }
-
-    public function arrayMergeRecursiveDistinct(array &$array1, array &$array2)
-    {
-        $merged = $array1;
-        foreach ($array2 as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-        return $merged;
-    }
-
-    public function arrayFiffAssocRecursive($array1, $array2)
-    {
-        foreach ($array1 as $key => $value) {
-            if (is_array($value)) {
-                if (!isset($array2[$key])) {
-                    $difference[$key] = $value;
-                } elseif (!is_array($array2[$key])) {
-                    $difference[$key] = $value;
-                } else {
-                    $new_diff = $this->arrayFiffAssocRecursive($value, $array2[$key]);
-                    if ($new_diff != FALSE) {
-                        $difference[$key] = $new_diff;
-                    }
-                }
-            } elseif (!isset($array2[$key]) || $array2[$key] != $value) {
-                $difference[$key] = $value;
-            }
-        }
-        return !isset($difference) ? 0 : $difference;
-    }
 
     public function procesarTraza($anterior, $actual)
     {
@@ -780,7 +552,7 @@ class Utils
                     foreach ($actual[$key] as $key1 => $value1) {
                         if (!in_array($key1, $arrayNiveles)) {
                             if (!empty($value1)) {
-                                if(!is_array($value1)){
+                                if (!is_array($value1)) {
                                     $nuevoActual[ucfirst($key) . ' / ' . (isset($arrayCorrecciones[ucfirst($key1)]) ? $arrayCorrecciones[ucfirst($key1)] : ucfirst($key1))]['actual'] = $value1;
                                 }
                             }
@@ -794,4 +566,153 @@ class Utils
     }
 
 
+//    Ejemplo para consumirlos
+    public function getTokenRelacionesInternacionales()
+    {
+        try {
+            $curl = curl_init();
+
+            $arrayDataPage['user'] = "drgil";
+            $arrayDataPage['password'] = "dasdasd";
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/getAccessToken",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($arrayDataPage)
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $token = json_decode($response, true);
+            return isset($token['data']) ? $token['data'] : null;
+        } catch (Exception $e) {
+            $this->services_lib->printJson(403, "Invalid token", null);
+        }
+    }
+
+    public function obtenerMecanismosColaboracion($codigo)
+    {
+        try {
+            $token = $this->getTokenRelacionesInternacionales();
+            $curl = curl_init();
+            $arrayDataPage['codigo_mes'] = $codigo;
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerMecanismosColaboracion",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_POSTFIELDS => json_encode($arrayDataPage),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    sprintf("Authorization: Bearer %s", $token),
+                    "Content-Type: application/json",
+                    "cache-control: no-cache"
+                ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($response, true);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function obtenerProgramasColaboracion($codigo)
+    {
+        try {
+            $token = $this->getTokenRelacionesInternacionales();
+            $curl = curl_init();
+            $arrayDataPage['codigo_mes'] = $codigo;
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerProgramasColaboracion",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_POSTFIELDS => json_encode($arrayDataPage),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    sprintf("Authorization: Bearer %s", $token),
+                    "Content-Type: application/json",
+                    "cache-control: no-cache"
+                ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($response, true);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function obtenerProyectos($codigo)
+    {
+        try {
+            $token = $this->getTokenRelacionesInternacionales();
+            $curl = curl_init();
+            $arrayDataPage['codigo_mes'] = $codigo;
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerProyectos",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_POSTFIELDS => json_encode($arrayDataPage),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    sprintf("Authorization: Bearer %s", $token),
+                    "Content-Type: application/json",
+                    "cache-control: no-cache"
+                ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($response, true);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function obtenerMembresias($codigo)
+    {
+        try {
+            $token = $this->getTokenRelacionesInternacionales();
+            $curl = curl_init();
+            $arrayDataPage['codigo_mes'] = $codigo;
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerMembresias",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_POSTFIELDS => json_encode($arrayDataPage),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => array(
+                    sprintf("Authorization: Bearer %s", $token),
+                    "Content-Type: application/json",
+                    "cache-control: no-cache"
+                ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($response, true);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
