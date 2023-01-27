@@ -25,38 +25,39 @@
             <div class="card card-primary card-outline card-outline-tabs">
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" style="width: 236px; padding-left: 25px"
-                               id="custom-tabs-four-mecanismos-tab" data-toggle="pill"
-                               href="#custom-tabs-four-mecanismos" role="tab"
-                               aria-controls="custom-tabs-four-mecanismos"
+                        <li class="nav-item" id="li_mecanismo">
+                            <a class="nav-link" style="width: 236px; padding-left: 25px"
+                               id="custom-tabs-four-mecanismo-tab" data-toggle="pill"
+                               href="#custom-tabs-four-mecanismo" role="tab"
+                               aria-controls="custom-tabs-four-mecanismo"
                                aria-selected="true">Mecanismos de colaboración</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="li_programa">
                             <a class="nav-link" style="width: 236px; padding-left: 25px"
-                               id="custom-tabs-four-programas-tab" data-toggle="pill"
-                               href="#custom-tabs-four-programas" role="tab" aria-controls="custom-tabs-four-programas"
+                               id="custom-tabs-four-programa-tab" data-toggle="pill"
+                               href="#custom-tabs-four-programa" role="tab" aria-controls="custom-tabs-four-programas"
                                aria-selected="false">Programas de colaboración</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="li_proyecto">
                             <a class="nav-link" style="width: 236px; padding-left: 25px"
-                               id="custom-tabs-four-proyectos-tab" data-toggle="pill"
-                               href="#custom-tabs-four-proyectos" role="tab" aria-controls="custom-tabs-four-proyectos"
+                               id="custom-tabs-four-proyecto-tab" data-toggle="pill"
+                               href="#custom-tabs-four-proyecto" role="tab" aria-controls="custom-tabs-four-proyectos"
                                aria-selected="false">Proyectos</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="li_membresia">
                             <a class="nav-link" style="width: 236px; padding-left: 25px"
-                               id="custom-tabs-four-membresias-tab" data-toggle="pill"
-                               href="#custom-tabs-four-membresias" role="tab"
-                               aria-controls="custom-tabs-four-membresias"
+                               id="custom-tabs-four-membresia-tab" data-toggle="pill"
+                               href="#custom-tabs-four-membresia" role="tab"
+                               aria-controls="custom-tabs-four-membresia"
                                aria-selected="false">Membresías</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent">
-                        <div class="tab-pane fade active show" id="custom-tabs-four-mecanismos" role="tabpanel"
-                             aria-labelledby="custom-tabs-four-mecanismos-tab">
+                        <div class="tab-pane fade active show" id="custom-tabs-four-mecanismo" role="tabpanel"
+                             aria-labelledby="custom-tabs-four-mecanismo-tab">
+
                             <table id="tb1" class="display table table-bordered table-striped dataTable">
                                 <thead class="table-custom-header">
                                 <tr>
@@ -67,21 +68,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for item in mecanismosColaboracion.data %}
-                                    <tr id="tr_{{ item.id_mecanismo_colaboracion }}">
-                                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
-                                        <td>{{ item.nombre_mecanismo_colaboracion | default('') }}</td>
-                                        <td>{{ item.nombre_tipo_mecanismo_colaboracion | default('') }}</td>
-                                        <td>{{ item.nombre_estado_mecanismo_colaboracion | default('') }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% if mecanismosColaboracion | length > 0 %}
+                                    {% for item in mecanismosColaboracion %}
+                                        <tr id="tr_{{ item.id_mecanismo_colaboracion }}">
+                                            <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                                            <td>{{ item.nombre_mecanismo_colaboracion | default('') }}</td>
+                                            <td>{{ item.nombre_tipo_mecanismo_colaboracion | default('') }}</td>
+                                            <td>{{ item.nombre_estado_mecanismo_colaboracion | default('') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
+
                         </div>
 
 
-                        <div class="tab-pane fade" id="custom-tabs-four-programas" role="tabpanel"
-                             aria-labelledby="custom-tabs-four-programas-tab">
+                        <div class="tab-pane fade" id="custom-tabs-four-programa" role="tabpanel"
+                             aria-labelledby="custom-tabs-four-programa-tab">
                             <table id="tb2" class="display table table-bordered table-striped dataTable">
                                 <thead class="table-custom-header">
                                 <tr>
@@ -92,21 +96,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for item in programasColaboracion.data %}
-                                    <tr id="tr_{{ item.id_programa_colaboracion }}">
-                                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
-                                        <td>{{ item.nombre_programa_colaboracion | default('') }}</td>
-                                        <td>{{ item.nombre_patrocinador | default('') }}</td>
-                                        <td>{{ item.nombre_estado_programa | default('') }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% if programasColaboracion | length > 0 %}
+                                    {% for item in programasColaboracion %}
+                                        <tr id="tr_{{ item.id_programa_colaboracion }}">
+                                            <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                                            <td>{{ item.nombre_programa_colaboracion | default('') }}</td>
+                                            <td>{{ item.nombre_patrocinador | default('') }}</td>
+                                            <td>{{ item.nombre_estado_programa | default('') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
 
                         </div>
-                        <div class="tab-pane fade" id="custom-tabs-four-proyectos" role="tabpanel"
-                             aria-labelledby="custom-tabs-four-proyectos-tab">
-                            <table id="tb1" class="display table table-bordered table-striped dataTable">
+                        <div class="tab-pane fade" id="custom-tabs-four-proyecto" role="tabpanel"
+                             aria-labelledby="custom-tabs-four-proyecto-tab">
+                            <table id="tb2" class="display table table-bordered table-striped dataTable">
                                 <thead class="table-custom-header">
                                 <tr>
                                     <th>No.</th>
@@ -116,20 +122,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for item in proyectos.data %}
-                                    <tr id="tr_{{ item.id_proyecto }}">
-                                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
-                                        <td>{{ item.nombre_proyecto | default('') }}</td>
-                                        <td>{{ item.nombre_estado_proyecto | default('') }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% if proyectos | length > 0%}
+                                    {% for item in proyectos %}
+                                        <tr id="tr_{{ item.id_proyecto }}">
+                                            <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                                            <td>{{ item.nombre_proyecto | default('') }}</td>
+                                            <td>{{ item.nombre_estado_proyecto | default('') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
 
                         </div>
-                        <div class="tab-pane fade" id="custom-tabs-four-membresias" role="tabpanel"
-                             aria-labelledby="custom-tabs-four-membresias-tab">
-                            <table id="tb1" class="display table table-bordered table-striped dataTable">
+                        <div class="tab-pane fade" id="custom-tabs-four-membresia" role="tabpanel"
+                             aria-labelledby="custom-tabs-four-membresia-tab">
+                            <table id="tb4" class="display table table-bordered table-striped dataTable">
                                 <thead class="table-custom-header">
                                 <tr>
                                     <th>No.</th>
@@ -139,14 +147,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for item in membresias.data %}
-                                    <tr id="tr_{{ item.id_membresia }}">
-                                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
-                                        <td>{{ item.nombre_membresia | default('') }}</td>
-                                        <td>{{ item.nombre_tipo_membresia | default('') }}</td>
-                                        <td>{{ item.nombre_estado_membresia | default('') }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% if membresias | length > 0 %}
+                                    {% for item in membresias %}
+                                        <tr id="tr_{{ item.id_membresia }}">
+                                            <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                                            <td>{{ item.nombre_membresia | default('') }}</td>
+                                            <td>{{ item.nombre_tipo_membresia | default('') }}</td>
+                                            <td>{{ item.nombre_estado_membresia | default('') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
 
@@ -160,22 +170,33 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('.nav-link').click(function (e) {
+        $(document).ready(function () {
+            $('li[id*=li_]').click(function (e) {
+                tabSelected = e.target.id.split('-')[3];
+                var tagUrl = window.location.pathname.split('/')[4];
 
-            $(".dataTables_scrollHeadInner").css("width", '100%');
-            $('table.display').DataTable().draw();
-            console.log(32);
-            // $('table.display').DataTable();
-        })
-        //
-        // $(".dataTables_scrollHeadInner").css("width", '100%');
-        // $("select").change()
-        $(document).ready(function (e) {
-            $(".dataTables_scrollHeadInner").css("width", '100%');
-            $("select").change()
-            $('table.display').DataTable();
-            // $(".dataTables_scrollHeadInner").css("width", '100%');
-            // $('table.display').DataTable().draw();
+                $('a[id*=custom-tabs-four]').removeClass('active');
+                $('a[id*=' + tabSelected + ']').addClass('active');
+
+                $('div[class*=tab-pane]').removeClass('active show');
+                $('div[id*=' + tabSelected + ']').addClass('active show');
+
+
+                var nuevoPath = "/institucion/institucion/{{ id }}/" + tabSelected + "/internacionalizacion";
+                console.log(nuevoPath);
+                $(window).attr('location', nuevoPath)
+
+            });
+
+            var tagUrl = window.location.pathname.split('/')[4];
+            $('a[id*=custom-tabs-four]').removeClass('active');
+            $('a[id*=' + tagUrl + ']').addClass('active');
+
+            $('div[class*=tab-pane]').removeClass('active show');
+            $('div[id*=' + tagUrl + ']').addClass('active show');
+
+            localStorage.setItem('tabSelected', tagUrl);
+
         });
     </script>
 {% endblock %}

@@ -706,22 +706,46 @@ class InstitucionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/internacionalizacion", name="app_institucion_internacionalizacion", methods={"GET", "POST"})
+     * @Route("/{id}/{tab}/internacionalizacion", name="app_institucion_internacionalizacion", methods={"GET", "POST"})
      * @param Request $request
      * @param Institucion $institucion
      * @param Utils $utils
      * @return Response
      */
-    public function internacionalizacion(Request $request, Institucion $institucion, Utils $utils)
+    public function internacionalizacion(Request $request, $tab, Institucion $institucion, Utils $utils)
     {
 //        try {
-            return $this->render('modules/institucion/institucion/internacionalizacion.html.twig', [
-                'institucion' => $institucion,
-                'mecanismosColaboracion' => $utils->obtenerMecanismosColaboracion($institucion->getCodigo()),
-                'programasColaboracion' => $utils->obtenerProgramasColaboracion($institucion->getCodigo()),
-                'proyectos' => $utils->obtenerProyectos($institucion->getCodigo()),
-                'membresias' => $utils->obtenerMembresias($institucion->getCodigo()),
-            ]);
+        $params['tabSelected'] = $tab;
+        $params['institucion'] = $institucion;
+        $params['id'] = $institucion->getId();
+        if ($tab == 'programa') {
+            $params['programasColaboracion'] = $utils->obtenerProgramasColaboracion($institucion->getCodigo());
+            $params['mecanismosColaboracion'] = [];
+            $params['proyectos'] = [];
+            $params['membresias'] = [];
+        }
+        if ($tab == 'proyecto') {
+            $params['proyectos'] = $utils->obtenerProyectos($institucion->getCodigo());
+            $params['mecanismosColaboracion'] = [];
+            $params['programasColaboracion'] = [];
+            $params['membresias'] = [];
+        }
+        if ($tab == 'membresia') {
+            $params['membresias'] = $utils->obtenerMembresias($institucion->getCodigo());
+            $params['mecanismosColaboracion'] = [];
+            $params['programasColaboracion'] = [];
+            $params['proyectos'] = [];
+        }
+        if ($tab == 'mecanismo') {
+            $params['mecanismosColaboracion'] = $utils->obtenerMecanismosColaboracion($institucion->getCodigo());
+            $params['membresias'] = [];
+            $params['programasColaboracion'] = [];
+            $params['proyectos'] = [];
+        }
+
+//        pr($params);
+        return $this->render('modules/institucion/institucion/internacionalizacion.html.twig', $params);
+
 //        } catch (\Exception $exception) {
 //            $this->addFlash('error', $exception->getMessage());
 //            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
