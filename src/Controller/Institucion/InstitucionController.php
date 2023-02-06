@@ -167,10 +167,10 @@ class InstitucionController extends AbstractController
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function detail(Request $request, Institucion $tipoInstitucion)
+    public function detail(Request $request, Institucion $institucion)
     {
         return $this->render('modules/institucion/institucion/detail.html.twig', [
-            'item' => $tipoInstitucion,
+            'item' => $institucion,
         ]);
     }
 
@@ -714,41 +714,41 @@ class InstitucionController extends AbstractController
      */
     public function internacionalizacion(Request $request, $tab, Institucion $institucion, Utils $utils)
     {
-//        try {
-        $params['tabSelected'] = $tab;
-        $params['institucion'] = $institucion;
-        $params['id'] = $institucion->getId();
-        if ($tab == 'programa') {
-            $params['programasColaboracion'] = $utils->obtenerProgramasColaboracion($institucion->getCodigo());
-            $params['mecanismosColaboracion'] = [];
-            $params['proyectos'] = [];
-            $params['membresias'] = [];
-        }
-        if ($tab == 'proyecto') {
-            $params['proyectos'] = $utils->obtenerProyectos($institucion->getCodigo());
-            $params['mecanismosColaboracion'] = [];
-            $params['programasColaboracion'] = [];
-            $params['membresias'] = [];
-        }
-        if ($tab == 'membresia') {
-            $params['membresias'] = $utils->obtenerMembresias($institucion->getCodigo());
-            $params['mecanismosColaboracion'] = [];
-            $params['programasColaboracion'] = [];
-            $params['proyectos'] = [];
-        }
-        if ($tab == 'mecanismo') {
-            $params['mecanismosColaboracion'] = $utils->obtenerMecanismosColaboracion($institucion->getCodigo());
-            $params['membresias'] = [];
-            $params['programasColaboracion'] = [];
-            $params['proyectos'] = [];
-        }
+        try {
+            $params['tabSelected'] = $tab;
+            $params['institucion'] = $institucion;
+            $params['id'] = $institucion->getId();
+            if ($tab == 'programa') {
+                $params['programasColaboracion'] = $utils->obtenerProgramasColaboracion($institucion->getCodigo());
+                $params['mecanismosColaboracion'] = [];
+                $params['proyectos'] = [];
+                $params['membresias'] = [];
+            }
+            if ($tab == 'proyecto') {
+                $params['proyectos'] = $utils->obtenerProyectos($institucion->getCodigo());
+                $params['mecanismosColaboracion'] = [];
+                $params['programasColaboracion'] = [];
+                $params['membresias'] = [];
+            }
+            if ($tab == 'membresia') {
+                $params['membresias'] = $utils->obtenerMembresias($institucion->getCodigo());
+                $params['mecanismosColaboracion'] = [];
+                $params['programasColaboracion'] = [];
+                $params['proyectos'] = [];
+            }
+            if ($tab == 'mecanismo') {
+                $params['mecanismosColaboracion'] = $utils->obtenerMecanismosColaboracion($institucion->getCodigo());
+                $params['membresias'] = [];
+                $params['programasColaboracion'] = [];
+                $params['proyectos'] = [];
+            }
 
 //        pr($params);
-        return $this->render('modules/institucion/institucion/internacionalizacion.html.twig', $params);
+            return $this->render('modules/institucion/institucion/internacionalizacion.html.twig', $params);
 
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_index', Response::HTTP_SEE_OTHER);
+        }
     }
 }
