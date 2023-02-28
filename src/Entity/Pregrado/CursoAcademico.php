@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="pregrado.tbd_comision_nacional")
+ * @ORM\Table(name="pregrado.tbn_curso_academico")
  */
-class ComisionNacional extends BaseNomenclator
+class CursoAcademico extends BaseNomenclator
 {
 
 }
