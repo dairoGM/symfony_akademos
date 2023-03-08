@@ -45,6 +45,16 @@ class PlanEstudio extends BaseNomenclator
      */
     private ?\App\Entity\Postgrado\RamaCiencia $ramaCiencia;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="OrganismoDemandante")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?OrganismoDemandante $organismoDemandante;
+    /**
+     * @ORM\ManyToOne(targetEntity="TipoProgramaAcademico")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?TipoProgramaAcademico $tipoProgramaAcademico;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -237,8 +247,37 @@ class PlanEstudio extends BaseNomenclator
         $this->descripcionPlanEstudio = $descripcionPlanEstudio;
     }
 
+    /**
+     * @return OrganismoDemandante|null
+     */
+    public function getOrganismoDemandante(): ?OrganismoDemandante
+    {
+        return $this->organismoDemandante;
+    }
 
+    /**
+     * @param OrganismoDemandante|null $organismoDemandante
+     */
+    public function setOrganismoDemandante(?OrganismoDemandante $organismoDemandante): void
+    {
+        $this->organismoDemandante = $organismoDemandante;
+    }
 
+    /**
+     * @return TipoProgramaAcademico|null
+     */
+    public function getTipoProgramaAcademico(): ?TipoProgramaAcademico
+    {
+        return $this->tipoProgramaAcademico;
+    }
+
+    /**
+     * @param TipoProgramaAcademico|null $tipoProgramaAcademico
+     */
+    public function setTipoProgramaAcademico(?TipoProgramaAcademico $tipoProgramaAcademico): void
+    {
+        $this->tipoProgramaAcademico = $tipoProgramaAcademico;
+    }
 
 
 }

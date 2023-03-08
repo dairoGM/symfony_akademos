@@ -2,6 +2,7 @@
 
 namespace App\Form\Pregrado;
 
+use App\Entity\Institucion\Institucion;
 use App\Entity\Postgrado\RolComision;
 use App\Entity\Pregrado\OrganismoDemandante;
 use App\Entity\Pregrado\TipoOrganismo;

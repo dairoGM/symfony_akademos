@@ -1,10 +1,11 @@
-<div class="card">
+    <div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col-6">
                 <h5 class="mb-0"><b>Tipo de programa
                         académico:</b> {{ item.tipoProgramaAcademico.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Centro rector:</b> {{ item.centroRector.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Resolución: </b> <a target="_blank"
                                                         href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">{{ item.resolucion }}</a>
                 </h5>

@@ -2,8 +2,11 @@
 
 namespace App\Form\Pregrado;
 
+use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -30,6 +33,16 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'attr' => [
                     'class' => 'date-time-picker'
                 ]
+            ])
+            ->add('centroRector', EntityType::class, [
+                'label' => 'Centro rector',
+                'class' => Institucion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
             ])
             ->add('duracionCursoDiurno', IntegerType::class, [
                 'label' => 'Duración del curso diurno',

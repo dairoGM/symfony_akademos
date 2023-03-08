@@ -100,6 +100,13 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      */
     private ?string $dictamen = null;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\App\Entity\Institucion\Institucion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?\App\Entity\Institucion\Institucion $centroRector;
+
     /**
      * @return EstadoProgramaAcademico|null
      */
@@ -308,6 +315,22 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setDescripcionNoAprobacion(?string $descripcionNoAprobacion): void
     {
         $this->descripcionNoAprobacion = $descripcionNoAprobacion;
+    }
+
+    /**
+     * @return \App\Entity\Institucion\Institucion|null
+     */
+    public function getCentroRector(): ?\App\Entity\Institucion\Institucion
+    {
+        return $this->centroRector;
+    }
+
+    /**
+     * @param \App\Entity\Institucion\Institucion|null $centroRector
+     */
+    public function setCentroRector(?\App\Entity\Institucion\Institucion $centroRector): void
+    {
+        $this->centroRector = $centroRector;
     }
 
 
