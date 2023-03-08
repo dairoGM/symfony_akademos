@@ -88,6 +88,13 @@ class PlanEstudio extends BaseNomenclator
     private ?string $descripcionPlanEstudio = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Oace")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Oace $Oace;
+
+
+    /**
      * @return CursoAcademico|null
      */
     public function getCursoAcademico(): ?CursoAcademico
@@ -277,6 +284,22 @@ class PlanEstudio extends BaseNomenclator
     public function setTipoProgramaAcademico(?TipoProgramaAcademico $tipoProgramaAcademico): void
     {
         $this->tipoProgramaAcademico = $tipoProgramaAcademico;
+    }
+
+    /**
+     * @return Oace|null
+     */
+    public function getOace(): ?Oace
+    {
+        return $this->Oace;
+    }
+
+    /**
+     * @param Oace|null $Oace
+     */
+    public function setOace(?Oace $Oace): void
+    {
+        $this->Oace = $Oace;
     }
 
 
