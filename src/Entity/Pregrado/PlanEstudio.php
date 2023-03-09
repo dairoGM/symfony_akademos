@@ -91,7 +91,7 @@ class PlanEstudio extends BaseNomenclator
      * @ORM\ManyToOne(targetEntity="Oace")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Oace $Oace;
+    private ?Oace $oace;
 
 
     /**
@@ -291,16 +291,17 @@ class PlanEstudio extends BaseNomenclator
      */
     public function getOace(): ?Oace
     {
-        return $this->Oace;
+        return $this->oace;
     }
 
     /**
-     * @param Oace|null $Oace
+     * @param Oace|null $oace
      */
-    public function setOace(?Oace $Oace): void
+    public function setOace(?Oace $oace): void
     {
-        $this->Oace = $Oace;
+        $this->oace = $oace;
     }
+
 
 
 }
