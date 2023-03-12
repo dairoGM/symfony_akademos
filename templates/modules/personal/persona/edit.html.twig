@@ -94,8 +94,13 @@
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.fechaNacimiento) }}
-                    {{ form_widget(form.fechaNacimiento) }}
-                    {{ form_errors(form.fechaNacimiento) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaNacimiento) }}
+                        {{ form_errors(form.fechaNacimiento) }}
+                    </div>
                 </div>
             </div>
 

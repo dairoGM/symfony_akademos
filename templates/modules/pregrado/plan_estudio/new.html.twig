@@ -5,102 +5,153 @@
 {% block body %}
 
     <div class="card shadow-sm">
-    <div class="card-header">
-        <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-            <h3 class="card-title text-bold text-gray">Adicionar plan de estudio</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar plan de estudio</h3>
 
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cursoAcademico) }}
+                    {{ form_widget(form.cursoAcademico) }}
+                    {{ form_errors(form.cursoAcademico) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.carrera) }}
+                    {{ form_widget(form.carrera) }}
+                    {{ form_errors(form.carrera) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.annoAprobacion) }}
+                    {{ form_widget(form.annoAprobacion) }}
+                    {{ form_errors(form.annoAprobacion) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaAprobacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaAprobacion) }}
+                        {{ form_errors(form.fechaAprobacion) }}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.oace) }}
+                    {{ form_widget(form.oace) }}
+                    {{ form_errors(form.oace) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoProgramaAcademico) }}
+                    {{ form_widget(form.tipoProgramaAcademico) }}
+                    {{ form_errors(form.tipoProgramaAcademico) }}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.ramaCiencia) }}
+                    {{ form_widget(form.ramaCiencia) }}
+                    {{ form_errors(form.ramaCiencia) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.organismoDemandante) }}
+                    {{ form_widget(form.organismoDemandante) }}
+                    {{ form_errors(form.organismoDemandante) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.planEstudio) }}
+                    {{ form_widget(form.planEstudio) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.planEstudio) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoDiurno) }}
+                    {{ form_widget(form.duracionCursoDiurno) }}
+                    {{ form_errors(form.duracionCursoDiurno) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoPorEncuentro) }}
+                    {{ form_widget(form.duracionCursoPorEncuentro) }}
+                    {{ form_errors(form.duracionCursoPorEncuentro) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoDistancia) }}
+                    {{ form_widget(form.duracionCursoDistancia) }}
+                    {{ form_errors(form.duracionCursoDistancia) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcionPlanEstudio) }}
+                    {{ form_widget(form.descripcionPlanEstudio) }}
+                    {{ form_errors(form.descripcionPlanEstudio) }}
+                </div>
+            </div>
+            <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+                <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_estudio_index') }}" data-title=""
+                   data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+                <button class="btn btn-primary">Aceptar</button>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
-    <!-- /.card-header -->
-    {{ form_start(form) }}
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.cursoAcademico) }}
-                {{ form_widget(form.cursoAcademico) }}
-                {{ form_errors(form.cursoAcademico) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.carrera) }}
-                {{ form_widget(form.carrera) }}
-                {{ form_errors(form.carrera) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.annoAprobacion) }}
-                {{ form_widget(form.annoAprobacion) }}
-                {{ form_errors(form.annoAprobacion) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.fechaAprobacion) }}
-                {{ form_widget(form.fechaAprobacion) }}
-                {{ form_errors(form.fechaAprobacion) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.oace) }}
-                {{ form_widget(form.oace) }}
-                {{ form_errors(form.oace) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.tipoProgramaAcademico) }}
-                {{ form_widget(form.tipoProgramaAcademico) }}
-                {{ form_errors(form.tipoProgramaAcademico) }}
-            </div>
-        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $('#plan_estudio_planEstudio').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('#plan_estudio_fechaAprobacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
 
 
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.ramaCiencia) }}
-                {{ form_widget(form.ramaCiencia) }}
-                {{ form_errors(form.ramaCiencia) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.organismoDemandante) }}
-                {{ form_widget(form.organismoDemandante) }}
-                {{ form_errors(form.organismoDemandante) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.planEstudio) }}
-                {{ form_widget(form.planEstudio) }}
-                {{ form_errors(form.planEstudio) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.duracionCursoDiurno) }}
-                {{ form_widget(form.duracionCursoDiurno) }}
-                {{ form_errors(form.duracionCursoDiurno) }}
-            </div>
-        </div>
+        $('#plan_estudio_annoAprobacion').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 4) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+        $('#plan_estudio_duracionCursoDiurno, #plan_estudio_duracionCursoPorEncuentro, #plan_estudio_duracionCursoDistancia').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 3) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
 
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.duracionCursoPorEncuentro) }}
-                {{ form_widget(form.duracionCursoPorEncuentro) }}
-                {{ form_errors(form.duracionCursoPorEncuentro) }}
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                {{ form_label(form.duracionCursoDistancia) }}
-                {{ form_widget(form.duracionCursoDistancia) }}
-                {{ form_errors(form.duracionCursoDistancia) }}
-            </div>
-        </div>
+        $("#plan_estudio_annoAprobacion, #plan_estudio_duracionCursoDiurno, #plan_estudio_duracionCursoPorEncuentro, #plan_estudio_duracionCursoDistancia").bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
 
-        <div class="row">
-            <div class="col-12 form-group">
-                {{ form_label(form.descripcionPlanEstudio) }}
-                {{ form_widget(form.descripcionPlanEstudio) }}
-                {{ form_errors(form.descripcionPlanEstudio) }}
-            </div>
-        </div>
-        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_estudio_index') }}" data-title=""
-               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-            <button class="btn btn-primary">Aceptar</button>
-        </div>
-        {{ form_end(form) }}
-    </div>
-
+    </script>
 {% endblock %}

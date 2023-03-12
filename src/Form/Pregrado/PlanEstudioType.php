@@ -10,6 +10,7 @@ use App\Entity\Pregrado\OrganismoDemandante;
 use App\Entity\Pregrado\PlanEstudio;
 use App\Entity\Pregrado\TipoPrograma;
 use App\Entity\Pregrado\TipoProgramaAcademico;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PlanEstudioType extends AbstractType
@@ -54,16 +56,19 @@ class PlanEstudioType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('annoAprobacion', TextType::class, [
+            ->add('annoAprobacion', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Año de aprobación',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'attr' => [
+                    'maxlength' => 4,
+                    'minlength' => 4
+                ],
+                'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('fechaAprobacion', TextType::class, [
                 'label' => 'Fecha de aprobación',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'date-time-picker'
                 ]
             ])
             ->add('oace', EntityType::class, [
@@ -103,19 +108,19 @@ class PlanEstudioType extends AbstractType
                 'mapped' => false,
                 'required' => true,
             ])
-            ->add('duracionCursoDiurno', TextType::class, [
+            ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso Diurno',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('duracionCursoPorEncuentro', TextType::class, [
+            ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso por Encuentro',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('duracionCursoDistancia', TextType::class, [
+            ->add('duracionCursoDistancia', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso a Distancia',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')

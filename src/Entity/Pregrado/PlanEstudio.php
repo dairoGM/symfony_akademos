@@ -41,13 +41,13 @@ class PlanEstudio extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="\App\Entity\Postgrado\RamaCiencia")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?\App\Entity\Postgrado\RamaCiencia $ramaCiencia;
 
     /**
      * @ORM\ManyToOne(targetEntity="OrganismoDemandante")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?OrganismoDemandante $organismoDemandante;
     /**

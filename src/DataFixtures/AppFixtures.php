@@ -38,6 +38,7 @@ use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\RolComision;
 use App\Entity\Postgrado\TipoPrograma;
 use App\Entity\Pregrado\EstadoProgramaAcademico;
+use App\Entity\Pregrado\TipoProgramaAcademico;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
@@ -517,6 +518,13 @@ class AppFixtures extends Fixture
             $estado_programa_academico = new EstadoProgramaAcademico();
             $estado_programa_academico->setNombre($value);
             $manager->persist($estado_programa_academico);
+        }
+
+        $tbn_tipo_programa_academico = ['Carrera Universitaria', 'Técnico Superior'];
+        foreach ($tbn_tipo_programa_academico as $value) {
+            $tipo_programa = new TipoProgramaAcademico();
+            $tipo_programa->setNombre($value);
+            $manager->persist($tipo_programa);
         }
 
         $manager->flush();

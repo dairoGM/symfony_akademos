@@ -5,6 +5,7 @@ namespace App\Controller\Pregrado;
 use App\Entity\Pregrado\PlanEstudio;
 use App\Entity\Security\User;
 use App\Form\Pregrado\PlanEstudioType;
+use App\Repository\Pregrado\CursoAcademicoRepository;
 use App\Repository\Pregrado\PlanEstudioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,25 +38,35 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function registrar(Request $request, PlanEstudioRepository $planEstudioRepository)
+    public function registrar(Request $request, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository  $cursoAcademicoRepository)
     {
-//        try {
-            $planEstudioEntity = new PlanEstudio();
-            $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $planEstudioRepository->add($planEstudioEntity, true);
-                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-                return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
+        try {
+        $planEstudioEntity = new PlanEstudio();
+        $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
+            $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
+
+            if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
+                $file = $form['planEstudio']->getData();
+                $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
+                $planEstudioEntity->setPlanEstudio($file_name);
+                $file->move("uploads/plan_estudio/plan_estudio", $file_name);
             }
 
-            return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
-                'form' => $form->createView(),
-            ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+            $planEstudioRepository->add($planEstudioEntity, true);
+            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+            return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -80,6 +91,7 @@ class PlanEstudioController extends AbstractController
 
             return $this->render('modules/pregrado/plan_estudio/edit.html.twig', [
                 'form' => $form->createView(),
+                'planEstudio'=>$planEstudio
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
