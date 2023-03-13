@@ -60,6 +60,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
+            'format' => 'col2'
         ]);
     }
 
