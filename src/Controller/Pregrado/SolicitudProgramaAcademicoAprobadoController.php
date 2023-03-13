@@ -5,6 +5,7 @@ namespace App\Controller\Pregrado;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\InstitucionFacultades;
 use App\Entity\Institucion\InstitucionRedesSociales;
+use App\Entity\NotificacionesUsuario;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
@@ -21,8 +22,11 @@ use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
+use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
+use App\Repository\Pregrado\ComisionNacionalRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
+use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
@@ -138,7 +142,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository
      * @return Response
      */
-    public function asignarPlanEstudio(Request $request, EstadoProgramaAcademicoRepository  $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
+    public function asignarPlanEstudio(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoPlanEstudio();
@@ -202,7 +206,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository
      * @return Response
      */
-    public function asignarComision(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
+    public function asignarComision(Request $request, MiembrosComisionNacionalRepository $miembrosComisionNacionalRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoComisionNacional();
@@ -218,7 +222,15 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
 
                     //Falta Notificar a los miembros de la comision nacional
-
+                    $miembrosComisionNacional = $miembrosComisionNacionalRepository->findBy(['comision' => $request->request->all()['solicitud_programa_comision']['comisionNacional']]);
+                    foreach ($miembrosComisionNacional as $valueMiembros) {
+                        $nuevaNotificacion = new NotificacionesUsuario();
+                        $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
+                        $nuevaNotificacion->setLeido(false);
+                        $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudProgramaAcademico->getNombre() . ' ya está asignada a comisión.');
+                        $nuevaNotificacion->setUsuarioEnvia($this->getUser());
+                        $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                    }
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                     return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_comision', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
                 }
