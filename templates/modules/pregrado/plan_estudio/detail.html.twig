@@ -3,7 +3,9 @@
         <h5 class="mb-0"><b>Curso académico:</b> {{ item.cursoAcademico.nombre | default('') }}</h5>
         <h5 class="mb-0"><b>Año de aprobación:</b> {{ item.annoAprobacion | default('') }}</h5>
         <h5 class="mb-0"><b>AOCE de formación:</b> {{ item.oace.nombre | default('') }}</h5>
-        <h5 class="mb-0"><b>Plan de estudio:</b> {{ item.oace.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Plan de estudio: </b> <a target="_blank"
+                                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/plan_estudio/plan_estudio/{{ item.planEstudio }}">{{ item.planEstudio }}</a>
+        </h5>
         <h5 class="mb-0"><b>Duración del Curso Por Encuentro:</b> {{ item.duracionCursoPorEncuentro  | default('0') }} años</h5>
     </div>
     <div class="col-6">
@@ -13,7 +15,6 @@
         <h5 class="mb-0"><b>Duración del Curso Diurno:</b> {{ item.duracionCursoDiurno | default('0') }} años</h5>
         <h5 class="mb-0"><b>Duración del Curso a Distancia:</b> {{ item.duracionCursoDistancia | default('0') }} años</h5>
     </div>
-
 </div>
 
 
