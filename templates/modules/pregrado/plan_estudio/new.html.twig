@@ -81,7 +81,6 @@
                     {{ form_errors(form.duracionCursoDiurno) }}
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.duracionCursoPorEncuentro) }}
@@ -94,7 +93,6 @@
                     {{ form_errors(form.duracionCursoDistancia) }}
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12 form-group">
                     {{ form_label(form.descripcionPlanEstudio) }}
@@ -102,6 +100,15 @@
                     {{ form_errors(form.descripcionPlanEstudio) }}
                 </div>
             </div>
+
+
+            <h6 class="mb-0"><b><p
+                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+                        Documentos del expediente</p>
+                </b></h6>
+
+
+
             <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
                 <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_estudio_index') }}" data-title=""
                    data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>

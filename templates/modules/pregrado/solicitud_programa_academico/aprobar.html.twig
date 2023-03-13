@@ -90,8 +90,16 @@
         $('#aprobar_solicitud_programa_academico_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
+        $('#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 3) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
 
-        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno").bind("keypress", function (event) {
+        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro").bind("keypress", function (event) {
             if (event.charCode != 0) {
                 var regex = new RegExp("^[0-9-]*$");
                 var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -101,15 +109,6 @@
                 }
             }
         });
-        $("#aprobar_solicitud_programa_academico_duracionCursoPorEncuentro").bind("keypress", function (event) {
-            if (event.charCode != 0) {
-                var regex = new RegExp("^[0-9-]*$");
-                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-                if (!regex.test(key)) {
-                    event.preventDefault();
-                    return false;
-                }
-            }
-        });
+
     </script>
 {% endblock %}

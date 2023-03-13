@@ -35,11 +35,11 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     }
 
     /**
-
-    /**
+     *
+     * /**
      * @Route("/{id}/detail", name="app_solicitud_programa_academico_aprobado_detail", methods={"GET", "POST"})
      * @param Request $request
-     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
      * @return Response
      */
     public function detail(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico)
