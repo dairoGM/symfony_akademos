@@ -51,6 +51,23 @@
                                     data-title="Detalles de la solicitud de programa académico aprobada">
                                 <i class="fa fa-eye "></i>
                             </button>
+                            <a title="Asociar universidades en que se estudia "
+                               href="{{ path('app_solicitud_programa_academico_aprobado_asignar_universidad', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-university"></i>
+                            </a>
+
+                            <a title="Asociar comisión nacional"
+                               href="{{ path('app_solicitud_programa_academico_aprobar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-user-cog"></i>
+                            </a>
+
+                            <a title="Asociar plan de estudio"
+                               href="{{ path('app_solicitud_programa_academico_aprobado_asignar_plan_estudio', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-book-reader"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
