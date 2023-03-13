@@ -620,7 +620,8 @@ class Utils
             ));
             $response = curl_exec($curl);
             curl_close($curl);
-            return json_decode($response, true)['data'];
+            $result = json_decode($response, true);
+            return isset($result['data']) ? $result['data'] : [];
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -650,7 +651,8 @@ class Utils
             ));
             $response = curl_exec($curl);
             curl_close($curl);
-            return json_decode($response, true)['data'];
+            $result = json_decode($response, true);
+            return isset($result['data']) ? $result['data'] : [];
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -680,7 +682,8 @@ class Utils
             ));
             $response = curl_exec($curl);
             curl_close($curl);
-            return json_decode($response, true)['data'];
+            $result = json_decode($response, true);
+            return isset($result['data']) ? $result['data'] : [];
         } catch (Exception $e) {
             return $e->getMessage();
         }

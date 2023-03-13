@@ -106,7 +106,7 @@ class PlanEstudioType extends AbstractType
             ->add('planEstudio', FileType::class, [
                 'label' => 'Plan de estudio',
                 'mapped' => false,
-                'required' => true,
+                'required' => ($options['action'] == 'registrar'),
             ])
             ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso Diurno',

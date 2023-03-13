@@ -114,7 +114,14 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
-
+        $('#solicitud_programa_telefonoCoordinador').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 8) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
         $('[id=solicitud_programa_telefonoCoordinador]').bind("keypress", function (event) {
             if (event.charCode != 0) {
                 var regex = new RegExp("^[0-9-]*$");
@@ -125,5 +132,6 @@
                 }
             }
         });
+
     </script>
 {% endblock %}
