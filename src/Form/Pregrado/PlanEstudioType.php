@@ -109,19 +109,19 @@ class PlanEstudioType extends AbstractType
                 'required' => ($options['action'] == 'registrar'),
             ])
             ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso Diurno',
+                'label' => 'Duración del Curso Diurno (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso por Encuentro',
+                'label' => 'Duración del Curso por Encuentro (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('duracionCursoDistancia', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso a Distancia',
+                'label' => 'Duración del Curso a Distancia (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]

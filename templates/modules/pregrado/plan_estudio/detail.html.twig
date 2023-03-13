@@ -1,19 +1,19 @@
 <div class="row">
     <div class="col-6">
-        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
+        <h5 class="mb-0"><b>Curso académico:</b> {{ item.cursoAcademico.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Año de aprobación:</b> {{ item.annoAprobacion | default('') }}</h5>
+        <h5 class="mb-0"><b>AOCE de formación:</b> {{ item.oace.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Plan de estudio:</b> {{ item.oace.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Duración del Curso Por Encuentro:</b> {{ item.duracionCursoPorEncuentro  | default('0') }} años</h5>
     </div>
     <div class="col-6">
-        <h5 class="mb-0"><b>Siglas:</b> {{ item.siglas }}</h5>
-        {% if '1' == item.activo %}
-            <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
-        {% else %}
-            <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
-        {% endif %}
+        <h5 class="mb-0"><b>Carrera:</b> {{ item.carrera.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ item.fechaAprobacion | date('d/m/Y') }}</h5>
+        <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Duración del Curso Diurno:</b> {{ item.duracionCursoDiurno | default('0') }} años</h5>
+        <h5 class="mb-0"><b>Duración del Curso a Distancia:</b> {{ item.duracionCursoDistancia | default('0') }} años</h5>
     </div>
+
 </div>
-<div class="row">
-    <div class="col-6">
-        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
-    </div>
-</div>
+
 

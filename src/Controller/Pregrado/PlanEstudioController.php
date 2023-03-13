@@ -132,12 +132,11 @@ class PlanEstudioController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_plan_estudio_eliminar", methods={"GET"})
-     * @param Request $request
      * @param planEstudio $planEstudio
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function eliminar(Request $request, PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
+    public function eliminar(PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
     {
         try {
             if ($planEstudioRepository->find($planEstudio) instanceof PlanEstudio) {
