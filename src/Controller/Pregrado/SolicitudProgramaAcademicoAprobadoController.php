@@ -21,6 +21,7 @@ use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
 use App\Repository\Institucion\InstitucionRepository;
+use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
@@ -199,7 +200,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository
      * @return Response
      */
-    public function asignarComision(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
+    public function asignarComision(Request $request,EstadoProgramaAcademicoRepository  $estadoProgramaAcademicoRepository,SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoComisionNacional();
@@ -211,6 +212,10 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 if (empty($exist)) {
                     $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
                     $solicitudProgramaAcademicoComisionNacionalRepository->add($entidad, true);
+
+                    $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
+
+                    //Falta Notificar a los miembros de la comision nacional
 
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                     return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_comision', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
