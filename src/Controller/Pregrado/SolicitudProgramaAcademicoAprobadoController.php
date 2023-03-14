@@ -52,7 +52,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->findBy(['estadoProgramaAcademico' => 2], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5]),
         ]);
     }
 

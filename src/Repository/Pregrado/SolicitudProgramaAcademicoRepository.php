@@ -48,4 +48,12 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getSolicitudProgramaAcademicoAprobado($estadoIds)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds));
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }
