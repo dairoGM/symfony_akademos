@@ -93,7 +93,7 @@ class InstitucionController extends AbstractController
                 $institucionRepository->add($institucion, true);
 
                 $traceService = new TraceService($requestStack, $entityManager, $serializer);
-                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_institucion'), null, serialize($institucion), $this->getParameter('tipo_traza_negocio'));
+                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_institucion'), null, $institucion, $this->getParameter('tipo_traza_negocio'));
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
