@@ -32,9 +32,12 @@ use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
 use App\Repository\Institucion\RecursosHumanosRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Services\TraceService;
 use App\Services\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -65,7 +68,7 @@ class InstitucionController extends AbstractController
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function registrar(Request $request, InstitucionRepository $institucionRepository)
+    public function registrar(Request $request, InstitucionRepository $institucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         try {
             $institucion = new Institucion();
@@ -88,6 +91,10 @@ class InstitucionController extends AbstractController
                     $file->move("uploads/institucion/organigrama", $file_name);
                 }
                 $institucionRepository->add($institucion, true);
+
+                $traceService = new TraceService($requestStack, $entityManager, $serializer);
+                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_institucion'), null, serialize($institucion), $this->getParameter('tipo_traza_negocio'));
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -109,9 +116,10 @@ class InstitucionController extends AbstractController
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function modificar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository)
+    public function modificar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         try {
+            $dataAnterior = $institucion;
             $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -147,6 +155,10 @@ class InstitucionController extends AbstractController
 
 
                 $tipoInstitucionRepository->edit($institucion);
+
+                $traceService = new TraceService($requestStack, $entityManager, $serializer);
+                $traceService->registrar($this->getParameter('accion_modificar'), $this->getParameter('objeto_institucion'), $dataAnterior, $institucion, $this->getParameter('tipo_traza_negocio'));
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -179,15 +191,20 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/{id}/eliminar", name="app_institucion_eliminar", methods={"GET"})
      * @param Request $request
-     * @param Institucion $tipoInstitucion
+     * @param Institucion $institucion
      * @param InstitucionRepository $tipoInstitucionRepository
      * @return Response
      */
-    public function eliminar(Request $request, Institucion $tipoInstitucion, InstitucionRepository $tipoInstitucionRepository)
+    public function eliminar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         try {
-            if ($tipoInstitucionRepository->find($tipoInstitucion) instanceof Institucion) {
-                $tipoInstitucionRepository->remove($tipoInstitucion, true);
+            if ($tipoInstitucionRepository->find($institucion) instanceof Institucion) {
+                $tipoInstitucionRepository->remove($institucion, true);
+
+                $traceService = new TraceService($requestStack, $entityManager, $serializer);
+                $traceService->registrar($this->getParameter('accion_eliminar'), $this->getParameter('objeto_institucion'), null, serialize($institucion), $this->getParameter('tipo_traza_negocio'));
+
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
             }

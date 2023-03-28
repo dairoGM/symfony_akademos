@@ -541,25 +541,28 @@ class Utils
         if (!is_array($anterior)) {
             $nuevoActual = [];
 
-            foreach ($actual as $key => $value) {
-                if (!is_array($actual[$key])) {
-                    if (!in_array($key, $arrayNiveles)) {
-                        if (!empty($value)) {
-                            $nuevoActual[(isset($arrayCorrecciones[ucfirst($key)]) ? $arrayCorrecciones[ucfirst($key)] : ucfirst($key))]['actual'] = $value;
+            if (is_array($actual)) {
+                foreach ($actual as $key => $value) {
+                    if (!is_array($actual[$key])) {
+                        if (!in_array($key, $arrayNiveles)) {
+                            if (!empty($value)) {
+                                $nuevoActual[(isset($arrayCorrecciones[ucfirst($key)]) ? $arrayCorrecciones[ucfirst($key)] : ucfirst($key))]['actual'] = $value;
+                            }
                         }
-                    }
-                } else {
-                    foreach ($actual[$key] as $key1 => $value1) {
-                        if (!in_array($key1, $arrayNiveles)) {
-                            if (!empty($value1)) {
-                                if (!is_array($value1)) {
-                                    $nuevoActual[ucfirst($key) . ' / ' . (isset($arrayCorrecciones[ucfirst($key1)]) ? $arrayCorrecciones[ucfirst($key1)] : ucfirst($key1))]['actual'] = $value1;
+                    } else {
+                        foreach ($actual[$key] as $key1 => $value1) {
+                            if (!in_array($key1, $arrayNiveles)) {
+                                if (!empty($value1)) {
+                                    if (!is_array($value1)) {
+                                        $nuevoActual[ucfirst($key) . ' / ' . (isset($arrayCorrecciones[ucfirst($key1)]) ? $arrayCorrecciones[ucfirst($key1)] : ucfirst($key1))]['actual'] = $value1;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+
             $final = $nuevoActual;
         }
         return $final;

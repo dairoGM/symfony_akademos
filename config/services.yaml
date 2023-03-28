@@ -24,9 +24,9 @@ parameters:
     tipo_traza_sesion: '%env(tipo_traza_sesion)%'
     tipo_traza_negocio: '%env(tipo_traza_negocio)%'
 
-    objeto_plan: '%env(objeto_plan)%'
+
     objeto_autenticacion: '%env(objeto_autenticacion)%'
-    objeto_solicitud_programa: '%env(objeto_solicitud_programa)%'
+    objeto_institucion: '%env(objeto_institucion)%'
 
 
 services:
