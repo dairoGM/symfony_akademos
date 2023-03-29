@@ -15,6 +15,7 @@ use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -61,8 +62,12 @@ class ModificacionPlanEstudioType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('duracionCursoDistancia', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso a Distancia (Años)',
+            ->add('duracionCursoDistancia', ChoiceType::class, [
+                'label' => 'Duración del Curso a Distancia',
+                'choices' => [ 'No' => '0', 'Sí' => '1'],
+                'attr' => [
+                    'class' => 'form-control'
+                ],
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
