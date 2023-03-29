@@ -64,7 +64,7 @@ class ModificacionPlanEstudioType extends AbstractType
             ])
             ->add('duracionCursoDistancia', ChoiceType::class, [
                 'label' => 'Duración del Curso a Distancia',
-                'choices' => [ 'No' => '0', 'Sí' => '1'],
+                'choices' => [ 'No' => 'No', 'Sí' => 'Sí'],
                 'attr' => [
                     'class' => 'form-control'
                 ],

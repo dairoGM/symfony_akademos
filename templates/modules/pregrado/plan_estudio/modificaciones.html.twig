@@ -100,6 +100,7 @@
                     <th>Fecha de aprobación</th>
                     <th>Duración del Curso Diurno (Años)</th>
                     <th>Duración del Curso por Encuentro (Años)</th>
+                    <th>Duración del Curso a Distancia</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -110,6 +111,7 @@
                         <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
                         <td>{{ item.duracionCursoDiurno | default('') }}</td>
                         <td>{{ item.duracionCursoPorEncuentro | default('') }}</td>
+                        <td>{{ item.duracionCursoDistancia | default('') }}</td>
 
                         <td width="15%" class="text-center">
                             <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"

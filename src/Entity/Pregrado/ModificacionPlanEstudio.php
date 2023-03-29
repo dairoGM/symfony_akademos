@@ -54,9 +54,9 @@ class ModificacionPlanEstudio
     private ?int $duracionCursoPorEncuentro;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
-    private ?int $duracionCursoDistancia;
+    private ?string $duracionCursoDistancia;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -177,20 +177,22 @@ class ModificacionPlanEstudio
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getDuracionCursoDistancia(): ?int
+    public function getDuracionCursoDistancia(): ?string
     {
         return $this->duracionCursoDistancia;
     }
 
     /**
-     * @param int|null $duracionCursoDistancia
+     * @param string|null $duracionCursoDistancia
      */
-    public function setDuracionCursoDistancia(?int $duracionCursoDistancia): void
+    public function setDuracionCursoDistancia(?string $duracionCursoDistancia): void
     {
         $this->duracionCursoDistancia = $duracionCursoDistancia;
     }
+
+
 
     public function getDescripcion()
     {
