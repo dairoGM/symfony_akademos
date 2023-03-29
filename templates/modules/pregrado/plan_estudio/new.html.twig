@@ -130,7 +130,9 @@
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
-
+        $('#plan_estudio_annoAprobacion').datetimepicker({
+            format: 'YYYY'
+        });
 
         $('#plan_estudio_annoAprobacion').on('keydown keypress', function (e) {
             if (e.key.length === 1) {

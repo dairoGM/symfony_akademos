@@ -129,7 +129,9 @@
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
-
+        $('#plan_estudio_annoAprobacion').datetimepicker({
+            format: 'YYYY'
+        });
         var fecha = "{% if planEstudio.fechaAprobacion is empty %}  {{ planEstudio.fechaAprobacion | default('') }} {% else %}  {{ planEstudio.fechaAprobacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#plan_estudio_fechaAprobacion').val(fecha.replace(' ', ''));
 

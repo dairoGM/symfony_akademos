@@ -1,0 +1,175 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificaciones del plan de estudio{% endblock %}
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Modificaciones del plan de estudio</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Curso académico:</b> {{ planEstudio.cursoAcademico.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Año de aprobación:</b> {{ planEstudio.annoAprobacion | default('') }}</h5>
+                    <h5 class="mb-0"><b>AOCE de formación:</b> {{ planEstudio.oace.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Plan de estudio: </b> <a target="_blank"
+                                                                 href="{{ app.request.getSchemeAndHttpHost() }}/uploads/plan_estudio/plan_estudio/{{ planEstudio.planEstudio }}">{{ planEstudio.planEstudio }}</a>
+                    </h5>
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Duración del Curso Por
+                            Encuentro:</b> {{ planEstudio.duracionCursoPorEncuentro  | default('0') }} años</h5>
+                    <h5 class="mb-0"><b>Carrera:</b> {{ planEstudio.carrera.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ planEstudio.fechaAprobacion | date('d/m/Y') }}</h5>
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Organismo
+                            demandante:</b> {{ planEstudio.organismoDemandante.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Duración del Curso
+                            Diurno:</b> {{ planEstudio.duracionCursoDiurno | default('0') }} años</h5>
+                    <h5 class="mb-0"><b>Duración del Curso a
+                            Distancia:</b> {{ planEstudio.duracionCursoDistancia | default('0') }} años</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.planEstudioDoc) }}
+                    {{ form_widget(form.planEstudioDoc) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.planEstudioDoc) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.dictamen) }}
+                    {{ form_widget(form.dictamen) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
+                    {{ form_errors(form.dictamen) }}
+                </div>
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaAprobacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaAprobacion) }}
+                        {{ form_errors(form.fechaAprobacion) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoDiurno) }}
+                    {{ form_widget(form.duracionCursoDiurno) }}
+                    {{ form_errors(form.duracionCursoDiurno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoPorEncuentro) }}
+                    {{ form_widget(form.duracionCursoPorEncuentro) }}
+                    {{ form_errors(form.duracionCursoPorEncuentro) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoDistancia) }}
+                    {{ form_widget(form.duracionCursoDistancia) }}
+                    {{ form_errors(form.duracionCursoDistancia) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcion) }}
+                    {{ form_widget(form.descripcion) }}
+                    {{ form_errors(form.descripcion) }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: 95%">
+                <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Fecha de aprobación</th>
+                    <th>Duración del Curso Diurno (Años)</th>
+                    <th>Duración del Curso por Encuentro (Años)</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
+                        <td>{{ item.duracionCursoDiurno | default('') }}</td>
+                        <td>{{ item.duracionCursoPorEncuentro | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/modificaciones/plan_estudio/{{ item.planEstudioDoc }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                            <a title="Descargar dictámen" target="_blank" class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/modificaciones/dictamen/{{ item.dictamen }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_plan_estudio_eliminar_modificacion', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#modificacion_plan_estudio_planEstudioDoc').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('#modificacion_plan_estudio_dictamen').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+
+        $('#modificacion_plan_estudio_fechaAprobacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+
+        $('#modificacion_plan_estudio_duracionCursoDiurno, #modificacion_plan_estudio_duracionCursoPorEncuentro').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 3) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+
+        $("#modificacion_plan_estudio_duracionCursoDiurno, #modificacion_plan_estudio_duracionCursoPorEncuentro").bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+    </script>
+{% endblock %}
