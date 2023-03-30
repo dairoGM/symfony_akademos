@@ -128,6 +128,16 @@
         });
         $('#plan_estudio_annoAprobacion').datetimepicker({
             format: 'YYYY'
+        }).on('dp.change', function (e) {
+            var anno = $(this).val();
+            var f = new Date();
+            console.log(anno);
+            var mes = (parseInt(f.getMonth()) + parseInt(1));
+            if (mes < 10) {
+                mes = '0' + mes;
+            }
+
+            $('#plan_estudio_fechaAprobacion').val(f.getDate() + '/' + mes + '/' + anno);
         });
         var fecha = "{% if planEstudio.fechaAprobacion is empty %}  {{ planEstudio.fechaAprobacion | default('') }} {% else %}  {{ planEstudio.fechaAprobacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#plan_estudio_fechaAprobacion').val(fecha.replace(' ', ''));
