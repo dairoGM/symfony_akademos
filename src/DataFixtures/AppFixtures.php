@@ -513,7 +513,7 @@ class AppFixtures extends Fixture
         }
 
 
-        $tbn_estado_programa_academico = ['Solicitado', 'Aprobado', 'Rechazado', 'Elaboración plan de estudio', 'Aprobado plan de estudio'];
+        $tbn_estado_programa_academico = ['Solicitado', 'Aprobado', 'Rechazado', 'Elaboración plan de estudio', 'Aprobada la creación'];
         foreach ($tbn_estado_programa_academico as $value) {
             $estado_programa_academico = new EstadoProgramaAcademico();
             $estado_programa_academico->setNombre($value);
