@@ -17,23 +17,10 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.cursoAcademico) }}
-                    {{ form_widget(form.cursoAcademico) }}
-                    {{ form_errors(form.cursoAcademico) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.carrera) }}
-                    {{ form_widget(form.carrera) }}
-                    {{ form_errors(form.carrera) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.annoAprobacion) }}
                     {{ form_widget(form.annoAprobacion) }}
                     {{ form_errors(form.annoAprobacion) }}
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-4 form-group">
                     {{ form_label(form.fechaAprobacion) }}
                     <div class="input-group">
@@ -45,28 +32,41 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.oace) }}
-                    {{ form_widget(form.oace) }}
-                    {{ form_errors(form.oace) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tipoProgramaAcademico) }}
                     {{ form_widget(form.tipoProgramaAcademico) }}
                     {{ form_errors(form.tipoProgramaAcademico) }}
                 </div>
+
+
             </div>
 
-
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="rama">
-                    {{ form_label(form.ramaCiencia) }}
-                    {{ form_widget(form.ramaCiencia) }}
-                    {{ form_errors(form.ramaCiencia) }}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.carrera) }}
+                    {{ form_widget(form.carrera) }}
+                    {{ form_errors(form.carrera) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.oace) }}
+                    {{ form_widget(form.oace) }}
+                    {{ form_errors(form.oace) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="organismo">
                     {{ form_label(form.organismoDemandante) }}
                     {{ form_widget(form.organismoDemandante) }}
                     {{ form_errors(form.organismoDemandante) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="rama">
+                    {{ form_label(form.ramaCiencia) }}
+                    {{ form_widget(form.ramaCiencia) }}
+                    {{ form_errors(form.ramaCiencia) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cursoAcademico) }}
+                    {{ form_widget(form.cursoAcademico) }}
+                    {{ form_errors(form.cursoAcademico) }}
                 </div>
                 <div class="col-4  form-group">
                     {{ form_label(form.planEstudio) }}
@@ -83,7 +83,6 @@
                     {{ form_errors(form.duracionCursoDiurno) }}
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.duracionCursoPorEncuentro) }}
@@ -96,7 +95,6 @@
                     {{ form_errors(form.duracionCursoDistancia) }}
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12 form-group">
                     {{ form_label(form.descripcionPlanEstudio) }}
@@ -104,7 +102,6 @@
                     {{ form_errors(form.descripcionPlanEstudio) }}
                 </div>
             </div>
-
             <h6 class="mb-0"><b><p
                             style="font-size: 20px; font-weight: bold; margin-top: 5px;">
                         Documentos del expediente</p>

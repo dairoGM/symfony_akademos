@@ -72,7 +72,7 @@ class PlanEstudio extends BaseNomenclator
     private ?int $duracionCursoPorEncuentro;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private ?int $duracionCursoDistancia;
 
@@ -237,6 +237,7 @@ class PlanEstudio extends BaseNomenclator
     {
         $this->duracionCursoDistancia = $duracionCursoDistancia;
     }
+
 
     /**
      * @return string|null

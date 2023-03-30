@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +29,7 @@ class PlanEstudioType extends AbstractType
     {
         $builder
             ->add('cursoAcademico', EntityType::class, [
-                'label' => 'Curso académico',
+                'label' => 'Curso académico inicial',
                 'class' => CursoAcademico::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
@@ -72,7 +73,7 @@ class PlanEstudioType extends AbstractType
                 ]
             ])
             ->add('oace', EntityType::class, [
-                'label' => 'OACE',
+                'label' => 'OACE formador',
                 'class' => Oace::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
@@ -111,20 +112,33 @@ class PlanEstudioType extends AbstractType
             ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso Diurno (Años)',
                 'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.'),
+                ],
+                'required' => false,
+                'attr' => [
+                    'min' => 1
                 ]
             ])
             ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso por Encuentro (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'required' => false,
+                'attr' => [
+                    'min' => 1
                 ]
             ])
-            ->add('duracionCursoDistancia', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso a Distancia (Años)',
+            ->add('duracionCursoDistancia', ChoiceType::class, [
+                'label' => 'Duración del Curso a Distancia',
+                'choices' => ['No' => 'No', 'Sí' => 'Sí'],
+                'attr' => [
+                    'class' => 'form-control'
+                ],
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                ],
+                'required' => false,
             ])
             ->add('descripcionPlanEstudio', TextareaType::class, [
                 'label' => 'Descripción',

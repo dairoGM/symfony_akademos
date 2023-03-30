@@ -44,14 +44,14 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('duracionCursoDiurno', IntegerType::class, [
+            ->add('duracionCursoDiurno', TextType::class, [
                 'label' => 'Duración del curso diurno (Años)',
                 'required' => false,
                     'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('duracionCursoPorEncuentro', IntegerType::class, [
+            ->add('duracionCursoPorEncuentro', TextType::class, [
                 'label' => 'Duración del curso por encuentros (Años)',
                 'required' => false,
                 'constraints' => [

@@ -54,23 +54,31 @@ class ModificacionPlanEstudioType extends AbstractType
                 'label' => 'Duración del Curso Diurno (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'min' => 1
                 ]
             ])
             ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso por Encuentro (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'min' => 1
                 ]
             ])
             ->add('duracionCursoDistancia', ChoiceType::class, [
                 'label' => 'Duración del Curso a Distancia',
-                'choices' => [ 'No' => 'No', 'Sí' => 'Sí'],
+                'choices' => ['No' => 'No', 'Sí' => 'Sí'],
+                'default_data' => 'No',
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                ],
+                'required' => false,
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
