@@ -106,6 +106,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Curso académico inicial</th>
                     <th>Fecha de aprobación</th>
                     <th>Duración del Curso Diurno (Años)</th>
                     <th>Duración del Curso por Encuentro (Años)</th>
@@ -117,6 +118,7 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.cursoAcademico.nombre | default('') }}</td>
                         <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
                         <td>{{ item.duracionCursoDiurno | default('') }}</td>
                         <td>{{ item.duracionCursoPorEncuentro | default('') }}</td>
