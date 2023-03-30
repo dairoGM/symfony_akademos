@@ -164,7 +164,7 @@ class PlanEstudioController extends AbstractController
      */
     public function modificaciones(Request $request, planEstudio $planEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
     {
-        try {
+//        try {
             $modificacion = new ModificacionPlanEstudio();
             $form = $this->createForm(ModificacionPlanEstudioType::class, $modificacion);
             $form->handleRequest($request);
@@ -196,10 +196,10 @@ class PlanEstudioController extends AbstractController
                 'planEstudio' => $planEstudio,
                 'registros' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudio->getId()]),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_plan_estudio_modificaciones', ['id' => $planEstudio->getId()], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_plan_estudio_modificaciones', ['id' => $planEstudio->getId()], Response::HTTP_SEE_OTHER);
+//        }
     }
 
     /**

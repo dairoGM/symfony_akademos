@@ -28,6 +28,12 @@ class ModificacionPlanEstudio
     private ?PlanEstudio $planEstudio;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\CursoAcademico")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?CursoAcademico $cursoAcademico;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -193,7 +199,6 @@ class ModificacionPlanEstudio
     }
 
 
-
     public function getDescripcion()
     {
         return $this->descripcion;
@@ -215,8 +220,27 @@ class ModificacionPlanEstudio
     {
         return $this->actualizado;
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return CursoAcademico|null
+     */
+    public function getCursoAcademico(): ?CursoAcademico
+    {
+        return $this->cursoAcademico;
+    }
+
+    /**
+     * @param CursoAcademico|null $cursoAcademico
+     */
+    public function setCursoAcademico(?CursoAcademico $cursoAcademico): void
+    {
+        $this->cursoAcademico = $cursoAcademico;
+    }
+
+
 }

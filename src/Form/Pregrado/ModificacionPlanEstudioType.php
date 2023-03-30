@@ -29,6 +29,16 @@ class ModificacionPlanEstudioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('cursoAcademico', EntityType::class, [
+                'label' => 'Curso académico inicial',
+                'class' => CursoAcademico::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
             ->add('fechaAprobacion', TextType::class, [
                 'label' => 'Fecha de aprobación',
                 'mapped' => false,
@@ -71,7 +81,6 @@ class ModificacionPlanEstudioType extends AbstractType
             ->add('duracionCursoDistancia', ChoiceType::class, [
                 'label' => 'Duración del Curso a Distancia',
                 'choices' => ['No' => 'No', 'Sí' => 'Sí'],
-                'default_data' => 'No',
                 'attr' => [
                     'class' => 'form-control'
                 ],
