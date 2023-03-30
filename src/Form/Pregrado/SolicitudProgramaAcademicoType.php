@@ -27,7 +27,7 @@ class SolicitudProgramaAcademicoType extends AbstractType
     {
         $builder
             ->add('tipoProgramaAcademico', EntityType::class, [
-                'label' => 'Tipo de programa',
+                'label' => 'Tipo de programa académico',
                 'class' => TipoProgramaAcademico::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
