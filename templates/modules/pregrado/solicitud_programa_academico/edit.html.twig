@@ -52,7 +52,7 @@
                         {{ form_label(form.fundamentacion) }}
                         {{ form_widget(form.fundamentacion) }}
                         <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
-                              class="cargar-archivo"> </span>
+                              class="cargar-archivo1"> </span>
                         {{ form_errors(form.fundamentacion) }}
                         <a target="_blank"
                            href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ solicitudProgramaAcademico.fundamentacion }}">{{ solicitudProgramaAcademico.fundamentacion }}</a>
@@ -74,10 +74,13 @@
 
 {% block javascripts %}
     <script>
-
-        $('#solicitud_programa_docPrograma').change(function () {
+        $('#solicitud_programa_academico_resolucion').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
+        })
+        $('#solicitud_programa_academico_fundamentacion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
         })
     </script>
 {% endblock %}

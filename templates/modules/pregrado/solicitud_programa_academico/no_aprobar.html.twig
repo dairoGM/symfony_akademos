@@ -7,13 +7,12 @@
 
     <div class="card shadow-sm">
         <div class="card-header">
-            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+            <div class="row" style="display: flex; justify-content: space-between; align-solicitudProgramas: center">
                 <h3 class="card-title text-bold text-gray">Rechazar programa</h3>
             </div>
         </div>
 
-        {{ include('modules/pregrado/solicitud_programa_academico/detail.html.twig', { 'item': solicitudPrograma }) }}
-
+        {{ include('modules/pregrado/solicitud_programa_academico/detail-partial.html.twig', { 'item': solicitudPrograma }) }}
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
@@ -38,7 +37,7 @@
             </div>
         </div>
 
-        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-solicitudProgramas: center;">
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_academico_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>

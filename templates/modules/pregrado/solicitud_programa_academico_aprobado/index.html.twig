@@ -68,6 +68,17 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-book-reader"></i>
                             </a>
+
+                            <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                            <a title="Descargar Fundamentación" target="_blank" class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ item.fundamentacion }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

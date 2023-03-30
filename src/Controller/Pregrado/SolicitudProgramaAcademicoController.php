@@ -52,13 +52,13 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     $file = $form['resolucion']->getData();
                     $file_name = $_FILES['solicitud_programa_academico']['name']['resolucion'];
                     $solicitudProgramaAcademico->setResolucion($file_name);
-                    $file->move("uploads/solicitud_programa_academico/resolucion", $file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/resolucion", $file_name);
                 }
                 if (!empty($_FILES['solicitud_programa_academico']['name']['fundamentacion'])) {
                     $file = $form['fundamentacion']->getData();
                     $file_name = $_FILES['solicitud_programa_academico']['name']['fundamentacion'];
                     $solicitudProgramaAcademico->setFundamentacion($file_name);
-                    $file->move("uploads/solicitud_programa_academico/fundamentacion", $file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/fundamentacion", $file_name);
                 }
                 $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(1));//Solicitado
                 $solicitudProgramaRepository->add($solicitudProgramaAcademico, true);
@@ -88,8 +88,19 @@ class SolicitudProgramaAcademicoController extends AbstractController
         try {
             $form = $this->createForm(SolicitudProgramaAcademicoType::class, $solicitudPrograma, ['action' => 'modificar']);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($_FILES['solicitud_programa_academico']['name']['resolucion'])) {
+                    $file = $form['resolucion']->getData();
+                    $file_name = $_FILES['solicitud_programa_academico']['name']['resolucion'];
+                    $solicitudPrograma->setResolucion($file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/resolucion", $file_name);
+                }
+                if (!empty($_FILES['solicitud_programa_academico']['name']['fundamentacion'])) {
+                    $file = $form['fundamentacion']->getData();
+                    $file_name = $_FILES['solicitud_programa_academico']['name']['fundamentacion'];
+                    $solicitudPrograma->setFundamentacion($file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/fundamentacion", $file_name);
+                }
                 $solicitudProgramaRepository->edit($solicitudPrograma);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
@@ -206,37 +217,37 @@ class SolicitudProgramaAcademicoController extends AbstractController
     public function rechazar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         try {
-        $choices = [
-            'dictamen' => empty($solicitudPrograma->getDictamen()) ? 'registrar' : 'modificar'
-        ];
-        $form = $this->createForm(NoAprobarSolicitudProgramaAcademicoType::class, $solicitudPrograma, $choices);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(3));
-            if (!empty($_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'])) {
-                if ($solicitudPrograma->getDictamen() != null) {
-                    if (file_exists('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen())) {
-                        unlink('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen());
+            $choices = [
+                'dictamen' => empty($solicitudPrograma->getDictamen()) ? 'registrar' : 'modificar'
+            ];
+            $form = $this->createForm(NoAprobarSolicitudProgramaAcademicoType::class, $solicitudPrograma, $choices);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(3));
+                if (!empty($_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'])) {
+                    if ($solicitudPrograma->getDictamen() != null) {
+                        if (file_exists('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen())) {
+                            unlink('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen());
+                        }
                     }
+
+                    $file = $form['dictamen']->getData();
+                    $ext = explode('.', $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen']);
+                    $file_name = $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'];
+                    $solicitudPrograma->setDictamen($file_name);
+                    $file->move("uploads/pregrado/dictamen/", $file_name);
                 }
 
-                $file = $form['dictamen']->getData();
-                $ext = explode('.', $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen']);
-                $file_name = $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'];
-                $solicitudPrograma->setDictamen($file_name);
-                $file->move("uploads/pregrado/dictamen/", $file_name);
+
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
             }
 
-
-            $solicitudProgramaRepository->edit($solicitudPrograma, true);
-            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('modules/pregrado/solicitud_programa_academico/no_aprobar.html.twig', [
-            'form' => $form->createView(),
-            'solicitudPrograma' => $solicitudPrograma
-        ]);
+            return $this->render('modules/pregrado/solicitud_programa_academico/no_aprobar.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);

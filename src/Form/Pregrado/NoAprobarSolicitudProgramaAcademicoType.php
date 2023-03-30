@@ -21,7 +21,7 @@ class NoAprobarSolicitudProgramaAcademicoType extends AbstractType
                 'required' => false,
             ])
             ->add('dictamen', FileType::class, [
-                'label' => 'Dictamen',
+                'label' => 'Dictamen de rechazo',
                 'mapped' => false,
                 'required' =>  $options['dictamen'] == 'registrar',
             ]);
