@@ -39,7 +39,7 @@ class CursoAcademicoController extends AbstractController
      */
     public function registrar(Request $request, CursoAcademicoRepository $cursoAcademicoRepository)
     {
-//        try {
+        try {
             $entity = new CursoAcademico();
             $form = $this->createForm(CursoAcademicoType::class, $entity, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -52,10 +52,10 @@ class CursoAcademicoController extends AbstractController
             return $this->render('modules/pregrado/curso_academico/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_curso_academico_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_curso_academico_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
