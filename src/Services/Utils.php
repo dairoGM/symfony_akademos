@@ -4,9 +4,13 @@ namespace App\Services;
 
 use App\Entity\Personal\Persona;
 use App\Entity\Planificacion\PlanIndicador;
+use App\Entity\Pregrado\EstadoProgramaAcademico;
+use App\Entity\Pregrado\HistoricoEstadoProgramaAcademico;
+use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
+use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -23,6 +27,15 @@ class Utils
     {
         $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
         $this->em = $em;
+    }
+
+    public function guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico, $estado)
+    { ;
+        $historico = new HistoricoEstadoProgramaAcademico();
+        $historico->setSolicitudProgramaAcademico($this->em->getRepository(SolicitudProgramaAcademico::class)->find($solicitudProgramaAcademico));
+        $historico->setEstadoProgramaAcademico($this->em->getRepository(EstadoProgramaAcademico::class)->find($estado));
+        $this->em->persist($historico);
+        $this->em->flush();
     }
 
     public function getToken($email, $password)

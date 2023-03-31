@@ -2,13 +2,17 @@
 
 namespace App\Controller\Pregrado;
 
+use App\Entity\Pregrado\HistoricoEstadoProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
+use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
+use App\Services\Utils;
+use Monolog\Handler\Curl\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +44,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function registrar(Request $request, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
+    public function registrar(Request $request, Utils $utils, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
     {
         try {
             $solicitudProgramaAcademico = new SolicitudProgramaAcademico();
@@ -62,6 +66,9 @@ class SolicitudProgramaAcademicoController extends AbstractController
                 }
                 $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(1));//Solicitado
                 $solicitudProgramaRepository->add($solicitudProgramaAcademico, true);
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(), 1);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -162,7 +169,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function aprobar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function aprobar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         try {
             $choices = [
@@ -175,6 +182,9 @@ class SolicitudProgramaAcademicoController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_solicitud_programa_academico']['fechaAprobacion']));
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(2));
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 2);
+
                 if (!empty($_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'])) {
                     if ($solicitudPrograma->getCartaAprobacion() != null) {
                         if (file_exists('uploads/pregrado/carta_aprobacion/' . $solicitudPrograma->getCartaAprobacion())) {
@@ -213,7 +223,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function rechazar(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function rechazar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         try {
             $choices = [
@@ -223,6 +233,9 @@ class SolicitudProgramaAcademicoController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(3));
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 3);
+
                 if (!empty($_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'])) {
                     if ($solicitudPrograma->getDictamen() != null) {
                         if (file_exists('uploads/pregrado/dictamen/' . $solicitudPrograma->getDictamen())) {

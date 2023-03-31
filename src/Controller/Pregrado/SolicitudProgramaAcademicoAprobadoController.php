@@ -2,35 +2,22 @@
 
 namespace App\Controller\Pregrado;
 
-use App\Entity\Institucion\Institucion;
-use App\Entity\Institucion\InstitucionFacultades;
-use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\NotificacionesUsuario;
-use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
-use App\Entity\Security\User;
-use App\Form\Institucion\InstitucionRedesSocialesType;
-use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
-use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
-use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaComisionType;
 use App\Form\Pregrado\SolicitudProgramaInstitucionType;
 use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
-use App\Repository\Institucion\InstitucionFacultadesRepository;
-use App\Repository\Institucion\InstitucionRedesSocialesRepository;
-use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
-use App\Repository\Postgrado\EstadoProgramaRepository;
-use App\Repository\Pregrado\ComisionNacionalRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -142,7 +129,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository
      * @return Response
      */
-    public function asignarPlanEstudio(Request $request, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function asignarPlanEstudio(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoPlanEstudio();
@@ -155,6 +142,8 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
                     $solicitudProgramaAcademicoPlanEstudioRepository->add($entidad, true);
                     $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(5));
+
+                    $utils->guardarHistoricoEstadoProgramaAcademico($entidad->getSolicitudProgramaAcademico()->getId(), 5);
 
                     $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademico);
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -181,13 +170,16 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository
      * @return Response
      */
-    public function eliminarPlanEstudio(Request $request, SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, EstadoProgramaAcademicoRepository  $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoRepository  $solicitudProgramaAcademicoRepository)
+    public function eliminarPlanEstudio(Request $request, Utils $utils, SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             if ($solicitudProgramaAcademicoPlanEstudio instanceof SolicitudProgramaAcademicoPlanEstudio) {
                 $solicitudProgramaAcademicoPlanEstudioRepository->remove($solicitudProgramaAcademicoPlanEstudio, true);
 
                 $solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(2));
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->getId(), 5);
+
                 $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico());
 
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
@@ -209,7 +201,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository
      * @return Response
      */
-    public function asignarComision(Request $request, MiembrosComisionNacionalRepository $miembrosComisionNacionalRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository, SolicitudProgramaAcademicoRepository  $solicitudProgramaAcademicoRepository)
+    public function asignarComision(Request $request,Utils $utils, MiembrosComisionNacionalRepository $miembrosComisionNacionalRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoComisionNacional();
@@ -223,6 +215,9 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $solicitudProgramaAcademicoComisionNacionalRepository->add($entidad, true);
 
                     $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
+
+                    $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(),4);
+
                     $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademico);
 
                     //Falta Notificar a los miembros de la comision nacional
@@ -259,11 +254,14 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository
      * @return Response
      */
-    public function eliminarComision(SolicitudProgramaAcademicoComisionNacional $solicitudProgramaAcademicoComisionNacional, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
+    public function eliminarComision(Utils $utils, SolicitudProgramaAcademicoComisionNacional $solicitudProgramaAcademicoComisionNacional, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository)
     {
         try {
             if ($solicitudProgramaAcademicoComisionNacional instanceof SolicitudProgramaAcademicoComisionNacional) {
                 $solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(2));
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId(),2);
+
                 $solicitudProgramaAcademicoComisionNacionalRepository->remove($solicitudProgramaAcademicoComisionNacional, true);
 
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
