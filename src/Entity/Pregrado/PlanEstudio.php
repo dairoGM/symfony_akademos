@@ -74,7 +74,7 @@ class PlanEstudio extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=false)
      */
-    private ?int $duracionCursoDistancia;
+    private ?string $duracionCursoDistancia;
 
 
     /**
@@ -223,20 +223,22 @@ class PlanEstudio extends BaseNomenclator
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getDuracionCursoDistancia(): ?int
+    public function getDuracionCursoDistancia(): ?string
     {
         return $this->duracionCursoDistancia;
     }
 
     /**
-     * @param int|null $duracionCursoDistancia
+     * @param string|null $duracionCursoDistancia
      */
-    public function setDuracionCursoDistancia(?int $duracionCursoDistancia): void
+    public function setDuracionCursoDistancia(?string $duracionCursoDistancia): void
     {
         $this->duracionCursoDistancia = $duracionCursoDistancia;
     }
+
+
 
 
     /**

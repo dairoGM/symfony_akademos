@@ -120,7 +120,7 @@ class PlanEstudioType extends AbstractType
                 ]
             ])
             ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso por Encuentro (Años)',
+                'label' => 'Duración del Curso por Encuentros (Años)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ],
