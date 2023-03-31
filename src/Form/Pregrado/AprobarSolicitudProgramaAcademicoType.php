@@ -44,18 +44,24 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('duracionCursoDiurno', TextType::class, [
+            ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del curso diurno (Años)',
                 'required' => false,
                     'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'min' => 1
                 ]
             ])
-            ->add('duracionCursoPorEncuentro', TextType::class, [
+            ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del curso por encuentros (Años)',
                 'required' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'min' => 1
                 ]
             ])
             ->add('descripcionAprobacion', TextareaType::class, [
