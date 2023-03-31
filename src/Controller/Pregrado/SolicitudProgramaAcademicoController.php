@@ -174,7 +174,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_solicitud_programa_academico']['fechaAprobacion']));
-                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(5));
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(2));
                 if (!empty($_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'])) {
                     if ($solicitudPrograma->getCartaAprobacion() != null) {
                         if (file_exists('uploads/pregrado/carta_aprobacion/' . $solicitudPrograma->getCartaAprobacion())) {
@@ -252,6 +252,4 @@ class SolicitudProgramaAcademicoController extends AbstractController
             return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
         }
     }
-
-
 }
