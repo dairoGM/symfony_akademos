@@ -4,7 +4,7 @@
         <h5 class="mb-0"><b>Año de aprobación:</b> {{ item.annoAprobacion | default('') }}</h5>
         <h5 class="mb-0"><b>AOCE de formación:</b> {{ item.oace.nombre | default('') }}</h5>
         <h5 class="mb-0"><b>Plan de estudio: </b> <a target="_blank"
-                                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/plan_estudio/plan_estudio/{{ item.planEstudio }}">{{ item.planEstudio }}</a>
+                                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/plan_estudio/{{ item.planEstudio }}">{{ item.planEstudio }}</a>
         </h5>
         <h5 class="mb-0"><b>Duración del Curso Por Encuentro:</b> {{ item.duracionCursoPorEncuentro  | default('0') }} años</h5>
     </div>

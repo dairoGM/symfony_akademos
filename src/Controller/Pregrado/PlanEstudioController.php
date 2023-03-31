@@ -57,7 +57,7 @@ class PlanEstudioController extends AbstractController
                     $file = $form['planEstudio']->getData();
                     $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
                     $planEstudioEntity->setPlanEstudio($file_name);
-                    $file->move("uploads/plan_estudio/plan_estudio", $file_name);
+                    $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
                 }
 
                 $planEstudioRepository->add($planEstudioEntity, true);
