@@ -56,7 +56,7 @@
                           class="cargar-archivo"> </span>
                     {{ form_errors(form.resolucionPrograma) }}
                     <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.dictamenFinal) }}
@@ -65,7 +65,7 @@
                           class="cargar-archivo1"> </span>
                     {{ form_errors(form.dictamenFinal) }}
                     <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/dictamen_final/{{ solicitudPrograma.dictamenFinal }}">{{ solicitudPrograma.dictamenFinal }}</a>
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/dictamen_final/{{ solicitudPrograma.dictamenFinal }}">{{ solicitudPrograma.dictamenFinal }}</a>
                 </div>
 
             </div>

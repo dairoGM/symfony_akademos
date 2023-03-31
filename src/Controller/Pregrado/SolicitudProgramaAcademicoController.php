@@ -2,17 +2,14 @@
 
 namespace App\Controller\Pregrado;
 
-use App\Entity\Pregrado\HistoricoEstadoProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
-use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\Utils;
-use Monolog\Handler\Curl\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

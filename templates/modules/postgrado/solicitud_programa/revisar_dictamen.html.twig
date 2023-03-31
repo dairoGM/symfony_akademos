@@ -34,7 +34,7 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.comision.nombre | default('') }}</td>
                         <td><a style="cursor: pointer" title="Descargar" target="_blank"
-                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/dictamen/{{ item.dictamen }}">{{ item.dictamen }}</a>
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/solicitud_programa/dictamen/{{ item.dictamen }}">{{ item.dictamen }}</a>
                         </td>
                     </tr>
                 {% endfor %}

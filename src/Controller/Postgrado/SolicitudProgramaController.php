@@ -75,7 +75,7 @@ class SolicitudProgramaController extends AbstractController
                     $file_name = $_FILES['solicitud_programa']['name']['docPrograma'];
                     $solicitudPrograma->setDocPrograma($file_name);
                     $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(1));
-                    $file->move("uploads/solicitud_programa", $file_name);
+                    $file->move("uploads/postgrado/solicitud_programa", $file_name);
                 }
                 $solicitudProgramaRepository->add($solicitudPrograma, true);
                 $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
@@ -115,7 +115,7 @@ class SolicitudProgramaController extends AbstractController
                 if (!empty($_FILES['solicitud_programa']['name']['docPrograma'])) {
                     if ($solicitudPrograma->getDocPrograma() != null) {
                         if (file_exists('uploads/solicitud_programa/' . $solicitudPrograma->getDocPrograma())) {
-                            unlink('uploads/solicitud_programa/' . $solicitudPrograma->getDocPrograma());
+                            unlink('uploads/postgrado/solicitud_programa/' . $solicitudPrograma->getDocPrograma());
                         }
                     }
                     $file = $form['docPrograma']->getData();
@@ -207,8 +207,8 @@ class SolicitudProgramaController extends AbstractController
 
                 if (!empty($_FILES['aprobar_programa']['name']['resolucionPrograma'])) {
                     if ($solicitudPrograma->getResolucionPrograma() != null) {
-                        if (file_exists('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
-                            unlink('uploads/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
+                        if (file_exists('uploads/postgrado/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {
+                            unlink('uploads/postgrado/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma());
                         }
                     }
 
@@ -216,12 +216,12 @@ class SolicitudProgramaController extends AbstractController
                     $ext = explode('.', $_FILES['aprobar_programa']['name']['resolucionPrograma']);
                     $file_name = $_FILES['aprobar_programa']['name']['resolucionPrograma'];
                     $solicitudPrograma->setResolucionPrograma($file_name);
-                    $file->move("uploads/resolucion_programa", $file_name);
+                    $file->move("uploads/postgrado/resolucion_programa", $file_name);
                 }
                 if (!empty($_FILES['aprobar_programa']['name']['dictamenFinal'])) {
                     if ($solicitudPrograma->getDictamenFinal() != null) {
-                        if (file_exists('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
-                            unlink('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
+                        if (file_exists('uploads/postgrado/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
+                            unlink('uploads/postgrado/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
                         }
                     }
 
@@ -229,7 +229,7 @@ class SolicitudProgramaController extends AbstractController
                     $ext = explode('.', $_FILES['aprobar_programa']['name']['dictamenFinal']);
                     $file_name = $_FILES['aprobar_programa']['name']['dictamenFinal'];
                     $solicitudPrograma->setDictamenFinal($file_name);
-                    $file->move("uploads/dictamen_final", $file_name);
+                    $file->move("uploads/postgrado/dictamen_final", $file_name);
                 }
 
                 $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(5));
@@ -267,8 +267,8 @@ class SolicitudProgramaController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!empty($_FILES['no_aprobar_programa']['name']['dictamenFinal'])) {
                     if ($solicitudPrograma->getDictamenFinal() != null) {
-                        if (file_exists('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
-                            unlink('uploads/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
+                        if (file_exists('uploads/postgrado/dictamen_final/' . $solicitudPrograma->getDictamenFinal())) {
+                            unlink('uploads/postgrado/dictamen_final/' . $solicitudPrograma->getDictamenFinal());
                         }
                     }
 
@@ -276,7 +276,7 @@ class SolicitudProgramaController extends AbstractController
                     $ext = explode('.', $_FILES['no_aprobar_programa']['name']['dictamenFinal']);
                     $file_name = $_FILES['no_aprobar_programa']['name']['dictamenFinal'];
                     $solicitudPrograma->setDictamenFinal($file_name);
-                    $file->move("uploads/dictamen_final", $file_name);
+                    $file->move("uploads/postgrado/dictamen_final", $file_name);
                 }
 
                 $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(5));
@@ -404,7 +404,7 @@ class SolicitudProgramaController extends AbstractController
                         $file = $form['dictamen']->getData();
                         $file_name = $_FILES['solicitud_programa_dictamen']['name']['dictamen'];
                         $entidad->setDictamen($file_name);
-                        $file->move("uploads/solicitud_programa/dictamen", $file_name);
+                        $file->move("uploads/postgrado/solicitud_programa/dictamen", $file_name);
                     }
 
 
@@ -502,7 +502,7 @@ class SolicitudProgramaController extends AbstractController
                     $file = $form['dictamenGeneral']->getData();
                     $file_name = $_FILES['revision_dictamen']['name']['dictamenGeneral'];
                     $solicitudPrograma->setDictamenFinal($file_name);
-                    $file->move("uploads/solicitud_programa/dictamen_general", $file_name);
+                    $file->move("uploads/postgrado/solicitud_programa/dictamen_general", $file_name);
                 }
 
                 /*Notificacion*/
