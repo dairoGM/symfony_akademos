@@ -1,0 +1,107 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Desactivar programa{% endblock %}
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Desactivar programa</h3>
+            </div>
+        </div>
+        {{ include('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', { 'item': solicitudPrograma, 'format':'col3' }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.cursoAcademico) }}
+                    {{ form_widget(form.cursoAcademico) }}
+                    {{ form_errors(form.cursoAcademico) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.solicitudCentroRector) }}
+                    {{ form_widget(form.solicitudCentroRector) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.solicitudCentroRector) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/solicitudCentroRector/{{ programaAcademicoDesactivado.solicitudCentroRector }}">{{ programaAcademicoDesactivado.solicitudCentroRector }}</a>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.dictamenAprobacion) }}
+                    {{ form_widget(form.dictamenAprobacion) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
+                    {{ form_errors(form.dictamenAprobacion) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/dictamenAprobacion/{{ programaAcademicoDesactivado.dictamenAprobacion }}">{{ programaAcademicoDesactivado.dictamenAprobacion }}</a>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    {{ form_label(form.fechaEliminacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaEliminacion) }}
+                        {{ form_errors(form.fechaEliminacion) }}
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.resolucion) }}
+                    {{ form_widget(form.resolucion) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                          class="cargar-archivo2"> </span>
+                    {{ form_errors(form.resolucion) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/resolucion/{{ programaAcademicoDesactivado.resolucion }}">{{ programaAcademicoDesactivado.resolucion }}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    {{ form_label(form.descripcion) }}
+                    {{ form_widget(form.descripcion) }}
+                    {{ form_errors(form.descripcion) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel"
+               data-url="{{ path('app_solicitud_programa_academico_aprobado_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        var fecha = "{% if programaAcademicoDesactivado.fechaEliminacion is empty %}  {{ programaAcademicoDesactivado.fechaEliminacion | default('') }} {% else %}  {{ programaAcademicoDesactivado.fechaEliminacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#programa_academico_desactivado_fechaEliminacion').val(fecha.replace(' ', ''));
+
+        $('#programa_academico_desactivado_solicitudCentroRector').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('#programa_academico_desactivado_dictamenAprobacion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+        $('#programa_academico_desactivado_resolucion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo2').html(filename);
+        })
+        $('#programa_academico_desactivado_fechaEliminacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+    </script>
+{% endblock %}

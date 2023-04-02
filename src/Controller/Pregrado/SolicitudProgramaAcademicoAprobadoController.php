@@ -3,6 +3,7 @@
 namespace App\Controller\Pregrado;
 
 use App\Entity\NotificacionesUsuario;
+use App\Entity\Pregrado\ProgramaAcademicoDesactivado;
 use App\Entity\Pregrado\ProgramaAcademicoReabierto;
 use App\Entity\Pregrado\ProgramaAcademicoReabiertoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
@@ -10,6 +11,7 @@ use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
+use App\Form\Pregrado\ProgramaAcademicoDesactivadoType;
 use App\Form\Pregrado\ProgramaAcademicoReabiertoType;
 use App\Form\Pregrado\SolicitudProgramaComisionType;
 use App\Form\Pregrado\SolicitudProgramaInstitucionType;
@@ -18,6 +20,7 @@ use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
+use App\Repository\Pregrado\ProgramaAcademicoDesactivadoRepository;
 use App\Repository\Pregrado\ProgramaAcademicoReabiertoInstitucionRepository;
 use App\Repository\Pregrado\ProgramaAcademicoReabiertoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository;
@@ -46,7 +49,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 5, 8]),
+            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 5,7, 8]),
         ]);
     }
 
@@ -381,5 +384,95 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/{id}/desactivar", name="app_solicitud_programa_academico_aprobado_desactivar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
+     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function desactivar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository)
+    {
+        try {
+            $desactivar = $programaAcademicoDesactivadoRepository->findBy(['solicitudProgramaAcademico' => $solicitudPrograma->getId()]);
+
+            $choices = [
+                'resolucion' => !isset($desactivar[0]) > 0 ? 'registrar' : 'modificar',
+                'dictamenAprobacion' => !isset($desactivar[0]) > 0 ? 'registrar' : 'modificar',
+                'solicitudCentroRector' => !isset($desactivar[0]) > 0 ? 'registrar' : 'modificar',
+            ];
+            $programaAcademicoDesactivado = isset($desactivar[0]) ? $desactivar[0] : new ProgramaAcademicoDesactivado();
+
+            $form = $this->createForm(ProgramaAcademicoDesactivadoType::class, $programaAcademicoDesactivado, $choices);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $programaAcademicoDesactivado->setFechaEliminacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['programa_academico_desactivado']['fechaEliminacion']));
+                $programaAcademicoDesactivado->setSolicitudProgramaAcademico($solicitudPrograma);
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(7));
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 7);
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                if (!empty($_FILES['programa_academico_desactivado']['name']['resolucion'])) {
+                    if ($programaAcademicoDesactivado->getResolucion() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/resolucion/' . $programaAcademicoDesactivado->getResolucion())) {
+                            unlink('uploads/pregrado/programas_aprobados/resolucion/' . $programaAcademicoDesactivado->getResolucion());
+                        }
+                    }
+
+                    $file = $form['resolucion']->getData();
+                    $file_name = $_FILES['programa_academico_desactivado']['name']['resolucion'];
+                    $programaAcademicoDesactivado->setResolucion($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/resolucion/", $file_name);
+                }
+                if (!empty($_FILES['programa_academico_desactivado']['name']['dictamenAprobacion'])) {
+                    if ($programaAcademicoDesactivado->getDictamenAprobacion() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/dictamenAprobacion/' . $programaAcademicoDesactivado->getDictamenAprobacion())) {
+                            unlink('uploads/pregrado/programas_aprobados/dictamenAprobacion/' . $programaAcademicoDesactivado->getDictamenAprobacion());
+                        }
+                    }
+
+                    $file = $form['dictamenAprobacion']->getData();
+                    $file_name = $_FILES['programa_academico_desactivado']['name']['dictamenAprobacion'];
+                    $programaAcademicoDesactivado->setDictamenAprobacion($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/dictamenAprobacion/", $file_name);
+                }
+                if (!empty($_FILES['programa_academico_desactivado']['name']['solicitudCentroRector'])) {
+                    if ($programaAcademicoDesactivado->getSolicitudCentroRector() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/solicitudCentroRector/' . $programaAcademicoDesactivado->getSolicitudCentroRector())) {
+                            unlink('uploads/pregrado/programas_aprobados/solicitudCentroRector/' . $programaAcademicoDesactivado->getSolicitudCentroRector());
+                        }
+                    }
+
+                    $file = $form['solicitudCentroRector']->getData();
+                    $file_name = $_FILES['programa_academico_desactivado']['name']['solicitudCentroRector'];
+                    $programaAcademicoDesactivado->setSolicitudCentroRector($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/solicitudCentroRector/", $file_name);
+                }
+
+                if (isset($desactivar[0])) {
+                    $programaAcademicoDesactivadoRepository->edit($programaAcademicoDesactivado, true);
+                } else {
+                    $programaAcademicoDesactivadoRepository->add($programaAcademicoDesactivado, true);
+                }
+
+
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/desactivar.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma,
+                'programaAcademicoDesactivado' => $programaAcademicoDesactivado,
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 
 }

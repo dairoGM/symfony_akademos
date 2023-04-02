@@ -45,7 +45,7 @@
                         <td></td>
                         <td>{{ item.duracionCursoDiurno | default('') }} años</td>
                         <td>{{ item.duracionCursoPorEncuentro | default('') }} años</td>
-                        <td width="15%" class="text-center">
+                        <td width="18%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la solicitud de programa académico aprobada">
@@ -77,7 +77,11 @@
                                         class="fa fa-bacon"></i>
                             </a>
 
-
+                            <a title="Desactivar programa académico"
+                               href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-deaf"></i>
+                            </a>
                             <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">
                                 <i
