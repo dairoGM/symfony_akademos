@@ -70,6 +70,14 @@
                                             class="fa fa-book-reader"></i>
                                 </a>
                             {% endif %}
+
+                            <a title="Reabrir programa académico"
+                               href="{{ path('app_solicitud_programa_academico_aprobado_reabrir', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-bacon"></i>
+                            </a>
+
+
                             <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">
                                 <i

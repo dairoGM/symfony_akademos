@@ -3,16 +3,23 @@
 namespace App\Controller\Pregrado;
 
 use App\Entity\NotificacionesUsuario;
+use App\Entity\Pregrado\ProgramaAcademicoReabierto;
+use App\Entity\Pregrado\ProgramaAcademicoReabiertoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
+use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
+use App\Form\Pregrado\ProgramaAcademicoReabiertoType;
 use App\Form\Pregrado\SolicitudProgramaComisionType;
 use App\Form\Pregrado\SolicitudProgramaInstitucionType;
 use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
+use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
+use App\Repository\Pregrado\ProgramaAcademicoReabiertoInstitucionRepository;
+use App\Repository\Pregrado\ProgramaAcademicoReabiertoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
@@ -39,7 +46,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5]),
+            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 5, 8]),
         ]);
     }
 
@@ -201,7 +208,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository
      * @return Response
      */
-    public function asignarComision(Request $request,Utils $utils, MiembrosComisionNacionalRepository $miembrosComisionNacionalRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function asignarComision(Request $request, Utils $utils, MiembrosComisionNacionalRepository $miembrosComisionNacionalRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoComisionNacionalRepository $solicitudProgramaAcademicoComisionNacionalRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoComisionNacional();
@@ -216,7 +223,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
                     $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
 
-                    $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(),4);
+                    $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(), 4);
 
                     $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademico);
 
@@ -260,7 +267,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             if ($solicitudProgramaAcademicoComisionNacional instanceof SolicitudProgramaAcademicoComisionNacional) {
                 $solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(2));
 
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId(),2);
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId(), 2);
 
                 $solicitudProgramaAcademicoComisionNacionalRepository->remove($solicitudProgramaAcademicoComisionNacional, true);
 
@@ -272,6 +279,105 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_comision', ['id' => $solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/reabrir", name="app_solicitud_programa_academico_aprobado_reabrir", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
+     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function reabrir(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoReabiertoRepository $programaAcademicoReabiertoRepository, ProgramaAcademicoReabiertoInstitucionRepository $programaAcademicoReabiertoInstitucionRepository, InstitucionRepository $institucionRepository)
+    {
+        try {
+            $reabierto = $programaAcademicoReabiertoRepository->findBy(['solicitudProgramaAcademico' => $solicitudPrograma->getId()]);
+
+            $choices = [
+                'fundamentacion' => !isset($reabierto[0]) > 0 ? 'registrar' : 'modificar',
+                'dictamenDgp' => !isset($reabierto[0]) > 0 ? 'registrar' : 'modificar',
+            ];
+            $programaAcademicoReabierto = isset($reabierto[0]) ? $reabierto[0] : new ProgramaAcademicoReabierto();
+
+            $form = $this->createForm(ProgramaAcademicoReabiertoType::class, $programaAcademicoReabierto, $choices);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $programaAcademicoReabierto->setSolicitudProgramaAcademico($solicitudPrograma);
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(8));
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 8);
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                if (!empty($_FILES['programa_academico_reabierto']['name']['fundamentacion'])) {
+                    if ($programaAcademicoReabierto->getFundamentacion() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/fundamentacion/' . $programaAcademicoReabierto->getFundamentacion())) {
+                            unlink('uploads/pregrado/programas_aprobados/fundamentacion/' . $programaAcademicoReabierto->getFundamentacion());
+                        }
+                    }
+
+                    $file = $form['fundamentacion']->getData();
+                    $file_name = $_FILES['programa_academico_reabierto']['name']['fundamentacion'];
+                    $programaAcademicoReabierto->setFundamentacion($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/fundamentacion/", $file_name);
+                }
+                if (!empty($_FILES['programa_academico_reabierto']['name']['dictamenDgp'])) {
+                    if ($programaAcademicoReabierto->getDictamenDgp() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/dictamenDgp/' . $programaAcademicoReabierto->getDictamenDgp())) {
+                            unlink('uploads/pregrado/programas_aprobados/dictamenDgp/' . $programaAcademicoReabierto->getDictamenDgp());
+                        }
+                    }
+
+                    $file = $form['dictamenDgp']->getData();
+                    $file_name = $_FILES['programa_academico_reabierto']['name']['dictamenDgp'];
+                    $programaAcademicoReabierto->setDictamenDgp($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/dictamenDgp/", $file_name);
+                }
+
+                if (isset($reabierto[0])) {
+                    $programaAcademicoReabiertoRepository->edit($programaAcademicoReabierto, true);
+                } else {
+                    $programaAcademicoReabiertoRepository->add($programaAcademicoReabierto, true);
+                }
+
+
+                $universidadesAsignadas = $programaAcademicoReabiertoInstitucionRepository->findBy(['programaAcademicoReabierto' => $programaAcademicoReabierto->getId()]);
+                if (is_array($universidadesAsignadas))
+                    foreach ($universidadesAsignadas as $value) {
+                        $programaAcademicoReabiertoInstitucionRepository->remove($value, true);
+                    }
+                foreach ($request->request->all()['programa_academico_reabierto']['universidades'] as $value) {
+                    $new = new ProgramaAcademicoReabiertoInstitucion();
+                    $new->setProgramaAcademicoReabierto($programaAcademicoReabierto);
+                    $new->setInstitucion($institucionRepository->find($value));
+                    $programaAcademicoReabiertoInstitucionRepository->add($new, true);
+                }
+
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $institucionesAsignadas = [];
+            if (isset($reabierto[0])) {
+                $universidadesAsignadas = $programaAcademicoReabiertoInstitucionRepository->findBy(['programaAcademicoReabierto' => $programaAcademicoReabierto->getId()]);
+                if (is_array($universidadesAsignadas)) {
+                    foreach ($universidadesAsignadas as $value) {
+                        $institucionesAsignadas[] = $value->getInstitucion()->getId();
+                    }
+                }
+            }
+            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/reabrir.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma,
+                'programaAcademicoReabierto' => $programaAcademicoReabierto,
+                'instituciones' => $institucionRepository->findBy([], ['nombre' => 'asc']),
+                'institucionesAsignadas' => json_encode($institucionesAsignadas)
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
