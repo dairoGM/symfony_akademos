@@ -24,7 +24,7 @@ class ProgramaAcademicoDesactivado extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\CursoAcademico")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?CursoAcademico $cursoAcademico;
 

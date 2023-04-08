@@ -24,7 +24,7 @@ class ProgramaAcademicoReabiertoInstitucion extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Institucion $institucion;
 

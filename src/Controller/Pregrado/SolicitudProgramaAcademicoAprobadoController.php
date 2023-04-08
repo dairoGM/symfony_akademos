@@ -20,6 +20,7 @@ use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
+use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
 use App\Repository\Pregrado\ProgramaAcademicoDesactivadoRepository;
 use App\Repository\Pregrado\ProgramaAcademicoReabiertoInstitucionRepository;
 use App\Repository\Pregrado\ProgramaAcademicoReabiertoRepository;
@@ -49,7 +50,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 5,7, 8]),
+            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2,4, 5, 7, 8]),
         ]);
     }
 
@@ -61,11 +62,18 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
      * @return Response
      */
-    public function detail(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico)
+    public function detail(Request $request, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
+        $planEstudio = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
+        $planEstudioAsociado = -1;
+        if (is_array($planEstudio) && count($planEstudio) > 0) {
+            $planEstudioAsociado = $planEstudio[0]->getPlanEstudio()->getId();
+        }
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
-            'format' => 'col2'
+            'format' => 'col2',
+            'universidades' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]),
+            'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado])
         ]);
     }
 

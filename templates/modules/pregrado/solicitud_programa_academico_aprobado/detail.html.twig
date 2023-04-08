@@ -43,8 +43,6 @@
                 <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ item.fechaAprobacion | date('d/m/Y') }}</h5>
                 <h5 class="mb-0"><b>Duración del Curso Diurno:</b> {{ item.duracionCursoDiurno | default('0') }} años
                 </h5>
-
-
             </div>
             <div class="col-4">
                 <h5 class="mb-0"><b>Nombre del programa académico:</b> {{ item.nombre | default('') }}</h5>
@@ -54,7 +52,8 @@
                 <h5 class="mb-0"><b>Duración del Curso Por
                         Encuentro:</b> {{ item.duracionCursoPorEncuentro | default('0') }} años</h5>
 
-                <h5 class="mb-0"><b>Estado del programa académico:</b> {{ item.estadoProgramaAcademico.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Estado del programa
+                        académico:</b> {{ item.estadoProgramaAcademico.nombre | default('') }}</h5>
             </div>
             <div class="col-4">
                 <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5>
@@ -66,11 +65,68 @@
                 </h5>
                 <h5 class="mb-0"><b>Centro rector:</b> {{ item.centroRector.nombre | default('') }}</h5>
             </div>
-
         {% endif %}
-
     </div>
 </div>
 <hr>
+{% if format == 'col2' %}
+    <h5 class="mb-0"><b>Universidades en las que se estudia</b></h5>
+    <div class="card-body">
+        <table class="table table-bordered table-striped dataTable">
+            <thead class="table-custom-header">
+            <tr>
+                <th>No.</th>
+                <th>Logo</th>
+                <th>Nombre</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in universidades %}
+                <tr>
+                    <td width="1%">{{ loop.index }}</td>
+                    <td width="1%">
+                        <a
+                                href="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}"
+                                target="_blank">
+                            <img src="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}"
+                                 style="width: 45px;height: 45px; object-fit: cover">
+                        </a>
+                    </td>
+                    <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <h5 class="mb-0"><b>Modificaciones del plan de estudio asociado</b></h5>
+    <div class="card-body">
+        <table class="table table-bordered table-striped dataTable">
+            <thead class="table-custom-header">
+            <tr>
+                <th>No.</th>
+                <th>Curso académico inicial</th>
+                <th>Fecha de aprobación</th>
+                <th>Duración del Curso Diurno (Años)</th>
+                <th>Duración del Curso por Encuentro (Años)</th>
+                <th>Duración del Curso a Distancia</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in modificacionesPlanEstudio %}
+                <tr>
+                    <td width="1%">{{ loop.index }}</td>
+                    <td>{{ item.cursoAcademico.nombre | default('') }}</td>
+                    <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
+                    <td>{{ item.duracionCursoDiurno | default('') }}</td>
+                    <td>{{ item.duracionCursoPorEncuentro | default('') }}</td>
+                    <td>{{ item.duracionCursoDistancia | default('') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+{% endif %}
 
 

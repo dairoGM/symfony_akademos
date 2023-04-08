@@ -20,7 +20,7 @@ class HistoricoEstadoProgramaAcademico extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="EstadoProgramaAcademico")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?EstadoProgramaAcademico $estadoProgramaAcademico;
 

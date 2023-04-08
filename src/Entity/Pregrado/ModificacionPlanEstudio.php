@@ -23,13 +23,13 @@ class ModificacionPlanEstudio
     protected ?int $id;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\PlanEstudio")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?PlanEstudio $planEstudio;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\CursoAcademico")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?CursoAcademico $cursoAcademico;
 
