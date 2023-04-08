@@ -177,14 +177,28 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/{id}/detail", name="app_institucion_detail", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $tipoInstitucion
-     * @param InstitucionRepository $tipoInstitucionRepository
+     * @param InstitucionRedesRepository $institucionRedesRepository
+     * @param InstitucionRedesSocialesRepository $institucionRedesSocialesRepository
+     * @param InstitucionSedesRepository $institucionSedesRepository
+     * @param InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository
+     * @param InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository
+     * @param Institucion $institucion
+     * @param InstitucionEditorialRepository $institucionEditorialRepository
+     * @param InstitucionFacultadesRepository $institucionFacultadesRepository
      * @return Response
      */
-    public function detail(Request $request, Institucion $institucion)
+    public function detail(Request $request, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
     {
         return $this->render('modules/institucion/institucion/detail.html.twig', [
             'item' => $institucion,
+            'editoriales' => $institucionEditorialRepository->findBy(['institucion' => $institucion->getId()]),
+            'facultades' => $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId()]),
+            'centrosEstudios' => $institucionCentrosEstudiosRepository->findBy(['institucion' => $institucion->getId()]),
+            'revistas' => $institucionRevistaCientificaRepository->findBy(['institucion' => $institucion->getId()]),
+            'sedes' => $institucionSedesRepository->findBy(['institucion' => $institucion->getId()]),
+            'redesSociales' => $institucionRedesSocialesRepository->findBy(['institucion' => $institucion->getId()]),
+            'redes' => $institucionRedesRepository->findBy(['institucion' => $institucion->getId()]),
+            'recursosHumanos' => $institucionRecursoHumanoRepository->findBy(['institucion' => $institucion->getId()]),
         ]);
     }
 
