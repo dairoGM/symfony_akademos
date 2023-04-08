@@ -47,10 +47,33 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository)
     {
+        $items = [];
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5, 7, 8]);
+        if (is_array($registros)) {
+            date_default_timezone_set("America/New_York");
+            foreach ($registros as $value) {
+                $value->noTieneFechaEliminacion = true;
+                $mostrar = true;
+                $var = $programaAcademicoDesactivadoRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);
+                if (is_array($var) && count($var) > 0) {
+                    if (!empty($var[0]->getFechaEliminacion())) {
+                        $fechaEliminacion = $var[0]->getFechaEliminacion();
+                        $fechaActual = new \DateTime('now');
+                        if ($fechaActual > $fechaEliminacion) {
+                            $mostrar = false;
+                        }
+                    }
+                    $value->noTieneFechaEliminacion = false;
+                }
+                if ($mostrar) {
+                    $items[] = $value;
+                }
+            }
+        }
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2,4, 5, 7, 8]),
+            'registros' => $items,
         ]);
     }
 
@@ -238,7 +261,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
                     $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademico);
 
-                    //Falta Notificar a los miembros de la comision nacional
+                    //Notificacion a los miembros de la comision nacional
                     $miembrosComisionNacional = $miembrosComisionNacionalRepository->findBy(['comision' => $request->request->all()['solicitud_programa_comision']['comisionNacional']]);
                     foreach ($miembrosComisionNacional as $valueMiembros) {
                         $nuevaNotificacion = new NotificacionesUsuario();

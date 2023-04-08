@@ -71,11 +71,13 @@
                                 </a>
                             {% endif %}
 
-                            <a title="Reabrir programa académico"
-                               href="{{ path('app_solicitud_programa_academico_aprobado_reabrir', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-bacon"></i>
-                            </a>
+                           {% if item.noTieneFechaEliminacion %}
+                               <a title="Reabrir programa académico"
+                                  href="{{ path('app_solicitud_programa_academico_aprobado_reabrir', {'id': item.id}) }}"
+                                  class="btn btn-outline-primary"><i
+                                           class="fa fa-bacon"></i>
+                               </a>
+                           {% endif %}
 
                             <a title="Desactivar programa académico"
                                href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"

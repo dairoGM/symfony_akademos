@@ -12,6 +12,9 @@
         <div class="col-5">
             <h5 class="mb-0"><b>Nombre del programa académico:</b> {{ solicitudPrograma.nombre | default('') }}
             </h5>
+            <h5 class="mb-0"><b>Estado del programa
+                    académico:</b> {{ solicitudPrograma.estadoProgramaAcademico.nombre | default('') }}
+            </h5>
             <h5 class="mb-0"><b>Organismo
                     demandante:</b> {{ solicitudPrograma.organismoDemandante.nombre | default('') }}</h5>
             <h5 class="mb-0"><b>Estado del programa

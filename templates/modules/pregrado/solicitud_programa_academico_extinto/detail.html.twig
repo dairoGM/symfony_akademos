@@ -22,13 +22,9 @@
                 <h5 class="mb-0"><b>Carta de aprobación: </b> <a target="_blank"
                                                                  href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}">{{ item.cartaAprobacion }}</a>
                 </h5>
-                <h5 class="mb-0"><b>Estado del programa
-                        académico:</b> {{ item.estadoProgramaAcademico.nombre | default('') }}
-                </h5>
             </div>
             <div class="col-6">
                 <h5 class="mb-0"><b>Nombre del programa académico:</b> {{ item.nombre | default('') }}</h5>
-
                 <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Fundamentación: </b> <a target="_blank"
                                                             href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ item.fundamentacion }}">{{ item.fundamentacion }}</a>
