@@ -619,7 +619,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerMecanismosColaboracion",
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_mecanismos",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -650,7 +650,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerProgramasColaboracion",
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_programas",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -681,7 +681,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerProyectos",
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_proyectos",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -712,7 +712,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/obtenerMembresias",
+                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_membresias",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
