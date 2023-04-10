@@ -3,6 +3,7 @@
 namespace App\Controller\Pregrado;
 
 use App\Entity\NotificacionesUsuario;
+use App\Entity\Pregrado\HistoricoEstadoProgramaAcademico;
 use App\Entity\Pregrado\ProgramaAcademicoDesactivado;
 use App\Entity\Pregrado\ProgramaAcademicoReabierto;
 use App\Entity\Pregrado\ProgramaAcademicoReabiertoInstitucion;
@@ -19,6 +20,7 @@ use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
+use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
 use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
 use App\Repository\Pregrado\ProgramaAcademicoDesactivadoRepository;
@@ -49,32 +51,9 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
      */
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository)
     {
-        $items = [];
-        /*Cuando se ejecute el cron, listar solo las solicitudes en estado 9*/
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5, 7, 8]);
-        if (is_array($registros)) {
-            date_default_timezone_set("America/New_York");
-            foreach ($registros as $value) {
-                $value->noTieneFechaEliminacion = true;
-                $mostrar = true;
-                $var = $programaAcademicoDesactivadoRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);
-                if (is_array($var) && count($var) > 0) {
-                    if (!empty($var[0]->getFechaEliminacion())) {
-                        $fechaEliminacion = $var[0]->getFechaEliminacion();
-                        $fechaActual = new \DateTime('now');
-                        if ($fechaActual > $fechaEliminacion) {
-                            $mostrar = false;
-                        }
-                    }
-                    $value->noTieneFechaEliminacion = false;
-                }
-                if (!$mostrar) {
-                    $items[] = $value;
-                }
-            }
-        }
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([9]);
         return $this->render('modules/pregrado/solicitud_programa_academico_extinto/index.html.twig', [
-            'registros' => $items,
+            'registros' => $registros,
         ]);
     }
 
@@ -118,18 +97,12 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
      * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
      * @return Response
      */
-    public function detail(Request $request, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function detail(Request $request, HistoricoEstadoProgramaAcademicoRepository $historicoEstadoProgramaAcademicoRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
-        $planEstudio = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
-        $planEstudioAsociado = -1;
-        if (is_array($planEstudio) && count($planEstudio) > 0) {
-            $planEstudioAsociado = $planEstudio[0]->getPlanEstudio()->getId();
-        }
-        return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
+        return $this->render('modules/pregrado/solicitud_programa_academico_extinto/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
             'format' => 'col2',
-            'universidades' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]),
-            'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado])
+            'extenciones' => $historicoEstadoProgramaAcademicoRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
         ]);
     }
 

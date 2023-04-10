@@ -70,77 +70,44 @@
 </div>
 <hr>
 {% if format == 'col2' %}
-    <h5 class="mb-0"><b>Universidades en las que se estudia</b></h5>
+    <h5 class="mb-0"><b>Extinciones del programa</b></h5>
     <div class="card-body">
         <table class="table table-bordered table-striped dataTable">
             <thead class="table-custom-header">
             <tr>
                 <th>No.</th>
-                <th>Logo</th>
-                <th>Nombre</th>
+                <th>Curso académico</th>
+                <th>Fecha de eliminación</th>
+                <th>Fundamentación</th>
+                <th>Dictamen de aprobación</th>
             </tr>
             </thead>
             <tbody>
-            {% for item in universidades %}
+            {% for item in extenciones %}
                 <tr>
                     <td width="1%">{{ loop.index }}</td>
-                    <td width="1%">
-                        <a
-                                href="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}"
-                                target="_blank">
-                            <img src="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}"
-                                 style="width: 45px;height: 45px; object-fit: cover">
-                        </a>
-                    </td>
-                    <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <hr>
-    <h5 class="mb-0"><b>Modificaciones del plan de estudio asociado</b></h5>
-    <div class="card-body">
-        <table class="table table-bordered table-striped dataTable">
-            <thead class="table-custom-header">
-            <tr>
-                <th>No.</th>
-                <th>Curso académico inicial</th>
-                <th>Fecha de aprobación</th>
-                <th>Duración del Curso Diurno</th>
-                <th>Duración del Curso por Encuentro</th>
-                <th>Curso a Distancia</th>
-                <th class="text-center">Opciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in modificacionesPlanEstudio %}
-                <tr>
-                    <td width="1%">{{ loop.index }}</td>
-                    <td>{{ item.cursoAcademico.nombre | default('') }}</td>
-                    <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
-                    <td>{{ item.duracionCursoDiurno | default('') }}</td>
-                    <td>{{ item.duracionCursoPorEncuentro | default('') }}</td>
-                    <td>{{ item.duracionCursoDistancia | default('') }}</td>
-
-                    <td width="15%" class="text-center">
-                        <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
-                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/modificaciones/plan_estudio/{{ item.planEstudioDoc }}">
+                    <td></td>
+                    <td>{{ item.creado | date('d-m-Y') }}</td>
+                    <td>
+                        <a title="Descargar fundamentación" target="_blank" class="btn btn-outline-primary"
+                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/fundamentacion/{{ item.solicitudProgramaAcademico.fundamentacion }}">
                             <i
                                     class="fa fa-file-download"></i>
                         </a>
+                    </td>
+                    <td>
                         <a title="Descargar dictámen" target="_blank" class="btn btn-outline-primary"
-                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/modificaciones/dictamen/{{ item.dictamen }}">
+                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/dictamen/{{ item.solicitudProgramaAcademico.dictamen }}">
                             <i
                                     class="fa fa-file-download"></i>
                         </a>
-
                     </td>
+
                 </tr>
             {% endfor %}
             </tbody>
-
         </table>
     </div>
+
 {% endif %}
 
