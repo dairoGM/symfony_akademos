@@ -48,4 +48,14 @@ class ProgramaAcademicoDesactivadoRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    public function getSolicitudProgramaAcademicoAprobadoDesactivado($estadoIds)
+    {
+        $qb = $this->createQueryBuilder('spa')
+            ->join('spa.solicitudProgramaAcademico', 'qb')
+            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds));
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

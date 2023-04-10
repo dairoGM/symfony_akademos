@@ -56,4 +56,22 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+    public function getSolicitudProgramaAcademicoAprobadoDesactivado($estadoIds)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds));
+
+        $subQuery = $this->getEntityManager()->getRepository('App\Entity\Pregrado\ProgramaAcademicoDesactivado')->createQueryBuilder('subQb')
+            ->select('spa.id')
+            ->innerJoin('subQb.solicitudProgramaAcademico', 'spa')
+            ->andWhere("subQb.fechaEliminacion is not null");
+
+        $exp = $qb->expr()->in('qb.id', $subQuery->getDQL());
+        $qb->andWhere($exp);
+
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
+
 }
