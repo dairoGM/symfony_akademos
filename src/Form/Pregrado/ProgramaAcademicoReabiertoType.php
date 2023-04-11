@@ -24,9 +24,9 @@ class ProgramaAcademicoReabiertoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('fundamentacion', FileType::class, [
+            ->add('fundamentacionReapertura', FileType::class, [
                 'label' => 'Fundamentación',
-                'required' => 'registrar' == $options['fundamentacion'],
+                'required' => 'registrar' == $options['fundamentacionReapertura'],
                 'mapped' => false,
             ])
             ->add('dictamenDgp', FileType::class, [
@@ -67,7 +67,7 @@ class ProgramaAcademicoReabiertoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProgramaAcademicoReabierto::class,
-            'fundamentacion' => null,
+            'fundamentacionReapertura' => null,
             'dictamenDgp' => null,
         ]);
     }

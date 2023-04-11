@@ -30,10 +30,9 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([1,2,3, 4, 5, 7, 8]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([1,3]);
         return $this->render('modules/pregrado/solicitud_programa_academico/index.html.twig', [
             'registros' => $registros
-//            'registros' => $solicitudProgramaRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
         ]);
     }
 
@@ -192,7 +191,6 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     }
 
                     $file = $form['cartaAprobacion']->getData();
-                    $ext = explode('.', $_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion']);
                     $file_name = $_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'];
                     $solicitudPrograma->setCartaAprobacion($file_name);
                     $file->move("uploads/pregrado/carta_aprobacion/", $file_name);
@@ -243,7 +241,6 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     }
 
                     $file = $form['dictamen']->getData();
-                    $ext = explode('.', $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen']);
                     $file_name = $_FILES['no_aprobar_solicitud_programa_academico']['name']['dictamen'];
                     $solicitudPrograma->setDictamen($file_name);
                     $file->move("uploads/pregrado/dictamen/", $file_name);

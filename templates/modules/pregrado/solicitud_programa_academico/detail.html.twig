@@ -8,6 +8,9 @@
                 <h5 class="mb-0"><b>Resolución: </b> <a target="_blank"
                                                         href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ item.resolucion }}">{{ item.resolucion }}</a>
                 </h5>
+                <h5 class="mb-0"><b>Fundamentación: </b> <a target="_blank"
+                                                            href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ item.fundamentacion }}">{{ item.fundamentacion }}</a>
+                </h5>
             </div>
             <div class="col-6">
                 <h5 class="mb-0"><b>Nombre del programa académico:</b> {{ item.nombre | default('') }}</h5>
@@ -15,9 +18,7 @@
                         académico:</b> {{ item.estadoProgramaAcademico.nombre | default('') }}
                 </h5>
                 <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
-                <h5 class="mb-0"><b>Fundamentación: </b> <a target="_blank"
-                                                            href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ item.fundamentacion }}">{{ item.fundamentacion }}</a>
-                </h5>
+
             </div>
         </div>
     </div>

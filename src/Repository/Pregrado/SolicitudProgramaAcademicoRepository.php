@@ -52,10 +52,12 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
     public function getSolicitudProgramaAcademicoAprobado($estadoIds)
     {
         $qb = $this->createQueryBuilder('qb')
-            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds));
+            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds))
+            ->orderBy('qb.id', 'desc');
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+
     public function getSolicitudProgramaAcademicoAprobadoDesactivado($estadoIds)
     {
         $qb = $this->createQueryBuilder('qb')

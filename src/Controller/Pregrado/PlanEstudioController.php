@@ -93,15 +93,14 @@ class PlanEstudioController extends AbstractController
 
                 if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
                     if ($planEstudio->getPlanEstudio() != null) {
-                        if (file_exists('uploads/plan_estudio/plan_estudio/' . $planEstudio->getPlanEstudio())) {
-                            unlink('uploads/plan_estudio/plan_estudio/' . $planEstudio->getPlanEstudio());
+                        if (file_exists('uploads/pregrado/plan_estudio/' . $planEstudio->getPlanEstudio())) {
+                            unlink('uploads/pregrado/plan_estudio/' . $planEstudio->getPlanEstudio());
                         }
                     }
                     $file = $form['planEstudio']->getData();
-                    $ext = explode('.', $_FILES['plan_estudio']['name']['planEstudio']);
-                    $file_name = uniqid() . '.' . end($ext);
-                    $planEstudio->setPlanEstudio()($file_name);
-                    $file->move("uploads/plan_estudio/plan_estudio", $file_name);
+                    $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
+                    $planEstudio->setPlanEstudio($file_name);
+                    $file->move("uploads/pregrado/plan_estudio", $file_name);
                 }
 
                 $planEstudioRepository->edit($planEstudio);

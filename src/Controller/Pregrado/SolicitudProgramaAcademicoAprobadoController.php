@@ -47,33 +47,21 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository)
+    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
     {
-        $items = [];
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5, 7, 8]);
+        $response = [];
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5, 6, 7]);
         if (is_array($registros)) {
-            date_default_timezone_set("America/New_York");
             foreach ($registros as $value) {
-                $value->noTieneFechaEliminacion = true;
-                $mostrar = true;
-                $var = $programaAcademicoDesactivadoRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);
-                if (is_array($var) && count($var) > 0) {
-                    if (!empty($var[0]->getFechaEliminacion())) {
-                        $fechaEliminacion = $var[0]->getFechaEliminacion();
-                        $fechaActual = new \DateTime('now');
-                        if ($fechaActual > $fechaEliminacion) {
-                            $mostrar = false;
-                        }
-                    }
-                    $value->noTieneFechaEliminacion = false;
+                $temp = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);
+                if (isset($temp[0])) {
+                    $value->plan_estudio = $temp[0]->getPlanEstudio()->getPlanEstudio();
                 }
-                if ($mostrar) {
-                    $items[] = $value;
-                }
+                $response[] = $value;
             }
         }
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/index.html.twig', [
-            'registros' => $items,
+            'registros' => $response,
         ]);
     }
 
@@ -81,22 +69,29 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      *
      * /**
      * @Route("/{id}/detail", name="app_solicitud_programa_academico_aprobado_detail", methods={"GET", "POST"})
-     * @param Request $request
+     * @param ProgramaAcademicoReabiertoInstitucionRepository $programaAcademicoReabiertoInstitucionRepository
+     * @param SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository
+     * @param ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository
      * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
+     * @param SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository
      * @return Response
      */
-    public function detail(Request $request, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function detail(ProgramaAcademicoReabiertoRepository $programaAcademicoReabiertoRepository, ProgramaAcademicoReabiertoInstitucionRepository $programaAcademicoReabiertoInstitucionRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         $planEstudio = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
         $planEstudioAsociado = -1;
         if (is_array($planEstudio) && count($planEstudio) > 0) {
             $planEstudioAsociado = $planEstudio[0]->getPlanEstudio()->getId();
         }
+
+        $programaReabierto = $programaAcademicoReabiertoRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
+
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
             'format' => 'col2',
             'universidades' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]),
-            'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado])
+            'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado]),
+            'universidadesIncorporadas' => isset($programaReabierto[0]) ? $programaAcademicoReabiertoInstitucionRepository->findBy(['programaAcademicoReabierto' => $programaReabierto[0]->getId()]) : []
         ]);
     }
 
@@ -217,9 +212,9 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             if ($solicitudProgramaAcademicoPlanEstudio instanceof SolicitudProgramaAcademicoPlanEstudio) {
                 $solicitudProgramaAcademicoPlanEstudioRepository->remove($solicitudProgramaAcademicoPlanEstudio, true);
 
-                $solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(2));
+                $solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
 
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->getId(), 5);
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico()->getId(), 4);
 
                 $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademicoPlanEstudio->getSolicitudProgramaAcademico());
 
@@ -305,6 +300,8 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
                 $solicitudProgramaAcademicoComisionNacionalRepository->remove($solicitudProgramaAcademicoComisionNacional, true);
 
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId(), 2);
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_comision', ['id' => $solicitudProgramaAcademicoComisionNacional->getSolicitudProgramaAcademico()->getId()], Response::HTTP_SEE_OTHER);
             }
@@ -331,7 +328,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             $reabierto = $programaAcademicoReabiertoRepository->findBy(['solicitudProgramaAcademico' => $solicitudPrograma->getId()]);
 
             $choices = [
-                'fundamentacion' => !isset($reabierto[0]) > 0 ? 'registrar' : 'modificar',
+                'fundamentacionReapertura' => !isset($reabierto[0]) > 0 ? 'registrar' : 'modificar',
                 'dictamenDgp' => !isset($reabierto[0]) > 0 ? 'registrar' : 'modificar',
             ];
             $programaAcademicoReabierto = isset($reabierto[0]) ? $reabierto[0] : new ProgramaAcademicoReabierto();
@@ -342,21 +339,21 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
                 $programaAcademicoReabierto->setSolicitudProgramaAcademico($solicitudPrograma);
-                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(8));
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 8);
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(7));
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 7);
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
-                if (!empty($_FILES['programa_academico_reabierto']['name']['fundamentacion'])) {
-                    if ($programaAcademicoReabierto->getFundamentacion() != null) {
-                        if (file_exists('uploads/pregrado/programas_aprobados/fundamentacion/' . $programaAcademicoReabierto->getFundamentacion())) {
-                            unlink('uploads/pregrado/programas_aprobados/fundamentacion/' . $programaAcademicoReabierto->getFundamentacion());
+                if (!empty($_FILES['programa_academico_reabierto']['name']['fundamentacionReapertura'])) {
+                    if ($programaAcademicoReabierto->getFundamentacionReapertura() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/fundamentacionReapertura/' . $programaAcademicoReabierto->getFundamentacionReapertura())) {
+                            unlink('uploads/pregrado/programas_aprobados/fundamentacionfundamentacionReapertura/' . $programaAcademicoReabierto->getFundamentacionReapertura());
                         }
                     }
 
-                    $file = $form['fundamentacion']->getData();
-                    $file_name = $_FILES['programa_academico_reabierto']['name']['fundamentacion'];
-                    $programaAcademicoReabierto->setFundamentacion($file_name);
-                    $file->move("uploads/pregrado/programas_aprobados/fundamentacion/", $file_name);
+                    $file = $form['fundamentacionReapertura']->getData();
+                    $file_name = $_FILES['programa_academico_reabierto']['name']['fundamentacionReapertura'];
+                    $programaAcademicoReabierto->setFundamentacionReapertura($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/fundamentacionReapertura/", $file_name);
                 }
                 if (!empty($_FILES['programa_academico_reabierto']['name']['dictamenDgp'])) {
                     if ($programaAcademicoReabierto->getDictamenDgp() != null) {
@@ -443,8 +440,8 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
                 $programaAcademicoDesactivado->setFechaEliminacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['programa_academico_desactivado']['fechaEliminacion']));
                 $programaAcademicoDesactivado->setSolicitudProgramaAcademico($solicitudPrograma);
-                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(7));
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 7);
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(6));
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6);
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
                 if (!empty($_FILES['programa_academico_desactivado']['name']['resolucion'])) {

@@ -48,18 +48,17 @@
                                     data-title="Detalles de la solicitud de programa académico">
                                 <i class="fa fa-eye "></i>
                             </button>
-
-                            <a title="Modificar"
-                               href="{{ path('app_solicitud_programa_academico_modificar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-edit"></i>
-                            </a>
-                            <a title="Aprobar"
-                               href="{{ path('app_solicitud_programa_academico_aprobar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-check"></i>
-                            </a>
-                            {% if item.estadoProgramaAcademico.id  != 9 %}
+                            {% if item.estadoProgramaAcademico.id  == 1 %}
+                                <a title="Modificar"
+                                   href="{{ path('app_solicitud_programa_academico_modificar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-edit"></i>
+                                </a>
+                                <a title="Aprobar"
+                                   href="{{ path('app_solicitud_programa_academico_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-check"></i>
+                                </a>
                                 <a title="Rechazar"
                                    href="{{ path('app_solicitud_programa_academico_rechazar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i

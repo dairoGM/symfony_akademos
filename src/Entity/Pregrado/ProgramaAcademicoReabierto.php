@@ -31,7 +31,7 @@ class ProgramaAcademicoReabierto extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
-    private ?string $fundamentacion = null;
+    private ?string $fundamentacionReapertura = null;
 
 
     /**
@@ -84,18 +84,20 @@ class ProgramaAcademicoReabierto extends BaseEntity
     /**
      * @return string|null
      */
-    public function getFundamentacion(): ?string
+    public function getFundamentacionReapertura(): ?string
     {
-        return $this->fundamentacion;
+        return $this->fundamentacionReapertura;
     }
 
     /**
-     * @param string|null $fundamentacion
+     * @param string|null $fundamentacionReapertura
      */
-    public function setFundamentacion(?string $fundamentacion): void
+    public function setFundamentacionReapertura(?string $fundamentacionReapertura): void
     {
-        $this->fundamentacion = $fundamentacion;
+        $this->fundamentacionReapertura = $fundamentacionReapertura;
     }
+
+
 
     /**
      * @return string|null
