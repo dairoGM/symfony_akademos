@@ -31,6 +31,11 @@ class HistoricoEstadoProgramaAcademico extends BaseEntity
     private ?CursoAcademico $cursoAcademico;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $dictamenAprobacion = null;
+
+    /**
      * @return SolicitudProgramaAcademico|null
      */
     public function getSolicitudProgramaAcademico(): ?SolicitudProgramaAcademico
@@ -76,6 +81,22 @@ class HistoricoEstadoProgramaAcademico extends BaseEntity
     public function setCursoAcademico(?CursoAcademico $cursoAcademico): void
     {
         $this->cursoAcademico = $cursoAcademico;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDictamenAprobacion(): ?string
+    {
+        return $this->dictamenAprobacion;
+    }
+
+    /**
+     * @param string|null $dictamenAprobacion
+     */
+    public function setDictamenAprobacion(?string $dictamenAprobacion): void
+    {
+        $this->dictamenAprobacion = $dictamenAprobacion;
     }
 
 

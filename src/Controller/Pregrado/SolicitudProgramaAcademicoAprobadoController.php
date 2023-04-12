@@ -440,7 +440,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-
+                $dictamenAprobacion = null;
                 $programaAcademicoDesactivado->setFechaEliminacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['programa_academico_desactivado']['fechaEliminacion']));
                 $programaAcademicoDesactivado->setSolicitudProgramaAcademico($solicitudPrograma);
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(6));
@@ -466,9 +466,9 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     }
 
                     $file = $form['dictamenAprobacion']->getData();
-                    $file_name = $_FILES['programa_academico_desactivado']['name']['dictamenAprobacion'];
-                    $programaAcademicoDesactivado->setDictamenAprobacion($file_name);
-                    $file->move("uploads/pregrado/programas_aprobados/dictamenAprobacion/", $file_name);
+                    $dictamenAprobacion = $_FILES['programa_academico_desactivado']['name']['dictamenAprobacion'];
+                    $programaAcademicoDesactivado->setDictamenAprobacion($dictamenAprobacion);
+                    $file->move("uploads/pregrado/programas_aprobados/dictamenAprobacion/", $dictamenAprobacion);
                 }
                 if (!empty($_FILES['programa_academico_desactivado']['name']['solicitudCentroRector'])) {
                     if ($programaAcademicoDesactivado->getSolicitudCentroRector() != null) {
@@ -489,7 +489,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $programaAcademicoDesactivadoRepository->add($programaAcademicoDesactivado, true);
                 }
 
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6,$programaAcademicoDesactivado->getCursoAcademico() );
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6, $programaAcademicoDesactivado->getCursoAcademico(), $dictamenAprobacion);
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);

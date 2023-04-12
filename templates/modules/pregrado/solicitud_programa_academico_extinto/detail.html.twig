@@ -86,7 +86,7 @@
             {% for item in extenciones %}
                 <tr>
                     <td width="1%">{{ loop.index }}</td>
-                    <td></td>
+                    <td>{{ item.cursoAcademico.nombre | default('') }}</td>
                     <td>{{ item.creado | date('d-m-Y') }}</td>
                     <td>
                         <a title="Descargar fundamentación" target="_blank" class="btn btn-outline-primary"
@@ -97,7 +97,7 @@
                     </td>
                     <td>
                         <a title="Descargar dictámen" target="_blank" class="btn btn-outline-primary"
-                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/dictamen/{{ item.solicitudProgramaAcademico.dictamen }}">
+                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/dictamenAprobacion/{{ item.dictamenAprobacion }}">
                             <i
                                     class="fa fa-file-download"></i>
                         </a>

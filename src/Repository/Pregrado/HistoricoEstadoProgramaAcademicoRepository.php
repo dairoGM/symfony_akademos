@@ -48,4 +48,15 @@ class HistoricoEstadoProgramaAcademicoRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getExtenciones($idSolicitudProgramaAcademico)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->join('qb.solicitudProgramaAcademico', 'spa')
+            ->where("spa.id = '$idSolicitudProgramaAcademico' and qb.cursoAcademico is not null")
+            ->orderBy('qb.id', 'desc');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
 }

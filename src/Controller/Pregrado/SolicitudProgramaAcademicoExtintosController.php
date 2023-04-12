@@ -105,7 +105,7 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
         return $this->render('modules/pregrado/solicitud_programa_academico_extinto/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
             'format' => 'col2',
-            'extenciones' => $historicoEstadoProgramaAcademicoRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
+            'extenciones' => $historicoEstadoProgramaAcademicoRepository->getExtenciones($solicitudProgramaAcademico->getId())
         ]);
     }
 
