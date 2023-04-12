@@ -26,7 +26,7 @@
                     <th>Centro rector</th>
                     <th>Duración del curso diurno</th>
                     <th>Duración del curso por encuentro</th>
-
+                    <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -43,8 +43,9 @@
                             <td></td>
                         {% endif %}
                         <td></td>
-                        <td>{{ item.duracionCursoDiurno | default('') }} años</td>
-                        <td>{{ item.duracionCursoPorEncuentro | default('') }} años</td>
+                        <td>{% if item.duracionCursoDiurno is not null %} {{ item.duracionCursoDiurno | default('') }} años {% endif %}</td>
+                        <td>{% if item.duracionCursoPorEncuentro is not null %} {{ item.duracionCursoPorEncuentro | default('') }} años {% endif %}</td>
+                        <td>{{ item.estadoProgramaAcademico.nombre | default('') }}</td>
                         <td width="18%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_programa_academico_extinto_detail', {'id' : item.id}) }}"
