@@ -53,13 +53,13 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.resolucion) }}
-                    {{ form_widget(form.resolucion) }}
+                    {{ form_label(form.resolucionDesactivacion) }}
+                    {{ form_widget(form.resolucionDesactivacion) }}
                     <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
                           class="cargar-archivo2"> </span>
-                    {{ form_errors(form.resolucion) }}
+                    {{ form_errors(form.resolucionDesactivacion) }}
                     <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/resolucion/{{ programaAcademicoDesactivado.resolucion }}">{{ programaAcademicoDesactivado.resolucion }}</a>
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/programas_aprobados/resolucion_desactivacion/{{ programaAcademicoDesactivado.resolucionDesactivacion }}">{{ programaAcademicoDesactivado.resolucionDesactivacion }}</a>
                 </div>
             </div>
             <div class="row">
@@ -95,7 +95,7 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
-        $('#programa_academico_desactivado_resolucion').change(function () {
+        $('#programa_academico_desactivado_resolucionDesactivacion').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo2').html(filename);
         })

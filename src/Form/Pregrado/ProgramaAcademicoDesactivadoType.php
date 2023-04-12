@@ -35,7 +35,7 @@ class ProgramaAcademicoDesactivadoType extends AbstractType
                 'required' => 'registrar' == $options['dictamenAprobacion'],
                 'mapped' => false,
             ])
-            ->add('resolucion', FileType::class, [
+            ->add('resolucionDesactivacion', FileType::class, [
                 'label' => 'Resolución',
                 'required' => 'registrar' == $options['resolucion'],
                 'mapped' => false,

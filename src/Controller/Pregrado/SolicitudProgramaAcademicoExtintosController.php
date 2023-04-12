@@ -49,9 +49,9 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository)
+    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([9]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([8]);
         return $this->render('modules/pregrado/solicitud_programa_academico_extinto/index.html.twig', [
             'registros' => $registros,
         ]);
@@ -59,17 +59,21 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
 
     /**
      * @Route("/{id}/activar", name="app_solicitud_programa_academico_extinto_activar", methods={"GET"})
-     * @param Request $request
+     * @param Utils $utils
+     * @param ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository
      * @param SolicitudProgramaAcademico $solicitudPrograma
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository
      * @return Response
      */
-    public function activar(Request $request, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
+    public function activar(Utils $utils, ProgramaAcademicoDesactivadoRepository $programaAcademicoDesactivadoRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
     {
         try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudProgramaAcademico) {
-                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(2));
+                $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(5));
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 5);
 
                 $progDesactivado = $programaAcademicoDesactivadoRepository->findBy(['solicitudProgramaAcademico' => $solicitudPrograma->getId()]);
                 if (is_array($progDesactivado)) {

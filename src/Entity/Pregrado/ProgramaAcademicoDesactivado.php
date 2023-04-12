@@ -43,7 +43,7 @@ class ProgramaAcademicoDesactivado extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
-    private ?string $resolucion = null;
+    private ?string $resolucionDesactivacion = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -128,18 +128,20 @@ class ProgramaAcademicoDesactivado extends BaseEntity
     /**
      * @return string|null
      */
-    public function getResolucion(): ?string
+    public function getResolucionDesactivacion(): ?string
     {
-        return $this->resolucion;
+        return $this->resolucionDesactivacion;
     }
 
     /**
-     * @param string|null $resolucion
+     * @param string|null $resolucionDesactivacion
      */
-    public function setResolucion(?string $resolucion): void
+    public function setResolucionDesactivacion(?string $resolucionDesactivacion): void
     {
-        $this->resolucion = $resolucion;
+        $this->resolucionDesactivacion = $resolucionDesactivacion;
     }
+
+
 
     /**
      * @return string|null

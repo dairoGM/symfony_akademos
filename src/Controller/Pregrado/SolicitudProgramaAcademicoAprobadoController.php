@@ -29,6 +29,7 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\Utils;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 /**
  * @Route("/pregrado/solicitud_programa_academico_aprobado")
  * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @ORM\Entity
+ * @ORM\Table(name="solicitud_programa_academico_aprobado_controller")
  */
 class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 {
@@ -444,17 +447,17 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6);
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
-                if (!empty($_FILES['programa_academico_desactivado']['name']['resolucion'])) {
-                    if ($programaAcademicoDesactivado->getResolucion() != null) {
-                        if (file_exists('uploads/pregrado/programas_aprobados/resolucion/' . $programaAcademicoDesactivado->getResolucion())) {
-                            unlink('uploads/pregrado/programas_aprobados/resolucion/' . $programaAcademicoDesactivado->getResolucion());
+                if (!empty($_FILES['programa_academico_desactivado']['name']['resolucionDesactivacion'])) {
+                    if ($programaAcademicoDesactivado->getResolucionDesactivacion() != null) {
+                        if (file_exists('uploads/pregrado/programas_aprobados/resolucion_desactivacion/' . $programaAcademicoDesactivado->getResolucionDesactivacion())) {
+                            unlink('uploads/pregrado/programas_aprobados/resolucion_desactivacion/' . $programaAcademicoDesactivado->getResolucionDesactivacion());
                         }
                     }
 
-                    $file = $form['resolucion']->getData();
-                    $file_name = $_FILES['programa_academico_desactivado']['name']['resolucion'];
-                    $programaAcademicoDesactivado->setResolucion($file_name);
-                    $file->move("uploads/pregrado/programas_aprobados/resolucion/", $file_name);
+                    $file = $form['resolucionDesactivacion']->getData();
+                    $file_name = $_FILES['programa_academico_desactivado']['name']['resolucionDesactivacion'];
+                    $programaAcademicoDesactivado->setResolucionDesactivacion($file_name);
+                    $file->move("uploads/pregrado/programas_aprobados/resolucion_desactivacion/", $file_name);
                 }
                 if (!empty($_FILES['programa_academico_desactivado']['name']['dictamenAprobacion'])) {
                     if ($programaAcademicoDesactivado->getDictamenAprobacion() != null) {
