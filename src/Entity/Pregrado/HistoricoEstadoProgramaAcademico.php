@@ -25,6 +25,12 @@ class HistoricoEstadoProgramaAcademico extends BaseEntity
     private ?EstadoProgramaAcademico $estadoProgramaAcademico;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\CursoAcademico")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?CursoAcademico $cursoAcademico;
+
+    /**
      * @return SolicitudProgramaAcademico|null
      */
     public function getSolicitudProgramaAcademico(): ?SolicitudProgramaAcademico
@@ -54,6 +60,22 @@ class HistoricoEstadoProgramaAcademico extends BaseEntity
     public function setEstadoProgramaAcademico(?EstadoProgramaAcademico $estadoProgramaAcademico): void
     {
         $this->estadoProgramaAcademico = $estadoProgramaAcademico;
+    }
+
+    /**
+     * @return CursoAcademico|null
+     */
+    public function getCursoAcademico(): ?CursoAcademico
+    {
+        return $this->cursoAcademico;
+    }
+
+    /**
+     * @param CursoAcademico|null $cursoAcademico
+     */
+    public function setCursoAcademico(?CursoAcademico $cursoAcademico): void
+    {
+        $this->cursoAcademico = $cursoAcademico;
     }
 
 

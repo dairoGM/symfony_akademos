@@ -444,7 +444,6 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $programaAcademicoDesactivado->setFechaEliminacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['programa_academico_desactivado']['fechaEliminacion']));
                 $programaAcademicoDesactivado->setSolicitudProgramaAcademico($solicitudPrograma);
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(6));
-                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6);
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
                 if (!empty($_FILES['programa_academico_desactivado']['name']['resolucionDesactivacion'])) {
@@ -490,6 +489,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $programaAcademicoDesactivadoRepository->add($programaAcademicoDesactivado, true);
                 }
 
+                $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 6,$programaAcademicoDesactivado->getCursoAcademico() );
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);

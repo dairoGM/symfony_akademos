@@ -29,11 +29,15 @@ class Utils
         $this->em = $em;
     }
 
-    public function guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico, $estado)
-    { ;
+    public function guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico, $estado, $cursoAcademico = null)
+    {
+        ;
         $historico = new HistoricoEstadoProgramaAcademico();
         $historico->setSolicitudProgramaAcademico($this->em->getRepository(SolicitudProgramaAcademico::class)->find($solicitudProgramaAcademico));
         $historico->setEstadoProgramaAcademico($this->em->getRepository(EstadoProgramaAcademico::class)->find($estado));
+        if (!empty($cursoAcademico)) {
+            $historico->setCursoAcademico($cursoAcademico);
+        }
         $this->em->persist($historico);
         $this->em->flush();
     }

@@ -97,11 +97,10 @@ class SolicitudProgramaAcademicoExtintosController extends AbstractController
      *
      * /**
      * @Route("/{id}/detail", name="app_solicitud_programa_academico_extinto_detail", methods={"GET", "POST"})
-     * @param Request $request
      * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
      * @return Response
      */
-    public function detail(Request $request, HistoricoEstadoProgramaAcademicoRepository $historicoEstadoProgramaAcademicoRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function detail(HistoricoEstadoProgramaAcademicoRepository $historicoEstadoProgramaAcademicoRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico_extinto/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
