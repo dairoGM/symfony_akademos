@@ -35,7 +35,7 @@ class ProgramaAcademicoReabiertoType extends AbstractType
                 'mapped' => false,
             ])
             ->add('cursoAcademico', EntityType::class, [
-                'label' => 'Curso académico',
+                'label' => 'Curso académico inicial',
                 'class' => CursoAcademico::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
