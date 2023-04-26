@@ -1,151 +1,187 @@
-{#{% extends 'base.html.twig' %}#}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/login/style_login.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/login/slik/slick.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
+          rel="stylesheet">
+    <style>body {
+            padding: 0 !important; /*background-color: #2a263b !important;*/
+        }</style>
 
-{#{% block title %}Log in!{% endblock %}#}
+    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/css/login/slik/slick.min.js') }}"></script>
 
-{#{% block body %}#}
-{#<form method="post">#}
-{#    {% if error %}#}
-{#        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-{#    {% endif %}#}
+{% endblock %}
 
-{#    {% if app.user %}#}
-{#        <div class="mb-3">#}
-{#            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>#}
-{#        </div>#}
-{#    {% endif %}#}
-
-{#    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>#}
-{#    <label for="inputEmail">Email</label>#}
-{#    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>#}
-{#    <label for="inputPassword">Password</label>#}
-{#    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>#}
-
-{#    <input type="hidden" name="_csrf_token"#}
-{#           value="{{ csrf_token('authenticate') }}"#}
-{#    >#}
-
-{#    #}{##}
-{#        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.#}
-{#        See https://symfony.com/doc/current/security/remember_me.html#}
-
-{#        <div class="checkbox mb-3">#}
-{#            <label>#}
-{#                <input type="checkbox" name="_remember_me"> Remember me#}
-{#            </label>#}
-{#        </div>#}
-{#    #}
-
-{#    <button class="btn btn-lg btn-primary" type="submit">#}
-{#        Sign in#}
-{#    </button>#}
-{#</form>#}
-{#{% endblock %}#}
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Log in</title>
-
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free/css/all.min.css') }}">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="{{ asset('assets/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+    <title>Acceso - Akademos - MES</title>
 </head>
-<body class="hold-transition login-page" >
-<div class="login-box">
-{#    <div class="login-logo">#}
-{#        <a href="#" style="color: white"><b style="color: wheat">Admin</b> Gobart</a>#}
-{#    </div>#}
-    <!-- /.login-logo -->
-    <div class="card" style="border-radius: 10px">
-        <div class="card-body login-card-body" style="border-radius: 10px">
-            <div style="display: flex; justify-content: center; flex-direction: column; align-items: center">
-                <img  src="{{ asset('images/logo_principal.png') }}" >
-                <p class="login-box-msg mt-3 mb-2">Iniciar sesión</p>
 
+
+{% block body %}
+    <div class="ms-box ms-new-login-2023">
+        <div class="ms-wrapper-box">
+            <div class="ms-box-a" style="background-color: #0E375F">
+                <div class="ms-logo">
+                    <img src="{{ asset('assets/images/login/logo-mes.jpeg') }}" title="Akademos MES" width="80"
+                         height="auto">
+                </div>
+                <div class="ms-wrapper-slider" >
+                    <div class="ms-slider" id="sliderLogin" style="height: 80%">
+                        <div class="ms-item">
+                            <h2 class="ms-slider-title -text-red-gradiente">Gestión de instituciones</h2>
+                            <ul class="ms-slider-list -text-red-gradiente">
+                                <li>Facultades</li>
+                                <li>Centros de estudios</li>
+                                <li>Sedes</li>
+                                <li>Redes sociales</li>
+                                <li>Redes nacionales e internacionales</li>
+                                <li>Editoriales</li>
+                                <li>Revistas científicas</li>
+                                <li>Programas de formación</li>
+                                <li>Recursos humanos</li>
+                            </ul>
+{#                            <picture>#}
+{#                                <source type="image/webp" srcset="{{ asset('bundles/cpanel/images/login_02.webp') }}">#}
+{#                                <img src="{{ asset('bundles/cpanel/images/login_02.webp') }}" width="515" height="414"#}
+{#                                     alt="Ministerio de Educación Superior">#}
+{#                            </picture>#}
+                        </div>
+                        <div class="ms-item">
+                            <h2 class="ms-slider-title -text-blue-gradiente">Procesos de pregrado</h2>
+                            <ul class="ms-slider-list -text-blue-gradiente">
+                                <li>Planes de estudios</li>
+                                <li>Solicitudes de programas</li>
+                                <li>Programas aprobados</li>
+                                <li>Programas extintos</li>
+                            </ul>
+{#                            <picture>#}
+{#                                <source type="image/webp" srcset="{{ asset('bundles/cpanel/images/login_03.webp') }}">#}
+{#                                <img src="{{ asset('bundles/cpanel/images/login_03.webp') }}" width="515" height="387"#}
+{#                                     alt="Ministerio de Educación Superior">#}
+{#                            </picture>#}
+                        </div>
+                        <div class="ms-item">
+                            <h2 class="ms-slider-title -text-green-gradiente">Procesos de postgrado</h2>
+                            <ul class="ms-slider-list -text-green-gradiente">
+                                <li>Solicitudes de programas</li>
+                                <li>Programas aprobados</li>
+                                <li>Comisiones</li>
+                                <li>Copep</li>
+                            </ul>
+{#                            <picture>#}
+{#                                <source type="image/webp" srcset="{{ asset('bundles/cpanel/images/login_04.webp') }}">#}
+{#                                <img src="{{ asset('bundles/cpanel/images/login_04.webp') }}" width="515" height="407"#}
+{#                                     alt="Ministerio de Educación Superior">#}
+{#                            </picture>#}
+                        </div>
+                        <div class="ms-item">
+                            <h2 class="ms-slider-title -text-orange-gradiente">Gestión de personas</h2>
+                            <ul class="ms-slider-list -text-orange-gradiente">
+                                <li>Datos laborales</li>
+                                <li>Datos de superación</li>
+                                <li>Datos de contactos</li>
+                                <li>Datos de acceso</li>
+                                <li>Afiliaciones</li>
+                            </ul>
+{#                            <picture>#}
+{#                                <source type="image/webp" srcset="{{ asset('bundles/cpanel/images/login_01.webp') }}">#}
+{#                                <img src="{{ asset('bundles/cpanel/images/login_01.webp') }}" width="515" height="393"#}
+{#                                     alt="Ministerio de Educación Superior">#}
+{#                            </picture>#}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
-            <form  method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-                <div class="input-group mb-3">
-                    <input type="email"  value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="Correo">
-
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+            <div class="ms-box-b">
+                <div class="ms-login-form">
+                    <div class="ms-login-header">
+                        <h1 class="ms-login-title">Iniciar sesión </h1>
+                        <p>Introduce tu correo y contraseña para acceder</p>
+                    </div>
+                    <div class="ms-login-body">
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                        <div class="ms-wrapper-form">
+                            <form method="post" autocomplete="off">
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}"
+                                >
+                                <div class="ms-input-form">
+                                    <label for="Username">User Name</label>
+                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                                           class="form-control" autocomplete="email" required autofocus
+                                           placeholder="Correo">
+                                </div>
+                                <div class="ms-input-form">
+                                    <label for="Password">Password</label>
+                                    <input type="password" name="password" id="inputPassword" class="form-control"
+                                           autocomplete="current-password" required placeholder="Contraseña">
+                                    <span id="showpassord" class="icon-eye" action="hide"></span>
+                                </div>
+                                <div class="ms-input-form">
+                                    <button type="submit">
+                                        <span>Entrar</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-4">
-                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Contraseña">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
+                    <div class="ms-login-footer">
+
+                        <p>Para consultas de soporte <a href="mailto:mes@mes.cu">Correo de soporte</a></p>
                     </div>
                 </div>
-
-                <input type="hidden" name="_csrf_token"
-                       value="{{ csrf_token('authenticate') }}"
-                >
-                <div class="row mt-4 mb-2" >
-                    <div class="col-7">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">
-                                Recordarme
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-5">
-                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                    </div>
-                    <!-- /.col -->
+                <div class="ms-copyright">© UCI {{ date('Y') | date('Y') }}
                 </div>
-            </form>
-
-{#            <div class="social-auth-links text-center mb-3">#}
-{#                <p>- OR -</p>#}
-{#                <a href="#" class="btn btn-block btn-primary">#}
-{#                    <i class="fab fa-facebook mr-2"></i> Sign in using Facebook#}
-{#                </a>#}
-{#                <a href="#" class="btn btn-block btn-danger">#}
-{#                    <i class="fab fa-google-plus mr-2"></i> Sign in using Google+#}
-{#                </a>#}
-{#            </div>#}
-            <!-- /.social-auth-links -->
-
-{#            <p class="mb-1">#}
-{#                <a href="forgot-password.html">I forgot my password</a>#}
-{#            </p>#}
-{#            <p class="mb-0">#}
-{#                <a href="register.html" class="text-center">Register a new membership</a>#}
-{#            </p>#}
+            </div>
         </div>
-        <!-- /.login-card-body -->
     </div>
-</div>
-<!-- /.login-box -->
+{% endblock %}
 
-<!-- jQuery -->
-<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
-<!-- Bootstrap 4 -->
-<script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
-</body>
-</html>
+{% block javascripts %}
+    <script type="text/javascript">
+        // document.addEventListener("mousemove", parallax);
+        // function parallax(e){
+        //   this.querySelectorAll('.layer').forEach(layer => {
+        //     const speed = layer.getAttribute('data-speed')
+        //     const x = (window.innerWidth - e.pageX*speed)/100
+        //     const y = (window.innerHeight - e.pageY*speed)/100
+        //     layer.style.transform = `translateX(${x}px) translateY(${y}px)`
+        //   });
+        // }
 
+
+        // jQuery(".ms-slider").slick({
+        //   slidesToShow: 1,
+        //   slidesToScroll: 1,
+        //   arrows: false,
+        //   fade: true,
+        //   dots: true
+        // });
+
+        var sliderLogin = jQuery('#sliderLogin');
+        if (sliderLogin.length) {
+            sliderLogin.slick({
+                autoplay: true,
+                autoplaySpeed: 3000,
+                dots: true,
+                arrows: false,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'ease-in-out',
+                accessibility: false,
+                pauseOnHover: false,
+                pauseOnFocus: false,
+            });
+        }
+    </script>
+{% endblock %}
