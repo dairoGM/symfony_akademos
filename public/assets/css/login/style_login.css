@@ -50712,7 +50712,7 @@ body .rs-content-wrapper.ms-parent .ms-body {
     display: block;
     width: 100%;
     margin-left: -5% auto;
-    padding-left: 40px;
+    padding-left: 10px;
     max-width: 490px
 }
 
@@ -51213,8 +51213,8 @@ body .rs-content-wrapper.ms-parent .ms-body {
         width: 50%;
         height: 100%;
         margin: 0;
-        -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
+        -webkit-box-flex: 0;
+        -ms-flex-positive: 0;
         flex-grow: 1
     }
 
