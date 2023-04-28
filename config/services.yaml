@@ -27,6 +27,10 @@ parameters:
 
     objeto_autenticacion: '%env(objeto_autenticacion)%'
     objeto_institucion: '%env(objeto_institucion)%'
+    objeto_solicitud_programa: '%env(objeto_solicitud_programa)%'
+
+    IB_API_RI_URL: '%env(IB_API_RI_URL)%'
+
 
 
 services:

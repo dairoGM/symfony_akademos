@@ -12,6 +12,7 @@ use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
 use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -20,13 +21,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class Utils
 {
 
-    private $baseUrl;
+    private $base_url;
     private $em;
+    private $ib_api_ri_url;
 
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $em)
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, ContainerBagInterface $container)
     {
-        $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        $this->base_url = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
         $this->em = $em;
+        $this->ib_api_ri_url = $container->get('IB_API_RI_URL');
     }
 
     public function guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico, $estado, $cursoAcademico = null, $dictamenAprobacion = null)
@@ -48,7 +51,7 @@ class Utils
     public function getToken($email, $password)
     {
         $httpClient = new \GuzzleHttp\Client();
-        $response = $httpClient->request('POST', $this->baseUrl . "/api/login_check", [
+        $response = $httpClient->request('POST', $this->base_url . "/api/login_check", [
             'body' => json_encode(['email' => $email, 'password' => $password]),
             'headers' => [
                 'Content-Type' => 'application/json'
@@ -599,7 +602,7 @@ class Utils
             $arrayDataPage['password'] = "dasdasd";
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/getAccessToken",
+                CURLOPT_URL => "{$this->ib_api_ri_url}/api/services/getAccessToken",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -626,7 +629,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_mecanismos",
+                CURLOPT_URL => "{$this->ib_api_ri_url}/api/services/ri_listar_mecanismos",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -657,7 +660,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_programas",
+                CURLOPT_URL => "{$this->ib_api_ri_url}/api/services/ri_listar_programas",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -688,7 +691,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_proyectos",
+                CURLOPT_URL => "{$this->ib_api_ri_url}/api/services/ri_listar_proyectos",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -719,7 +722,7 @@ class Utils
             $curl = curl_init();
             $arrayDataPage['codigo_mes'] = $codigo;
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://relaciones_internacionales.local/api/services/ri_listar_membresias",
+                CURLOPT_URL => "{$this->ib_api_ri_url}/api/services/ri_listar_membresias",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
