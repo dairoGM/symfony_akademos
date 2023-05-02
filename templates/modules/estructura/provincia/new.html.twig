@@ -50,7 +50,8 @@
 
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_provincia_index') }}" data-title="" data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_provincia_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
@@ -64,6 +65,14 @@
         $('#provincia_siglas').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
                 if ($(this).val().length < 3 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+        $('#provincia_codigo').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 2 /*&& !isNaN(parseFloat(e.key))*/) {
                     $(this).val($(this).val() + e.key);
                 }
                 return false;

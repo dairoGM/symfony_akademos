@@ -70,5 +70,13 @@
                 return false;
             }
         });
+        $('#provincia_codigo').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 2 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
     </script>
 {% endblock %}

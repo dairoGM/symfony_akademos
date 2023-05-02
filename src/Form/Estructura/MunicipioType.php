@@ -30,7 +30,10 @@ class MunicipioType extends AbstractType
             ])
             ->add('codigo', IntegerType::class, [
                 'label' => 'Código',
-                'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+                'constraints' => [
+                    new Length(
+                        ["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}']),
+                    new NotBlank()]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',

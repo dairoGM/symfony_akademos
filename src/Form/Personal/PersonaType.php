@@ -61,7 +61,7 @@ class PersonaType extends AbstractType
                 ]
             ])
             ->add('numeroSerieCarnetIdentidad', TextType::class, [
-                'label' => 'Número de serie del ci',
+                'label' => 'Número de serie del CI',
                 'constraints' => [
                     new NotBlank([],'Este valor no debe estar en blanco.')
                 ]

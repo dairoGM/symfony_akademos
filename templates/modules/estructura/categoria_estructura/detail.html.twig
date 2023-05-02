@@ -1,9 +1,13 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
-        <h5 class="mb-0"><b>Color:</b> <div style="margin-top: -4%;margin-left: 11%; width: 20px; height: 20px; border-radius: 50%; background-color: {{ item.color }}"></div></h5>
     </div>
-    <div class="col-6">
+    <div class="col-4">
+        <h5 class="mb-0"><b>Color:</b>
+            <label style="position: absolute; margin-left: 1%; width: 20px; height: 20px; border-radius: 50%; background-color: {{ item.color }}"></label>
+        </h5>
+    </div>
+    <div class="col-4">
         {% if '1' == item.activo %}
             <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
         {% else %}
@@ -12,7 +16,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-12">
         <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
     </div>
 </div>

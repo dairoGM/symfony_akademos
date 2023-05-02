@@ -1,9 +1,4 @@
-@charset "UTF-8";
-@import url(bootstrap.min.css);
-@import url(select2.css);
-@import url(datepickerv2.css);
-@import url(iconos.css);
-@import url(crm-icons/style.css);
+
 
 * {
     -webkit-box-sizing: border-box;

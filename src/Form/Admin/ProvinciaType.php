@@ -33,8 +33,13 @@ class ProvinciaType extends AbstractType
             ])
             ->add('codigo', IntegerType::class, [
                 'label' => 'Código',
-                'required' => true,
-                'constraints' => [new Length(["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 2, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+                'constraints' => [
+                    new Length(
+                        ["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}',
+
+                        ]
+                    ),
+                    new NotBlank()]
             ])
             ->add('siglas', TextType::class, [
                 'label' => 'Siglas',
