@@ -44,12 +44,12 @@ class Estructura extends BaseEntity
 
     /**
      * Estructura padre
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Estructura")
      * @ORM\JoinColumn(nullable=true)
      */
     private ?Estructura $estructura;
-   
+
     /**
      * @ORM\ManyToOne(targetEntity="CategoriaEstructura")
      * @ORM\JoinColumn(nullable=true)
@@ -65,7 +65,6 @@ class Estructura extends BaseEntity
      * @ORM\JoinColumn(nullable=true)
      */
     private ?Nivel $nivel;
-
 
 
     /**

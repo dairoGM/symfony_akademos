@@ -104,7 +104,7 @@
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_estructura_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-            <button class="btn btn-primary">Aceptar</button>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
     </div>
@@ -276,15 +276,21 @@
                 $('#estructura_ubicacion').val(map_current_location)
                 $('#modalDetail').modal('hide')
             })
-
-
         })
-
-
-
         $('#estructura_fechaActivacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
+        var action = '{{ accion }}';
 
+        $('#btn_aceptar').click(function (e) {
+            e.preventDefault();
+            console.log(123);
+            if ('add-hija' === '{{ accion }}') {
+                $('form[name="estructura"]').attr('action', 'registrar-estructura-hija');
+                $('form[name="estructura"]').submit();
+            }
+        })
+
+        console.log(action);
     </script>
 {% endblock %}
