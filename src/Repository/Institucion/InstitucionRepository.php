@@ -54,7 +54,8 @@ class InstitucionRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('qb')
             ->select(
                 "qb.id, 
-                        concat('(',qb.siglas,') ', qb.nombre) as nombre, 
+                        concat('(',qb.siglas,') ', qb.nombre) as nombre_siglas, 
+                        qb.nombre, 
                         qb.logo,
                         qb.siglas,
                         qb.activo,

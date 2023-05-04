@@ -26,8 +26,9 @@ class ExportListInstitucioToPdf extends \App\Services\ExportList {
         $data['title_document'] = 'Lista de IES';
         $data['table_title'] = 'Lista de IES';
         $data['header'] = array(
+            array('column' => 'siglas', 'column_title' => 'Siglas', 'width' => '6%'),
             array('column' => 'nombre', 'column_title' => 'Nombre', 'width' => '60%'),
-            array('column' => 'rector', 'column_title' => 'Rector', 'width' => '36%'),
+            array('column' => 'rector', 'column_title' => 'Rector', 'width' => '30%'),
 
         );
 
