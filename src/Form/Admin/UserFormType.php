@@ -45,7 +45,7 @@ class UserFormType extends AbstractType
         if ($options['action'] == 'registrar') {
             $builder->add('passwordPlainText', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Contraseña no coincide.',
+                'invalid_message' => 'Las contraseñas no coinciden.',
                 'constraints' => [
                     new NotBlank()
                 ],
@@ -57,7 +57,7 @@ class UserFormType extends AbstractType
         else if ($options['action'] == 'modificar') {
             $builder->add('passwordPlainText', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Contraseña no coincide.',
+                'invalid_message' => 'Las contraseñas no coinciden.',
                 'options' => ['attr' => ['class' => 'password-field']],                
                 'required' => false,
                 'first_options'  => ['label' => 'Contraseña'],
