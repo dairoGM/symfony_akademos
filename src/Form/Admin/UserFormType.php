@@ -32,14 +32,14 @@ class UserFormType extends AbstractType
             ->add('userRoles', EntityType::class, [
                 'class' => Rol::class,
                 'label' => 'Roles',
+                'invalid_message' => 'Este valor no es válido.',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('r')->orderBy('r.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
-                'multiple' => true,
-                'required' => false
+                'multiple' => true
             ]);
 
         if ($options['action'] == 'registrar') {
