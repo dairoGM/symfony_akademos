@@ -48,4 +48,21 @@ class InstitucionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getInstituciones()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select(
+                "qb.id, 
+                        concat('(',qb.siglas,') ', qb.nombre) as nombre, 
+                        qb.logo,
+                        qb.siglas,
+                        qb.activo,
+                        qb.codigo,                      
+                        concat(gradoAcademicoR.siglas,' ', qb.rector) as rector");
+        $qb->innerJoin('qb.gradoAcademicoRector', 'gradoAcademicoR');
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

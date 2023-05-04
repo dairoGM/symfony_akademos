@@ -12,6 +12,7 @@ use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\Institucion\InstitucionRevistaCientifica;
 use App\Entity\Institucion\InstitucionSedes;
 use App\Entity\Security\User;
+use App\Export\Institucion\ExportListInstitucioToPdf;
 use App\Form\Institucion\InstitucionCentrosEstudiosType;
 use App\Form\Institucion\InstitucionEditorialesType;
 use App\Form\Institucion\InstitucionFacultadesType;
@@ -52,13 +53,13 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/", name="app_institucion_index", methods={"GET"})
-     * @param InstitucionRepository $tipoInstitucionRepository
+     * @param InstitucionRepository $institucionRepository
      * @return Response
      */
-    public function index(InstitucionRepository $tipoInstitucionRepository)
+    public function index(InstitucionRepository $institucionRepository)
     {
         return $this->render('modules/institucion/institucion/index.html.twig', [
-            'registros' => $tipoInstitucionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $institucionRepository->getInstituciones(),
         ]);
     }
 
@@ -783,5 +784,19 @@ class InstitucionController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
         }
+    }
+
+
+    /**
+     * @Route("/exportar_pdf", name="app_institucion_exportar_pdf", methods={"GET", "POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, InstitucionRepository $institucionRepository)
+    {
+        $export = $institucionRepository->getInstituciones();
+        $export = \App\Services\DoctrineHelper::toArray($export);
+        return $handFop->exportToPdf(new ExportListInstitucioToPdf($export));
     }
 }

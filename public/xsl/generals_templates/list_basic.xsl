@@ -38,12 +38,12 @@
                             <fo:table-row font-size="8pt" text-transform="uppercase">
                                 <fo:table-cell text-align="center">
                                     <fo:block margin-left="0.3em" margin-right="0.3em">
-                                        <fo:external-graphic src="file:../../xsl/images/setac.png" clear="none" float="left" content-height="0.4in" scaling="uniform" border="0" padding="0" margin="0" alignment-baseline="middle"/>
+                                        <fo:external-graphic src="file:../../xsl/images/06.png" clear="none" float="left" content-height="0.4in" scaling="uniform" border="0" padding="0" margin="0" alignment-baseline="middle"/>
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell border-left-style="solid" border-left-width="0.007in" border-left-color="#cd870a">
                                     <fo:block margin-left="1em" margin-right="0.3em" padding-top="0.5em" alignment-baseline="middle">
-                                        <fo:inline font-weight="bold">Cuadro de Mando Gobierno Artemisa</fo:inline>
+                                        <fo:inline font-weight="bold">Ministerio de Educación Superior</fo:inline>
                                     </fo:block>
                                     <fo:block margin-left="1em" margin-right="0.3em" padding-top="0.75em" alignment-baseline="middle">
                                         <fo:inline>
@@ -70,8 +70,8 @@
                             <fo:table-row>
                                 <fo:table-cell>
                                     <fo:block font-size="8pt" margin-left="0.3em" margin-right="0.3em">
-                                        <fo:external-graphic src="file:../../xsl/images/xabal.png" clear="none" float="left" content-height="0.35in" scaling="uniform" border="0" padding="0" margin="0" alignment-baseline="middle"/>
-                                        <fo:inline space-start="1em" font-weight="bold" text-transform="uppercase">Sistema Cuadro de Mando Integral</fo:inline>
+                                        <fo:external-graphic src="file:../../xsl/images/logo_principal.png" clear="none" float="left" content-height="0.35in" scaling="uniform" border="0" padding="0" margin="0" alignment-baseline="middle"/>
+                                        <fo:inline space-start="1em" font-weight="bold" text-transform="uppercase">Akademos</fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell font-size="7pt">
@@ -126,9 +126,9 @@
             <fo:block>
                 <fo:external-graphic src="file:../../xsl/images/setac.png" clear="none" float="left" content-height="1in" scaling="uniform" border="0" padding="0" margin="0 auto" alignment-baseline="middle"/>
             </fo:block>
-            <fo:block margin-top="0.3em">Gobierno Provincial de Artemisa</fo:block>
+            <fo:block margin-top="0.3em">Ministerio de Educación Superior</fo:block>
             <fo:block margin-top="0.3em"></fo:block>
-            <fo:block margin-top="0.3em">Sistema Cuadro de Mando</fo:block>
+            <fo:block margin-top="0.3em">Akademos</fo:block>
         </fo:block>
         <fo:block margin-bottom="1.5em" text-align="left" font-family="MyriadWebPro, sans-serif" text-transform="uppercase" font-weight="bold" margin-top="2.3em" border-bottom-style="solid"  border-bottom-width="0.007in" border-bottom-color="black">
             <xsl:value-of select="user/title_document"/>
