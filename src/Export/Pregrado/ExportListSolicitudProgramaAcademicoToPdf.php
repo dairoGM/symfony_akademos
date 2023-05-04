@@ -33,7 +33,6 @@ class ExportListSolicitudProgramaAcademicoToPdf extends \App\Services\ExportList
             array('column' => 'tipoOrganismo', 'column_title' => 'Tipo de organismo', 'width' => '20%'),
             array('column' => 'organismoDemandante', 'column_title' => 'Organismo demandante', 'width' => '20%'),
             array('column' => 'estadoProgramaAcademico', 'column_title' => 'Estado', 'width' => '10%'),
-
         );
 
         return $data;
