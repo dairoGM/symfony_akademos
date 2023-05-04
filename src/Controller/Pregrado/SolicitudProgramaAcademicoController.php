@@ -31,7 +31,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([1, 3]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademico([1, 3]);
         return $this->render('modules/pregrado/solicitud_programa_academico/index.html.twig', [
             'registros' => $registros
         ]);
@@ -271,7 +271,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
-        $export = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([1, 3]);
+        $export = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademico([1, 3]);
         $export = \App\Services\DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new ExportListSolicitudProgramaAcademicoToPdf($export));
     }
