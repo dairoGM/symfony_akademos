@@ -10,11 +10,15 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de Planes de estudio</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_plan_estudio_registrar') }}"><i
-                            class="fa fa-plus"></i>
-                </a>
-
+                <h3 class="card-title text-bold text-gray">Listado de planes de estudio</h3>
+                <div>
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_plan_estudio_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
+                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_plan_estudio_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                </div>
             </div>
         </div>
         <!-- /.card-header -->
@@ -24,7 +28,7 @@
                 <tr>
                     <th>No.</th>
                     <th>Carrera</th>
-                    <th>Curso acdémico</th>
+                    <th>Curso académico</th>
                     <th>Año de aprobación</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
@@ -34,8 +38,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.carrera.nombre | default('') }}</td>
-                        <td>{{ item.cursoAcademico.nombre | default('') }}</td>
+                        <td>{{ item.nombre_carrera | default('') }}</td>
+                        <td>{{ item.nombre_curso_academico | default('') }}</td>
                         <td>{{ item.annoAprobacion | default('') }}</td>
                         <td width="3%" class="-text-center">
                             {% if '1' == item.activo %}
@@ -55,7 +59,8 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <a title="Modificaciones" href="{{ path('app_plan_estudio_modificaciones', {'id': item.id}) }}"
+                            <a title="Modificaciones"
+                               href="{{ path('app_plan_estudio_modificaciones', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-cogs"></i>
                             </a>

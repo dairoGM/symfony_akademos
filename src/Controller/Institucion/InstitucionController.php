@@ -12,7 +12,8 @@ use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\Institucion\InstitucionRevistaCientifica;
 use App\Entity\Institucion\InstitucionSedes;
 use App\Entity\Security\User;
-use App\Export\Institucion\ExportListInstitucioToPdf;
+use App\Export\Institucion\ExportListInstitucionToPdf;
+use App\Export\Institucion\ExportListPlanEstudioToPdf;
 use App\Form\Institucion\InstitucionCentrosEstudiosType;
 use App\Form\Institucion\InstitucionEditorialesType;
 use App\Form\Institucion\InstitucionFacultadesType;
@@ -797,6 +798,6 @@ class InstitucionController extends AbstractController
     {
         $export = $institucionRepository->getInstituciones();
         $export = \App\Services\DoctrineHelper::toArray($export);
-        return $handFop->exportToPdf(new ExportListInstitucioToPdf($export));
+        return $handFop->exportToPdf(new ExportListInstitucionToPdf($export));
     }
 }

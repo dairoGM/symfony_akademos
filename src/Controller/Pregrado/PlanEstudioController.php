@@ -5,6 +5,7 @@ namespace App\Controller\Pregrado;
 use App\Entity\Pregrado\ModificacionPlanEstudio;
 use App\Entity\Pregrado\PlanEstudio;
 use App\Entity\Security\User;
+use App\Export\Pregrado\ExportListPlanEstudioToPdf;
 use App\Form\Pregrado\ModificacionPlanEstudioType;
 use App\Form\Pregrado\PlanEstudioType;
 use App\Repository\Pregrado\CursoAcademicoRepository;
@@ -33,7 +34,7 @@ class PlanEstudioController extends AbstractController
     public function index(PlanEstudioRepository $planEstudioRepository)
     {
         return $this->render('modules/pregrado/plan_estudio/index.html.twig', [
-            'registros' => $planEstudioRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $planEstudioRepository->getPlanesEstudio(),
         ]);
     }
 
@@ -222,5 +223,17 @@ class PlanEstudioController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_plan_estudio_modificaciones', ['id' => $modificacionPlanEstudio->getPlanEstudio()->getId()], Response::HTTP_SEE_OTHER);
         }
+    }
+    /**
+     * @Route("/exportar_pdf", name="app_plan_estudio_exportar_pdf", methods={"GET", "POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, PlanEstudioRepository $planEstudioRepository)
+    {
+        $export = $planEstudioRepository->getPlanesEstudio();
+        $export = \App\Services\DoctrineHelper::toArray($export);
+        return $handFop->exportToPdf(new ExportListPlanEstudioToPdf($export));
     }
 }

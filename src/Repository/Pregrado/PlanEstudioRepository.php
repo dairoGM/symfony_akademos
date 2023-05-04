@@ -48,4 +48,20 @@ class PlanEstudioRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getPlanesEstudio()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select(
+                "qb.id, 
+                        c.nombre as nombre_carrera,
+                        ca.nombre as nombre_curso_academico,
+                        qb.annoAprobacion,
+                         qb.activo");
+        $qb->innerJoin('qb.carrera', 'c');
+        $qb->innerJoin('qb.cursoAcademico', 'ca');
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

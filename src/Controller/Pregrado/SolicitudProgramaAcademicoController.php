@@ -4,6 +4,7 @@ namespace App\Controller\Pregrado;
 
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
+use App\Export\Pregrado\ExportListSolicitudProgramaAcademicoToPdf;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaAcademicoType;
@@ -30,7 +31,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([1,3]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([1, 3]);
         return $this->render('modules/pregrado/solicitud_programa_academico/index.html.twig', [
             'registros' => $registros
         ]);
@@ -260,5 +261,18 @@ class SolicitudProgramaAcademicoController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
         }
+    }
+
+    /**
+     * @Route("/exportar_pdf", name="app_solicitud_programa_academico_exportar_pdf", methods={"GET", "POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    {
+        $export = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([1, 3]);
+        $export = \App\Services\DoctrineHelper::toArray($export);
+        return $handFop->exportToPdf(new ExportListSolicitudProgramaAcademicoToPdf($export));
     }
 }
