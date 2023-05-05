@@ -30,7 +30,7 @@ class ProgramaAcademicoReabiertoType extends AbstractType
                 'mapped' => false,
             ])
             ->add('dictamenDgp', FileType::class, [
-                'label' => 'Dictamen Dgp',
+                'label' => 'Dictamen DGP',
                 'required' => 'registrar' == $options['dictamenDgp'],
                 'mapped' => false,
             ])
