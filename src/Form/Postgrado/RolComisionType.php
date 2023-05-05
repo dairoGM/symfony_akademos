@@ -30,6 +30,7 @@ class RolComisionType extends AbstractType
                 'label' => 'Habilitado'
             ])
             ->add('copep', CheckboxType::class, [
+                'label' => 'COPEP',
                 'required' => false,
             ]);
     }

@@ -48,3 +48,15 @@
         {{ form_end(form) }}
     </div>
 {% endblock %}
+{% block javascripts %}
+    <script>
+        $('#tipo_programa_codigo').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 10 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

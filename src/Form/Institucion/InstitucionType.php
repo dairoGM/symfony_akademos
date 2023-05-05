@@ -88,8 +88,10 @@ class InstitucionType extends AbstractType
             ])
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                'required' => false,
+                "attr" => [
+                    "data-inputmask" => '"mask": "(999) 999-9999"',
+                    "data-mask" => ''
                 ]
             ])
             ->add('correo', EmailType::class, [

@@ -1,24 +1,24 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         {% if '1' == item.activo %}
             <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
         {% else %}
             <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
         {% endif %}
     </div>
-    <div class="col-6">
+    <div class="col-4">
         {% if '1' == item.copep %}
-            <h5 class="mb-0"><b>Copep:</b> Habilitado</h5>
+            <h5 class="mb-0"><b>COPEP:</b> Habilitado</h5>
         {% else %}
-            <h5 class="mb-0"><b>Copep:</b> Deshabilitado</h5>
+            <h5 class="mb-0"><b>COPEP:</b> Deshabilitado</h5>
         {% endif %}
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-12">
         <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
     </div>
 </div>

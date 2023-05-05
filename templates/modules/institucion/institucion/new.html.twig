@@ -41,7 +41,7 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.logo) }}
                     {{ form_widget(form.logo) }}
-                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo"> </span>
                     {{ form_errors(form.logo) }}
                 </div>
@@ -68,7 +68,7 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.organigrama) }}
                     {{ form_widget(form.organigrama) }}
-                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo1"> </span>
                     {{ form_errors(form.organigrama) }}
                 </div>
@@ -235,6 +235,7 @@
             format: 'DD/MM/YYYY'
         });
 
+        $('[data-mask]').inputmask()
 
         $(document).ready(function () {
             let mymap = '';
@@ -245,10 +246,7 @@
             let marker = '';
             $('#institucion_coordenadasSedePrincipal').click(function () {
                 $('#modalDetail').modal('show')
-
-
                 setTimeout(function () {
-
                     map_current_location = $('#institucion_coordenadasSedePrincipal').val() ? $('#institucion_coordenadasSedePrincipal').val() : '22.81258, -82.758293'
 
                     let options = {

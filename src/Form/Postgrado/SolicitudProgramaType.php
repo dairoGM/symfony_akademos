@@ -44,9 +44,10 @@ class SolicitudProgramaType extends AbstractType
             ])
             ->add('telefonoCoordinador', TextType::class, [
                 'label' => 'Teléfono',
-                'constraints' => [
-                    new Length(["max" => 8, 'maxMessage' => 'El número maximo de caracteres es {{ limit }}']),
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                'required' => false,
+                "attr" => [
+                    "data-inputmask" => '"mask": "(999) 999-9999"',
+                    "data-mask" => ''
                 ]
             ])
             ->add('docPrograma', FileType::class, [

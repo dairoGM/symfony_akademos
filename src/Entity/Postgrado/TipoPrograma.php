@@ -4,6 +4,7 @@ namespace App\Entity\Postgrado;
 
 use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -12,7 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class TipoPrograma extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=true, length="255")
+     * @ORM\Column(type="string", nullable=false)
+     * @Assert\Regex(
+     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           match=   true,
+     *           message= "Caracteres no válidos, por favor verifique."
+     * )
      */
     private ?string $codigo = null;
 

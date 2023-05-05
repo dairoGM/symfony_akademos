@@ -19,11 +19,15 @@ class RamaCienciaType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('siglas', TextType::class, [
-                'constraints' => [new Length(["min" =>3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+                'label' => 'Siglas',
+                'constraints' => [
+                    new Length(
+                        ["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}']),
+                    new NotBlank()]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',

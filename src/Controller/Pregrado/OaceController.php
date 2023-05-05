@@ -62,18 +62,18 @@ class OaceController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_oace_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $tipoPrograma
+     * @param Oace $oace
      * @param OaceRepository $tipoProgramaRepository
      * @return Response
      */
-    public function modificar(Request $request, Oace $tipoPrograma, OaceRepository $tipoProgramaRepository)
+    public function modificar(Request $request, Oace $oace, OaceRepository $oaceRepository)
     {
         try {
-            $form = $this->createForm(OaceType::class, $tipoPrograma, ['action' => 'modificar']);
+            $form = $this->createForm(OaceType::class, $oace, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $tipoProgramaRepository->edit($tipoPrograma);
+                $oaceRepository->edit($oace);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_oace_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -83,7 +83,7 @@ class OaceController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_oace_modificar', ['id' => $tipoPrograma], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_oace_modificar', ['id' => $oace], Response::HTTP_SEE_OTHER);
         }
     }
 

@@ -13,7 +13,7 @@ class InstitucionRedesSociales extends BaseEntity
 {
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="10")
+     * @ORM\Column(type="string", nullable=false, length="255")
      */
     private ?string $perfil = null;
 

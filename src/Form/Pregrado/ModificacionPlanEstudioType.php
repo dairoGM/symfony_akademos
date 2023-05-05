@@ -54,7 +54,7 @@ class ModificacionPlanEstudioType extends AbstractType
                 ]
             ])
             ->add('dictamen', FileType::class, [
-                'label' => 'Dictamen de modificacón PDE',
+                'label' => 'Dictamen de modificación PDE',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')

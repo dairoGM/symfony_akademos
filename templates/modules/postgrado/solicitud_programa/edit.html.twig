@@ -46,7 +46,7 @@
                 <div class="col-4  form-group">
                     {{ form_label(form.docPrograma) }}
                     {{ form_widget(form.docPrograma) }}
-                    <span style="margin-top: 1%;position: absolute;margin-left: -97%;z-index: 100;"
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo"> </span>
                     {{ form_errors(form.docPrograma) }}
                     <a target="_blank"
@@ -110,28 +110,10 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-
         $('#solicitud_programa_docPrograma').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
-        $('#solicitud_programa_telefonoCoordinador').on('keydown keypress', function (e) {
-            if (e.key.length === 1) {
-                if ($(this).val().length < 8) {
-                    $(this).val($(this).val() + e.key);
-                }
-                return false;
-            }
-        });
-        $('[id=solicitud_programa_telefonoCoordinador]').bind("keypress", function (event) {
-            if (event.charCode != 0) {
-                var regex = new RegExp("^[0-9-]*$");
-                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-                if (!regex.test(key)) {
-                    event.preventDefault();
-                    return false;
-                }
-            }
-        });
+        $('[data-mask]').inputmask()
     </script>
 {% endblock %}
