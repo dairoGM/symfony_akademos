@@ -21,7 +21,7 @@ class Estructura extends BaseEntity
     private ?string $nombre;
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="15")
+     * @ORM\Column(type="string", nullable=true, length="15")
      */
     private ?string $siglas;
 
@@ -68,12 +68,12 @@ class Estructura extends BaseEntity
 
 
     /**
-     * @ORM\Column(type="string", length=180, nullable=false)
+     * @ORM\Column(type="string", length=180, nullable=true)
      */
     private ?string $email;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=false)
+     * @ORM\Column(type="string", length=15, nullable=true                                                                                                                                                                                                                                              )
      */
     private ?string $telefono;
 

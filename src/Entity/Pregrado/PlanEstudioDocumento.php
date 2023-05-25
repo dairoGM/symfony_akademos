@@ -17,7 +17,7 @@ class PlanEstudioDocumento extends BaseNomenclator
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\PlanEstudio")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?PlanEstudio $planEstudio;
 
@@ -47,6 +47,38 @@ class PlanEstudioDocumento extends BaseNomenclator
     public function setPlanEstudio(?PlanEstudio $planEstudio): void
     {
         $this->planEstudio = $planEstudio;
+    }
+
+    /**
+     * @return Documento|null
+     */
+    public function getDocumento(): ?Documento
+    {
+        return $this->documento;
+    }
+
+    /**
+     * @param Documento|null $documento
+     */
+    public function setDocumento(?Documento $documento): void
+    {
+        $this->documento = $documento;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumentoFisico(): ?string
+    {
+        return $this->documentoFisico;
+    }
+
+    /**
+     * @param string|null $documentoFisico
+     */
+    public function setDocumentoFisico(?string $documentoFisico): void
+    {
+        $this->documentoFisico = $documentoFisico;
     }
 
 

@@ -2,14 +2,18 @@
 
 namespace App\Controller\Pregrado;
 
+use App\Entity\Pregrado\Documento;
 use App\Entity\Pregrado\ModificacionPlanEstudio;
 use App\Entity\Pregrado\PlanEstudio;
+use App\Entity\Pregrado\PlanEstudioDocumento;
 use App\Entity\Security\User;
 use App\Export\Pregrado\ExportListPlanEstudioToPdf;
 use App\Form\Pregrado\ModificacionPlanEstudioType;
 use App\Form\Pregrado\PlanEstudioType;
 use App\Repository\Pregrado\CursoAcademicoRepository;
+use App\Repository\Pregrado\DocumentoRepository;
 use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
+use App\Repository\Pregrado\PlanEstudioDocumentoRepository;
 use App\Repository\Pregrado\PlanEstudioRepository;
 use Cassandra\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,37 +48,84 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function registrar(Request $request, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
+    public function registrar(Request $request, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
     {
-        try {
-            $planEstudioEntity = new PlanEstudio();
-            $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
-                $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
+//        try {
+        $planEstudioEntity = new PlanEstudio();
+        $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
+            $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
 
-                if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
-                    $file = $form['planEstudio']->getData();
-                    $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
-                    $planEstudioEntity->setPlanEstudio($file_name);
-                    $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
-                }
-
-                $planEstudioRepository->add($planEstudioEntity, true);
-                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-                return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
+            if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
+                $file = $form['planEstudio']->getData();
+//                pr($file);
+                $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
+                $planEstudioEntity->setPlanEstudio($file_name);
+                $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
             }
 
-            return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
-                'form' => $form->createView(),
-            ]);
+            $planEstudioRepository->add($planEstudioEntity, true);
+            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+            return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
+            'form' => $form->createView(),
+            'registros' => [],
+            'documentos' => $documentoRepository->findBy(['activo' => true], ['nombre' => 'asc'])
+        ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
+//        }
+    }
+
+    /**
+     * @Route("/registo-temporal-doc", name="app_plan_estudio_registro_temporal_doc", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function registroTemporalDeDocumento(Request $request, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
+    {
+        try {
+            $post = $request->request->all();
+
+            $planEstudiDoc = new PlanEstudioDocumento();
+            if (!empty($post['id_plan_estudio'])) {
+                if (isset($post['id_plan_estudio']) && !empty($post['id_plan_estudio'])) {
+                    $planEstudio = $planEstudioRepository->find($post['id_plan_estudio']);
+                    $planEstudiDoc->setPlanEstudio($planEstudio);
+                }
+            }
+            $planEstudiDoc->setDocumento($post['documento']);
+
+            $uploadPath = 'uploads/pregrado/plan_estudio/documentos/';
+            pr($_FILES['tmp_name']);
+            pr(move_uploaded_file($_FILES['tmp_name'], $uploadPath));
+            if (move_uploaded_file($_FILES['tmp_name'], $uploadPath)) {
+                $temp = file_get_contents($uploadPath);
+
+            }
+
+//                if (!empty($_FILES['file']['name'])) {
+//                    $file = $form['planEstudio']->getData();
+//                    $file_name = $_FILES['file']['name']['name'];
+//                    $planEstudioEntity->setPlanEstudio($file_name);
+//                    $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
+//                }
+            $planEstudioDocumentoRepository->add($planEstudiDoc, true);
+
+
+            pr($_FILES);
+
+
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
         }
     }
-
 
     /**
      * @Route("/{id}/modificar", name="app_plan_estudio_modificar", methods={"GET", "POST"})
@@ -83,12 +134,12 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function modificar(Request $request, planEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
+    public function modificar(Request $request, planEstudio $planEstudio, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
     {
         try {
             $form = $this->createForm(PlanEstudioType::class, $planEstudio, ['action' => 'modificar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() /*&& $form->isValid()*/) {
                 $temp = explode('/', $request->request->all()['plan_estudio']['fechaAprobacion']);
                 $planEstudio->setFechaAprobacion(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
 
@@ -111,7 +162,10 @@ class PlanEstudioController extends AbstractController
 
             return $this->render('modules/pregrado/plan_estudio/edit.html.twig', [
                 'form' => $form->createView(),
-                'planEstudio' => $planEstudio
+                'planEstudio' => $planEstudio,
+                'registros' => $planEstudioDocumentoRepository->findBy(['planEstudio' => $planEstudio->getId()]),
+                'documentos' => $documentoRepository->findBy(['activo' => true], ['nombre' => 'asc'])
+
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -126,7 +180,8 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudio $tipoPrograma
      * @return Response
      */
-    public function detail(Request $request, PlanEstudio $planEstudio)
+    public
+    function detail(Request $request, PlanEstudio $planEstudio)
     {
         return $this->render('modules/pregrado/plan_estudio/detail.html.twig', [
             'item' => $planEstudio,
@@ -139,7 +194,8 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function eliminar(PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
+    public
+    function eliminar(PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
     {
         try {
             if ($planEstudioRepository->find($planEstudio) instanceof PlanEstudio) {
@@ -162,7 +218,8 @@ class PlanEstudioController extends AbstractController
      * @param ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository
      * @return Response
      */
-    public function modificaciones(Request $request, planEstudio $planEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
+    public
+    function modificaciones(Request $request, planEstudio $planEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
     {
         try {
             $modificacion = new ModificacionPlanEstudio();
@@ -209,7 +266,8 @@ class PlanEstudioController extends AbstractController
      * @param ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository
      * @return Response
      */
-    public function eliminarModificacion(Request $request, ModificacionPlanEstudio $modificacionPlanEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
+    public
+    function eliminarModificacion(Request $request, ModificacionPlanEstudio $modificacionPlanEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
     {
         try {
             if ($modificacionPlanEstudio instanceof ModificacionPlanEstudio) {
@@ -224,13 +282,15 @@ class PlanEstudioController extends AbstractController
             return $this->redirectToRoute('app_plan_estudio_modificaciones', ['id' => $modificacionPlanEstudio->getPlanEstudio()->getId()], Response::HTTP_SEE_OTHER);
         }
     }
+
     /**
      * @Route("/exportar_pdf", name="app_plan_estudio_exportar_pdf", methods={"GET", "POST"})
      * @param Request $request
      * @param User $user
      * @return Response
      */
-    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, PlanEstudioRepository $planEstudioRepository)
+    public
+    function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, PlanEstudioRepository $planEstudioRepository)
     {
         $export = $planEstudioRepository->getPlanesEstudio();
         $export = \App\Services\DoctrineHelper::toArray($export);

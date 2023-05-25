@@ -1,0 +1,96 @@
+<!-- jQuery -->
+<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/jquery/jqurey-ui.min.js') }}"></script>
+<script src="{{ asset('assets/jquery/jquery.inputmask.min.js') }}"></script>
+
+<hr>
+<h6 class="mb-0"><b><p
+                style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+            Documentos del expediente</p>
+    </b></h6>
+<hr>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+        <label class="required" for="documentoSelec">Documento</label>
+        <select id="documentoSelec" name="documentoSelec"
+                class="form-control select2-hidden-accessible" data-select2-id="documentoSelec"
+                tabindex="-1" aria-hidden="true">
+            <option value="">Seleccione</option>
+            {% for item2 in documentos %}
+                <option value="{{ item2.id }}">{{ item2.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-4 form-group">
+        <label class="required" for="documento">Adjuntar documento </label>
+        <div class="custom-file"><input type="file" id="documento"
+                                        name="documento" class="custom-file-input"
+                                        lang="en"><label for="documento"
+                                                         class="custom-file-label"></label>
+        </div>
+
+        <span id="cargarElemento" style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+              class="cargar-archivo1"> </span>
+    </div>
+
+    <div class="col-4 form-group">
+        <button id="btn_asociar" style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+    </div>
+</div>
+<hr>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Documento</th>
+        <th class="text-center">Opciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in registros %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.documento.nombre | default('') }}</td>
+            <td width="15%" class="text-center">
+                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                        data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% block javascripts %}
+    <script>
+        $('#documento').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+
+        $('#btn_asociar').click(function (e) {
+            e.preventDefault();
+            if ($('#documentoSelec')[0].reportValidity() && $('#documento')[0].reportValidity()) {
+                var data, xhr;
+                var inputFileImage = document.getElementById("documento");
+                var file = inputFileImage.files[0]
+
+                data = new FormData();
+                data.append('file', file);
+                data.append('documento', $('#documentoSelec').val());
+                data.append('id_plan_estudio', $('#id_plan_estudio').val());
+
+                xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ path('app_plan_estudio_registro_temporal_doc') }}', true);
+                xhr.onreadystatechange = function (response) {
+                };
+                xhr.send(data);
+            }
+        })
+
+
+    </script>
+{% endblock %}

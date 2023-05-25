@@ -15,6 +15,7 @@
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
+{#            <input type="hidden" id="id_plan_estudio" name="id_plan_estudio" value="{{ planEstudio.id }}">#}
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.annoAprobacion) }}
@@ -102,10 +103,12 @@
                     {{ form_errors(form.descripcionPlanEstudio) }}
                 </div>
             </div>
-            <h6 class="mb-0"><b><p
-                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
-                        Documentos del expediente</p>
-                </b></h6>
+
+{#            {{ include('modules/pregrado/plan_estudio/asociar_documento.html.twig', {#}
+{#                'documentos': documentos ,#}
+{#                'registros': registros ,#}
+{#            }) }}#}
+
 
             <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
                 <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_estudio_index') }}" data-title=""

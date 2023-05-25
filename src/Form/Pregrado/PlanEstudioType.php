@@ -111,9 +111,6 @@ class PlanEstudioType extends AbstractType
             ])
             ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso Diurno (Años)',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.'),
-                ],
                 'required' => false,
                 'attr' => [
                     'min' => 1
@@ -121,9 +118,6 @@ class PlanEstudioType extends AbstractType
             ])
             ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Duración del Curso por Encuentros (Años)',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ],
                 'required' => false,
                 'attr' => [
                     'min' => 1

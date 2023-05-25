@@ -97,9 +97,10 @@ class EstructuraType extends AbstractType
             ])
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ],
+                'required' => false,
+//                'constraints' => [
+//                    new NotBlank([],'Este valor no debe estar en blanco.')
+//                ],
                 "attr" => [
                     "data-inputmask" => '"mask": "(999) 999-9999"',
                     "data-mask" => ''
@@ -133,9 +134,10 @@ class EstructuraType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
+//                'constraints' => [
+//                    new NotBlank([],'Este valor no debe estar en blanco.')
+//                ]
             ]);
     }
 

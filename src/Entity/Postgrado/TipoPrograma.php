@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TipoPrograma extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\Regex(
      *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,

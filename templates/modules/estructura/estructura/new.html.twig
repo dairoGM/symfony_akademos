@@ -284,9 +284,12 @@
 
         $('#btn_aceptar').click(function (e) {
             e.preventDefault();
-            console.log(123);
-            if ('add-hija' === '{{ accion }}') {
+            console.log(action);
+            if ('add-hija' === action) {
                 $('form[name="estructura"]').attr('action', 'registrar-estructura-hija');
+                $('form[name="estructura"]').submit();
+            } else if ('add' === action) {
+                $('form[name="estructura"]').attr('action', 'registrar');
                 $('form[name="estructura"]').submit();
             }
         })

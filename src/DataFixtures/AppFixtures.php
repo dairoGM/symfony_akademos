@@ -203,17 +203,46 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
 
-        $datos_generales = ['Inicial'];
-        foreach ($datos_generales as $value) {
+        $listaCategoriaEstructura = [
+            'Institución de Educación Superior',
+            'Órgano Central',
+            'Grupo empresarial',
+            'Entidad de Ciencias,
+             Tecnología e Innovación'];
+        foreach ($listaCategoriaEstructura as $value) {
             $categoriaEstructura = new CategoriaEstructura();
             $categoriaEstructura->setNombre($value);
             $categoriaEstructura->setColor('#000');
             $manager->persist($categoriaEstructura);
+        }
+        $tipoEstructura = $listaCategoriaEstructura[0];
 
+        $listaTiposEstructura = [
+            'Universidad',
+            'Vicerrectoría',
+            'Dirección general',
+            'Dirección',
+            'Subdirección',
+            'Departamento',
+            'Departamento independiente',
+            'Facultad',
+            'Vicedecanato',
+            'Centro de desarrollo',
+            'Centro de estudio',
+            'Viceministerio',
+            'Empresa',
+            'UEB',
+        ];
+        foreach ($listaTiposEstructura as $value) {
             $tipoEstructura = new TipoEstructura();
             $tipoEstructura->setNombre($value);
             $manager->persist($tipoEstructura);
+        }
 
+
+
+        $datos_generales = ['Inicial'];
+        foreach ($datos_generales as $value) {
             $catResp = new CategoriaResponsabilidad();
             $catResp->setNombre($value);
             $catResp->setColor('#000');
@@ -262,7 +291,7 @@ class AppFixtures extends Fixture
         $persona->setClasificacionPersona($clasificacionPersona);
         $persona->setUsuario($user);
         $persona->setPrimerNombre('Admin');
-        $persona->setPrimerApellido('Inial');
+        $persona->setPrimerApellido('Inicial');
         $persona->setSegundoApellido('123');
         $manager->persist($persona);
 
@@ -512,7 +541,7 @@ class AppFixtures extends Fixture
             $manager->persist($item);
         }
 
-                                         /*    1             2            3                     4                        5                  6             7            8     */
+        /*    1             2            3                     4                        5                  6             7            8     */
         $tbn_estado_programa_academico = ['Solicitado', 'Aprobado', 'Rechazado', 'Elaborado plan de estudio', 'Aprobado la creación', 'Desactivado', 'Reabierto', 'Extinto'];
         foreach ($tbn_estado_programa_academico as $value) {
             $estado_programa_academico = new EstadoProgramaAcademico();
