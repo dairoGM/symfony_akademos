@@ -64,7 +64,7 @@ class EstructuraController extends AbstractController
             $aux['id'] = $el->getId();
             $aux['parent'] = $el->getEstructura() ? $el->getEstructura()->getId() : '#';
             $aux['text'] = $el->getNombre();
-            $aux['color'] = $el->getCategoriaEstructura()->getColor();
+            $aux['color'] = method_exists($el->getCategoriaEstructura(), 'getColor') ? $el->getCategoriaEstructura()->getColor() : null;
             $registros[] = $aux;
         }
 
