@@ -4,6 +4,7 @@ namespace App\Entity\Institucion;
 
 use App\Entity\BaseNomenclator;
 use App\Entity\Personal\GradoAcademico;
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -81,7 +82,6 @@ class Institucion extends BaseNomenclator
     private ?string $vision = null;
 
 
-
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
@@ -99,7 +99,7 @@ class Institucion extends BaseNomenclator
     private ?string $correo = null;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length="255")
+     * @ORM\Column(type="text", nullable=false)
      */
     private ?string $direccionSedePrincipal = null;
 
@@ -109,9 +109,21 @@ class Institucion extends BaseNomenclator
     private ?string $coordenadasSedePrincipal = null;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length="255")
+     * @ORM\Column(type="text", nullable=false)
      */
     private ?string $campusUniversitario = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
+
+
+    public function __construct()
+    {
+        $this->fechaFundacion = new \DateTime();
+    }
 
     /**
      * @return string|null
@@ -208,12 +220,6 @@ class Institucion extends BaseNomenclator
     public function setTelefono(?string $telefono): void
     {
         $this->telefono = $telefono;
-    }
-
-
-    public function __construct()
-    {
-        $this->fechaFundacion = new \DateTime();
     }
 
 
@@ -392,6 +398,26 @@ class Institucion extends BaseNomenclator
     public function setCodigo(?string $codigo): void
     {
         $this->codigo = $codigo;
+    }
+
+    /**
+     * Get the value of estructura
+     */
+    public function getEstructura()
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * Set the value of estructura
+     *
+     * @return  self
+     */
+    public function setEstructura($estructura)
+    {
+        $this->estructura = $estructura;
+
+        return $this;
     }
 
 

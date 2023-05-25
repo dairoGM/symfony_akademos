@@ -2,6 +2,7 @@
 
 namespace App\Form\Institucion;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\TipoInstitucion;
@@ -21,18 +22,26 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InstitucionType extends AbstractType
 {
+    private $idCategoriaEstructura;
+
+    public function __construct()
+    {
+        $this->idCategoriaEstructura = null;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $this->idCategoriaEstructura = $options['data_choices'];
         $builder
-            ->add('nombre', TextType::class, [
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+            ->add('estructura', EntityType::class, [
+                'class' => Estructura::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    $categoriaEstructura = $this->idCategoriaEstructura;
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione'
             ])
-//            ->add('descripcion', TextareaType::class, [
-//                'label' => 'Descripción',
-//                'required' => false,
-//            ])
             ->add('activo', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Habilitado'
@@ -42,6 +51,9 @@ class InstitucionType extends AbstractType
                 'required' => $options['action'] == 'registrar',
             ])
             ->add('siglas', TextType::class, [
+                'attr' => [
+                    'readonly' => true
+                ],
                 'constraints' => [new Length(["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('codigo', TextType::class, [
@@ -91,19 +103,24 @@ class InstitucionType extends AbstractType
                 'required' => false,
                 "attr" => [
                     "data-inputmask" => '"mask": "(999) 999-9999"',
-                    "data-mask" => ''
+                    "data-mask" => '',
+                    'readonly' => true
                 ]
             ])
             ->add('correo', EmailType::class, [
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                ], 'attr' => [
+                    'readonly' => true
+                ],
             ])
             ->add('direccionSedePrincipal', TextType::class, [
                 'label' => 'Dirección (Sede principal)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                ], 'attr' => [
+                    'readonly' => true
+                ],
             ])
             ->add('coordenadasSedePrincipal', TextType::class, [
                 'label' => 'Coordenadas (Sede principal)',
@@ -152,6 +169,7 @@ class InstitucionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Institucion::class,
+            'data_choices' => [],
         ]);
     }
 }

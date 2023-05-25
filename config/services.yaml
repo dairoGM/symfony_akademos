@@ -29,6 +29,8 @@ parameters:
     objeto_institucion: '%env(objeto_institucion)%'
     objeto_solicitud_programa: '%env(objeto_solicitud_programa)%'
 
+    id_tipo_estructura_ies: '%env(id_tipo_estructura_ies)%'
+
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
 
 

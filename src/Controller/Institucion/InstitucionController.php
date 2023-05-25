@@ -67,18 +67,27 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/registrar", name="app_institucion_registrar", methods={"GET", "POST"})
      * @param Request $request
-     * @param InstitucionRepository $tipoInstitucionRepository
+     * @param InstitucionRepository $institucionRepository
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
+     * @param RequestStack $requestStack
      * @return Response
      */
     public function registrar(Request $request, InstitucionRepository $institucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         try {
             $institucion = new Institucion();
-            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'registrar']);
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'registrar', 'data_choices' => $this->getParameter('id_tipo_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $institucion->setFechaFundacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['institucion']['fechaFundacion']));
+
+                $institucion->setNombre($institucion->getEstructura()->getNombre());
+                $institucion->setTelefono($institucion->getEstructura()->getTelefono());
+                $institucion->setCorreo($institucion->getEstructura()->getEmail());
+                $institucion->setSiglas($institucion->getEstructura()->getSiglas());
+                $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
 
                 if (!empty($_FILES['institucion']['name']['logo'])) {
                     $file = $form['logo']->getData();
@@ -122,10 +131,17 @@ class InstitucionController extends AbstractController
     {
         try {
             $dataAnterior = $institucion;
-            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar']);
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar', 'data_choices' => $this->getParameter('id_tipo_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $institucion->setNombre($institucion->getEstructura()->getNombre());
+                $institucion->setTelefono($institucion->getEstructura()->getTelefono());
+                $institucion->setCorreo($institucion->getEstructura()->getEmail());
+                $institucion->setSiglas($institucion->getEstructura()->getSiglas());
+                $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
+
                 $temp = explode('/', $request->request->all()['institucion']['fechaFundacion']);
                 $institucion->setFechaFundacion(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
 
