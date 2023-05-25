@@ -334,4 +334,23 @@ class EstructuraController extends AbstractController
         $export = \App\Services\DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new \App\Export\Estructura\ExportListEstructuraToPdf($export));
     }
+
+    /**
+     * Add package entity.
+     *
+     * @Route("/{id}/estructura_dado_id", name="app_estructura_dado_id", methods={"GET"})
+     * @param Request $request
+     * @param $id
+     * @param MunicipioRepository $estructuraRepository
+     * @param Utils $utils
+     * @return JsonResponse
+     */
+    public function getEstructuraDadoId(Request $request, $id, EstructuraRepository $estructuraRepository, Utils $utils): JsonResponse
+    {
+        try {
+            return $this->json($utils->procesarEstructura($estructuraRepository->find($id)));
+        } catch (\Exception $exception) {
+            return new JsonResponse([]);
+        }
+    }
 }

@@ -348,7 +348,25 @@
                 $('#modalDetail').modal('hide')
             })
 
-
+            $('#institucion_estructura').on('change', function () {
+                if ($(this).val() != "") {
+                    HoldOn.open({
+                        theme: "sk-cube-grid",
+                        message: 'Por favor espere...',
+                        textColor: "white"
+                    });
+                    var url = "{{ path('app_estructura_dado_id', {'id':'idP'}) }}";
+                    url = url.replace('idP', $(this).val());
+                    $.get(url, function (data) {
+                        console.log(data);
+                        $('#institucion_siglas').val(data.siglas);
+                        $('#institucion_telefono').val(data.telefono);
+                        $('#institucion_correo').val(data.correo);
+                        $('#institucion_direccionSedePrincipal').val(data.direccion);
+                        HoldOn.close()
+                    });
+                }
+            });
         })
 
     </script>

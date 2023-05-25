@@ -74,6 +74,17 @@ class Utils
         return $result;
     }
 
+    public function procesarEstructura($nomenclador)
+    {
+        $element['id'] = $nomenclador->getId();
+        $element['nombre'] = $nomenclador->getNombre();
+        $element['siglas'] = $nomenclador->getSiglas();
+        $element['telefono'] = $nomenclador->getTelefono();
+        $element['correo'] = $nomenclador->getEmail();
+        $element['direccion'] = $nomenclador->getDireccion();
+        return $element;
+    }
+
     public function procesarNomencladorResponsabilidad($nomenclador)
     {
         $result = [];
