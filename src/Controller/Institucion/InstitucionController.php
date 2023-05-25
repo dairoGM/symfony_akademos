@@ -88,6 +88,7 @@ class InstitucionController extends AbstractController
                 $institucion->setCorreo($institucion->getEstructura()->getEmail());
                 $institucion->setSiglas($institucion->getEstructura()->getSiglas());
                 $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
+                $institucion->setCoordenadasSedePrincipal($institucion->getEstructura()->getUbicacion());
 
                 if (!empty($_FILES['institucion']['name']['logo'])) {
                     $file = $form['logo']->getData();
@@ -141,6 +142,7 @@ class InstitucionController extends AbstractController
                 $institucion->setCorreo($institucion->getEstructura()->getEmail());
                 $institucion->setSiglas($institucion->getEstructura()->getSiglas());
                 $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
+                $institucion->setCoordenadasSedePrincipal($institucion->getEstructura()->getUbicacion());
 
                 $temp = explode('/', $request->request->all()['institucion']['fechaFundacion']);
                 $institucion->setFechaFundacion(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));

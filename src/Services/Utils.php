@@ -82,6 +82,7 @@ class Utils
         $element['telefono'] = $nomenclador->getTelefono();
         $element['correo'] = $nomenclador->getEmail();
         $element['direccion'] = $nomenclador->getDireccion();
+        $element['ubicacion'] = $nomenclador->getUbicacion();
         return $element;
     }
 

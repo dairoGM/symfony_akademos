@@ -50,25 +50,38 @@
                     {{ form_widget(form.categoriaEstructura) }}
                     {{ form_errors(form.categoriaEstructura) }}
                 </div>
-
                 <div class="col-4 form-group">
                     {{ form_label(form.fechaActivacion) }}
-                    {{ form_widget(form.fechaActivacion) }}
-                    {{ form_errors(form.fechaActivacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaActivacion) }}
+                        {{ form_errors(form.fechaActivacion) }}
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-4 form-group">
                     {{ form_label(form.telefono) }}
-                    {{ form_widget(form.telefono) }}
-                    {{ form_errors(form.telefono) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.telefono) }}
+                        {{ form_errors(form.telefono) }}
+                    </div>
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.email) }}
-                    {{ form_widget(form.email) }}
-                    {{ form_errors(form.email) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.email) }}
+                        {{ form_errors(form.email) }}
+                    </div>
                 </div>
-
                 <div class="col-4 form-group">
                     {{ form_label(form.direccion) }}
                     {{ form_widget(form.direccion) }}
@@ -88,8 +101,13 @@
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.ubicacion) }}
-                    {{ form_widget(form.ubicacion) }}
-                    {{ form_errors(form.ubicacion) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
+                        </div>
+                        {{ form_widget(form.ubicacion) }}
+                        {{ form_errors(form.ubicacion) }}
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -278,7 +296,8 @@
             })
         })
         $('#estructura_fechaActivacion').datetimepicker({
-            format: 'DD/MM/YYYY'
+            format: 'DD/MM/YYYY',
+            daysOfWeekDisabled: []
         });
         var action = '{{ accion }}';
 

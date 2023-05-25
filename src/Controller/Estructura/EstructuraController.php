@@ -260,43 +260,43 @@ class EstructuraController extends AbstractController
      */
     public function registrarEstructuraHija(Request $request, ProvinciaRepository $provinciaRepository, MunicipioRepository $municipioRepository, TipoEstructuraRepository $tipoEstructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository, Estructura $estructura, EstructuraRepository $estructuraRepository, EntityManagerInterface $entityManager)
     {
-//        try {
-        $nuevaEstruc = new Estructura();
-        $nuevaEstruc->setEstructura($estructura);
+        try {
+            $nuevaEstruc = new Estructura();
+            $nuevaEstruc->setEstructura($estructura);
 
-        $form = $this->createForm(EstructuraType::class, $nuevaEstruc, ['action' => 'modificar', 'data_choices' => -1]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $nueva = new Estructura();
+            $form = $this->createForm(EstructuraType::class, $nuevaEstruc, ['action' => 'modificar', 'data_choices' => -1]);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
+                $nueva = new Estructura();
 
-            $nueva->setNombre($request->request->all()['estructura']['nombre']);
-            $nueva->setDireccion($request->request->all()['estructura']['direccion']);
-            $nueva->setUbicacion($request->request->all()['estructura']['ubicacion']);
-            $nueva->setSiglas($request->request->all()['estructura']['siglas']);
-            $nueva->setTelefono($request->request->all()['estructura']['telefono']);
-            $nueva->setActivo($request->request->all()['estructura']['activo']);
-            $nueva->setEmail($request->request->all()['estructura']['email']);
-            $nueva->setFechaActivacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['estructura']['fechaActivacion']));
-            $nueva->setEstructura($estructuraRepository->find($request->request->all()['estructura']['estructura']));
-            $nueva->setTipoEstructura($tipoEstructuraRepository->find($request->request->all()['estructura']['tipoEstructura']));
-            $nueva->setCategoriaEstructura($categoriaEstructuraRepository->find($request->request->all()['estructura']['categoriaEstructura']));
-            $nueva->setProvincia($provinciaRepository->find($request->request->all()['estructura']['provincia']));
-            $nueva->setMunicipio($municipioRepository->find($request->request->all()['estructura']['municipio']));
+                $nueva->setNombre($request->request->all()['estructura']['nombre']);
+                $nueva->setDireccion($request->request->all()['estructura']['direccion']);
+                $nueva->setUbicacion($request->request->all()['estructura']['ubicacion']);
+                $nueva->setSiglas($request->request->all()['estructura']['siglas']);
+                $nueva->setTelefono($request->request->all()['estructura']['telefono']);
+                $nueva->setActivo($request->request->all()['estructura']['activo']);
+                $nueva->setEmail($request->request->all()['estructura']['email']);
+                $nueva->setFechaActivacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['estructura']['fechaActivacion']));
+                $nueva->setEstructura($estructuraRepository->find($request->request->all()['estructura']['estructura']));
+                $nueva->setTipoEstructura($tipoEstructuraRepository->find($request->request->all()['estructura']['tipoEstructura']));
+                $nueva->setCategoriaEstructura($categoriaEstructuraRepository->find($request->request->all()['estructura']['categoriaEstructura']));
+                $nueva->setProvincia($provinciaRepository->find($request->request->all()['estructura']['provincia']));
+                $nueva->setMunicipio($municipioRepository->find($request->request->all()['estructura']['municipio']));
 
-            $entityManager->persist($nueva);
-            $entityManager->flush();
-            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
+                $entityManager->persist($nueva);
+                $entityManager->flush();
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/estructura/estructura/new.html.twig', [
+                'form' => $form->createView(),
+                'accion' => 'add-hija'
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_estructura_registrar', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('modules/estructura/estructura/new.html.twig', [
-            'form' => $form->createView(),
-            'accion' => 'add-hija'
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_estructura_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
     }
 
 

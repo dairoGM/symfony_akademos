@@ -116,7 +116,7 @@ class EstructuraType extends AbstractType
                 'class' => Provincia::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.codigo', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
@@ -126,7 +126,7 @@ class EstructuraType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $pro = $this->idProvincia;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.provincia = '$pro' ")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.provincia = '$pro' ")->orderBy('u.codigo', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,

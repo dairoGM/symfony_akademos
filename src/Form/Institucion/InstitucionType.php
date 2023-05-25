@@ -126,6 +126,8 @@ class InstitucionType extends AbstractType
                 'label' => 'Coordenadas (Sede principal)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
+                ], 'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('campusUniversitario', TextType::class, [
