@@ -135,7 +135,7 @@
 
         $('#estructura_siglas').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
-                if ($(this).val().length < 3 /*&& !isNaN(parseFloat(e.key))*/) {
+                if ($(this).val().length < 15 /*&& !isNaN(parseFloat(e.key))*/) {
                     $(this).val($(this).val() + e.key);
                 }
                 return false;
