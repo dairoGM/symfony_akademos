@@ -22,6 +22,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InstitucionFacultadesType extends AbstractType
 {
+    private $idCategoriaEstructura;
+    private $idEstructura;
+
+    public function __construct()
+    {
+        $this->idCategoriaEstructura = null;
+        $this->idEstructura = null;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->idCategoriaEstructura = $options['idCategoriaEstructura'];
@@ -32,7 +41,8 @@ class InstitucionFacultadesType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $categoriaEstructura = $this->idCategoriaEstructura;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
+                    $estructura = $this->idEstructura;
+                    return $er->createQueryBuilder('u')->join('u.estructura', 'p')->where("p.id = '$estructura' and u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione'
             ])
@@ -52,6 +62,8 @@ class InstitucionFacultadesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => InstitucionFacultades::class,
+            'idCategoriaEstructura' => [],
+            'idEstructura' => [],
         ]);
     }
 }

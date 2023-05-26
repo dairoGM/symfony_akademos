@@ -23,6 +23,7 @@ use App\Form\Institucion\InstitucionRevistaCientificaType;
 use App\Form\Institucion\InstitucionSedesType;
 use App\Form\Institucion\InstitucionType;
 use App\Form\Institucion\NombreDescripcionType;
+use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
@@ -258,17 +259,18 @@ class InstitucionController extends AbstractController
      * @param InstitucionFacultadesRepository $institucionFacultadesRepository
      * @return Response
      */
-    public function asignarFacultad(Request $request, Institucion $institucion, InstitucionFacultadesRepository $institucionFacultadesRepository)
+    public function asignarFacultad(Request $request, Institucion $institucion, InstitucionFacultadesRepository $institucionFacultadesRepository, EstructuraRepository $estructuraRepository)
     {
         try {
             $entidad = new InstitucionFacultades();
-            $form = $this->createForm(InstitucionFacultadesType::class, $entidad);
+            $form = $this->createForm(InstitucionFacultadesType::class, $entidad, ['idEstructura' => $institucion->getEstructura()->getId(), 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $exist = $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId(), 'nombreFacultad' => $request->request->all()['institucion_facultades']['nombreFacultad']]);
+                $exist = $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId(), 'estructura' => $request->request->all()['institucion_facultades']['estructura']]);
                 if (empty($exist)) {
                     $entidad->setInstitucion($institucion);
+                    $entidad->setNombreFacultad($estructuraRepository->find($request->request->all()['institucion_facultades']['estructura'])->getNombre());
                     $institucionFacultadesRepository->add($entidad, true);
 
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
