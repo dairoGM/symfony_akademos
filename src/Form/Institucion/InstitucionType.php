@@ -31,7 +31,7 @@ class InstitucionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $this->idCategoriaEstructura = $options['data_choices'];
+        $this->idCategoriaEstructura = $options['idCategoriaEstructura'];
         $builder
             ->add('estructura', EntityType::class, [
                 'class' => Estructura::class,
@@ -171,7 +171,7 @@ class InstitucionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Institucion::class,
-            'data_choices' => [],
+            'idCategoriaEstructura' => [],
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Form\Institucion;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\InstitucionFacultades;
@@ -23,13 +24,24 @@ class InstitucionFacultadesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $this->idCategoriaEstructura = $options['idCategoriaEstructura'];
+        $this->idEstructura = $options['idEstructura'];
         $builder
-            ->add('nombreFacultad', TextType::class, [
-                'label' => 'Nombre',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+            ->add('estructura', EntityType::class, [
+                'class' => Estructura::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    $categoriaEstructura = $this->idCategoriaEstructura;
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione'
             ])
+//            ->add('nombreFacultad', TextType::class, [
+//                'label' => 'Nombre',
+//                'constraints' => [
+//                    new NotBlank([], 'Este valor no debe estar en blanco.')
+//                ]
+//            ])
             ->add('descripcionFacultad', TextType::class, [
                 'label' => 'Descripción',
                 'required' => false,

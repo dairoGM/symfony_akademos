@@ -3,6 +3,7 @@
 namespace App\Entity\Institucion;
 
 use App\Entity\BaseEntity;
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,6 +18,11 @@ class InstitucionFacultades extends BaseEntity
      */
     private ?Institucion $institucion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @ORM\Column(type="string", nullable=false, length="100")
@@ -77,5 +83,26 @@ class InstitucionFacultades extends BaseEntity
     {
         $this->descripcionFacultad = $descripcionFacultad;
     }
+
+    /**
+     * Get the value of estructura
+     */
+    public function getEstructura()
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * Set the value of estructura
+     *
+     * @return  self
+     */
+    public function setEstructura($estructura)
+    {
+        $this->estructura = $estructura;
+
+        return $this;
+    }
+
 
 }

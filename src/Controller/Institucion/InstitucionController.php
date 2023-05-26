@@ -77,7 +77,7 @@ class InstitucionController extends AbstractController
     {
         try {
             $institucion = new Institucion();
-            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'registrar', 'data_choices' => $this->getParameter('id_tipo_estructura_ies')]);
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'registrar', 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -132,7 +132,7 @@ class InstitucionController extends AbstractController
     {
         try {
             $dataAnterior = $institucion;
-            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar', 'data_choices' => $this->getParameter('id_tipo_estructura_ies')]);
+            $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar', 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
