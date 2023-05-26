@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Repository\Estructura\CategoriaEstructuraRepository;
 use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
 use App\Repository\Institucion\InstitucionRepository;
@@ -15,16 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/api")
  */
-class ApiEstructuraController extends AbstractController
+class ApiCategoriaEstructuraController extends AbstractController
 {
 
     /**
-     * @Route("/listar_estructuras", name="api_listar_estructuras", methods={"POST", "OPTIONS"}, defaults={"_format":"json"})
+     * @Route("/listar_categorias_estructuras", name="api_listar_categorias_estructuras", methods={"POST", "OPTIONS"}, defaults={"_format":"json"})
      * @param Request $request
-     * @param EstructuraRepository $estructuraRepository
+     * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
      * @return JsonResponse
      */
-    public function listarEstructuras(Request $request, EstructuraRepository $estructuraRepository)
+    public function listarCatgoriasEstructuras(Request $request, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         try {
             $jsonParams = json_decode($request->getContent(), true);
@@ -32,7 +33,7 @@ class ApiEstructuraController extends AbstractController
 //            if (isset($jsonParams['activo'])) {
 //                $filtros['activo'] = $jsonParams['activo'];
 //            }
-            $result = $estructuraRepository->findBy(['activo' => true], ['nombre' => 'asc']);
+            $result = $categoriaEstructuraRepository->findBy(['activo' => true], ['nombre' => 'asc']);
 
 
             return $this->json($result);

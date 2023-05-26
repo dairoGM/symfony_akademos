@@ -8,6 +8,7 @@ use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -35,7 +36,7 @@ class ApiInstitucionesController extends AbstractController
 
             return $this->json($result);
         } catch (Exception $exc) {
-            return $this->json($exc->getMessage(), 403);
+            return $this->json($exc->getMessage(), Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -57,7 +58,7 @@ class ApiInstitucionesController extends AbstractController
 
             return $this->json($result);
         } catch (Exception $exc) {
-            return $this->json($exc->getMessage(), 403);
+            return $this->json($exc->getMessage(), Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -80,7 +81,7 @@ class ApiInstitucionesController extends AbstractController
 
             return $this->json($result);
         } catch (Exception $exc) {
-            return $this->json($exc->getMessage(), 403);
+            return $this->json($exc->getMessage(), Response::HTTP_FORBIDDEN);
         }
     }
 }

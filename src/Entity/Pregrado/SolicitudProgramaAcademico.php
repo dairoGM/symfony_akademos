@@ -103,7 +103,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="\App\Entity\Institucion\Institucion")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?\App\Entity\Institucion\Institucion $centroRector;
 
