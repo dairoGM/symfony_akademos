@@ -35,20 +35,29 @@ class InstallFuntionalityService implements InstallFunctionalityInterface
         //Comunes
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesComunes());
 
-        //Administración 
+        //Administración ...ok
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForAdministracion());
 
-        //Personal
+        //Personal ...ok
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForPersonal());
 
-        //Estructura
+        //Estructura...ok
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForEstructura());
 
         //Rerporte
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForReporte());
 
-        //Trazas
+        //Trazas...ok
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForTrazas());
+
+        //Instituciones...ok
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForInstituciones());
+
+        //Pregrado...ok
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForPregrado());
+
+        //Postgrado...ok
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForPostgrado());
 
         return $functionalities;
     }

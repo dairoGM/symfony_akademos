@@ -55,10 +55,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/chgpsw", name="app_usuario_cambiar_contrasena", methods={"GET", "POST"})
      * @param Request $request
-     * @param AuthenticationUtils $authenticationUtils
      * @param UserRepository $usuarioRepository
      * @param UserPasswordEncoderInterface $encoder
-     * @param MyChatService $myChatService
      * @return Response
      */
     public function chgpsw(Request $request, UserRepository $usuarioRepository, UserPasswordEncoderInterface $encoder)
