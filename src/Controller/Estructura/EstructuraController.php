@@ -313,9 +313,10 @@ class EstructuraController extends AbstractController
     public function getEstructuraDadoCategoria(Request $request, $id, EstructuraRepository $estructuraRepository, Utils $utils): JsonResponse
     {
         try {
-            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+//            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+//            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructuras($id, $estructurasNegocio)));
+            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructurasTemp($id)));
 
-            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructuras($id, $estructurasNegocio)));
         } catch (\Exception $exception) {
             return new JsonResponse([]);
         }

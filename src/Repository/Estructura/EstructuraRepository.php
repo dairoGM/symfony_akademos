@@ -59,6 +59,15 @@ class EstructuraRepository extends ServiceEntityRepository
         return $resul;
     }
 
+    public function geEstructurasDadoArrayEstructurasTemp($categoriaEstructuraId)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.categoriaEstructura = $categoriaEstructuraId and qb.activo = true");
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
     public function getEstructurasDadoPeriodoPlanificado($periodo, $estructurasNegocio)
     {
         $qb = $this->createQueryBuilder('qb')
