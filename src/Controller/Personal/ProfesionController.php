@@ -6,6 +6,7 @@ use App\Entity\Personal\Profesion;
 use App\Entity\Security\User;
 use App\Form\Personal\ProfesionType;
 use App\Repository\Personal\ProfesionRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,17 @@ class ProfesionController extends AbstractController
      * @param ProfesionRepository $profesionRepository
      * @return Response
      */
-    public function registrar(Request $request, ProfesionRepository $profesionRepository)
+    public function registrar(Request $request, ProfesionRepository $profesionRepository, Utils $utils)
     {
         try {
-            $catDocenteEntity = new Profesion();
-            $form = $this->createForm(ProfesionType::class, $catDocenteEntity, ['action' => 'registrar']);
+            $profesionEntity = new Profesion();
+            $form = $this->createForm(ProfesionType::class, $profesionEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $profesionRepository->add($catDocenteEntity, true);
+                $profesionRepository->add($profesionEntity, true);
+
+                $utils->actualizarProfesionDri($profesionEntity);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_profesion_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -67,11 +71,12 @@ class ProfesionController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_profesion_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $profesion
+     * @param Profesion $profesion
      * @param ProfesionRepository $profesionRepository
+     * @param Utils $utils
      * @return Response
      */
-    public function modificar(Request $request, Profesion $profesion, ProfesionRepository $profesionRepository)
+    public function modificar(Request $request, Profesion $profesion, ProfesionRepository $profesionRepository, Utils $utils)
     {
         try {
             $form = $this->createForm(ProfesionType::class, $profesion, ['action' => 'modificar']);
@@ -79,6 +84,9 @@ class ProfesionController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $profesionRepository->edit($profesion);
+
+                $utils->actualizarProfesionDri($profesion);
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_profesion_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -99,11 +107,14 @@ class ProfesionController extends AbstractController
      * @param ProfesionRepository $profesionRepository
      * @return Response
      */
-    public function eliminar(Request $request, Profesion $profesion, ProfesionRepository $profesionRepository)
+    public function eliminar(Request $request, Profesion $profesion, ProfesionRepository $profesionRepository, Utils $utils)
     {
         try {
             if ($profesionRepository->find($profesion) instanceof Profesion) {
                 $profesionRepository->remove($profesion, true);
+
+                $utils->actualizarProfesionDri($profesion, true);
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_profesion_index', [], Response::HTTP_SEE_OTHER);
             }

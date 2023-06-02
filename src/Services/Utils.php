@@ -829,4 +829,27 @@ class Utils
             return $exception->getMessage();
         }
     }
+
+    public function actualizarProfesionDri($profesionEntity, $elimiar = false)
+    {
+        try {
+            $nombre = $profesionEntity->getNombre();
+            $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_gestion_personal.tb_nprofesion WHERE nombre_profesion = '$nombre'");
+
+            $data['nombre_profesion'] = $nombre;
+            $data['descripcion'] = $profesionEntity->getDescripcion();
+            $data['activo'] = !empty($profesionEntity->getActivo()) ? $profesionEntity->getActivo() : 0;
+            if (!isset($existe[0])) {
+                $this->connection->insert('sq_gestion_personal.tb_nprofesion', $data);
+            } else {
+                $this->connection->update('sq_gestion_personal.tb_nprofesion', $data, ['id_profesion' => $existe[0]['id_profesion']]);
+            }
+
+            if ($elimiar && isset($existe[0])) {
+                $this->connection->delete('sq_gestion_personal.tb_nprofesion', ['nombre_profesion' => $existe[0]['nombre_profesion']]);
+            }
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+    }
 }
