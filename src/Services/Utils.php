@@ -791,7 +791,7 @@ class Utils
 
             $data['nombre_categoria_responsabilidad'] = $nombre;
             $data['descripcion'] = $catResponsabilidadEntity->getDescripcion();
-
+            $data['activo'] = !empty($catResponsabilidadEntity->getActivo()) ? $catResponsabilidadEntity->getActivo() : 0;
             if (!isset($existe[0])) {
                 $this->connection->insert('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data);
             } else {
@@ -806,5 +806,27 @@ class Utils
         }
     }
 
+    public function actualizarCategoriaEstructuraDri($catEstructuraEntity, $elimiar = false)
+    {
+        try {
+            $nombre = $catEstructuraEntity->getNombre();
+            $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_estructura WHERE nombre_categoria_estructura = '$nombre'");
 
+            $data['nombre_categoria_estructura'] = $nombre;
+            $data['descripcion_categoria_estructura'] = $catEstructuraEntity->getDescripcion();
+            $data['color'] = $catEstructuraEntity->getColor();
+            $data['activo'] = !empty($catEstructuraEntity->getActivo()) ? $catEstructuraEntity->getActivo() : 0;
+            if (!isset($existe[0])) {
+                $this->connection->insert('sq_estructura_composicion.tb_ncategoria_estructura', $data);
+            } else {
+                $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', $data, ['id_categoria_estructura' => $existe[0]['id_categoria_estructura']]);
+            }
+
+            if ($elimiar && isset($existe[0])) {
+                $this->connection->delete('sq_estructura_composicion.tb_ncategoria_estructura', ['nombre_categoria_estructura' => $existe[0]['nombre_categoria_estructura']]);
+            }
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+    }
 }

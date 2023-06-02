@@ -3,7 +3,7 @@
 namespace App\Command\IntegracionDRI;
 
 
-use App\Repository\Estructura\CategoriaResponsabilidadRepository;
+use App\Repository\Estructura\CategoriaEstructuraRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -15,10 +15,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 
-class CategoriaResponsabilidadCommand extends Command
+class CategoriaEstructuraCommand extends Command
 {
 
-    protected static $defaultName = 'categoria-responsabilidad-command';
+    protected static $defaultName = 'categoria-estructura-command';
 
 
     private $dbname;
@@ -29,7 +29,7 @@ class CategoriaResponsabilidadCommand extends Command
     private $connection;
     private $port;
     private $env;
-    private $categoriaResponsabilidadRepository;
+    private $categoriaEstructuraRepository;
 
 
     /**
@@ -37,7 +37,7 @@ class CategoriaResponsabilidadCommand extends Command
      * @throws ContainerExceptionInterface
      * @throws Exception
      */
-    public function __construct(ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository)
+    public function __construct(ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         parent::__construct();
         $this->env = $container->get('env_config');
@@ -50,7 +50,7 @@ class CategoriaResponsabilidadCommand extends Command
         $this->driver = $driver;
         $this->port = $port;
 
-        $this->categoriaResponsabilidadRepository = $categoriaResponsabilidadRepository;
+        $this->categoriaEstructuraRepository = $categoriaEstructuraRepository;
 
         $connectionParams = array(
             'dbname' => $this->dbname,
@@ -66,7 +66,7 @@ class CategoriaResponsabilidadCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento sincroniza las categorias de responsabilidad de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento sincroniza las categorias de estructuras de academos hacia la base de datos del nucleo de DRI');
     }
 
 
@@ -86,20 +86,21 @@ class CategoriaResponsabilidadCommand extends Command
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
-        $registrosLocales = $this->categoriaResponsabilidadRepository->findBy(['activo' => true]);
+        $registrosLocales = $this->categoriaEstructuraRepository->findBy(['activo' => true]);
 
         if (count($registrosLocales) > 0) {
-            $this->connection->update('sq_estructura_composicion.tb_ncategoria_responsabilidad', ['activo' => 0], ['activo' => 1]);
+            $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', ['activo' => 0], ['activo' => 1]);
             foreach ($registrosLocales as $value) {
                 $nombre = $value->getNombre();
-                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_responsabilidad WHERE nombre_categoria_responsabilidad = '$nombre'");
+                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_estructura WHERE nombre_categoria_estructura = '$nombre'");
                 if (!isset($existe[0])) {
-                    $data['nombre_categoria_responsabilidad'] = $value->getNombre();
-                    $data['descripcion'] = $value->getDescripcion();
+                    $data['nombre_categoria_estructura'] = $value->getNombre();
+                    $data['descripcion_categoria_estructura'] = $value->getDescripcion();
+                    $data['color'] = $value->getColor();
                     $data['activo'] = 1;
-                    $this->connection->insert('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data);
+                    $this->connection->insert('sq_estructura_composicion.tb_ncategoria_estructura', $data);
                 } else {
-                    $this->connection->update('sq_estructura_composicion.tb_ncategoria_responsabilidad', ['activo' => 1], ['id_categoria_responsabilidad' => $existe[0]['id_categoria_responsabilidad']]);
+                    $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', ['activo' => 1], ['id_categoria_estructura' => $existe[0]['id_categoria_estructura']]);
                 }
             }
         }

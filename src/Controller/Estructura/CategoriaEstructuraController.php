@@ -6,6 +6,7 @@ use App\Entity\Estructura\CategoriaEstructura;
 use App\Entity\Security\User;
 use App\Form\Estructura\CategoriaEstructuraType;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ class CategoriaEstructuraController extends AbstractController
      * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
      * @return Response
      */
-    public function registrar(Request $request, CategoriaEstructuraRepository $categoriaEstructuraRepository)
+    public function registrar(Request $request, CategoriaEstructuraRepository $categoriaEstructuraRepository, Utils $utils)
     {
         try {
             $catEstructuraEntity = new CategoriaEstructura();
@@ -50,6 +51,9 @@ class CategoriaEstructuraController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $categoriaEstructuraRepository->add($catEstructuraEntity, true);
+
+                $utils->actualizarCategoriaEstructuraDri($catEstructuraEntity);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_estructura_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -71,7 +75,7 @@ class CategoriaEstructuraController extends AbstractController
      * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
      * @return Response
      */
-    public function modificar(Request $request, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
+    public function modificar(Request $request, Utils $utils, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         try {
             $form = $this->createForm(CategoriaEstructuraType::class, $categoriaEstructura, ['action' => 'modificar']);
@@ -79,6 +83,9 @@ class CategoriaEstructuraController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $categoriaEstructuraRepository->edit($categoriaEstructura);
+
+                $utils->actualizarCategoriaEstructuraDri($categoriaEstructura);
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_estructura_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -99,11 +106,14 @@ class CategoriaEstructuraController extends AbstractController
      * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
      * @return Response
      */
-    public function eliminar(Request $request, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
+    public function eliminar(Request $request, Utils $utils, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         try {
             if ($categoriaEstructuraRepository->find($categoriaEstructura) instanceof CategoriaEstructura) {
                 $categoriaEstructuraRepository->remove($categoriaEstructura, true);
+
+                $utils->actualizarCategoriaEstructuraDri($categoriaEstructura, true);
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_estructura_index', [], Response::HTTP_SEE_OTHER);
             }
