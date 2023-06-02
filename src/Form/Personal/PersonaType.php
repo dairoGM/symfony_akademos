@@ -195,7 +195,7 @@ class PersonaType extends AbstractType
             ->add('gradoAcademico', EntityType::class, [
                 'class' => GradoAcademico::class,
                 'choice_label' => 'nombre',
-                'label' => 'Grado académico',
+                'label' => 'Grado científico',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },

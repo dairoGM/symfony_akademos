@@ -393,6 +393,9 @@
                             }
                             HoldOn.close()
                         });
+                    } else {
+                        $('#persona_municipio option').remove();
+                        $('#persona_municipio').append(new Option('Seleccione', ""));
                     }
                 });
 
