@@ -127,12 +127,10 @@ class CategoriaEstructuraController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_categoria_estructura_detail", methods={"GET", "POST"})
-     * @param Request $request
-     * @param User $categoriaEstructura
-     * @param CategoriaDocenteRepository $categoriaDocenteRepository
+     * @param CategoriaEstructura $categoriaEstructura
      * @return Response
      */
-    public function detail(Request $request, CategoriaEstructura $categoriaEstructura)
+    public function detail(CategoriaEstructura $categoriaEstructura)
     {
         return $this->render('modules/estructura/categoria_estructura/detail.html.twig', [
             'item' => $categoriaEstructura,
