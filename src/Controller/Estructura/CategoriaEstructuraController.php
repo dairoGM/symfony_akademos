@@ -71,7 +71,8 @@ class CategoriaEstructuraController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_categoria_estructura_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $categoriaEstructura
+     * @param Utils $utils
+     * @param CategoriaEstructura $categoriaEstructura
      * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
      * @return Response
      */
