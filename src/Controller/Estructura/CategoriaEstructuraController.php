@@ -101,12 +101,11 @@ class CategoriaEstructuraController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_categoria_estructura_eliminar", methods={"GET"})
-     * @param Request $request
-     * @param CategoriaEstructura $categoriaEstructura
      * @param CategoriaEstructuraRepository $categoriaEstructuraRepository
+     * @param CategoriaEstructura $categoriaEstructura
      * @return Response
      */
-    public function eliminar(Request $request, Utils $utils, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
+    public function eliminar(Utils $utils, CategoriaEstructura $categoriaEstructura, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         try {
             if ($categoriaEstructuraRepository->find($categoriaEstructura) instanceof CategoriaEstructura) {
