@@ -66,7 +66,7 @@ class CategoriaResponsabilidadCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento sincroniza las categorias de responsabilidad de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento que sincroniza las categorias de responsabilidad de academos hacia la base de datos del nucleo de DRI');
     }
 
 

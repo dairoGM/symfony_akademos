@@ -70,7 +70,7 @@ class EstructuraCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento sincroniza las estructuraes de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento que sincroniza las estructuraes de academos hacia la base de datos del nucleo de DRI');
     }
 
 
