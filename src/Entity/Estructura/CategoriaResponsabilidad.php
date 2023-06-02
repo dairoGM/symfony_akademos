@@ -16,12 +16,6 @@ class CategoriaResponsabilidad extends BaseNomenclator
      */
     private string $color;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="CategoriaResponsabilidad")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private CategoriaResponsabilidad $categoriaResponsabilidad;
-
     public function getColor(): ?string
     {
         return $this->color;
@@ -30,19 +24,6 @@ class CategoriaResponsabilidad extends BaseNomenclator
     public function setColor(?string $color): self
     {
         $this->color = $color;
-
-        return $this;
-    }
-
-    public function getCategoriaResponsabilidad()
-    {
-        return $this->categoriaResponsabilidad;
-    }
-
-    public function setCategoriaResponsabilidad($categoriaResponsabilidad)
-    {
-        $this->categoriaResponsabilidad = $categoriaResponsabilidad;
-
         return $this;
     }
 }

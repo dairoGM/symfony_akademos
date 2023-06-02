@@ -5,6 +5,14 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     env_config: '%env(ENV_CONFIG)%'
+
+    dbname: '%env(DB_NAME)%'
+    user: '%env(DB_USER)%'
+    password: '%env(DB_PASS)%'
+    host: '%env(DB_HOST)%'
+    driver: 'pdo_pgsql'
+    port: '%env(DB_PORT)%'
+
     estructura_1: '%env(ESTRUCTURA_1)%'
     tipo_plan_anual: '%env(TIPO_PLAN_ANUAL)%'
     tipo_plan_mensual: '%env(TIPO_PLAN_MENSUAL)%'
@@ -40,7 +48,13 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        bind:
+            $dbname: '%env(resolve:DB_NAME)%'
+            $user: '%env(resolve:DB_USER)%'
+            $password: '%env(resolve:DB_PASS)%'
+            $host: '%env(resolve:DB_HOST)%'
+            $driver: 'pdo_pgsql'
+            $port: '%env(resolve:DB_PORT)%'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:

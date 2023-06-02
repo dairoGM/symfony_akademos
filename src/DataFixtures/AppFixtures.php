@@ -340,6 +340,8 @@ class AppFixtures extends Fixture
         $universidad->setVision('Vision');
         $universidad->setRector('Rector');
         $universidad->setLogo('Logo.png');
+        $universidad->setCampusUniversitario('Campus');
+        $universidad->setDireccionSedePrincipal('Direccion');
         $universidad->setOrganigrama('Organigrama.png');
         $universidad->setFechaFundacion(new \DateTime());
         $manager->persist($universidad);
