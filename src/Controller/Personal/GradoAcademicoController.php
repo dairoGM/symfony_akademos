@@ -26,11 +26,9 @@ class GradoAcademicoController extends AbstractController
      */
     public function index(GradoAcademicoRepository $gradoAcademicoRepository)
     {
-
         return $this->render('modules/personal/grado_academico/index.html.twig', [
             'registros' => $gradoAcademicoRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
         ]);
-
     }
 
     /**
