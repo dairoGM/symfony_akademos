@@ -178,6 +178,9 @@
                     }
                     HoldOn.close()
                 });
+            } else {
+                $('#estructura_municipio option').remove();
+                $('#estructura_municipio').append(new Option('Seleccione', ""));
             }
         });
 
