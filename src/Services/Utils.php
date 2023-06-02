@@ -10,7 +10,7 @@ use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\Rol;
 use App\Entity\Security\RolEstructura;
 use App\Entity\Security\User;
-use App\Repository\Pregrado\HistoricoEstadoProgramaAcademicoRepository;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,12 +24,38 @@ class Utils
     private $base_url;
     private $em;
     private $ib_api_ri_url;
+    private $dbname;
+    private $user;
+    private $password;
+    private $host;
+    private $driver;
+    private $connection;
+    private $port;
 
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, ContainerBagInterface $container)
+
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port)
     {
         $this->base_url = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
         $this->em = $em;
         $this->ib_api_ri_url = $container->get('IB_API_RI_URL');
+
+        $this->dbname = $dbname;
+        $this->user = $user;
+        $this->password = $password;
+        $this->host = $host;
+        $this->driver = $driver;
+        $this->port = $port;
+
+        $connectionParams = array(
+            'dbname' => $this->dbname,
+            'user' => $this->user,
+            'password' => $this->password,
+            'host' => $this->host,
+            'port' => $this->port,
+            'driver' => $this->driver,
+            'charset' => 'UTF8'
+        );
+        $this->connection = DriverManager::getConnection($connectionParams);
     }
 
     public function guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico, $estado, $cursoAcademico = null, $dictamenAprobacion = null)
@@ -756,4 +782,29 @@ class Utils
             return $e->getMessage();
         }
     }
+
+    public function actualizarCategoriaResponsabilidadDri($catResponsabilidadEntity, $elimiar = false)
+    {
+        try {
+            $nombre = $catResponsabilidadEntity->getNombre();
+            $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_responsabilidad WHERE nombre_categoria_responsabilidad = '$nombre'");
+
+            $data['nombre_categoria_responsabilidad'] = $nombre;
+            $data['descripcion'] = $catResponsabilidadEntity->getDescripcion();
+
+            if (!isset($existe[0])) {
+                $this->connection->insert('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data);
+            } else {
+                $this->connection->update('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data, ['id_categoria_responsabilidad' => $existe[0]['id_categoria_responsabilidad']]);
+            }
+
+            if ($elimiar && isset($existe[0])) {
+                $this->connection->delete('sq_estructura_composicion.tb_ncategoria_responsabilidad', ['nombre_categoria_responsabilidad' => $existe[0]['nombre_categoria_responsabilidad']]);
+            }
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+    }
+
+
 }

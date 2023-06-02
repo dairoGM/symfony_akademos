@@ -6,6 +6,7 @@ use App\Entity\Estructura\CategoriaResponsabilidad;
 use App\Entity\Security\User;
 use App\Form\Estructura\CategoriaResponsabilidadType;
 use App\Repository\Estructura\CategoriaResponsabilidadRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ class CategoriaResponsabilidadController extends AbstractController
      * @param CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository
      * @return Response
      */
-    public function registrar(Request $request, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository)
+    public function registrar(Request $request, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository, Utils $utils)
     {
         try {
             $catResponsabilidadEntity = new CategoriaResponsabilidad();
@@ -50,6 +51,9 @@ class CategoriaResponsabilidadController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $categoriaResponsabilidadRepository->add($catResponsabilidadEntity, true);
+
+                $utils->actualizarCategoriaResponsabilidadDri($catResponsabilidadEntity);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_responsabilidad_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -67,11 +71,11 @@ class CategoriaResponsabilidadController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_categoria_responsabilidad_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $categoriaResponsabilidad
+     * @param CategoriaResponsabilidad $categoriaResponsabilidad
      * @param CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository
      * @return Response
      */
-    public function modificar(Request $request, CategoriaResponsabilidad $categoriaResponsabilidad, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository)
+    public function modificar(Request $request, CategoriaResponsabilidad $categoriaResponsabilidad, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository, Utils $utils)
     {
         try {
             $form = $this->createForm(CategoriaResponsabilidadType::class, $categoriaResponsabilidad, ['action' => 'modificar']);
@@ -79,6 +83,9 @@ class CategoriaResponsabilidadController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $categoriaResponsabilidadRepository->edit($categoriaResponsabilidad);
+
+                $utils->actualizarCategoriaResponsabilidadDri($categoriaResponsabilidad);
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_responsabilidad_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -99,11 +106,13 @@ class CategoriaResponsabilidadController extends AbstractController
      * @param CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository
      * @return Response
      */
-    public function eliminar(Request $request, CategoriaResponsabilidad $categoriaResponsabilidad, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository)
+    public function eliminar(Request $request, CategoriaResponsabilidad $categoriaResponsabilidad, CategoriaResponsabilidadRepository $categoriaResponsabilidadRepository, Utils $utils)
     {
         try {
             if ($categoriaResponsabilidadRepository->find($categoriaResponsabilidad) instanceof CategoriaResponsabilidad) {
                 $categoriaResponsabilidadRepository->remove($categoriaResponsabilidad, true);
+                $utils->actualizarCategoriaResponsabilidadDri($categoriaResponsabilidad, true);
+
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_categoria_responsabilidad_index', [], Response::HTTP_SEE_OTHER);
             }

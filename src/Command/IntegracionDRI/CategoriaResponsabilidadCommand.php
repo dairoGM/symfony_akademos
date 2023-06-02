@@ -88,12 +88,14 @@ class CategoriaResponsabilidadCommand extends Command
 
         $registrosLocales = $this->categoriaResponsabilidadRepository->findBy(['activo' => true]);
         if (count($registrosLocales) > 0) {
-            $sql = "DELETE FROM sq_estructura_composicion.tb_ncategoria_responsabilidad	WHERE id_categoria_responsabilidad > 0";
-            $this->connection->fetchAssociative($sql);
             foreach ($registrosLocales as $value) {
-                $data['nombre_categoria_responsabilidad'] = $value->getNombre();
-                $data['descripcion'] = $value->getDescripcion();
-                $this->connection->insert('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data);
+                $nombre = $value->getNombre();
+                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_responsabilidad WHERE nombre_categoria_responsabilidad = '$nombre'");
+                if (!isset($existe[0])) {
+                    $data['nombre_categoria_responsabilidad'] = $value->getNombre();
+                    $data['descripcion'] = $value->getDescripcion();
+                    $this->connection->insert('sq_estructura_composicion.tb_ncategoria_responsabilidad', $data);
+                }
             }
         }
 
