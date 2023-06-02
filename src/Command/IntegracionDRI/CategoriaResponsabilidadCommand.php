@@ -88,8 +88,8 @@ class CategoriaResponsabilidadCommand extends Command
 
         $registrosLocales = $this->categoriaResponsabilidadRepository->findBy(['activo' => true]);
 
+        $this->connection->update('sq_estructura_composicion.tb_ncategoria_responsabilidad', ['activo' => 0], ['activo' => 1]);
         if (count($registrosLocales) > 0) {
-            $this->connection->update('sq_estructura_composicion.tb_ncategoria_responsabilidad', ['activo' => 0], ['activo' => 1]);
             foreach ($registrosLocales as $value) {
                 $nombre = $value->getNombre();
                 $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_responsabilidad WHERE nombre_categoria_responsabilidad = '$nombre'");

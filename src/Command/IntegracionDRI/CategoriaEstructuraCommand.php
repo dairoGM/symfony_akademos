@@ -87,9 +87,9 @@ class CategoriaEstructuraCommand extends Command
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
         $registrosLocales = $this->categoriaEstructuraRepository->findBy(['activo' => true]);
+        $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', ['activo' => 0], ['activo' => 1]);
 
         if (count($registrosLocales) > 0) {
-            $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', ['activo' => 0], ['activo' => 1]);
             foreach ($registrosLocales as $value) {
                 $nombre = $value->getNombre();
                 $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_ncategoria_estructura WHERE nombre_categoria_estructura = '$nombre'");
