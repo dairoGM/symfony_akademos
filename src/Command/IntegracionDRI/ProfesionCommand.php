@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Command\DatosInicialesDri;
+namespace App\Command\IntegracionDRI;
 
 
-use App\Entity\Estructura\CategoriaResponsabilidad;
-use App\Entity\Estructura\Responsabilidad;
-use App\Entity\Personal\Profesion;
-use App\Repository\Estructura\CategoriaResponsabilidadRepository;
-use App\Repository\Estructura\ResponsabilidadRepository;
+use App\Repository\Estructura\CategoriaEstructuraRepository;
 use App\Repository\Personal\ProfesionRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -23,7 +19,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 class ProfesionCommand extends Command
 {
 
-    protected static $defaultName = 'importat-profesiones-command';
+    protected static $defaultName = 'profesiones-command';
 
 
     private $dbname;
@@ -35,6 +31,7 @@ class ProfesionCommand extends Command
     private $port;
     private $env;
     private $profesionRepository;
+
 
     /**
      * @throws NotFoundExceptionInterface
@@ -70,7 +67,7 @@ class ProfesionCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento que importa desde el nucleo de DRI todas las profesiones');
+        $this->setDescription('Procedimiento que sincroniza las categorias de estructuras de academos hacia la base de datos del nucleo de DRI');
     }
 
 
@@ -90,24 +87,23 @@ class ProfesionCommand extends Command
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
-        /*Importar de DRI para SGES*/
-        $sql = "SELECT * FROM sq_gestion_personal.tb_nprofesion WHERE id_profesion > 0";
-        $registrosDri = $this->connection->fetchAllAssociative($sql);
+        $registrosLocales = $this->profesionRepository->findBy(['activo' => true]);
+        $this->connection->update('sq_gestion_personal.tb_nprofesion', ['activo' => 0], ['activo' => 1]);
 
-        if (is_array($registrosDri)) {
-            foreach ($registrosDri as $value) {
-                $existe = $this->profesionRepository->findBy(['nombre'=>$value['nombre_profesion']]);
-                if (!isset($existe[0])){
-                    $new = new Profesion();
-                    $new->setNombre($value['nombre_profesion']);
-                    $new->setDescripcion($value['descripcion']);
-                    $this->profesionRepository->add($new, true);
+        if (count($registrosLocales) > 0) {
+            foreach ($registrosLocales as $value) {
+                $nombre = $value->getNombre();
+                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_gestion_personal.tb_nprofesion WHERE nombre_profesion = '$nombre'");
+                if (!isset($existe[0])) {
+                    $data['nombre_profesion'] = $value->getNombre();
+                    $data['descripcion'] = $value->getDescripcion();
+                    $data['activo'] = 1;
+                    $this->connection->insert('sq_gestion_personal.tb_nprofesion', $data);
+                } else {
+                    $this->connection->update('sq_gestion_personal.tb_nprofesion', ['activo' => 1], ['id_profesion' => $existe[0]['id_profesion']]);
                 }
             }
         }
-
-
-
 
         $duration = round((microtime(true) - $tiempo_inicial), 2) . 's';
         $this->io->success(date('d-m-Y H:i:s') . ': End Proccess');
