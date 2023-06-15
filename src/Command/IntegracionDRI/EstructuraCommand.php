@@ -90,6 +90,36 @@ class EstructuraCommand extends Command
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
+//        $sql = "SELECT * FROM sq_estructura_composicion.tb_destructura WHERE id_estructura > 0";
+//        $registrosDri = $this->connection->fetchAllAssociative($sql);
+//
+//        if (is_array($registrosDri)) {
+//            foreach ($registrosDri as $value) {
+//                if (!empty($value['id_estructura'])) {
+//                    $new = new Estructura();
+//                    $new->setNombre($value['nombre_estructura']);
+//                    $new->setSiglas($value['siglas']);
+//                    $new->setTelefono($value['telefono']);
+//                    $new->setUbicacion($value['ubicacion']);
+//                    $new->setEmail($value['correo_electronico']);
+//                    $new->setCategoriaEstructura($this->categoriaEstructuraRepository->find($value['id_categoria_estructura']));
+//                    $new->setEstructura($this->estructuraRepository->find($value['id_estructura_padre']));
+//
+//                    $categoria = $this->estructuraRepository->findBy($value['nombre_estructura']);
+//                    if (isset($categoria[0])) {
+//                        $this->estructuraRepository->edit($new, true);
+//                    } else {
+//                        $this->estructuraRepository->add($new, true);
+//                    }
+//                }
+//            }
+//        }
+//        echo '<pre>';
+//        print_r('OK');
+//        die;
+
+
+
         $registrosLocales = $this->estructuraRepository->findBy(['activo' => true]);
 
         $this->connection->update('sq_estructura_composicion.tb_destructura', ['activo' => 0], ['activo' => true]);

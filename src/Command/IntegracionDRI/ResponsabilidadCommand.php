@@ -100,14 +100,17 @@ class ResponsabilidadCommand extends Command
 //                    $new->setNombre($value['nombre']);
 //                    $new->setDescripcion($value['descripcion']);
 //                    $categoria = $this->categoriaResponsabilidadRepository->find($value['id_categoria_responsabilidad']);
-//                    if ($categoria instanceof CategoriaResponsabilidad){
-//                        $new->setCategoriaResponsabilidad($categoria);
-//                        $this->responsabilidadRepository->add($new, true);
+//                    if (isset($categoria[0])) {
+//                        $this->categoriaResponsabilidadRepository->edit($new, true);
+//                    } else {
+//                        $this->categoriaResponsabilidadRepository->add($new, true);
 //                    }
 //                }
 //            }
 //        }
-
+//        echo '<pre>';
+//        print_r('OK');
+//        die;
 
         $registrosLocales = $this->responsabilidadRepository->findBy(['activo' => true]);
 

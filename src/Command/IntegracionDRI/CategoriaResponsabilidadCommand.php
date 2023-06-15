@@ -3,6 +3,8 @@
 namespace App\Command\IntegracionDRI;
 
 
+use App\Entity\Estructura\CategoriaEstructura;
+use App\Entity\Estructura\CategoriaResponsabilidad;
 use App\Repository\Estructura\CategoriaResponsabilidadRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -85,6 +87,32 @@ class CategoriaResponsabilidadCommand extends Command
     {
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
+
+
+
+//        $sql = "SELECT * FROM sq_estructura_composicion.tb_ncategoria_responsabilidad WHERE id_categoria_responsabilidad > 0";
+//        $registrosDri = $this->connection->fetchAllAssociative($sql);
+//
+//        if (is_array($registrosDri)) {
+//            foreach ($registrosDri as $value) {
+//                if (!empty($value['id_categoria_responsabilidad'])) {
+//                    $new = new CategoriaResponsabilidad();
+//                    $new->setNombre($value['nombre_categoria_responsabilidad']);
+//                    $new->setDescripcion($value['descripcion']);
+//
+//                    $categoria = $this->categoriaResponsabilidadRepository->findBy($value['nombre_categoria_responsabilidad']);
+//                    if (isset($categoria[0])) {
+//                        $this->categoriaResponsabilidadRepository->edit($new, true);
+//                    } else {
+//                        $this->categoriaResponsabilidadRepository->add($new, true);
+//                    }
+//                }
+//            }
+//        }
+//        echo '<pre>';
+//        print_r('OK');
+//        die;
+
 
         $registrosLocales = $this->categoriaResponsabilidadRepository->findBy(['activo' => true]);
 

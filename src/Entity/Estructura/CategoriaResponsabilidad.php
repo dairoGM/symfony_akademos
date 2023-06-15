@@ -22,7 +22,7 @@ class CategoriaResponsabilidad extends BaseNomenclator
      */
     private CategoriaResponsabilidad $categoriaResponsabilidad;
 
-    public function getColor(): ?string
+    public function getColor()
     {
         return $this->color;
     }

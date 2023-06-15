@@ -3,6 +3,7 @@
 namespace App\Command\IntegracionDRI;
 
 
+use App\Entity\Estructura\CategoriaEstructura;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -85,6 +86,30 @@ class CategoriaEstructuraCommand extends Command
     {
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
+
+//
+//        $sql = "SELECT * FROM sq_estructura_composicion.tb_ncategoria_estructura WHERE id_categoria_estructura > 0";
+//        $registrosDri = $this->connection->fetchAllAssociative($sql);
+//
+//        if (is_array($registrosDri)) {
+//            foreach ($registrosDri as $value) {
+//                if (!empty($value['id_categoria_estructura'])) {
+//                    $new = new CategoriaEstructura();
+//                    $new->setNombre($value['nombre_categoria_estructura']);
+//                    $new->setDescripcion($value['descripcion_categoria_estructura']);
+//                    $new->setColor($value['color']);
+//                    $categoria = $this->categoriaEstructuraRepository->findBy($value['nombre_categoria_estructura']);
+//                    if (isset($categoria[0])) {
+//                        $this->categoriaEstructuraRepository->edit($new, true);
+//                    } else {
+//                        $this->categoriaEstructuraRepository->add($new, true);
+//                    }
+//                }
+//            }
+//        }
+//        echo '<pre>';
+//        print_r('OK');
+//        die;
 
         $registrosLocales = $this->categoriaEstructuraRepository->findBy(['activo' => true]);
         $this->connection->update('sq_estructura_composicion.tb_ncategoria_estructura', ['activo' => 0], ['activo' => 1]);
