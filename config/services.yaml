@@ -38,6 +38,7 @@ parameters:
     objeto_solicitud_programa: '%env(objeto_solicitud_programa)%'
 
     id_categoria_estructura_ies: '%env(id_categoria_estructura_ies)%'
+    id_categoria_estructura_facultad: '%env(id_categoria_estructura_facultad)%'
 
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
 
