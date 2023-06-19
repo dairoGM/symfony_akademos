@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command\IntegracionDRI;
+namespace App\Command\IntegracionDRI\CargaInicial;
 
 
 use App\Entity\Estructura\CategoriaResponsabilidad;
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 class ResponsabilidadCommand extends Command
 {
 
-    protected static $defaultName = 'responsabilidad-command';
+    protected static $defaultName = 'carga-inicial-responsabilidad-command';
 
 
     private $dbname;
@@ -70,7 +70,7 @@ class ResponsabilidadCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento que sincroniza las responsabilidades de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento que trae todos los registros de DRI y los actualiza en el sistema');
     }
 
 
@@ -90,48 +90,30 @@ class ResponsabilidadCommand extends Command
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
-//        $sql = "SELECT * FROM sq_estructura_composicion.tb_nresponsabilidad WHERE id_responsabilidad > 0";
-//        $registrosDri = $this->connection->fetchAllAssociative($sql);
-//
-//        if (is_array($registrosDri)) {
-//            foreach ($registrosDri as $value) {
-//                if (!empty($value['id_categoria_responsabilidad'])) {
-//                    $new = new Responsabilidad();
-//                    $new->setNombre($value['nombre']);
-//                    $new->setDescripcion($value['descripcion']);
-//                    $categoria = $this->categoriaResponsabilidadRepository->find($value['id_categoria_responsabilidad']);
-//                    if (isset($categoria[0])) {
-//                        $this->categoriaResponsabilidadRepository->edit($new, true);
-//                    } else {
-//                        $this->categoriaResponsabilidadRepository->add($new, true);
-//                    }
-//                }
-//            }
-//        }
-//        echo '<pre>';
-//        print_r('OK');
-//        die;
+        $sql = "SELECT * FROM sq_estructura_composicion.tb_nresponsabilidad WHERE id_responsabilidad > 0";
+        $registrosDri = $this->connection->fetchAllAssociative($sql);
+        if (is_array($registrosDri)) {
+            foreach ($registrosDri as $value) {
+                if (!empty($value['id_categoria_responsabilidad'])) {
+                    $new = new Responsabilidad();
+                    $new->setNombre($value['nombre']);
+                    $new->setDescripcion($value['descripcion']);
+                    $categoria = $this->categoriaResponsabilidadRepository->find($value['id_categoria_responsabilidad']);
+                    if ($categoria instanceof CategoriaResponsabilidad){
+                        $new->setCategoriaResponsabilidad($categoria);
+                    }
 
-        $registrosLocales = $this->responsabilidadRepository->findBy(['activo' => true]);
 
-        $this->connection->update('sq_estructura_composicion.tb_nresponsabilidad', ['activo' => 0], ['activo' => true]);
-        if (count($registrosLocales) > 0) {
-            foreach ($registrosLocales as $value) {
-                $nombre = $value->getNombre();
-                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_nresponsabilidad WHERE nombre = '$nombre'");
-
-                $data['nombre'] = $value->getNombre();
-                $data['descripcion'] = $value->getDescripcion();
-                $data['id_categoria_responsabilidad'] = $value->getCategoriaResponsabilidad()->getId();
-                $data['activo'] = 1;
-
-                if (!isset($existe[0])) {
-                    $this->connection->insert('sq_estructura_composicion.tb_nresponsabilidad', $data);
-                } else {
-                    $this->connection->update('sq_estructura_composicion.tb_nresponsabilidad', $data, ['id_responsabilidad' => $existe[0]['id_responsabilidad']]);
+                    $responsabilidad = $this->responsabilidadRepository->findBy(['nombre' => $value['nombre'], 'categoriaResponsabilidad' => $value['id_categoria_responsabilidad']]);
+                    if (isset($responsabilidad[0])) {
+                        $this->responsabilidadRepository->edit($new, true);
+                    } else {
+                        $this->responsabilidadRepository->add($new, true);
+                    }
                 }
             }
         }
+
         $duration = round((microtime(true) - $tiempo_inicial), 2) . 's';
         $this->io->success(date('d-m-Y H:i:s') . ': End Proccess');
         $this->io->success('Durations: ' . $duration);

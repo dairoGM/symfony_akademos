@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Command\IntegracionDRI;
+namespace App\Command\IntegracionDRI\CargaPeriodica;
 
 
+use App\Entity\Estructura\CategoriaEstructura;
+use App\Entity\Estructura\Estructura;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
-use App\Repository\Personal\ProfesionRepository;
+use App\Repository\Estructura\EstructuraRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -16,10 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 
-class ProfesionCommand extends Command
+class EstructuraCommand extends Command
 {
 
-    protected static $defaultName = 'profesiones-command';
+    protected static $defaultName = 'estructura-command';
 
 
     private $dbname;
@@ -30,15 +32,15 @@ class ProfesionCommand extends Command
     private $connection;
     private $port;
     private $env;
-    private $profesionRepository;
-
+    private $estructuraRepository;
+    private $categoriaEstructuraRepository;
 
     /**
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      * @throws Exception
      */
-    public function __construct(ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port, ProfesionRepository $profesionRepository)
+    public function __construct(ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port, EstructuraRepository $estructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository)
     {
         parent::__construct();
         $this->env = $container->get('env_config');
@@ -51,7 +53,8 @@ class ProfesionCommand extends Command
         $this->driver = $driver;
         $this->port = $port;
 
-        $this->profesionRepository = $profesionRepository;
+        $this->estructuraRepository = $estructuraRepository;
+        $this->categoriaEstructuraRepository = $categoriaEstructuraRepository;
 
         $connectionParams = array(
             'dbname' => $this->dbname,
@@ -67,7 +70,7 @@ class ProfesionCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento que sincroniza las categorias de estructuras de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento que sincroniza las estructuraes de academos hacia la base de datos del nucleo de DRI');
     }
 
 
@@ -87,24 +90,30 @@ class ProfesionCommand extends Command
         $tiempo_inicial = microtime(true);
         $this->io->success(date('d-m-Y H:i:s') . ': Start Proccess');
 
-        $registrosLocales = $this->profesionRepository->findBy(['activo' => true]);
-        $this->connection->update('sq_gestion_personal.tb_nprofesion', ['activo' => 0], ['activo' => 1]);
+        $registrosLocales = $this->estructuraRepository->findBy(['activo' => true]);
 
+        $this->connection->update('sq_estructura_composicion.tb_destructura', ['activo' => 0], ['activo' => true]);
         if (count($registrosLocales) > 0) {
             foreach ($registrosLocales as $value) {
                 $nombre = $value->getNombre();
-                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_gestion_personal.tb_nprofesion WHERE nombre_profesion = '$nombre'");
+                $existe = $this->connection->fetchAllAssociative("SELECT * FROM sq_estructura_composicion.tb_destructura WHERE nombre_estructura = '$nombre'");
+                $data['nombre_estructura'] = $value->getNombre();
+                $data['siglas'] = $value->getSiglas();
+                $data['telefono'] = $value->getTelefono();
+                $data['ubicacion'] = $value->getUbicacion();
+                $data['correo_electronico'] = $value->getEstructura();
+                $data['id_categoria_estructura'] = $value->getCategoriaEstructura()->getId();
+                $data['codigo_estructura'] = $value->getSiglas();
+                $data['fecha_activacion'] = $value->getFechaActivacion()->format('Y-m-d');
+                $data['activo'] = 1;
+
                 if (!isset($existe[0])) {
-                    $data['nombre_profesion'] = $value->getNombre();
-                    $data['descripcion'] = $value->getDescripcion();
-                    $data['activo'] = 1;
-                    $this->connection->insert('sq_gestion_personal.tb_nprofesion', $data);
+                    $this->connection->insert('sq_estructura_composicion.tb_destructura', $data);
                 } else {
-                    $this->connection->update('sq_gestion_personal.tb_nprofesion', ['activo' => 1], ['id_profesion' => $existe[0]['id_profesion']]);
+                    $this->connection->update('sq_estructura_composicion.tb_destructura', $data, ['id_estructura' => $existe[0]['id_estructura']]);
                 }
             }
         }
-
         $duration = round((microtime(true) - $tiempo_inicial), 2) . 's';
         $this->io->success(date('d-m-Y H:i:s') . ': End Proccess');
         $this->io->success('Durations: ' . $duration);
