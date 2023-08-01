@@ -36,8 +36,9 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function index(PlanEstudioRepository $planEstudioRepository)
+    public function index(PlanEstudioRepository $planEstudioRepository, RequestStack $requestStack)
     {
+        $requestStack->getSession()->remove('documentosPlanEstudio');
         return $this->render('modules/pregrado/plan_estudio/index.html.twig', [
             'registros' => $planEstudioRepository->getPlanesEstudio(),
         ]);
