@@ -18,6 +18,7 @@ use App\Repository\Pregrado\PlanEstudioRepository;
 use Cassandra\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -48,38 +49,49 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function registrar(Request $request, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
+    public function registrar(Request $request, RequestStack $requestStack, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
     {
-//        try {
-        $planEstudioEntity = new PlanEstudio();
-        $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
-            $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
+        try {
+            $planEstudioEntity = new PlanEstudio();
+            $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
+                $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
 
-            if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
-                $file = $form['planEstudio']->getData();
-//                pr($file);
-                $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
-                $planEstudioEntity->setPlanEstudio($file_name);
-                $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
+                if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
+                    $file = $form['planEstudio']->getData();
+                    $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
+                    $planEstudioEntity->setPlanEstudio($file_name);
+                    $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
+                }
+                $documentos = $requestStack->getSession()->get('documentosPlanEstudio');
+                if (is_array($documentos)) {
+                    foreach ($documentos as $value) {
+                        $docEntity = new PlanEstudioDocumento();
+                        $docEntity->setDocumentoFisico($value['documento']);
+                        $docEntity->setNombre($value['nombre_documento']);
+                        $docEntity->setPlanEstudio($planEstudioEntity);
+                        $docEntity->setDocumento($documentoRepository->find($value['id_documento']));
+                        $planEstudioDocumentoRepository->add($docEntity, true);
+                    }
+                    $requestStack->getSession()->remove('documentosPlanEstudio');
+                }
+
+                $planEstudioRepository->add($planEstudioEntity, true);
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            $planEstudioRepository->add($planEstudioEntity, true);
-            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
+            return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
+                'form' => $form->createView(),
+                'registros' => $requestStack->getSession()->get('documentosPlanEstudio'),
+                'documentos' => $documentoRepository->findBy(['activo' => true], ['nombre' => 'asc'])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('modules/pregrado/plan_estudio/new.html.twig', [
-            'form' => $form->createView(),
-            'registros' => [],
-            'documentos' => $documentoRepository->findBy(['activo' => true], ['nombre' => 'asc'])
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
     }
 
     /**
@@ -87,40 +99,29 @@ class PlanEstudioController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function registroTemporalDeDocumento(Request $request, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
+    public function registroTemporalDeDocumento(Request $request, RequestStack $requestStack)
     {
         try {
             $post = $request->request->all();
-
-            $planEstudiDoc = new PlanEstudioDocumento();
-            if (!empty($post['id_plan_estudio'])) {
-                if (isset($post['id_plan_estudio']) && !empty($post['id_plan_estudio'])) {
-                    $planEstudio = $planEstudioRepository->find($post['id_plan_estudio']);
-                    $planEstudiDoc->setPlanEstudio($planEstudio);
-                }
-            }
-            $planEstudiDoc->setDocumento($post['documento']);
-
             $uploadPath = 'uploads/pregrado/plan_estudio/documentos/';
-            pr($_FILES['tmp_name']);
-            pr(move_uploaded_file($_FILES['tmp_name'], $uploadPath));
-            if (move_uploaded_file($_FILES['tmp_name'], $uploadPath)) {
-                $temp = file_get_contents($uploadPath);
-
+            $url = null;
+            $path = "uploads/pregrado/plan_estudio/documentos";
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            if (move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/pregrado/plan_estudio/documentos/' . $_FILES['file']['name'])) {
+                $url = $uploadPath . $_FILES['file']['name'];
             }
 
-//                if (!empty($_FILES['file']['name'])) {
-//                    $file = $form['planEstudio']->getData();
-//                    $file_name = $_FILES['file']['name']['name'];
-//                    $planEstudioEntity->setPlanEstudio($file_name);
-//                    $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
-//                }
-            $planEstudioDocumentoRepository->add($planEstudiDoc, true);
-
-
-            pr($_FILES);
-
-
+            if (!empty($url)) {
+                $documentosPlanEstudio = $requestStack->getSession()->has('documentosPlanEstudio') ? $requestStack->getSession()->get('documentosPlanEstudio') : null;
+                $item['documento'] = $url;
+                $item['id_documento'] = $post['documento'];
+                $item['nombre_documento'] = $_FILES['file']['name'];
+                $documentosPlanEstudio[] = $item;
+                $requestStack->getSession()->set('documentosPlanEstudio', $documentosPlanEstudio);
+            }
+            return $this->json($requestStack->getSession()->get('documentosPlanEstudio'), Response::HTTP_OK);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);

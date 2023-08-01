@@ -16,7 +16,7 @@ use App\Entity\Postgrado\RamaCiencia;
 class PlanEstudioDocumento extends BaseNomenclator
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\PlanEstudio")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\PlanEstudio", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private ?PlanEstudio $planEstudio;

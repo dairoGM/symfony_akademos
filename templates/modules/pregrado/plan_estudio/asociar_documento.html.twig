@@ -35,7 +35,7 @@
     </div>
 
     <div class="col-4 form-group">
-        <button id="btn_asociar" style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+        <button id="btn_asociar" style="margin-top: 5%" class="btn btn-primary">Asociar</button>
     </div>
 </div>
 <hr>
@@ -51,12 +51,12 @@
     {% for item in registros %}
         <tr>
             <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.documento.nombre | default('') }}</td>
+            <td>{{ item.nombre_documento | default('') }}</td>
             <td width="15%" class="text-center">
-                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                        data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">
-                    <i class="fa fa-trash"></i>
-                </button>
+{#                <button title="Eliminar" class="btn btn-outline-danger elementRemove"#}
+{#                        data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">#}
+{#                    <i class="fa fa-trash"></i>#}
+{#                </button>#}
             </td>
         </tr>
     {% endfor %}
@@ -89,6 +89,7 @@
                 };
                 xhr.send(data);
             }
+            // location.href = location.href;
         })
 
 

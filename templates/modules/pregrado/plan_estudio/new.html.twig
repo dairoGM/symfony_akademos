@@ -101,10 +101,10 @@
                 </div>
             </div>
 
-{#            {{ include('modules/pregrado/plan_estudio/asociar_documento.html.twig', {#}
-{#                'documentos': documentos ,#}
-{#                'registros': registros ,#}
-{#            }) }}#}
+            {{ include('modules/pregrado/plan_estudio/asociar_documento.html.twig', {
+                'documentos': documentos ,
+                'registros': registros ,
+            }) }}
             <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
                 <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_estudio_index') }}" data-title=""
                    data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
