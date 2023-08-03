@@ -4,16 +4,18 @@
         <h5 class="mb-0"><b>Año de aprobación:</b> {{ item.annoAprobacion | default('') }}</h5>
         <h5 class="mb-0"><b>AOCE de formación:</b> {{ item.oace.nombre | default('') }}</h5>
         <h5 class="mb-0"><b>Plan de estudio: </b> <a target="_blank"
-                                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.planEstudio }}">{{ item.planEstudio }}</a>
+                                                     href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.planEstudio }}">{{ item.planEstudio }}</a>
         </h5>
-        <h5 class="mb-0"><b>Duración del Curso Por Encuentro:</b> {{ item.duracionCursoPorEncuentro  | default('0') }} años</h5>
+        <h5 class="mb-0"><b>Duración del Curso Por Encuentro:</b> {{ item.duracionCursoPorEncuentro  | default('0') }}
+            años</h5>
     </div>
     <div class="col-6">
         <h5 class="mb-0"><b>Carrera:</b> {{ item.carrera.nombre | default('') }}</h5>
         <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ item.fechaAprobacion | date('d/m/Y') }}</h5>
         <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
         <h5 class="mb-0"><b>Duración del Curso Diurno:</b> {{ item.duracionCursoDiurno | default('0') }} años</h5>
-        <h5 class="mb-0"><b>Duración del Curso a Distancia:</b> {{ item.duracionCursoDistancia | default('0') }} años</h5>
+        <h5 class="mb-0"><b>Duración del Curso a Distancia:</b> {{ item.duracionCursoDistancia | default('0') }} años
+        </h5>
     </div>
 </div>
 <hr>
@@ -28,6 +30,7 @@
         <th>No.</th>
         <th>Documento</th>
         <th>Tipo de Documento</th>
+        <th>Opciones</th>
     </tr>
     </thead>
     <tbody>
@@ -36,6 +39,12 @@
             <td width="1%">{{ loop.index }}</td>
             <td>{{ item.nombre | default('') }}</td>
             <td>{{ item.documento.nombre | default('') }}</td>
+            <td width="5%" class="text-center">
+                <a title="Descargar documento" target="_blank" class="btn btn-outline-primary"
+                   href="{{ app.request.getSchemeAndHttpHost() }}/{{ item.documentoFisico }}">
+                    <i class="fa fa-file-download"></i>
+                </a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
