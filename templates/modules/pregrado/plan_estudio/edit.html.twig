@@ -15,7 +15,7 @@
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
-{#            <input type="hidden" id="id_plan_estudio" name="id_plan_estudio" value="{{ planEstudio.id }}">#}
+            {#            <input type="hidden" id="id_plan_estudio" name="id_plan_estudio" value="{{ planEstudio.id }}"> #}
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.annoAprobacion) }}
@@ -103,11 +103,66 @@
                     {{ form_errors(form.descripcionPlanEstudio) }}
                 </div>
             </div>
+            <input type="hidden" id="planEstudio" name="planEstudio" value="{{ planEstudio.id }}">
+            <hr>
+            <h6 class="mb-0"><b><p
+                            style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+                        Documentos del expediente</p>
+                </b></h6>
+            <hr>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <label class="required" for="documentoSelec">Documento</label>
+                    <select id="documentoSelec" name="documentoSelec"
+                            class="form-control select2-hidden-accessible" data-select2-id="documentoSelec"
+                            tabindex="-1" aria-hidden="true">
+                        <option value="">Seleccione</option>
+                        {% for item2 in documentos %}
+                            <option value="{{ item2.id }}">{{ item2.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-{#            {{ include('modules/pregrado/plan_estudio/asociar_documento.html.twig', {#}
-{#                'documentos': documentos ,#}
-{#                'registros': registros ,#}
-{#            }) }}#}
+                <div class="col-4 form-group">
+                    <label class="required" for="documento">Adjuntar documento </label>
+                    <div class="custom-file"><input type="file" id="documento"
+                                                    name="documento" class="custom-file-input"
+                                                    lang="en"><label for="documento"
+                                                                     class="custom-file-label"></label>
+                    </div>
+
+                    <span id="cargarElemento" style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo1"> </span>
+                </div>
+
+                <div class="col-4 form-group">
+                    <button id="btn_asociar" style="margin-top: 5%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+            <hr>
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Documento</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre | default('') }}</td>
+                        <td width="15%" class="text-center">
+                            <button type="button" id="eliminar-doc" title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_plan_estudio_eliminar_documento_editar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
 
             <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -126,6 +181,14 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
+        $('#eliminar-doc').click(function (e) {
+            e.preventDefault();
+        })
+        $('#documento').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo1').html(filename);
+        })
+
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
@@ -188,5 +251,38 @@
                 $('#organismo').show();
             }
         });
+
+        $('#btn_asociar').click(function (e) {
+            e.preventDefault();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            if ($('#documentoSelec')[0].reportValidity() && $('#documento')[0].reportValidity()) {
+                var data, xhr;
+                var inputFileImage = document.getElementById("documento");
+                var file = inputFileImage.files[0]
+
+                data = new FormData();
+                data.append('file', file);
+                data.append('documento', $('#documentoSelec').val());
+                data.append('plan_estudio', $('#planEstudio').val());
+
+                xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ path('app_plan_estudio_registro_temporal_doc_edit') }}', true);
+                xhr.onreadystatechange = function (response) {
+                };
+               var res = xhr.send(data);
+
+                setTimeout(function () {
+                    location.href = location.href;
+                    HoldOn.close()
+                    toastr.success("Documento adicionado satisfactoriamente.");
+                }, 2500);
+
+            }
+            // location.href = location.href;
+        })
     </script>
 {% endblock %}

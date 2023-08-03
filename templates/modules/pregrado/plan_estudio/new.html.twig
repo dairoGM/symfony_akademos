@@ -118,6 +118,10 @@
 
 {% block javascripts %}
     <script>
+        $('#eliminar-doc').click(function (e) {
+            e.preventDefault();
+        })
+
         $('#organismo').hide();
         $('#plan_estudio_planEstudio').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
@@ -125,6 +129,8 @@
         })
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
+        }).on('dp.change', function (e) {
+            localStorage.setItem('plan_estudio_fechaAprobacion', $('#plan_estudio_fechaAprobacion').val())
         });
         $('#plan_estudio_annoAprobacion').datetimepicker({
             format: 'YYYY'
@@ -132,12 +138,14 @@
             var anno = $(this).val();
             var f = new Date();
             console.log(anno);
+            localStorage.setItem('plan_estudio_annoAprobacion', anno)
             var mes = (parseInt(f.getMonth()) + parseInt(1));
             if (mes < 10) {
                 mes = '0' + mes;
             }
 
             $('#plan_estudio_fechaAprobacion').val(f.getDate() + '/' + mes + '/' + anno);
+            localStorage.setItem('plan_estudio_fechaAprobacion', f.getDate() + '/' + mes + '/' + anno)
         });
 
         $('#plan_estudio_annoAprobacion').on('keydown keypress', function (e) {
@@ -178,5 +186,87 @@
             }
         });
         $("#plan_estudio_duracionCursoDistancia option")[0].remove()
+
+
+        // Año de aprobación
+        $('#plan_estudio_annoAprobacion').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_annoAprobacion', $('#plan_estudio_annoAprobacion').val())
+        })
+        if (localStorage.getItem('plan_estudio_annoAprobacion') != null)
+            $('#plan_estudio_annoAprobacion').val(localStorage.getItem('plan_estudio_annoAprobacion'));
+
+        // Fecha de aprobación
+        $('#plan_estudio_fechaAprobacion').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_fechaAprobacion', $('#plan_estudio_fechaAprobacion').val())
+        })
+        if (localStorage.getItem('plan_estudio_fechaAprobacion') != null)
+            $('#plan_estudio_fechaAprobacion').val(localStorage.getItem('plan_estudio_fechaAprobacion'));
+
+
+        //  Tipo de programa académico
+        $('#plan_estudio_tipoProgramaAcademico').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_tipoProgramaAcademico', $('#plan_estudio_tipoProgramaAcademico').val())
+        })
+        if (localStorage.getItem('plan_estudio_tipoProgramaAcademico') != null)
+            $('#plan_estudio_tipoProgramaAcademico').val(localStorage.getItem('plan_estudio_tipoProgramaAcademico'));
+
+        //  Carrera
+        $('#plan_estudio_carrera').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_carrera', $('#plan_estudio_carrera').val())
+        })
+        if (localStorage.getItem('plan_estudio_carrera') != null)
+            $('#plan_estudio_carrera').val(localStorage.getItem('plan_estudio_carrera'));
+
+        //   OACE formador
+        $('#plan_estudio_oace').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_oace', $('#plan_estudio_oace').val())
+        })
+        if (localStorage.getItem('plan_estudio_oace') != null)
+            $('#plan_estudio_oace').val(localStorage.getItem('plan_estudio_oace'));
+
+        // Rama de la ciencia
+        $('#plan_estudio_ramaCiencia').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_ramaCiencia', $('#plan_estudio_ramaCiencia').val())
+        })
+        if (localStorage.getItem('plan_estudio_ramaCiencia') != null)
+            $('#plan_estudio_ramaCiencia').val(localStorage.getItem('plan_estudio_ramaCiencia'));
+
+        //  Curso académico inicial
+        $('#plan_estudio_cursoAcademico').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_cursoAcademico', $('#plan_estudio_cursoAcademico').val())
+        })
+        if (localStorage.getItem('plan_estudio_cursoAcademico') != null)
+            $('#plan_estudio_cursoAcademico').val(localStorage.getItem('plan_estudio_cursoAcademico'));
+
+        //  Duración del Curso Diurno (Años)
+        $('#plan_estudio_duracionCursoDiurno').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_duracionCursoDiurno', $('#plan_estudio_duracionCursoDiurno').val())
+        })
+        if (localStorage.getItem('plan_estudio_duracionCursoDiurno') != null)
+            $('#plan_estudio_duracionCursoDiurno').val(localStorage.getItem('plan_estudio_duracionCursoDiurno'));
+
+        //  Duración del Curso por Encuentros (Años)
+        $('#plan_estudio_duracionCursoPorEncuentro').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_duracionCursoPorEncuentro', $('#plan_estudio_duracionCursoPorEncuentro').val())
+        })
+        if (localStorage.getItem('plan_estudio_duracionCursoPorEncuentro') != null)
+            $('#plan_estudio_duracionCursoPorEncuentro').val(localStorage.getItem('plan_estudio_duracionCursoPorEncuentro'));
+
+
+        //  Duración del Curso a Distancia
+        $('#plan_estudio_duracionCursoDistancia').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_duracionCursoDistancia', $('#plan_estudio_duracionCursoDistancia').val())
+        })
+        if (localStorage.getItem('plan_estudio_duracionCursoDistancia') != null)
+            $('#plan_estudio_duracionCursoDistancia').val(localStorage.getItem('plan_estudio_duracionCursoDistancia'));
+
+        // Descripción
+        $('#plan_estudio_descripcionPlanEstudio').on('keyup change', function (e) {
+            localStorage.setItem('plan_estudio_descripcionPlanEstudio', $('#plan_estudio_descripcionPlanEstudio').val())
+        })
+        if (localStorage.getItem('plan_estudio_descripcionPlanEstudio') != null)
+            $('#plan_estudio_descripcionPlanEstudio').val(localStorage.getItem('plan_estudio_descripcionPlanEstudio'));
+
+
     </script>
 {% endblock %}

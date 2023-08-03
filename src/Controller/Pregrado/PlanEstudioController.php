@@ -15,6 +15,7 @@ use App\Repository\Pregrado\DocumentoRepository;
 use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
 use App\Repository\Pregrado\PlanEstudioDocumentoRepository;
 use App\Repository\Pregrado\PlanEstudioRepository;
+use App\Services\HandlerFop;
 use Cassandra\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,6 +117,7 @@ class PlanEstudioController extends AbstractController
 
             if (!empty($url)) {
                 $documentosPlanEstudio = $requestStack->getSession()->has('documentosPlanEstudio') ? $requestStack->getSession()->get('documentosPlanEstudio') : null;
+                $item['id'] = uniqid();
                 $item['documento'] = $url;
                 $item['id_documento'] = $post['documento'];
                 $item['nombre_documento'] = $_FILES['file']['name'];
@@ -136,7 +138,7 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function modificar(Request $request, planEstudio $planEstudio, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
+    public function modificar(Request $request, RequestStack $requestStack, planEstudio $planEstudio, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
     {
         try {
             $form = $this->createForm(PlanEstudioType::class, $planEstudio, ['action' => 'modificar']);
@@ -161,7 +163,7 @@ class PlanEstudioController extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
             }
-
+            $requestStack->getSession()->set('planEstudioId', $planEstudio->getId());
             return $this->render('modules/pregrado/plan_estudio/edit.html.twig', [
                 'form' => $form->createView(),
                 'planEstudio' => $planEstudio,
@@ -178,15 +180,14 @@ class PlanEstudioController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_plan_estudio_detail", methods={"GET", "POST"})
-     * @param Request $request
      * @param PlanEstudio $tipoPrograma
      * @return Response
      */
-    public
-    function detail(Request $request, PlanEstudio $planEstudio)
+    public function detail(PlanEstudio $planEstudio, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
     {
         return $this->render('modules/pregrado/plan_estudio/detail.html.twig', [
             'item' => $planEstudio,
+            'registros' => $planEstudioDocumentoRepository->findBy(['planEstudio' => $planEstudio->getId()]),
         ]);
     }
 
@@ -196,8 +197,7 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public
-    function eliminar(PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
+    public function eliminar(PlanEstudio $planEstudio, PlanEstudioRepository $planEstudioRepository)
     {
         try {
             if ($planEstudioRepository->find($planEstudio) instanceof PlanEstudio) {
@@ -220,8 +220,7 @@ class PlanEstudioController extends AbstractController
      * @param ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository
      * @return Response
      */
-    public
-    function modificaciones(Request $request, planEstudio $planEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
+    public function modificaciones(Request $request, planEstudio $planEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
     {
         try {
             $modificacion = new ModificacionPlanEstudio();
@@ -263,13 +262,11 @@ class PlanEstudioController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_modificacion", name="app_plan_estudio_eliminar_modificacion", methods={"GET"})
-     * @param Request $request
      * @param ModificacionPlanEstudio $modificacionPlanEstudio
      * @param ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository
      * @return Response
      */
-    public
-    function eliminarModificacion(Request $request, ModificacionPlanEstudio $modificacionPlanEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
+    public function eliminarModificacion(ModificacionPlanEstudio $modificacionPlanEstudio, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository)
     {
         try {
             if ($modificacionPlanEstudio instanceof ModificacionPlanEstudio) {
@@ -287,15 +284,97 @@ class PlanEstudioController extends AbstractController
 
     /**
      * @Route("/exportar_pdf", name="app_plan_estudio_exportar_pdf", methods={"GET", "POST"})
-     * @param Request $request
      * @param User $user
      * @return Response
      */
-    public
-    function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, PlanEstudioRepository $planEstudioRepository)
+    public function exportarPdf(HandlerFop $handFop, PlanEstudioRepository $planEstudioRepository)
     {
         $export = $planEstudioRepository->getPlanesEstudio();
         $export = \App\Services\DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new ExportListPlanEstudioToPdf($export));
+    }
+
+
+    /**
+     * @Route("/{id}/eliminar-documento-editar", name="app_plan_estudio_eliminar_documento_editar", methods={"GET"})
+     * @param PlanEstudioDocumento $planEstudioDocumento
+     * @param PlanEstudioDocumentoRepository $planEstudioDocumentoRepository
+     * @return Response
+     */
+    public function eliminarDocumentoEditar(PlanEstudioDocumento $planEstudioDocumento, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
+    {
+        try {
+            if ($planEstudioDocumentoRepository->find($planEstudioDocumento) instanceof PlanEstudioDocumento) {
+                $planEstudioDocumentoRepository->remove($planEstudioDocumento, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_estudio_modificar', ['id' => $planEstudioDocumento->getPlanEstudio()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_plan_estudio_modificar', ['id' => $planEstudioDocumento->getPlanEstudio()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_estudio_modificar', ['id' => $planEstudioDocumento->getPlanEstudio()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/registo-temporal-doc-edit", name="app_plan_estudio_registro_temporal_doc_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function registroTemporalDeDocumentoEdit(Request $request, RequestStack $requestStack, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository)
+    {
+        try {
+            $post = $request->request->all();
+
+            $uploadPath = 'uploads/pregrado/plan_estudio/documentos/';
+            $url = null;
+            $path = "uploads/pregrado/plan_estudio/documentos";
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            if (move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/pregrado/plan_estudio/documentos/' . $_FILES['file']['name'])) {
+                $url = $uploadPath . $_FILES['file']['name'];
+            }
+            if (!empty($url)) {
+                $new = new PlanEstudioDocumento();
+                $new->setNombre($_FILES['file']['name']);
+                $new->setPlanEstudio($planEstudioRepository->find($requestStack->getSession()->get('planEstudioId')));
+                $new->setDocumentoFisico($url);
+                $new->setDocumento($documentoRepository->find($post['documento']));
+                $planEstudioDocumentoRepository->add($new, true);
+            }
+            return $this->json('OK', Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/eliminar-documento-crear", name="app_plan_estudio_eliminar_documento_crear", methods={"GET", "POST"})
+     * @return Response
+     */
+    public function eliminarDocumentoCrear($id, RequestStack $requestStack)
+    {
+        try {
+            $documentos = $requestStack->getSession()->get('documentosPlanEstudio');
+            $response = [];
+            if (is_array($documentos)) {
+                foreach ($documentos as $value) {
+                    if ($value['id'] !== $id) {
+                        $response[] = $value;
+                    }
+                }
+            }
+            $requestStack->getSession()->set('documentosPlanEstudio', $response);
+            $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+            return $this->redirectToRoute('app_plan_estudio_registrar');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_estudio_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 }

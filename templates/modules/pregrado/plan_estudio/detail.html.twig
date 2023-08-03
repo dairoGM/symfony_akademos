@@ -16,5 +16,29 @@
         <h5 class="mb-0"><b>Duración del Curso a Distancia:</b> {{ item.duracionCursoDistancia | default('0') }} años</h5>
     </div>
 </div>
+<hr>
+<h6 class="mb-0"><b><p
+                style="font-size: 20px; font-weight: bold; margin-top: 5px;">
+            Documentos del expediente</p>
+    </b></h6>
+<hr>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Documento</th>
+        <th>Tipo de Documento</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in registros %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombre | default('') }}</td>
+            <td>{{ item.documento.nombre | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 

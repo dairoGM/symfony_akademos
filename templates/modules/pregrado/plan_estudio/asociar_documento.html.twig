@@ -53,10 +53,10 @@
             <td width="1%">{{ loop.index }}</td>
             <td>{{ item.nombre_documento | default('') }}</td>
             <td width="15%" class="text-center">
-{#                <button title="Eliminar" class="btn btn-outline-danger elementRemove"#}
-{#                        data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">#}
-{#                    <i class="fa fa-trash"></i>#}
-{#                </button>#}
+                <button id="eliminar-doc" title="Eliminar" class="btn btn-outline-danger elementRemove"
+                        data-url="{{ path('app_plan_estudio_eliminar_documento_crear', {'id': item.id | default('-1')}) }}">
+                    <i class="fa fa-trash"></i>
+                </button>
             </td>
         </tr>
     {% endfor %}
@@ -70,9 +70,17 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
+        $('#eliminar-doc').click(function (e) {
+            e.preventDefault();
+        })
 
         $('#btn_asociar').click(function (e) {
             e.preventDefault();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
             if ($('#documentoSelec')[0].reportValidity() && $('#documento')[0].reportValidity()) {
                 var data, xhr;
                 var inputFileImage = document.getElementById("documento");
@@ -88,9 +96,38 @@
                 xhr.onreadystatechange = function (response) {
                 };
                 xhr.send(data);
+                setTimeout(function () {
+                    location.href = location.href;
+                    HoldOn.close()
+                    toastr.success("Documento adicionado satisfactoriamente.");
+                }, 3000);
+
             }
-            // location.href = location.href;
         })
+
+
+
+
+        {#$('#eliminar-doc').click(function (e) {#}
+        {#    e.preventDefault();#}
+        {#    var data, xhr;#}
+
+
+        {#    data = new FormData();#}
+        {#    data.append('documento', $('#documentoSelec').val());#}
+
+        {#    xhr = new XMLHttpRequest();#}
+        {#    xhr.open('POST', '{{ path('app_plan_estudio_eliminar_documento_crear') }}', true);#}
+        {#    xhr.onreadystatechange = function (response) {#}
+        {#    };#}
+        {#    var res = xhr.send(data);#}
+
+        {#    // setTimeout(function () {#}
+        {#    //     location.href = location.href;#}
+        {#    // }, 1000);#}
+
+
+        {#})#}
 
 
     </script>
