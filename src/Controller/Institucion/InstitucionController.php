@@ -35,6 +35,8 @@ use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
 use App\Repository\Institucion\RecursosHumanosRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Services\DoctrineHelper;
+use App\Services\HandlerFop;
 use App\Services\TraceService;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -355,12 +357,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_centro_estudio", name="app_institucion_eliminar_centro_estudio", methods={"GET"})
-     * @param Request $request
-     * @param InstitucionFacultades $institucionCentroEstudio
-     * @param InstitucionRepository $institucionCentrosEstudiosRepository
+     * @param InstitucionCentrosEstudios $institucionCentroEstudio
+     * @param InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository
      * @return Response
      */
-    public function eliminarCentroEstudio(Request $request, InstitucionCentrosEstudios $institucionCentroEstudio, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository)
+    public function eliminarCentroEstudio(InstitucionCentrosEstudios $institucionCentroEstudio, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository)
     {
         try {
             if ($institucionCentroEstudio instanceof InstitucionCentrosEstudios) {
@@ -417,12 +418,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_sede", name="app_institucion_eliminar_sede", methods={"GET"})
-     * @param Request $request
      * @param InstitucionSedes $institucionSedes
      * @param InstitucionSedesRepository $institucionSedesRepository
      * @return Response
      */
-    public function eliminarSede(Request $request, InstitucionSedes $institucionSedes, InstitucionSedesRepository $institucionSedesRepository)
+    public function eliminarSede(InstitucionSedes $institucionSedes, InstitucionSedesRepository $institucionSedesRepository)
     {
         try {
             if ($institucionSedes instanceof InstitucionSedes) {
@@ -443,7 +443,7 @@ class InstitucionController extends AbstractController
      * @Route("/{id}/asignar_redes_sociales", name="app_institucion_asignar_redes_sociales", methods={"GET", "POST"})
      * @param Request $request
      * @param Institucion $institucion
-     * @param InstitucionFacultadesRepository $redesSocialesRepository
+     * @param InstitucionRedesSocialesRepository $redesSocialesRepository
      * @return Response
      */
     public function asignarRedSocial(Request $request, Institucion $institucion, InstitucionRedesSocialesRepository $redesSocialesRepository)
@@ -481,8 +481,8 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/{id}/eliminar_red_social", name="app_institucion_eliminar_red_social", methods={"GET"})
      * @param Request $request
-     * @param InstitucionFacultades $institucionRedesSociales
-     * @param InstitucionRepository $institucionRedesSocialesRepository
+     * @param InstitucionRedesSociales $institucionRedesSociales
+     * @param InstitucionRedesSocialesRepository $institucionRedesSocialesRepository
      * @return Response
      */
     public function eliminarRedSocial(Request $request, InstitucionRedesSociales $institucionRedesSociales, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository)
@@ -506,7 +506,7 @@ class InstitucionController extends AbstractController
      * @Route("/{id}/asignar_editoriales", name="app_institucion_asignar_editoriales", methods={"GET", "POST"})
      * @param Request $request
      * @param Institucion $institucion
-     * @param InstitucionFacultadesRepository $institucionEditorialRepository
+     * @param InstitucionEditorialRepository $institucionEditorialRepository
      * @return Response
      */
     public function asignarEditorial(Request $request, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository)
@@ -542,12 +542,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_editorial", name="app_institucion_eliminar_editorial", methods={"GET"})
-     * @param Request $request
      * @param InstitucionEditorial $institucionEditorial
      * @param InstitucionEditorialRepository $institucionEditorialRepository
      * @return Response
      */
-    public function eliminarEditorial(Request $request, InstitucionEditorial $institucionEditorial, InstitucionEditorialRepository $institucionEditorialRepository)
+    public function eliminarEditorial(InstitucionEditorial $institucionEditorial, InstitucionEditorialRepository $institucionEditorialRepository)
     {
         try {
             if ($institucionEditorial instanceof InstitucionEditorial) {
@@ -568,7 +567,7 @@ class InstitucionController extends AbstractController
      * @Route("/{id}/asignar_redes", name="app_institucion_asignar_redes", methods={"GET", "POST"})
      * @param Request $request
      * @param Institucion $institucion
-     * @param InstitucionFacultadesRepository $redesRepository
+     * @param InstitucionRedesRepository $redesRepository
      * @return Response
      */
     public function asignarRedes(Request $request, Institucion $institucion, InstitucionRedesRepository $redesRepository)
@@ -605,12 +604,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_red", name="app_institucion_eliminar_red", methods={"GET"})
-     * @param Request $request
      * @param InstitucionRedes $institucionRedes
      * @param InstitucionRedesRepository $institucionRedesRepository
      * @return Response
      */
-    public function eliminarRed(Request $request, InstitucionRedes $institucionRedes, InstitucionRedesRepository $institucionRedesRepository)
+    public function eliminarRed(InstitucionRedes $institucionRedes, InstitucionRedesRepository $institucionRedesRepository)
     {
         try {
             if ($institucionRedes instanceof InstitucionRedes) {
@@ -667,12 +665,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_revista", name="app_institucion_eliminar_revista", methods={"GET"})
-     * @param Request $request
      * @param InstitucionRevistaCientifica $institucionRevistaCientifica
      * @param InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository
      * @return Response
      */
-    public function eliminarRevista(Request $request, InstitucionRevistaCientifica $institucionRevistaCientifica, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository)
+    public function eliminarRevista(InstitucionRevistaCientifica $institucionRevistaCientifica, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository)
     {
         try {
             if ($institucionRevistaCientifica instanceof InstitucionRevistaCientifica) {
@@ -690,11 +687,10 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/programas_formacion/{option}", name="app_institucion_programas_formacion", methods={"GET", "POST"})
-     * @param Request $request
      * @param Institucion $institucion
      * @return Response
      */
-    public function programasFormacion(Request $request, Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function programasFormacion(Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
             $postgrados = [];
@@ -762,12 +758,11 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/{tab}/internacionalizacion", name="app_institucion_internacionalizacion", methods={"GET", "POST"})
-     * @param Request $request
-     * @param Institucion $institucion
      * @param Utils $utils
+     * @param Institucion $institucion
      * @return Response
      */
-    public function internacionalizacion(Request $request, $tab, Institucion $institucion, Utils $utils)
+    public function internacionalizacion($tab, Institucion $institucion, Utils $utils)
     {
         try {
             $params['tabSelected'] = $tab;
@@ -810,14 +805,13 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/exportar_pdf", name="app_institucion_exportar_pdf", methods={"GET", "POST"})
-     * @param Request $request
      * @param User $user
      * @return Response
      */
-    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, InstitucionRepository $institucionRepository)
+    public function exportarPdf(HandlerFop $handFop, InstitucionRepository $institucionRepository)
     {
         $export = $institucionRepository->getInstituciones();
-        $export = \App\Services\DoctrineHelper::toArray($export);
+        $export = DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new ExportListInstitucionToPdf($export));
     }
 }
