@@ -67,7 +67,7 @@ class ProfesionCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Procedimiento que sincroniza las categorias de estructuras de academos hacia la base de datos del nucleo de DRI');
+        $this->setDescription('Procedimiento que sincroniza las profesiones de academos hacia la base de datos del nucleo de DRI');
     }
 
 
