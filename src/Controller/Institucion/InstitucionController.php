@@ -232,7 +232,7 @@ class InstitucionController extends AbstractController
      */
     public function eliminar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
-//        try {
+        try {
             if ($tipoInstitucionRepository->find($institucion) instanceof Institucion) {
                 $tipoInstitucionRepository->remove($institucion, true);
 
@@ -245,10 +245,10 @@ class InstitucionController extends AbstractController
             }
             $this->addFlash('error', 'Error en la entrada de datos');
             return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
