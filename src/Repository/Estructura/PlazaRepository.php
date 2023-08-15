@@ -56,7 +56,7 @@ class PlazaRepository extends ServiceEntityRepository
             ->select('r.id, r.nombre')
             ->join('qb.estructura', 'e')
             ->join('qb.responsabilidad', 'r')
-            ->where("e.id = $estructuraId and r.activo = true");
+            ->where("e.id = $estructuraId and r.activo = true and e.activo=true");
         $qb->orderBy('r.nombre');
         $resul = $qb->getQuery()->getResult();
         return $resul;
