@@ -48,4 +48,19 @@ class PlazaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    public function getResponsabilidadesDadoIdEstructura($estructuraId)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('r.id, r.nombre')
+            ->join('qb.estructura', 'e')
+            ->join('qb.responsabilidad', 'r')
+            ->where("e.id = $estructuraId and r.activo = true");
+        $qb->orderBy('r.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
+
 }

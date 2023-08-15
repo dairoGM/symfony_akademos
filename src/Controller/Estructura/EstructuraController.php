@@ -14,10 +14,15 @@ use App\Repository\Estructura\PlazaRepository;
 use App\Repository\Estructura\ProvinciaRepository;
 use App\Repository\Estructura\TipoEstructuraRepository;
 use App\Services\Utils;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +34,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class EstructuraController extends AbstractController
 {
+
+    private $dbname;
+    private $user;
+    private $password;
+    private $host;
+    private $driver;
+    private $connection;
+    private $port;
+
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     */
+    public function __construct(ContainerBagInterface $container, $dbname, $user, $password, $host, $driver, $port)
+    {
+        $this->env = $container->get('env_config');
+        $this->dbname = $dbname;
+        $this->user = $user;
+        $this->password = $password;
+        $this->host = $host;
+        $this->driver = $driver;
+        $this->port = $port;
+
+
+        $connectionParams = array(
+            'dbname' => $this->dbname,
+            'user' => $this->user,
+            'password' => $this->password,
+            'host' => $this->host,
+            'port' => $this->port,
+            'driver' => $this->driver,
+            'charset' => 'UTF8'
+        );
+        $this->connection = DriverManager::getConnection($connectionParams);
+    }
 
     /**
      * @Route("/", name="app_estructura_index", methods={"GET"})
@@ -105,6 +146,22 @@ class EstructuraController extends AbstractController
                 $estructuraEntity->setFechaActivacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['estructura']['fechaActivacion']));
                 $estructuraEntity->setMunicipio($municipioRepository->find($request->request->all()['estructura']['municipio']));
                 $estructuraRepository->add($estructuraEntity, true);
+
+                try {
+                    $data['nombre_estructura'] = $request->request->all()['estructura']['nombre'];
+                    $data['siglas'] = $request->request->all()['estructura']['siglas'];
+                    $data['codigo_estructura'] = $request->request->all()['estructura']['siglas'];
+                    $data['telefono'] = $request->request->all()['estructura']['telefono'];
+                    $data['ubicacion'] = $request->request->all()['estructura']['ubicacion'];
+                    $data['correo_electronico'] = $request->request->all()['estructura']['email'];
+                    $data['id_categoria_estructura'] = $request->request->all()['estructura']['categoriaEstructura'];
+                    $data['fecha_activacion'] = $request->request->all()['estructura']['fechaActivacion'];
+                    $data['activo'] = 1;
+                    $this->connection->insert('sq_estructura_composicion.tb_destructura', $data);
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $exception->getMessage());
+                }
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
             }

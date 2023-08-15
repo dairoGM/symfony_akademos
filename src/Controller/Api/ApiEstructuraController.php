@@ -41,4 +41,24 @@ class ApiEstructuraController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/get_estructuras_dado_id_categoria", name="api_get_estructuras_dado_id_categoria", methods={"POST", "OPTIONS"}, defaults={"_format":"json"})
+     * @param Request $request
+     * @param EstructuraRepository $estructuraRepository
+     * @return JsonResponse
+     */
+    public function getEstructurasDadoIdCategoria(Request $request, EstructuraRepository $estructuraRepository)
+    {
+        try {
+            $jsonParams = json_decode($request->getContent(), true);
+            $result = [];
+            if (isset($jsonParams['id_categoria']) && !empty($jsonParams['id_categoria'])) {
+                $result = $estructuraRepository->getEstructurasDadoIdCategoria($jsonParams['id_categoria']);
+            }
+            return $this->json($result);
+        } catch (Exception $exc) {
+            return $this->json($exc->getMessage(), Response::HTTP_FORBIDDEN);
+        }
+    }
 }

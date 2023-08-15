@@ -4,8 +4,10 @@ namespace App\Controller\Institucion;
 
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\InstitucionCentrosEstudios;
+use App\Entity\Institucion\InstitucionCum;
 use App\Entity\Institucion\InstitucionEditorial;
 use App\Entity\Institucion\InstitucionFacultades;
+use App\Entity\Institucion\InstitucionFum;
 use App\Entity\Institucion\InstitucionRecursoHumano;
 use App\Entity\Institucion\InstitucionRedes;
 use App\Entity\Institucion\InstitucionRedesSociales;
@@ -15,8 +17,10 @@ use App\Entity\Security\User;
 use App\Export\Institucion\ExportListInstitucionToPdf;
 use App\Export\Institucion\ExportListPlanEstudioToPdf;
 use App\Form\Institucion\InstitucionCentrosEstudiosType;
+use App\Form\Institucion\InstitucionCumType;
 use App\Form\Institucion\InstitucionEditorialesType;
 use App\Form\Institucion\InstitucionFacultadesType;
+use App\Form\Institucion\InstitucionFumType;
 use App\Form\Institucion\InstitucionRedesSocialesType;
 use App\Form\Institucion\InstitucionRedesType;
 use App\Form\Institucion\InstitucionRevistaCientificaType;
@@ -25,8 +29,10 @@ use App\Form\Institucion\InstitucionType;
 use App\Form\Institucion\NombreDescripcionType;
 use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
+use App\Repository\Institucion\InstitucionCumRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
 use App\Repository\Institucion\InstitucionFacultadesRepository;
+use App\Repository\Institucion\InstitucionFumRepository;
 use App\Repository\Institucion\InstitucionRecursoHumanoRepository;
 use App\Repository\Institucion\InstitucionRedesRepository;
 use App\Repository\Institucion\InstitucionRedesSocialesRepository;
@@ -127,8 +133,11 @@ class InstitucionController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_institucion_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $institucion
+     * @param Institucion $institucion
      * @param InstitucionRepository $tipoInstitucionRepository
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
+     * @param RequestStack $requestStack
      * @return Response
      */
     public function modificar(Request $request, Institucion $institucion, InstitucionRepository $tipoInstitucionRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
@@ -199,7 +208,7 @@ class InstitucionController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_institucion_detail", methods={"GET", "POST"})
-     * @param Request $request
+     * @param InstitucionFacultadesRepository $institucionFacultadesRepository
      * @param InstitucionRedesRepository $institucionRedesRepository
      * @param InstitucionRedesSocialesRepository $institucionRedesSocialesRepository
      * @param InstitucionSedesRepository $institucionSedesRepository
@@ -207,13 +216,14 @@ class InstitucionController extends AbstractController
      * @param InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository
      * @param Institucion $institucion
      * @param InstitucionEditorialRepository $institucionEditorialRepository
-     * @param InstitucionFacultadesRepository $institucionFacultadesRepository
      * @return Response
      */
-    public function detail(Request $request, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
+    public function detail(InstitucionCumRepository $institucionCumRepository, InstitucionFumRepository $institucionFumRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
     {
         return $this->render('modules/institucion/institucion/detail.html.twig', [
             'item' => $institucion,
+            'cum' => $institucionCumRepository->findBy(['institucion' => $institucion->getId()]),
+            'fum' => $institucionFumRepository->findBy(['institucion' => $institucion->getId()]),
             'editoriales' => $institucionEditorialRepository->findBy(['institucion' => $institucion->getId()]),
             'facultades' => $institucionFacultadesRepository->findBy(['institucion' => $institucion->getId()]),
             'centrosEstudios' => $institucionCentrosEstudiosRepository->findBy(['institucion' => $institucion->getId()]),
@@ -814,4 +824,140 @@ class InstitucionController extends AbstractController
         $export = DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new ExportListInstitucionToPdf($export));
     }
+
+
+    /**
+     * @Route("/{id}/asignar_cum", name="app_institucion_asignar_cum", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionCumRepository $institucionCumRepository
+     * @param EstructuraRepository $estructuraRepository
+     * @return Response
+     */
+    public function asignarCum(Request $request, Institucion $institucion, InstitucionCumRepository $institucionCumRepository, EstructuraRepository $estructuraRepository)
+    {
+        try {
+            $entidad = new InstitucionCum();
+            $form = $this->createForm(InstitucionCumType::class, $entidad, ['idEstructura' => $institucion->getEstructura()->getId(), 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_cum')]);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $institucionCumRepository->findBy(['institucion' => $institucion->getId(), 'estructura' => $request->request->all()['institucion_cum']['estructura']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $entidad->setNombreFacultad($estructuraRepository->find($request->request->all()['institucion_cum']['estructura'])->getNombre());
+                    $institucionCumRepository->add($entidad, true);
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_cum.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $institucionCumRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_cum", name="app_institucion_eliminar_cum", methods={"GET"})
+     * @param InstitucionFacultades $institucionCum
+     * @param InstitucionRepository $institucionCumRepository
+     * @return Response
+     */
+    public function eliminarCum(InstitucionCum $institucionCum, InstitucionCumRepository $institucionCumRepository)
+    {
+        try {
+            if ($institucionCum instanceof InstitucionCum) {
+                $institucionCumRepository->remove($institucionCum, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucionCum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucionCum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_cum', ['id' => $institucionCum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/asignar_fum", name="app_institucion_asignar_fum", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Institucion $institucion
+     * @param InstitucionFumRepository $institucionFumRepository
+     * @param EstructuraRepository $estructuraRepository
+     * @return Response
+     */
+    public function asignarFum(Request $request, Institucion $institucion, InstitucionFumRepository $institucionFumRepository, EstructuraRepository $estructuraRepository)
+    {
+        try {
+            $entidad = new InstitucionFum();
+            $form = $this->createForm(InstitucionFumType::class, $entidad, ['idEstructura' => $institucion->getEstructura()->getId(), 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_cum')]);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $exist = $institucionFumRepository->findBy(['institucion' => $institucion->getId(), 'estructura' => $request->request->all()['institucion_fum']['estructura']]);
+                if (empty($exist)) {
+                    $entidad->setInstitucion($institucion);
+                    $entidad->setNombreFacultad($estructuraRepository->find($request->request->all()['institucion_fum']['estructura'])->getNombre());
+                    $institucionFumRepository->add($entidad, true);
+
+                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                    return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'El elemento ya existe.');
+                return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/institucion/institucion/asignar_fum.html.twig', [
+                'form' => $form->createView(),
+                'institucion' => $institucion,
+                'registros' => $institucionFumRepository->findBy(['institucion' => $institucion->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucion->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_fum", name="app_institucion_eliminar_fum", methods={"GET"})
+     * @param InstitucionFum $institucionFum
+     * @param InstitucionFumRepository $institucionFumRepository
+     * @return Response
+     */
+    public function eliminarFum(InstitucionFum $institucionFum, InstitucionFumRepository $institucionFumRepository)
+    {
+        try {
+            if ($institucionFum instanceof InstitucionFum) {
+                $institucionFumRepository->remove($institucionFum, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucionFum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucionFum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucionFum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }

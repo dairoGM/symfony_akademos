@@ -1,0 +1,82 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar filiar universitaria municipal{% endblock %}
+{% block stylesheets %}
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar filiar universitaria municipal</h3>
+
+            </div>
+        </div>
+        {{ include('modules/institucion/institucion/short_details.html.twig', { 'item': institucion }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.descripcionFacultad) }}
+                    {{ form_widget(form.descripcionFacultad) }}
+                    {{ form_errors(form.descripcionFacultad) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form) }}
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombreFacultad | default('') }}</td>
+                        <td>{{ item.descripcionFacultad | default('') }}</td>
+
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_institucion_eliminar_fum', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+
+    </script>
+{% endblock %}

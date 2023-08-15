@@ -39,6 +39,8 @@ parameters:
 
     id_categoria_estructura_ies: '%env(id_categoria_estructura_ies)%'
     id_categoria_estructura_facultad: '%env(id_categoria_estructura_facultad)%'
+    id_categoria_estructura_cum: '%env(id_categoria_estructura_cum)%'
+    id_categoria_estructura_fum: '%env(id_categoria_estructura_fum)%'
 
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
 

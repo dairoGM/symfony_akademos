@@ -98,4 +98,15 @@ class EstructuraRepository extends ServiceEntityRepository
         }
         return $final;
     }
+
+
+    public function getEstructurasDadoIdCategoria($categoriaEstructuraId)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('qb.id, qb.nombre, qb.siglas')
+            ->where("qb.categoriaEstructura = $categoriaEstructuraId and qb.activo = true");
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

@@ -19,7 +19,7 @@
                        href="{{ path('app_institucion_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
                     </a>
                 </div>
-            </div>aq!
+            </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -72,6 +72,16 @@
                                href="{{ path('app_institucion_asignar_facultades', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-school"></i>
+                            </a>
+                            <a title="Asociar centro universitario municipal"
+                               href="{{ path('app_institucion_asignar_cum', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-address-card"></i>
+                            </a>
+                            <a title="Asociar filiar universitaria municipal"
+                               href="{{ path('app_institucion_asignar_fum', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-address-book"></i>
                             </a>
                             <a title="Asociar centros de estudios"
                                href="{{ path('app_institucion_asignar_centros_estudio', {'id': item.id}) }}"
