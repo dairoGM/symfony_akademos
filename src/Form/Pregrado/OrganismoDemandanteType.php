@@ -29,16 +29,16 @@ class OrganismoDemandanteType extends AbstractType
             ])->add('siglas', TextType::class, [
                 'constraints' => [new Length(["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
-            ->add('tipoOrganismo', EntityType::class, [
-                'label' => 'Tipo de organismo',
-                'class' => TipoOrganismo::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
+//            ->add('tipoOrganismo', EntityType::class, [
+//                'label' => 'Tipo de organismo',
+//                'class' => TipoOrganismo::class,
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+//                },
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null
+//            ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
                 'required' => false,

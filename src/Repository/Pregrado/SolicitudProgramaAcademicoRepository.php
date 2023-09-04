@@ -55,19 +55,18 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
             ->select("
             qb.id, 
             qb.nombre,
-            tp.nombre as tipoProgramaAcademico,
-            to.nombre as tipoOrganismo,
+            tp.nombre as tipoProgramaAcademico,             
             od.nombre as organismoDemandante,
             epa.nombre as estadoProgramaAcademico, 
             epa.id as estadoProgramaAcademicoId 
             ")
             ->join('qb.tipoProgramaAcademico', 'tp')
-            ->join('qb.tipoOrganismo', 'to')
             ->join('qb.organismoDemandante', 'od')
             ->join('qb.estadoProgramaAcademico', 'epa')
             ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds))
             ->orderBy('qb.id', 'desc');
         $resul = $qb->getQuery()->getResult();
+
         return $resul;
     }
 

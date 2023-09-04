@@ -30,7 +30,7 @@
                     <th>No.</th>
                     <th>Programa académico</th>
                     <th>Tipo de programa académico</th>
-                    <th>Tipo de organismo</th>
+{#                    <th>Tipo de organismo</th>#}
                     <th>Organismo demandante</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
@@ -42,7 +42,7 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoProgramaAcademico | default('') }}</td>
-                        <td>{{ item.tipoOrganismo | default('') }}</td>
+{#                        <td>{{ item.tipoOrganismo | default('') }}</td>#}
                         <td>{{ item.organismoDemandante | default('') }}</td>
                         <td>{{ item.estadoProgramaAcademico | default('') }}</td>
 

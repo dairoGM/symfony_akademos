@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar organismo demandante{% endblock %}
+{% block title %}Adicionar organismo o entidad demandante{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar organismo demandante</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar organismo o entidad demandante</h3>
 
             </div>
         </div>
@@ -26,24 +26,22 @@
                     {{ form_widget(form.siglas) }}
                     {{ form_errors(form.siglas) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.tipoOrganismo) }}
-                    {{ form_widget(form.tipoOrganismo) }}
-                    {{ form_errors(form.tipoOrganismo) }}
+                <div class="col-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
                 </div>
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.tipoOrganismo) }} #}
+                {#                    {{ form_widget(form.tipoOrganismo) }} #}
+                {#                    {{ form_errors(form.tipoOrganismo) }} #}
+                {#                </div> #}
             </div>
             <div class="row">
                 <div class="col-12 form-group">
                     {{ form_label(form.descripcion) }}
                     {{ form_widget(form.descripcion) }}
                     {{ form_errors(form.descripcion) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 form-group">
-                    {{ form_label(form.activo) }}
-                    {{ form_widget(form.activo) }}
-                    {{ form_errors(form.activo) }}
                 </div>
             </div>
         </div>

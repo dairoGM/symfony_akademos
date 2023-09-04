@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modificar organismo demandante{% endblock %}
+{% block title %}Modificar organismo formador{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Modificar organismo demandante</h3>
+                <h3 class="card-title text-bold text-gray">Modificar organismo formador</h3>
 
             </div>
         </div>
@@ -20,22 +20,12 @@
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.siglas) }}
-                    {{ form_widget(form.siglas) }}
-                    {{ form_errors(form.siglas) }}
-                </div>
+                </div> 
                 <div class="col-4 form-group">
                     {{ form_label(form.activo) }}
                     {{ form_widget(form.activo) }}
                     {{ form_errors(form.activo) }}
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.tipoOrganismo) }}#}
-{#                    {{ form_widget(form.tipoOrganismo) }}#}
-{#                    {{ form_errors(form.tipoOrganismo) }}#}
-{#                </div>#}
             </div>
             <div class="row">
                 <div class="col-12 form-group">
@@ -46,8 +36,7 @@
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_organismo_demandante_index') }}"
-               data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_organismo_formador_index') }}" data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>
         </div>

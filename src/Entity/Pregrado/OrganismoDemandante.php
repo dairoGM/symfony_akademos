@@ -20,7 +20,7 @@ class OrganismoDemandante extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoOrganismo")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?TipoOrganismo $tipoOrganismo;
 

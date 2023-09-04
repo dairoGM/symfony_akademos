@@ -26,7 +26,7 @@ class ExportListPlanEstudioToPdf extends \App\Services\ExportList {
         $data['title_document'] = 'Lista de planes de estudios';
         $data['table_title'] = 'Lista de planes de estudios';
         $data['header'] = array(
-            array('column' => 'nombre_carrera', 'column_title' => 'Carrera', 'width' => '56%'),
+            array('column' => 'nombre_carrera', 'column_title' => 'Programa académico de pregrado', 'width' => '56%'),
             array('column' => 'nombre_curso_academico', 'column_title' => 'Curso académico', 'width' => '20%'),
             array('column' => 'annoAprobacion', 'column_title' => 'Año de aprobación', 'width' => '20%'),
 

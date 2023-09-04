@@ -50,6 +50,13 @@ class PlanEstudio extends BaseNomenclator
      * @ORM\JoinColumn(nullable=true)
      */
     private ?OrganismoDemandante $organismoDemandante;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\OrganismoFormador")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?OrganismoFormador $organismoFormador;
+
     /**
      * @ORM\ManyToOne(targetEntity="TipoProgramaAcademico")
      * @ORM\JoinColumn(nullable=false)
@@ -303,6 +310,22 @@ class PlanEstudio extends BaseNomenclator
     public function setOace(?Oace $oace): void
     {
         $this->oace = $oace;
+    }
+
+    /**
+     * @return OrganismoFormador|null
+     */
+    public function getOrganismoFormador(): ?OrganismoFormador
+    {
+        return $this->organismoFormador;
+    }
+
+    /**
+     * @param OrganismoFormador|null $organismoFormador
+     */
+    public function setOrganismoFormador(?OrganismoFormador $organismoFormador): void
+    {
+        $this->organismoFormador = $organismoFormador;
     }
 
 

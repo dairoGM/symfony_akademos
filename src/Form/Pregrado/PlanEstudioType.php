@@ -7,6 +7,7 @@ use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Pregrado\CursoAcademico;
 use App\Entity\Pregrado\Oace;
 use App\Entity\Pregrado\OrganismoDemandante;
+use App\Entity\Pregrado\OrganismoFormador;
 use App\Entity\Pregrado\PlanEstudio;
 use App\Entity\Pregrado\TipoPrograma;
 use App\Entity\Pregrado\TipoProgramaAcademico;
@@ -40,6 +41,7 @@ class PlanEstudioType extends AbstractType
             ])
             ->add('carrera', EntityType::class, [
                 'class' => Carrera::class,
+                'label' => 'Programa académico de pregrado',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
@@ -73,9 +75,20 @@ class PlanEstudioType extends AbstractType
                 ]
             ])
             ->add('oace', EntityType::class, [
-                'label' => 'OACE formador',
+                'label' => 'Organismo o entidad demandante',
                 'class' => Oace::class,
                 'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('organismoFormador', EntityType::class, [
+                'label' => 'Organismo formador',
+                'class' => OrganismoFormador::class,
+                'choice_label' => 'nombre',
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },

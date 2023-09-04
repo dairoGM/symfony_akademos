@@ -28,7 +28,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoOrganismo")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?TipoOrganismo $tipoOrganismo;
 

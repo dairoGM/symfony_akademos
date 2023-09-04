@@ -28,11 +28,10 @@ class ExportListSolicitudProgramaAcademicoToPdf extends \App\Services\ExportList
         $data['title_document'] = 'Lista de solicitudes de programas académicos';
         $data['table_title'] = 'Lista de solicitudes de programas académicos';
         $data['header'] = array(
-            array('column' => 'nombre', 'column_title' => 'Programa académico', 'width' => '26%'),
-            array('column' => 'tipoProgramaAcademico', 'column_title' => 'Tipo de programa', 'width' => '20%'),
-            array('column' => 'tipoOrganismo', 'column_title' => 'Tipo de organismo', 'width' => '20%'),
-            array('column' => 'organismoDemandante', 'column_title' => 'Organismo demandante', 'width' => '20%'),
-            array('column' => 'estadoProgramaAcademico', 'column_title' => 'Estado', 'width' => '10%'),
+            array('column' => 'nombre', 'column_title' => 'Programa académico', 'width' => '31%'),
+            array('column' => 'tipoProgramaAcademico', 'column_title' => 'Tipo de programa', 'width' => '25%'),
+            array('column' => 'organismoDemandante', 'column_title' => 'Organismo demandante', 'width' => '25%'),
+            array('column' => 'estadoProgramaAcademico', 'column_title' => 'Estado', 'width' => '15%'),
         );
 
         return $data;

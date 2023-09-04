@@ -56,13 +56,17 @@
                     {{ form_widget(form.organismoDemandante) }}
                     {{ form_errors(form.organismoDemandante) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="organismo">
+                    {{ form_label(form.organismoFormador) }}
+                    {{ form_widget(form.organismoFormador) }}
+                    {{ form_errors(form.organismoFormador) }}
+                </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="rama">
                     {{ form_label(form.ramaCiencia) }}
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
                 </div>
-            </div>
-            <div class="row">
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.cursoAcademico) }}
                     {{ form_widget(form.cursoAcademico) }}
@@ -80,8 +84,7 @@
                     {{ form_widget(form.duracionCursoDiurno) }}
                     {{ form_errors(form.duracionCursoDiurno) }}
                 </div>
-            </div>
-            <div class="row">
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.duracionCursoPorEncuentro) }}
                     {{ form_widget(form.duracionCursoPorEncuentro) }}

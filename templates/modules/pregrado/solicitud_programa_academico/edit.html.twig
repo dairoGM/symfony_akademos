@@ -27,18 +27,19 @@
                         {{ form_widget(form.nombre) }}
                         {{ form_errors(form.nombre) }}
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                        {{ form_label(form.tipoOrganismo) }}
-                        {{ form_widget(form.tipoOrganismo) }}
-                        {{ form_errors(form.tipoOrganismo) }}
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-4 form-group">
                         {{ form_label(form.organismoDemandante) }}
                         {{ form_widget(form.organismoDemandante) }}
                         {{ form_errors(form.organismoDemandante) }}
                     </div>
+{#                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
+{#                        {{ form_label(form.tipoOrganismo) }}#}
+{#                        {{ form_widget(form.tipoOrganismo) }}#}
+{#                        {{ form_errors(form.tipoOrganismo) }}#}
+{#                    </div>#}
+                </div>
+                <div class="row">
+
                     <div class="col-4  form-group">
                         {{ form_label(form.resolucion) }}
                         {{ form_widget(form.resolucion) }}
@@ -57,8 +58,6 @@
                         <a target="_blank"
                            href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ solicitudProgramaAcademico.fundamentacion }}">{{ solicitudProgramaAcademico.fundamentacion }}</a>
                     </div>
-
-
                 </div>
             </div>
         </div>

@@ -45,7 +45,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function registrar(Request $request, Utils $utils, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
     {
-        try {
+//        try {
             $solicitudProgramaAcademico = new SolicitudProgramaAcademico();
             $form = $this->createForm(SolicitudProgramaAcademicoType::class, $solicitudProgramaAcademico, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -75,10 +75,10 @@ class SolicitudProgramaAcademicoController extends AbstractController
             return $this->render('modules/pregrado/solicitud_programa_academico/new.html.twig', [
                 'form' => $form->createView()
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_academico_registrar', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_academico_registrar', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 
