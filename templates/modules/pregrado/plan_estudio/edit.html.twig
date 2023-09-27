@@ -47,22 +47,22 @@
                     {{ form_widget(form.carrera) }}
                     {{ form_errors(form.carrera) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.oace) }}
-                    {{ form_widget(form.oace) }}
-                    {{ form_errors(form.oace) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="organismo">
+{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
+{#                    {{ form_label(form.oace) }}#}
+{#                    {{ form_widget(form.oace) }}#}
+{#                    {{ form_errors(form.oace) }}#}
+{#                </div>#}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
                     {{ form_label(form.organismoDemandante) }}
                     {{ form_widget(form.organismoDemandante) }}
                     {{ form_errors(form.organismoDemandante) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="organismo">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"  >
                     {{ form_label(form.organismoFormador) }}
                     {{ form_widget(form.organismoFormador) }}
                     {{ form_errors(form.organismoFormador) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="rama">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
                     {{ form_label(form.ramaCiencia) }}
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
@@ -210,11 +210,11 @@
         var fecha = "{% if planEstudio.fechaAprobacion is empty %}  {{ planEstudio.fechaAprobacion | default('') }} {% else %}  {{ planEstudio.fechaAprobacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#plan_estudio_fechaAprobacion').val(fecha.replace(' ', ''));
 
-        if ("{{ planEstudio.tipoProgramaAcademico.id == 1 }}") {
-            $('#organismo').hide();
-        } else {
-            $('#rama').hide();
-        }
+        {#if ("{{ planEstudio.tipoProgramaAcademico.id == 1 }}") {#}
+        {#    $('#organismo').hide();#}
+        {#} else {#}
+        {#    $('#rama').hide();#}
+        {#}#}
 
 
         $('#plan_estudio_annoAprobacion').on('keydown keypress', function (e) {
@@ -246,11 +246,11 @@
         });
         $('#plan_estudio_tipoProgramaAcademico').change(function (e) {
             if ($('#plan_estudio_tipoProgramaAcademico').val() == 1) {
-                $('#organismo').hide();
+                // $('#organismo').hide();
                 $('#rama').show();
             } else {
                 $('#rama').hide();
-                $('#organismo').show();
+                // $('#organismo').show();
             }
         });
 

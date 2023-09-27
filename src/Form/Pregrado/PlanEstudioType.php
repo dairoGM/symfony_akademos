@@ -74,16 +74,16 @@ class PlanEstudioType extends AbstractType
                     'class' => 'date-time-picker'
                 ]
             ])
-            ->add('oace', EntityType::class, [
-                'label' => 'Organismo o entidad demandante',
-                'class' => Oace::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
+//            ->add('oace', EntityType::class, [
+//                'label' => 'OACE',
+//                'class' => Oace::class,
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+//                },
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null
+//            ])
             ->add('organismoFormador', EntityType::class, [
                 'label' => 'Organismo formador',
                 'class' => OrganismoFormador::class,
@@ -96,7 +96,7 @@ class PlanEstudioType extends AbstractType
                 'empty_data' => null
             ])
             ->add('organismoDemandante', EntityType::class, [
-                'label' => 'Organismo demandante',
+                'label' => 'Organismo o entidad demandante',
                 'class' => OrganismoDemandante::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
