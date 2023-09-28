@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 //use Export\Admin\ExportListUsersToPdf;
 
-/** 
+/**
  * @Route("/administracion/cambio_clave")
  */
 class CambioClaveController extends AbstractController
@@ -46,14 +46,9 @@ class CambioClaveController extends AbstractController
             }
 
             $usuarioRepository->edit($usuario, true);
-
-
-
             $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
             return $this->redirectToRoute('app_dash_board', [], Response::HTTP_SEE_OTHER);
         }
-        
-
         return $this->render('modules/admin/usuario/cambiar_clave.html.twig', [
             'form' => $form->createView(),
         ]);

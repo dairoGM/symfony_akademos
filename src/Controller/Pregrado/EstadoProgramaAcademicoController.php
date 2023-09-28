@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pregrado/estado_programa_academico")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTPROGACAD")
  */
 class EstadoProgramaAcademicoController extends AbstractController
 {

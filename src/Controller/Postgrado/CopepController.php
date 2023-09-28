@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/postgrado/copep")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_COPEP")
  */
 class CopepController extends AbstractController
 {

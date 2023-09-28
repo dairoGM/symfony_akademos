@@ -14,105 +14,124 @@
                 </p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Programas académicos
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_plan_estudio_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Planes de estudios</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_solicitud_programa_academico_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Solicitudes de programas</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_solicitud_programa_academico_aprobado_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Programas aprobados</p>
-                    </a>
-                </li><li class="nav-item">
-                    <a href="{{ path('app_solicitud_programa_academico_extinto_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Programas extintos</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_oace_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>OACEs</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_curso_academico_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Cursos académicos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_estado_programa_academico_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Estados del programa académicos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_comision_nacional_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Comisiones nacionales</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_programa_academico_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipos de programas académicos</p>
-                    </a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a href="{{ path('app_tipo_organismo_index') }}"#}
-{#                       class="nav-link nav-link-menu">#}
-{#                        <p>Tipos de organismos</p>#}
-{#                    </a>#}
-{#                </li>#}
-                <li class="nav-item">
-                    <a href="{{ path('app_organismo_demandante_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Organismos o entidades demandantes</p>
-                    </a>
-                </li><li class="nav-item">
-                    <a href="{{ path('app_organismo_formador_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Organismos formador</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_documento_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Documentos</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+
+        {% if hasRoles('ROLE_GEST_PLANEST') or hasRoles('ROLE_GEST_SOLPROG') or hasRoles('ROLE_GEST_PROGAPROB') or hasRoles('ROLE_GEST_PROGEXTINT') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Programas académicos
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_PLANEST') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_plan_estudio_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Planes de estudios</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_SOLPROG') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_programa_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes de programas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_PROGAPROB') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_programa_academico_aprobado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Programas aprobados</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_PROGEXTINT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_programa_academico_extinto_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Programas extintos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if hasRoles('ROLE_GEST_CURACAD') or hasRoles('ROLE_GEST_ESTPROGACAD') or hasRoles('ROLE_GEST_COMNACION') or hasRoles('ROLE_GEST_TIPOPROGACAD')
+            or hasRoles('ROLE_GEST_ORGDEMAND')or hasRoles('ROLE_GEST_ORGFORMA')or hasRoles('ROLE_GEST_DOCS') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CURACAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_curso_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Cursos académicos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ESTPROGACAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estado_programa_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Estados del programa académicos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_COMNACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_comision_nacional_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Comisiones nacionales</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TIPOPROGACAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_programa_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de programas académicos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ORGDEMAND') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_organismo_demandante_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Organismos o entidades demandantes</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ORGFORMA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_organismo_formador_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Organismos formador</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_DOCS') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_documento_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Documentos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
     </ul>
 </nav>

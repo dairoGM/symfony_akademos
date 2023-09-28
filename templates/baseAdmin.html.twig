@@ -184,39 +184,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                {#                {% if hasRoles('ROLE_HOME_ADMIN') %}#}
-                {#                    <li class=" d-none d-sm-inline-block">#}
-                {#                        <a href="{{ path('app_administracion_portada') }}"#}
-                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'administracion' %} active {% endif %}">Administración</a>#}
-                {#                    </li>#}
-                {#                {% endif %}#}
-                {#                {% if hasRoles('ROLE_HOME_PERSONAL') %}#}
-                {#                    <li class=" d-none d-sm-inline-block">#}
-                {#                        <a href="{{ path('app_personal_portada') }}"#}
-                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'personal' %} active {% endif %}">Personal</a>#}
-                {#                    </li>#}
-                {#                {% endif %}#}
-                {#                {% if hasRoles('ROLE_HOME_STRUCT') %}#}
-                {#                    <li class=" d-none d-sm-inline-block">#}
-                {#                        <a href="{{ path('app_estructura_portada') }}"#}
-                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'estructura' %} active {% endif %}">Estructura</a>#}
-                {#                    </li>#}
-                {#                {% endif %}#}
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+
+                {% if hasRoles('ROLE_HOME_PREGR') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_pregrado_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Pregrado</a>
                     </li>
                 {% endif %}
 
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                {% if hasRoles('ROLE_HOME_POSTG') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_postgrado_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'postgrado' %} active {% endif %}">Posgrado</a>
                     </li>
                 {% endif %}
 
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                {% if hasRoles('ROLE_HOME_INSTIT') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_institucion_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a>
@@ -224,12 +207,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% endif %}
 
 
-                {% if hasRoles('ROLE_HOME_REPORT') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_reporte_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'reporte' %} active {% endif %}">Reportes</a>
-                    </li>
-                {% endif %}
+{#                {% if hasRoles('ROLE_HOME_REPORT') %}#}
+{#                    <li class=" d-none d-sm-inline-block">#}
+{#                        <a href="{{ path('app_reporte_portada') }}"#}
+{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'reporte' %} active {% endif %}">Reportes</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
 
                 {% if hasRoles('ROLE_HOME_TRAZAS') %}
                     <li class=" d-none d-sm-inline-block">

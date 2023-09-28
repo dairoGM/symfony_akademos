@@ -15,98 +15,119 @@
             </a>
         </li>
 
+        {% if hasRoles('ROLE_GEST_PERSON') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Personal
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ path('app_persona_index') }}"
+                           class="nav-link nav-link-menu">
+                            <p>Directorio de personas</p>
+                        </a>
+                    </li>
+                </ul>
 
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-user"></i>
-                <p>
-                    Personal
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_persona_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Personas</p>
-                    </a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a href="{{ path('app_responsable_index') }}"#}
-{#                       class="nav-link nav-link-menu">#}
-{#                        <p>Responsables</p>#}
-{#                    </a>#}
-{#                </li>#}
-            </ul>
+            </li>
+        {% endif %}
 
-        </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_categoria_docente_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Categorías docentes</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_categoria_investigativa_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Categorías investigativas</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_carrera_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Carreras</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_organizacion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipos de organizaciones</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_organizacion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Organizaciones</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_profesion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Profesiones</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_grado_academico_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Grados científicos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_nivel_escolar_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Niveles escolares</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_clasificacion_persona_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Clasificaciones de personas</p>
-                    </a>
-                </li>
-            </ul>
 
-        </li>
+        {% if hasRoles('ROLE_GEST_CATDOC') or hasRoles('ROLE_GEST_CATINVST') or hasRoles('ROLE_GEST_CARRERA') or
+            hasRoles('ROLE_GEST_TYPORG') or hasRoles('ROLE_GEST_ORGANZ') or hasRoles('ROLE_GEST_PROF') or
+            hasRoles('ROLE_GEST_GRADAKAD') or hasRoles('ROLE_GEST_NIVESC') or hasRoles('ROLE_GEST_CLAPER') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CATDOC') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_docente_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías docentes</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CATINVST') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_investigativa_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías investigativas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CARRERA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_carrera_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Carreras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TYPORG') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_organizacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de organizaciones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ORGANZ') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_organizacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Organizaciones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_PROF') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_profesion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Profesiones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_GRADAKAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_grado_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Grados científicos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_NIVESC') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_nivel_escolar_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Niveles escolares</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CLAPER') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_clasificacion_persona_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Clasificaciones de personas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+            </li>
+        {% endif %}
+
+
     </ul>
 </nav>

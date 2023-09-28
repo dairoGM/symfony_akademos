@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class OrganismoDemandante extends BaseNomenclator
 {
     /**
-     * @ORM\Column(type="string", nullable=false, length="5")
+     * @ORM\Column(type="string", nullable=false, length="20")
      */
     private ?string $siglas = null;
 

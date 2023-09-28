@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/postgrado/tipo_programa")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_TIPPROGRAM")
  */
 class TipoProgramaController extends AbstractController
 {

@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/pregrado/plan_estudio")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PLANEST")
  */
 class PlanEstudioController extends AbstractController
 {

@@ -14,72 +14,91 @@
                 </p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Programas
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_solicitud_programa_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Solicitudes de programas</p>
-                    </a>
-                </li>
+        {% if hasRoles('ROLE_GEST_SOLPROGRAM') or hasRoles('ROLE_GEST_PROGRAMAPROB') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Programas
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_SOLPROGRAM') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_programa_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes de programas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if   hasRoles('ROLE_GEST_PROGRAMAPROB') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_programas_aprobados_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Programas aprobados</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
 
-                <li class="nav-item">
-                    <a href="{{ path('app_programas_aprobados_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Programas aprobados</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_copep_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>COPEP</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_comision_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Comisiones</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_programa_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipos de programas</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_rama_ciencia_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Ramas de la ciencia</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_rol_comision_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Roles</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        {% if hasRoles('ROLE_GEST_COPEP') or hasRoles('ROLE_GEST_COMISION')  or hasRoles('ROLE_GEST_TIPPROGRAM')
+            or hasRoles('ROLE_GEST_RAMCIENC')  or hasRoles('ROLE_GEST_ROLESPOS') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_COPEP') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_copep_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>COPEP</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if  hasRoles('ROLE_GEST_COMISION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_comision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Comisiones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if  hasRoles('ROLE_GEST_TIPPROGRAM') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_programa_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de programas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if   hasRoles('ROLE_GEST_RAMCIENC') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rama_ciencia_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Ramas de la ciencia</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if  hasRoles('ROLE_GEST_ROLESPOS') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rol_comision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Roles</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
     </ul>
 </nav>

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/institucion/categoria_acreditacion")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATACRED")
  */
 class CategoriaAcreditacionController extends AbstractController
 {

@@ -14,100 +14,106 @@
                 </p>
             </a>
         </li>
+        {% if hasRoles('ROLE_GEST_CATGEST') or hasRoles('ROLE_GEST_TYPEESTR') or hasRoles('ROLE_GEST_ESTRUCT') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-network-wired"></i>
+                    <p>
+                        Estructura
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CATGEST') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_estructura_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías de estructuras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TYPEESTR') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_estructura_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de estructuras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ESTRUCT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Estructuras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
 
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-network-wired"></i>
-                <p>
-                    Estructura
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_categoria_estructura_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Categorías de estructuras</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_estructura_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipos de estructuras</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_estructura_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Estructuras</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Responsabilidad
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_categoria_responsabilidad_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Categorías de responsabilidad</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_responsabilidad_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Responsabilidad</p>
-                    </a>
-                </li>
+        {% if hasRoles('ROLE_GEST_CATRESP') or hasRoles('ROLE_GEST_RESPON') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Responsabilidad
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CATRESP') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_responsabilidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías de responsabilidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_RESPON') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_responsabilidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Responsabilidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
 
-            </ul>
-        </li>
-
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_provincia_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Provincias</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_municipio_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Municipios</p>
-                    </a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a href="{{ path('app_tipo_entidad_index') }}"#}
-{#                       class="nav-link nav-link-menu">#}
-{#                        <p>Tipos de entidades</p>#}
-{#                    </a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a href="{{ path('app_entidad_index') }}"#}
-{#                       class="nav-link nav-link-menu">#}
-{#                        <p>Entidades</p>#}
-{#                    </a>#}
-{#                </li>#}
-            </ul>
-        </li>
-
+        {% if hasRoles('ROLE_GEST_PROVIN') or hasRoles('ROLE_GEST_MUNICP') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_PROVIN') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_provincia_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Provincias</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_MUNICP') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_municipio_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Municipios</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
 
     </ul>
 </nav>

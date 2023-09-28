@@ -106,9 +106,9 @@ class PersonaRepository extends ServiceEntityRepository
     public function gePersonasDadoArrayEstructuras($estructurasNegocio)
     {
         $qb = $this->createQueryBuilder('qb');
-        if (is_array($estructurasNegocio) && count($estructurasNegocio) > 0) {
-            $qb->where("qb.activo = true and  qb.estructura IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
-        }
+//        if (is_array($estructurasNegocio) && count($estructurasNegocio) > 0) {
+//            $qb->where("qb.activo = true and  qb.estructura IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
+//        }
         $qb->orderBy('qb.primerNombre');
         $resul = $qb->getQuery()->getResult();
         return $resul;

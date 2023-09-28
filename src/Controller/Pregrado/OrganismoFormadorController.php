@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pregrado/organismo_formador")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ORGFORMA")
  */
 class OrganismoFormadorController extends AbstractController
 {

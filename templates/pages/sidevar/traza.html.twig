@@ -14,61 +14,70 @@
                 </p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Trazas
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_traza_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Trazas</p>
-                    </a>
-                </li>
-            </ul>
+        {% if hasRoles('ROLE_HOME_TRAZAS') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Trazas
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ path('app_traza_index') }}"
+                           class="nav-link nav-link-menu">
+                            <p>Trazas</p>
+                        </a>
+                    </li>
+                </ul>
 
-        </li>
+            </li>
+        {% endif %}
 
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_traza_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipos de trazas</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_accion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Acciones</p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_objeto_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Objetos</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
+        {% if hasRoles('ROLE_TYPTRZ') or  hasRoles('ROLE_ACCTION_TRZ')  or  hasRoles('ROLE_OBJ_TRZ') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                {% if hasRoles('ROLE_TYPTRZ') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_traza_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de trazas</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% if if hasRoles('ROLE_ACCTION_TRZ') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_accion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Acciones</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% if  hasRoles('ROLE_OBJ_TRZ') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_objeto_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Objetos</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </li>
+        {% endif %}
 
     </ul>
 </nav>

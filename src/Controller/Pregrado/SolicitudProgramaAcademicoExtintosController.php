@@ -39,7 +39,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pregrado/solicitud_programa_academico_extinto")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PROGEXTINT")
  */
 class SolicitudProgramaAcademicoExtintosController extends AbstractController
 {

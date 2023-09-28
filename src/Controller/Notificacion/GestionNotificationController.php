@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/administracion/notificaciones")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_FUNC")
+ * @IsGranted("ROLE_ADMIN")
  */
 class GestionNotificationController extends AbstractController
 {

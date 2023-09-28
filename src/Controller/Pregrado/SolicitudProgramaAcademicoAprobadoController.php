@@ -38,7 +38,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pregrado/solicitud_programa_academico_aprobado")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PROGAPROB")
  * @ORM\Entity
  * @ORM\Table(name="solicitud_programa_academico_aprobado_controller")
  */

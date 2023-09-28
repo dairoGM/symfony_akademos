@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pregrado/solicitud_programa_academico")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_SOLPROG")
  */
 class SolicitudProgramaAcademicoController extends AbstractController
 {

@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Security\User;
 use App\Form\Admin\UserFormType;
 use App\Repository\Security\UserRepository;
+use App\Services\HandlerFop;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,12 +113,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_usuario_eliminar", methods={"GET"})
-     * @param Request $request
      * @param User $usuario
      * @param UserRepository $usuarioRepository
      * @return Response
      */
-    public function eliminar(Request $request, User $usuario, UserRepository $usuarioRepository)
+    public function eliminar(User $usuario, UserRepository $usuarioRepository)
     {
         try {
             if ($usuarioRepository->find($usuario) instanceof User) {
@@ -135,11 +135,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_usuario_detail", methods={"GET", "POST"})
-     * @param Request $request
      * @param User $user
      * @return Response
      */
-    public function detail(Request $request, User $user)
+    public function detail(User $user)
     {
         return $this->render('modules/admin/usuario/detail.html.twig', [
             'item' => $user,
@@ -148,12 +147,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/exportar_pdf", name="app_usuario_exportar_pdf", methods={"GET", "POST"})
-     * @param Request $request
      * @param User $user
      *
      * @return Response
      */
-    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, UserRepository $usuarioRepository)
+    public function exportarPdf(HandlerFop $handFop, UserRepository $usuarioRepository)
     {
         $export = $usuarioRepository->findBy([], ['id' => 'desc']);
 
@@ -165,11 +163,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/exportar_excel", name="app_usuario_exportar_excel", methods={"GET", "POST"})
-     * @param \App\Services\HandlerFop $handFop
+     * @param HandlerFop $handFop
      * @param UserRepository $usuarioRepository
      * @return void
      */
-    public function exportarExcel(\App\Services\HandlerFop $handFop, UserRepository $usuarioRepository)
+    public function exportarExcel(HandlerFop $handFop, UserRepository $usuarioRepository)
     {
         $export = $usuarioRepository->findBy([], ['id' => 'desc']);
         $html = $this->render('modules/admin/usuario/index_excel.html.twig', ['datos' => $export])->getContent();

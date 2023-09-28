@@ -56,7 +56,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/institucion/institucion")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_INSTIT")
  */
 class InstitucionController extends AbstractController
 {

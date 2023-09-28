@@ -14,47 +14,56 @@
                 </p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fa fa-university"></i>
-                <p>
-                    Instituciones
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_institucion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>IES</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#"
-               class="nav-link nav-link-menu">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                    Configuración
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ path('app_tipo_institucion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Tipo de institución</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_categoria_acreditacion_index') }}"
-                       class="nav-link nav-link-menu">
-                        <p>Categoría de acreditación</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+
+        {% if hasRoles('ROLE_GEST_INSTIT') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fa fa-university"></i>
+                    <p>
+                        Instituciones
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ path('app_institucion_index') }}"
+                           class="nav-link nav-link-menu">
+                            <p>IES</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_GEST_TIPINST') or hasRoles('ROLE_GEST_CATACRED') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_TIPINST') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_institucion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipo de institución</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CATACRED') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_acreditacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categoría de acreditación</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
     </ul>
 </nav>

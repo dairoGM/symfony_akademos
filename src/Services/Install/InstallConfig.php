@@ -50,7 +50,7 @@ class InstallConfig
         $functionalities = array();
 
         //Administración
-        $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_PORTADA_ADMIN", "Portada General de Administración", "Para el acceso principal al la Portada de Administración");
+        $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_PORTADA_ADMIN", "Portada de Administración", "Para el acceso principal al la Portada de Administración");
 
         return $functionalities;
     }
@@ -68,7 +68,7 @@ class InstallConfig
         $functionalities = array();
 
         //Administración        
-        $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_HOME_ADMIN", "Portada de Administración", "Portada principal de administración");
+//        $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_HOME_ADMIN", "Portada de Administración", "Portada Administración");
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_USER", "Gestionar usuarios", "Gestionar usuarios");
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_FUNC", "Gestionar funcionalidades", "Gestionar funcionalidades del sistema");
         $functionalities[] = Functionality::createFunctionality("MODULE_ADMIN", "ROLE_GEST_MODULE", "Gestionar módulos", "Gestionar módulos del sistema");
@@ -91,7 +91,7 @@ class InstallConfig
         $functionalities = array();
 
         //Personal
-        $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_HOME_PERSONAL", "Portada de Personal", "Portada principal de personal");
+        $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_HOME_PERSONAL", "Portada de Personal", "Portada de Personal");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_CARRERA", "Gestionar carreras", "Gestionar carreras");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_CATDOC", "Gestionar categorías docentes", "Gestionar categorías docentes");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_CATINVST", "Gestionar categorías investigativas", "Gestionar categorías investigativas");
@@ -99,7 +99,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_GRADAKAD", "Gestionar grados académicos", "Gestionar grados académicos");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_NIVESC", "Gestionar nivel escolar", "Gestionar nivel escolar");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_ORGANZ", "Gestionar organizaciones", "Gestionar organizaciones");
-        $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_PERSON", "Gestionar personas", "Gestionar personas");
+        $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_PERSON", "Directorio de personas", "Directorio de personas");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_PROF", "Gestionar profesiones", "Gestionar profesiones");
 //        $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_RESPONS", "Gestionar responsables", "Gestionar responsables");
         $functionalities[] = Functionality::createFunctionality("MODULE_PERSON", "ROLE_GEST_TYPORG", "Gestionar tipos de organización", "Gestionar tipos de organización");
@@ -120,7 +120,7 @@ class InstallConfig
         $functionalities = array();
 
         //Estructura        
-        $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_HOME_STRUCT", "Portada principal de estructura", "Portada principal de estructura");
+        $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_HOME_STRUCT", "Portada de Estructura", "Portada de Estructura");
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_CATGEST", "Gestionar categorías de estructura", "Gestionar categorías de estructura");
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_CATRESP", "Gestionar categorías de responsabilidad", "Gestionar categorías de responsabilidad");
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_ESTRUCT", "Gestionar estructuras", "Gestionar estructuras");
@@ -145,9 +145,10 @@ class InstallConfig
         $functionalities = array();
 
         //Instituciones
-        $functionalities[] = Functionality::createFunctionality("MODULE_INSTIT", "ROLE_HOME_INSTIT", "Portada principal de instituciones", "Portada principal de instituciones");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INSTIT", "ROLE_HOME_INSTIT", "Portada de Instituciones", "Portada de Instituciones");
         $functionalities[] = Functionality::createFunctionality("MODULE_INSTIT", "ROLE_GEST_TIPINST", "Gestionar tipos de instituciones", "Gestionar tipos de instituciones");
         $functionalities[] = Functionality::createFunctionality("MODULE_INSTIT", "ROLE_GEST_CATACRED", "Gestionar categorias de acreditacion", "Gestionar categorias de acreditacion");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INSTIT", "ROLE_GEST_INSTIT", "Gestionar instituciones", "Gestionar instituciones");
 
         return $functionalities;
     }
@@ -163,15 +164,15 @@ class InstallConfig
     {
         $functionalities = array();
 
-        //Instituciones
-        $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_HOME_PREGR", "Portada principal de pregrado", "Portada principal de pregrado");
-        $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_OACE", "Gestionar oace", "Gestionar oace");
+        //Pregrado
+        $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_HOME_PREGR", "Portada de Pregrado", "Portada de Pregrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_CURACAD", "Gestionar curso academico", "Gestionar curso academico");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_ESTPROGACAD", "Gestionar estado de programa academico", "Gestionar estado de programa academico");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_TIPOPROGACAD", "Gestionar tipo de programa academico", "Gestionar tipo de programa academico");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_TIPOORG", "Gestionar tipo de organismo", "Gestionar tipo de organismo");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_COMNACION", "Gestionar comision nacional", "Gestionar comision nacional");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_ORGDEMAND", "Gestionar organismo demandante", "Gestionar organismo demandante");
+        $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_ORGFORMA", "Gestionar organismo formador", "Gestionar organismo formador");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_DOCS", "Gestionar documentos", "Gestionar documentos");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_PLANEST", "Gestionar plan de estudio", "Gestionar plan de estudio");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_SOLPROG", "Gestionar solicitud de programas", "Gestionar solicitud de programas");
@@ -192,8 +193,8 @@ class InstallConfig
     {
         $functionalities = array();
 
-        //Instituciones
-        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_HOME_POSTG", "Portada principal de pregrado", "Portada principal de pregrado");
+        //Postgrado
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_HOME_POSTG", "Portada de Posgrado", "Portada de Posgrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_SOLPROGRAM", "Gestionar solicitudes de programas", "Gestionar solicitudes de programas");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_PROGRAMAPROB", "Gestionar programas aprobados", "Gestionar programas aprobados");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_COPEP", "Gestionar copep", "Gestionar copep");
@@ -217,7 +218,7 @@ class InstallConfig
         $functionalities = array();
 
         //Reporte
-        $functionalities[] = Functionality::createFunctionality("MODULE_REPORT", "ROLE_HOME_REPORT", "Portada principal a reportes", "Portada principal a reportes");
+        $functionalities[] = Functionality::createFunctionality("MODULE_REPORT", "ROLE_HOME_REPORT", "Portada de Reportes", "Portada de Reportes");
         $functionalities[] = Functionality::createFunctionality("MODULE_REPORT", "ROLE_CUSTOM_REP", "Reporte personalizado", "Reporte personalizado");
 
 
@@ -237,7 +238,7 @@ class InstallConfig
         $functionalities = array();
 
         //Traza
-        $functionalities[] = Functionality::createFunctionality("MODULE_TRACE", "ROLE_HOME_TRAZAS", "Portada principal a trazas", "Portada principal a trazas");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRACE", "ROLE_HOME_TRAZAS", "Portada de Trazas", "Portada de Trazas");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRACE", "ROLE_ACCTION_TRZ", "Gestionar acciones de las trazas", "Gestionar acciones de las trazas");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRACE", "ROLE_OBJ_TRZ", "Gestionar objetos de las trazas", "Gestionar objetos de las trazas");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRACE", "ROLE_TYPTRZ", "Gestionar tipos de trazas", "Gestionar tipos de trazas");

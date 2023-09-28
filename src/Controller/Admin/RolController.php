@@ -51,7 +51,7 @@ class RolController extends AbstractController
             $rolEntity = new Rol();
             $form = $this->createForm(RolType::class, $rolEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted()) {
                 $rolRepository->add($rolEntity, true);
 
                 $allPost = $request->request->all();

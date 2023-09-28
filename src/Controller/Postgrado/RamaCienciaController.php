@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/postgrado/rama_ciencia")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATDOC")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_RAMCIENC")
  */
 class RamaCienciaController extends AbstractController
 {

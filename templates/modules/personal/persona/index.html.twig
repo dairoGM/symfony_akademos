@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de personas</h3>
+                <h3 class="card-title text-bold text-gray">Directorio de personas</h3>
                 <div style="float: left;padding-right: 1%">
                     <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_persona_registrar') }}"><i
                                 class="fa fa-plus"></i>
@@ -30,6 +30,8 @@
                     <th>Foto</th>
                     <th>Nombre y apellidos</th>
                     <th>Carné de identidad</th>
+                    <th>Estructura</th>
+                    <th>Responsabilidad</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -37,17 +39,19 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td width="2%">
+                        <td width="1%">
                             <a href="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }} {% else %} /assets/images/usuario.png {% endif %}"
                                target="_blank">
                                 <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}"
                                      class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
                             </a></td>
-                        <td width="60%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
-                        <td>{{ item.carnetIdentidad }}</td>
+                        <td width="35%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+                        <td width="17%">{{ item.carnetIdentidad }}</td>
+                        <td width="25%">{{ item.estructura.nombre | default('') }}</td>
+                        <td>{{ item.responsabilidad.nombre | default('') }}</td>
 
 
-                        <td class="text-center">
+                        <td class="text-center" width="30%">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_persona_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la persona">
