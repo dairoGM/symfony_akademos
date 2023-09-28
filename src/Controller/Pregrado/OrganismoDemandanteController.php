@@ -39,12 +39,12 @@ class OrganismoDemandanteController extends AbstractController
      */
     public function registrar(Request $request, OrganismoDemandanteRepository $tipoProgramaRepository)
     {
-//        try {
-            $catDocenteEntity = new OrganismoDemandante();
-            $form = $this->createForm(OrganismoDemandanteType::class, $catDocenteEntity, ['action' => 'registrar']);
+        try {
+            $organismoDemandante = new OrganismoDemandante();
+            $form = $this->createForm(OrganismoDemandanteType::class, $organismoDemandante, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $tipoProgramaRepository->add($catDocenteEntity, true);
+                $tipoProgramaRepository->add($organismoDemandante, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_organismo_demandante_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -52,10 +52,10 @@ class OrganismoDemandanteController extends AbstractController
             return $this->render('modules/pregrado/organismo_demandante/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_organismo_demandante_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_organismo_demandante_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
