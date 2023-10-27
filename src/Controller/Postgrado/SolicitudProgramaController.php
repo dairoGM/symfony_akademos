@@ -64,7 +64,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function registrar(Request $request, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
-        try {
+//        try {
             $solicitudPrograma = new SolicitudPrograma();
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -88,10 +88,10 @@ class SolicitudProgramaController extends AbstractController
             return $this->render('modules/postgrado/solicitud_programa/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 
@@ -119,9 +119,8 @@ class SolicitudProgramaController extends AbstractController
                         }
                     }
                     $file = $form['docPrograma']->getData();
-                    $ext = explode('.', $_FILES['solicitud_programa']['name']['docPrograma']);
-                    $file_name = uniqid() . '.' . end($ext);
-                    $solicitudPrograma->setDocPrograma()($file_name);
+                    $file_name = $_FILES['solicitud_programa']['name']['docPrograma'];
+                    $solicitudPrograma->setDocPrograma($file_name);
                     $file->move("uploads/solicitud_programa", $file_name);
                 }
 
