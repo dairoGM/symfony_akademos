@@ -48,7 +48,7 @@
                                     data-title="Detalles de la solicitud del programa">
                                 <i class="fa fa-eye "></i>
                             </button>
-                            {% if item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 %}
+                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 %}
                                 <a title="Modificar"
                                    href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -60,21 +60,21 @@
 {#                                <i#}
 {#                                        class="fa fa-download"></i>#}
 {#                            </a>#}
-                            {% if item.estadoPrograma.id == 1 %}
+                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 1 %}
                                 <a title="Asignar comisión"
                                    href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-address-card"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoPrograma.id == 2 %}
+                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 2 %}
                                 <a title="Dictamenes"
                                    href="{{ path('app_solicitud_programa_asociar_dictamen', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-paperclip"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoPrograma.id == 4 %}
+                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 4 %}
                                 <a title="Votar"
                                    href="{{ path('app_solicitud_programa_votacion', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -82,21 +82,21 @@
                                 </a>
                             {% endif %}
 
-                            {% if item.estadoPrograma.id == 3 %}
+                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 3 %}
                                 <a title="Revisar dictámenes"
                                    href="{{ path('app_solicitud_programa_revisar_dictamenes', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-book-open"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoPrograma.id == 5 %}
+                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 5 %}
                                 <a title="Aprobar"
                                    href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-check"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoPrograma.id == 6 %}
+                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 6 %}
                                 <a title="Rechazar"
                                    href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i

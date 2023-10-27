@@ -12,9 +12,9 @@
 
                 <h3 class="card-title text-bold text-gray">Listado de usuarios</h3>
                 <div style="float: left;padding-right: 1%">
-                    <a title="Adicionar" class="btn btn-primary" href="{{ path('app_usuario_registrar') }}"><i
-                                class="fa fa-plus"></i>
-                    </a>
+{#                    <a title="Adicionar" class="btn btn-primary" href="{{ path('app_usuario_registrar') }}"><i#}
+{#                                class="fa fa-plus"></i>#}
+{#                    </a>#}
                     <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
                        href="{{ path('app_usuario_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
                     </a>
@@ -37,9 +37,9 @@
                 <tbody>
                 {% for item in usuarios %}
                     <tr>
-                        <td>{{ loop.index }}</td>
+                        <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.email }}</td>
-                        <td class="text-center">
+                        <td class="text-center"  width="15%">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_usuario_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de usuario">
