@@ -45,7 +45,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function registrar(Request $request, Utils $utils, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository)
     {
-//        try {
+        try {
             $solicitudProgramaAcademico = new SolicitudProgramaAcademico();
             $form = $this->createForm(SolicitudProgramaAcademicoType::class, $solicitudProgramaAcademico, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -75,10 +75,10 @@ class SolicitudProgramaAcademicoController extends AbstractController
             return $this->render('modules/pregrado/solicitud_programa_academico/new.html.twig', [
                 'form' => $form->createView()
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_academico_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -125,11 +125,10 @@ class SolicitudProgramaAcademicoController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_solicitud_programa_academico_detail", methods={"GET", "POST"})
-     * @param Request $request
-     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
      * @return Response
      */
-    public function detail(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico)
+    public function detail(SolicitudProgramaAcademico $solicitudProgramaAcademico)
     {
         return $this->render('modules/pregrado/solicitud_programa_academico/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
@@ -138,12 +137,11 @@ class SolicitudProgramaAcademicoController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_solicitud_programa_academico_eliminar", methods={"GET"})
-     * @param Request $request
      * @param SolicitudProgramaAcademico $solicitudPrograma
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function eliminar(Request $request, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function eliminar(SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         try {
             if ($solicitudProgramaRepository->find($solicitudPrograma) instanceof SolicitudProgramaAcademico) {

@@ -24,7 +24,7 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
         $builder
             ->add('cartaAprobacion', FileType::class, [
                 'label' => 'Carta de aprobación',
-                'required' =>  $options['cartaAprobacion'] == 'registrar',
+                'required' => $options['cartaAprobacion'] == 'registrar',
                 'mapped' => false,
             ])
             ->add('fechaAprobacion', TextType::class, [
@@ -44,22 +44,16 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+            ->add('duracionCursoDiurno', IntegerType::class, [
                 'label' => 'Duración del curso diurno (Años)',
                 'required' => false,
-                    'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ],
                 'attr' => [
                     'min' => 1
                 ]
             ])
-            ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+            ->add('duracionCursoPorEncuentro', IntegerType::class, [
                 'label' => 'Duración del curso por encuentros (Años)',
                 'required' => false,
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ],
                 'attr' => [
                     'min' => 1
                 ]

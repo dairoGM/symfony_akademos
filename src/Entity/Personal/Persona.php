@@ -8,6 +8,7 @@ use App\Entity\Estructura\Municipio;
 use App\Entity\Estructura\CategoriaEstructura;
 use App\Entity\Estructura\Estructura;
 use App\Entity\Estructura\Responsabilidad;
+use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -37,7 +38,7 @@ class Persona extends BaseEntity
      */
     private ?string $carnetIdentidad;
     /**
-     * @ORM\Column(type="string", length=11, unique=true)
+     * @ORM\Column(type="string", length=11, unique=true, nullable=true)
      * @Assert\Regex(
      *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
@@ -162,10 +163,10 @@ class Persona extends BaseEntity
     private ?CategoriaInvestigativa $categoriaInvestigativa;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Carrera")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\SolicitudProgramaAcademico")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Carrera $carrera = null;
+    private ?SolicitudProgramaAcademico $solicitudProgramaAcademico = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Sexo")
@@ -191,7 +192,7 @@ class Persona extends BaseEntity
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $usuario;
 
@@ -407,18 +408,6 @@ class Persona extends BaseEntity
         return $this;
     }
 
-    public function getCarrera()
-    {
-        return $this->carrera;
-    }
-
-    public function setCarrera($carrera)
-    {
-        $this->carrera = $carrera;
-
-        return $this;
-    }
-
 
     public function getProvincia()
     {
@@ -557,4 +546,22 @@ class Persona extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * @return SolicitudProgramaAcademico|null
+     */
+    public function getSolicitudProgramaAcademico(): ?SolicitudProgramaAcademico
+    {
+        return $this->solicitudProgramaAcademico;
+    }
+
+    /**
+     * @param SolicitudProgramaAcademico|null $solicitudProgramaAcademico
+     */
+    public function setSolicitudProgramaAcademico(?SolicitudProgramaAcademico $solicitudProgramaAcademico): void
+    {
+        $this->solicitudProgramaAcademico = $solicitudProgramaAcademico;
+    }
+
+
 }

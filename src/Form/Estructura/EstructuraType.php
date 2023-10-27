@@ -25,33 +25,36 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class EstructuraType extends AbstractType
 {
     private $idProvincia;
+    private $estructuraNegocio;
 
     public function __construct()
     {
         $this->idProvincia = null;
+        $this->estructuraNegocio = [];
     }
 
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->idProvincia = $options['data_choices'];
+        $this->estructuraNegocio = $options['estructuraNegocio'];
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('siglas', TextType::class, [
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('fechaActivacion', TextType::class, [
                 'label' => 'Fecha de activación',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ],
-                'mapped'=>false,
+                'mapped' => false,
                 'attr' => [
                     'class' => 'date-time-picker'
                 ],
@@ -71,6 +74,10 @@ class EstructuraType extends AbstractType
                 'label' => 'Subordinado a',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
+                    $estructurasNegocio = $this->estructuraNegocio;
+                    if (count($estructurasNegocio) > 0) {
+                        return $er->createQueryBuilder('u')->where("u.activo = true and u.id IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio))->orderBy('u.nombre', 'ASC');
+                    }
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
@@ -98,9 +105,6 @@ class EstructuraType extends AbstractType
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
                 'required' => false,
-//                'constraints' => [
-//                    new NotBlank([],'Este valor no debe estar en blanco.')
-//                ],
                 "attr" => [
                     "data-inputmask" => '"mask": "(999) 999-9999"',
                     "data-mask" => ''
@@ -109,7 +113,7 @@ class EstructuraType extends AbstractType
             ->add('direccion', TextType::class, [
                 'label' => 'Dirección',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('provincia', EntityType::class, [
@@ -134,10 +138,7 @@ class EstructuraType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
-                'required' => false,
-//                'constraints' => [
-//                    new NotBlank([],'Este valor no debe estar en blanco.')
-//                ]
+                'required' => false
             ]);
     }
 
@@ -146,6 +147,7 @@ class EstructuraType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Estructura::class,
             'data_choices' => [],
+            'estructuraNegocio' => [],
             'action' => []
         ]);
     }

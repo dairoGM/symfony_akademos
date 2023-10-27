@@ -543,6 +543,7 @@ class Utils
 
     public function procesarRolesUsuarioAutenticado($idUsuario)
     {
+        /* @var $usuario User */
         $usuario = $this->em->getRepository(User::class)->find($idUsuario);
         $arrayEstructuras = [];
         /* @var $value Rol */

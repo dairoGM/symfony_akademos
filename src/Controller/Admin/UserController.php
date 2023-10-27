@@ -79,26 +79,24 @@ class UserController extends AbstractController
      * @param User $usuario
      * @param UserRepository $usuarioRepository
      * @param UserPasswordEncoderInterface $encoder
-     * @param MyChatService $myChatService
      * @return Response
      */
     public function modificar(Request $request, User $usuario, UserRepository $usuarioRepository, UserPasswordEncoderInterface $encoder)
     {
-        try {            
+        try {
             $form = $this->createForm(UserFormType::class, $usuario, ['action' => 'modificar']);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
-
-                if ($form->getData()->getPasswordPlainText() != "") {
+                if (!empty($_POST['passwordPlainText']['first']) && !empty($_POST['passwordPlainText']['second']) &&
+                   $_POST['passwordPlainText']['first'] === $_POST['passwordPlainText']['second']) {
                     $encodedPassword = $encoder->encodePassword($usuario, $form->getData()->getPasswordPlainText());
                     $usuario->setPassword($encodedPassword);
-                    $usuario->setPasswordChangeFirstTime(false);                    
+//                    $usuario->setPasswordChangeFirstTime(false);
                 }
 
                 $usuario = $usuarioRepository->edit($usuario);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                
+
                 return $this->redirectToRoute('app_usuario_index', [], Response::HTTP_SEE_OTHER);
             }
 
@@ -172,5 +170,5 @@ class UserController extends AbstractController
         $export = $usuarioRepository->findBy([], ['id' => 'desc']);
         $html = $this->render('modules/admin/usuario/index_excel.html.twig', ['datos' => $export])->getContent();
         $handFop->exportToExcel($html, 'Listado de usuarios');
-    }    
+    }
 }

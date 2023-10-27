@@ -19,13 +19,14 @@
                                 class="fa fa-plus"></i>
                     </a>
 
-                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i class="fa fa-map"></i> </a>
-                    <a title="Vista de árbol" href="{{ path('app_estructura_index_arbol') }}" class="btn btn-primary"><i class="fa fa-folder-plus"></i> </a>
+                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i
+                                class="fa fa-map"></i> </a>
+                    <a title="Vista de árbol" href="{{ path('app_estructura_index_arbol') }}" class="btn btn-primary"><i
+                                class="fa fa-folder-plus"></i> </a>
                     <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
                        href="{{ path('app_estructura_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
                     </a>
                 </div>
-
 
 
             </div>
@@ -61,22 +62,26 @@
                                     data-title="Detalles de la estructura">
                                 <i class="fa fa-eye "></i>
                             </button>
-                            <a class="btn btn-outline-primary" title="Modificar"
-                               href="{{ path('app_estructura_modificar', {'id': item.id}) }}"><i
-                                        class="fa fa-edit"></i>
-                            </a>
+                            {% if dataShow[item.id] %}
+                                <a class="btn btn-outline-primary" title="Modificar"
+                                   href="{{ path('app_estructura_modificar', {'id': item.id}) }}"><i
+                                            class="fa fa-edit"></i>
+                                </a>
+                            {% endif %}
                             <a class="btn btn-outline-primary" title="Asociar Composición"
                                href="{{ path('app_estructura_plaza', {'id': item.id}) }}"><i
                                         class="fa fa-cogs"></i>
                             </a>
                             <a class="btn btn-outline-primary" title="Crear estructura hija"
-                                    href="{{ path('app_estructura_registrar_hija', {'id': item.id}) }}"><i
+                               href="{{ path('app_estructura_registrar_hija', {'id': item.id}) }}"><i
                                         class="fa fa-plus"></i>
                             </a>
-                            <button class="btn btn-outline-danger elementRemove" title="Eliminar"
-                                    data-url="{{ path('app_estructura_eliminar', {'id': item.id}) }}">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                            {% if dataShow[item.id] %}
+                                <button class="btn btn-outline-danger elementRemove" title="Eliminar"
+                                        data-url="{{ path('app_estructura_eliminar', {'id': item.id}) }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

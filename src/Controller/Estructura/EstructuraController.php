@@ -77,17 +77,27 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function index(Request $request, EstructuraRepository $estructuraRepository)
+    public function index(EstructuraRepository $estructuraRepository, Utils $utils)
     {
-        try {
-            $registros = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+//        try {
+            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+            if (count($estructurasNegocio) > 0) {
+                $registros = $estructuraRepository->geEstructuras($estructurasNegocio);
+            } else {
+                $registros = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+            }
+            $data = [];
+            foreach ($registros as $value) {
+                $data[$value->getId()] = !in_array($value->getId(), $estructurasNegocio);
+            }
             return $this->render('modules/estructura/estructura/index.html.twig', [
                 'registros' => $registros,
+                'dataShow' => $data,
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
     /**
@@ -96,9 +106,16 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function indexArbol(EstructuraRepository $estructuraRepository)
+    public function indexArbol(EstructuraRepository $estructuraRepository, Utils $utils)
     {
-        $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+        if (count($estructurasNegocio) > 0) {
+            $element = $estructuraRepository->geEstructuras($estructurasNegocio);
+        } else {
+            $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        }
+
+
         $registros = [];
         foreach ($element as $el) {
             $aux = [];
@@ -121,9 +138,14 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function indexMapa(EstructuraRepository $estructuraRepository)
+    public function indexMapa(EstructuraRepository $estructuraRepository, Utils $utils)
     {
-        $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+        if (count($estructurasNegocio) > 0) {
+            $element = $estructuraRepository->geEstructuras($estructurasNegocio);
+        } else {
+            $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        }
         return $this->render('modules/estructura/estructura/mapa.html.twig', [
             'registros' => $element
         ]);
@@ -136,11 +158,11 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function registrar(Request $request, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository)
+    public function registrar(Request $request, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
     {
         try {
             $estructuraEntity = new Estructura();
-            $form = $this->createForm(EstructuraType::class, $estructuraEntity, ['action' => 'registrar', 'data_choices' => -1]);
+            $form = $this->createForm(EstructuraType::class, $estructuraEntity, ['action' => 'registrar', 'data_choices' => -1, 'estructuraNegocio' => $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId())]);
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 $estructuraEntity->setFechaActivacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['estructura']['fechaActivacion']));
@@ -182,12 +204,13 @@ class EstructuraController extends AbstractController
      * @param User $estructura
      * @param EstructuraRepository $estructuraRepository
      * @return Response
-     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT" )
      */
-    public function modificar(Request $request, Estructura $estructura, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository)
+    public function modificar(Request $request, Estructura $estructura, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
     {
         try {
-            $form = $this->createForm(EstructuraType::class, $estructura, ['action' => 'modificar', 'data_choices' => $estructura->getProvincia()->getId()]);
+            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+            $form = $this->createForm(EstructuraType::class, $estructura, ['action' => 'modificar', 'data_choices' => $estructura->getProvincia()->getId(), 'estructuraNegocio' => $estructurasNegocio]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) {
@@ -197,7 +220,6 @@ class EstructuraController extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
             }
-
             return $this->render('modules/estructura/estructura/edit.html.twig', [
                 'form' => $form->createView(),
                 'estructura' => $estructura
@@ -315,13 +337,13 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function registrarEstructuraHija(Request $request, ProvinciaRepository $provinciaRepository, MunicipioRepository $municipioRepository, TipoEstructuraRepository $tipoEstructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository, Estructura $estructura, EstructuraRepository $estructuraRepository, EntityManagerInterface $entityManager)
+    public function registrarEstructuraHija(Request $request, ProvinciaRepository $provinciaRepository, MunicipioRepository $municipioRepository, TipoEstructuraRepository $tipoEstructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository, Estructura $estructura, EstructuraRepository $estructuraRepository, EntityManagerInterface $entityManager, Utils $utils)
     {
         try {
             $nuevaEstruc = new Estructura();
             $nuevaEstruc->setEstructura($estructura);
 
-            $form = $this->createForm(EstructuraType::class, $nuevaEstruc, ['action' => 'modificar', 'data_choices' => -1]);
+            $form = $this->createForm(EstructuraType::class, $nuevaEstruc, ['action' => 'modificar', 'data_choices' => -1, 'estructuraNegocio' => $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId())]);
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 $nueva = new Estructura();
@@ -361,13 +383,12 @@ class EstructuraController extends AbstractController
      * Add package entity.
      *
      * @Route("/{id}/estructura_dado_categoria", name="app_estructura_dado_categoria", methods={"GET"})
-     * @param Request $request
      * @param $id
      * @param EstructuraRepository $estructuraRepository
      * @param Utils $utils
      * @return JsonResponse
      */
-    public function getEstructuraDadoCategoria(Request $request, $id, EstructuraRepository $estructuraRepository, Utils $utils): JsonResponse
+    public function getEstructuraDadoCategoria($id, EstructuraRepository $estructuraRepository, Utils $utils): JsonResponse
     {
         try {
 //            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());

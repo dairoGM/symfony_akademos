@@ -22,11 +22,11 @@
                     {{ form_widget(form.carnetIdentidad) }}
                     {{ form_errors(form.carnetIdentidad) }}
                 </div>
-                <div class="col-4 form-group">
-                    {{ form_label(form.numeroSerieCarnetIdentidad) }}
-                    {{ form_widget(form.numeroSerieCarnetIdentidad) }}
-                    {{ form_errors(form.numeroSerieCarnetIdentidad) }}
-                </div>
+{#                <div class="col-4 form-group">#}
+{#                    {{ form_label(form.numeroSerieCarnetIdentidad) }}#}
+{#                    {{ form_widget(form.numeroSerieCarnetIdentidad) }}#}
+{#                    {{ form_errors(form.numeroSerieCarnetIdentidad) }}#}
+{#                </div>#}
                 <div class="col-4 form-group">
                     <div class="row">
                         <div class="col-10">
@@ -231,9 +231,9 @@
                     {{ form_errors(form.categoriaInvestigativa) }}
                 </div>
                 <div class="col-4 form-group">
-                    {{ form_label(form.carrera) }}
-                    {{ form_widget(form.carrera) }}
-                    {{ form_errors(form.carrera) }}
+                    {{ form_label(form.solicitudProgramaAcademico) }}
+                    {{ form_widget(form.solicitudProgramaAcademico) }}
+                    {{ form_errors(form.solicitudProgramaAcademico) }}
                 </div>
             </div>
             {% if tipoOrganizacion|length > 0 %}
@@ -252,8 +252,7 @@
                                 {% if item.tipoOrganizacion.id == tipo.id %}
                                     <label> <input type="checkbox" id="{{ item.id }}"
                                                    name="persona[organizacion][{{ item.id }}]"
-                                                   value="{{ item.id }}">&nbsp;( {{ item.siglas|default('-') }}
-                                        ) {{ item.nombre }}
+                                                   value="{{ item.id }}">  {{ item.nombre }}
                                     </label>
                                 {% endif %}
                             {% endfor %}

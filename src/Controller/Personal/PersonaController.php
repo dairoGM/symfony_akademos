@@ -21,6 +21,7 @@ use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\PlantillaRepository;
 use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Personal\TipoOrganizacionRepository;
+use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Repository\Security\UserRepository;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -114,6 +115,7 @@ class PersonaController extends AbstractController
             $usuario->setPassword($encodedPassword);
             $usuario->setActivo(true);
             $usuario->setRole('ROLE_USER');
+            $usuario->setPasswordChangeFirstTime(true);
             $em->persist($usuario);
 
 
@@ -176,9 +178,9 @@ class PersonaController extends AbstractController
      * @return Response
      */
     public function modificar(PersonaOrganizacionRepository $personaOrganizacionRepository, TipoOrganizacionRepository $tipoOrganizacionRepository,
-                              OrganizacionRepository $organizacionRepository, UserRepository $userRepository, PlantillaRepository $plantillaRepository,
-                              UserPasswordEncoderInterface $encoder, EntityManagerInterface $em, Request $request, Persona $persona, PersonaRepository $personaRepository,
-                              MunicipioRepository $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository, Utils $utils)
+                              OrganizacionRepository        $organizacionRepository, UserRepository $userRepository, PlantillaRepository $plantillaRepository,
+                              UserPasswordEncoderInterface  $encoder, EntityManagerInterface $em, Request $request, Persona $persona, PersonaRepository $personaRepository,
+                              MunicipioRepository           $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository, Utils $utils, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         $choices = [
             'provincia_choices' => $persona->getProvincia()->getId(),
@@ -217,13 +219,18 @@ class PersonaController extends AbstractController
             if ($email != $request->request->all()['persona']['usuario'] && (!empty($request->request->all()['persona']['contrasena'])) && !empty($request->request->all()['persona']['contrasena2'])) {
                 $persona->getUsuario()->setEmail($request->request->all()['persona']['usuario']);
                 $encodedPassword = $encoder->encodePassword($persona->getUsuario(), $request->request->all()['persona']['contrasena']);
-                $persona->getUsuario()->setPassword($encodedPassword);
+                if ($request->request->all()['persona']['contrasena'] == $request->request->all()['persona']['contrasena2']) {
+                    $persona->getUsuario()->setPassword($encodedPassword);
+                }
+
                 $em->persist($persona->getUsuario());
 
                 $usuario = $userRepository->findOneBy(['email' => $email]);
                 $usuario->setEmail($request->request->all()['persona']['usuario']);
-                $usuario->setPassword($encodedPassword);
-                $usuario->setPasswordChangeFirstTime(false);
+                if ($request->request->all()['persona']['contrasena'] == $request->request->all()['persona']['contrasena2']) {
+                    $usuario->setPassword($encodedPassword);
+                }
+
                 $em->persist($usuario);
                 $em->flush();
             }
@@ -284,12 +291,11 @@ class PersonaController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_persona_eliminar", methods={"GET"})
-     * @param Request $request
      * @param Persona $persona
      * @param PersonaRepository $personaRepository
      * @return Response
      */
-    public function eliminar(Request $request, Persona $persona, PersonaRepository $personaRepository, PlantillaRepository $plantillaRepository)
+    public function eliminar(Persona $persona, PersonaRepository $personaRepository, PlantillaRepository $plantillaRepository)
     {
         try {
             if ($personaRepository->find($persona) instanceof Persona) {

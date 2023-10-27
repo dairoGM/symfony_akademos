@@ -109,4 +109,14 @@ class EstructuraRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+
+
+    public function geEstructuras($estructurasNegocio)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.activo = true and qb.id IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

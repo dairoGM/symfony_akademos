@@ -16,6 +16,7 @@ use App\Entity\Personal\NivelEscolar;
 use App\Entity\Personal\Persona;
 use App\Entity\Personal\Profesion;
 use App\Entity\Personal\Sexo;
+use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Repository\Estructura\ResponsabilidadRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -60,15 +61,6 @@ class PersonaType extends AbstractType
                     new NotBlank([],'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('numeroSerieCarnetIdentidad', TextType::class, [
-                'label' => 'Número de serie del CI',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])
-//            ->add('twitter', TextType::class, [
-//                'required' => false
-//            ])
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
                 'constraints' => [
@@ -214,15 +206,16 @@ class PersonaType extends AbstractType
                 'empty_data' => null,
                 'required' => false
             ])
-            ->add('carrera', EntityType::class, [
-                'class' => Carrera::class,
+            ->add('solicitudProgramaAcademico', EntityType::class, [
+                'class' => SolicitudProgramaAcademico::class,
+                'label' => 'Carrera',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where('u.estadoProgramaAcademico IN(2,8)')->orderBy('u.id', 'ASC');//aprobados y extintos
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
-                'required' => false
+                'required' => false,
             ])
             ->add('categoriaEstructura', EntityType::class, [
                 'class' => CategoriaEstructura::class,
@@ -258,9 +251,9 @@ class PersonaType extends AbstractType
                     new NotBlank()
                 ],
                 'mapped' => false,
-                'attr' => [
-                    'readonly' => ($options['accion'] == 'registrar')
-                ]
+//                'attr' => [
+//                    'readonly' => ($options['accion'] == 'registrar')
+//                ]
             ])
             ->add('contrasena', PasswordType::class, [
                 'label' => 'Contraseña',

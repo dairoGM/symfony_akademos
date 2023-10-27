@@ -14,8 +14,8 @@ class PersonaOrganizacion extends BaseEntity
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Persona")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Persona" )
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?Persona $persona;
 
