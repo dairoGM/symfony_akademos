@@ -439,13 +439,11 @@ class EstructuraController extends AbstractController
 
     /**
      * @Route("/{id}/exportar-estructuras-hijas", name="app_estructura_exportar_estructuras_hijas", methods={"GET", "POST"})
-     * @param Request $request
-     * @param Estructura $estructura
      * @param EstructuraRepository $estructuraRepository
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function exportarEstructurasHija($id, Request $request,HandlerFop $handFop, ProvinciaRepository $provinciaRepository, MunicipioRepository $municipioRepository, TipoEstructuraRepository $tipoEstructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository, Estructura $estructura, EstructuraRepository $estructuraRepository, EntityManagerInterface $entityManager, Utils $utils)
+    public function exportarEstructurasHija($id, HandlerFop $handFop, EstructuraRepository $estructuraRepository)
     {
         try {
             $export = $estructuraRepository->getExportarListadoDadoId($id);
