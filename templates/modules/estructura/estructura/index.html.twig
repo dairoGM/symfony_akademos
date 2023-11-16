@@ -76,6 +76,10 @@
                                href="{{ path('app_estructura_registrar_hija', {'id': item.id}) }}"><i
                                         class="fa fa-plus"></i>
                             </a>
+                            <a class="btn btn-outline-primary" title="Exportar estructuras hijas" target="_blank"
+                               href="{{ path('app_estructura_exportar_estructuras_hijas', {'id': item.id}) }}"><i
+                                        class="fa fa-file-pdf"></i>
+                            </a>
                             {% if dataShow[item.id] %}
                                 <button class="btn btn-outline-danger elementRemove" title="Eliminar"
                                         data-url="{{ path('app_estructura_eliminar', {'id': item.id}) }}">

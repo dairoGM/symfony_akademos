@@ -101,6 +101,23 @@ class EstructuraRepository extends ServiceEntityRepository
     }
 
 
+    public function getExportarListadoDadoId($idEstructura)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('qb.id, qb.nombre, qb.activo, c.nombre as categoria, ep.siglas as siglasPadre')
+            ->innerJoin('qb.categoriaEstructura', 'c')
+            ->leftJoin('qb.estructura', 'ep')
+            ->where("qb.activo = true and ep.id = $idEstructura");
+        $qb->orderBy('qb.id', 'desc');
+        $resul = $qb->getQuery()->getResult();
+        $final = [];
+        foreach ($resul as $value) {
+            $value['activo'] = $value ? 'Habilitado' : 'Deshabilitado';
+            $final[] = $value;
+        }
+        return $final;
+    }
+
     public function getEstructurasDadoIdCategoria($categoriaEstructuraId)
     {
         $qb = $this->createQueryBuilder('qb')

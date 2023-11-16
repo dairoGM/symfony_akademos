@@ -14,6 +14,7 @@ use App\Repository\Estructura\MunicipioRepository;
 use App\Repository\Estructura\PlazaRepository;
 use App\Repository\Estructura\ProvinciaRepository;
 use App\Repository\Estructura\TipoEstructuraRepository;
+use App\Services\HandlerFop;
 use App\Services\Utils;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -408,7 +409,7 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, EstructuraRepository $estructuraRepository)
+    public function exportarPdf(Request $request, HandlerFop $handFop, EstructuraRepository $estructuraRepository)
     {
         $export = $estructuraRepository->getExportarListado();
         $export = \App\Services\DoctrineHelper::toArray($export);
@@ -431,6 +432,28 @@ class EstructuraController extends AbstractController
             return $this->json($utils->procesarEstructura($estructuraRepository->find($id)));
         } catch (\Exception $exception) {
             return new JsonResponse([]);
+        }
+    }
+
+
+
+    /**
+     * @Route("/{id}/exportar-estructuras-hijas", name="app_estructura_exportar_estructuras_hijas", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Estructura $estructura
+     * @param EstructuraRepository $estructuraRepository
+     * @return Response
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     */
+    public function exportarEstructurasHija($id, Request $request,HandlerFop $handFop, ProvinciaRepository $provinciaRepository, MunicipioRepository $municipioRepository, TipoEstructuraRepository $tipoEstructuraRepository, CategoriaEstructuraRepository $categoriaEstructuraRepository, Estructura $estructura, EstructuraRepository $estructuraRepository, EntityManagerInterface $entityManager, Utils $utils)
+    {
+        try {
+            $export = $estructuraRepository->getExportarListadoDadoId($id);
+            $export = \App\Services\DoctrineHelper::toArray($export);
+            return $handFop->exportToPdf(new ExportListEstructuraToPdf($export));
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_estructura_registrar', [], Response::HTTP_SEE_OTHER);
         }
     }
 }
