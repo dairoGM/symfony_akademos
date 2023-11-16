@@ -106,7 +106,10 @@ class PersonaController extends AbstractController
 
             $estructura = $estructuraRepository->find($request->request->all()['persona']['estructura']);
             $persona->setEstructura($estructura);
-            $responsabilidad = $responsabilidadRepository->find($request->request->all()['persona']['responsabilidad']);
+            $responsabilidad = null;
+            if (!empty($request->request->all()['persona']['responsabilidad'])) {
+                $responsabilidad = $responsabilidadRepository->find($request->request->all()['persona']['responsabilidad']);
+            }
             $persona->setResponsabilidad($responsabilidad);
 
             $usuario = new User();
@@ -241,12 +244,17 @@ class PersonaController extends AbstractController
             $persona->setFechaNacimiento(\DateTime::createFromFormat('d/m/Y', $request->request->all()['persona']['fechaNacimiento']));
             $estructura = $estructuraRepository->find($request->request->all()['persona']['estructura']);
             $persona->setEstructura($estructura);
-            $responsabilidad = $responsabilidadRepository->find($request->request->all()['persona']['responsabilidad']);
+
+            $responsabilidad = null;
+            if (!empty($request->request->all()['persona']['responsabilidad'])) {
+                $responsabilidad = $responsabilidadRepository->find($request->request->all()['persona']['responsabilidad']);
+            }
             $persona->setResponsabilidad($responsabilidad);
+
             $personaRepository->edit($persona);
 
 
-            if ($persona->getResponsabilidad()->getId() != $request->request->all()['persona']['responsabilidad'] || $persona->getEstructura()->getId()) {
+            if (!empty($request->request->all()['persona']['responsabilidad']) && $persona->getResponsabilidad()->getId() != $request->request->all()['persona']['responsabilidad'] || $persona->getEstructura()->getId()) {
                 $plantillas = $plantillaRepository->findBy(['persona' => $persona]);
                 foreach ($plantillas as $value) {
                     $value->setActivo(false);

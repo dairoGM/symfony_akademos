@@ -186,6 +186,7 @@ class Persona extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity=Responsabilidad::class)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $responsabilidad;
 

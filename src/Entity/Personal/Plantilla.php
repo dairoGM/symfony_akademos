@@ -32,7 +32,7 @@ class Plantilla extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Responsabilidad")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?Responsabilidad $responsabilidad;
     

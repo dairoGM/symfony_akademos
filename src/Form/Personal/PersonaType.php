@@ -244,7 +244,8 @@ class PersonaType extends AbstractType
                 'choices' => $this->responsabilidadRepository->getQueryBuilderForm($this->idEstructura),
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
-                'mapped' => false
+                'mapped' => false,
+                'required' => false
             ])
             ->add('usuario', TextType::class, [
                 'constraints' => [
