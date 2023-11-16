@@ -3,12 +3,14 @@
 namespace App\Controller\Pregrado;
 
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
+use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Security\User;
 use App\Export\Pregrado\ExportListSolicitudProgramaAcademicoToPdf;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\NoAprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
+use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -166,7 +168,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function aprobar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function aprobar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
             $choices = [
@@ -196,6 +198,16 @@ class SolicitudProgramaAcademicoController extends AbstractController
                 }
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                $exist = $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $solicitudPrograma->getCentroRector()->getId(), 'solicitudProgramaAcademico' => $solicitudPrograma->getId()]);
+                if (empty($exist)) {
+                    $newSolicitud = new SolicitudProgramaAcademicoInstitucion();
+                    $newSolicitud->setInstitucion($solicitudPrograma->getCentroRector());
+                    $newSolicitud->setSolicitudProgramaAcademico($solicitudPrograma);
+                    $solicitudProgramaAcademicoInstitucionRepository->add($newSolicitud, true);
+                }
+
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
             }

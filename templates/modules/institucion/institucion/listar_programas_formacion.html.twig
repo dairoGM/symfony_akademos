@@ -59,21 +59,13 @@
                             {% for item in carreras %}
                                 <tr>
                                     <td width="1%">{{ loop.index }}</td>
-                                    <td>{{ item.nombre }}</td>
+                                    <td>{{ item.solicitudProgramaAcademico.nombre | default('') }}</td>
                                     <td width="10%" class="text-center">
                                         <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                                data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
-                                                data-title="Detalles de la solicitud del programa">
+                                                data-url="{{ path('app_solicitud_programa_academico_detail', {'id' : item.solicitudProgramaAcademico.id}) }}"
+                                                data-title="Detalles de la solicitud de programa">
                                             <i class="fa fa-eye "></i>
                                         </button>
-                                    </td> <td width="10%" class="text-center">
-                                        <button title="Detalles"
-                                                class="btn btn-outline-primary modalDetailAction"
-                                                data-url="{{ path('app_institucion_detail', {'id' : item.id}) }}"
-                                                data-title="Detalles de la institución">
-                                            <i class="fa fa-eye "></i>
-                                        </button>
-
                                     </td>
                                 </tr>
                             {% endfor %}

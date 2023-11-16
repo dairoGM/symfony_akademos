@@ -41,6 +41,7 @@ use App\Repository\Institucion\InstitucionRevistaCientificaRepository;
 use App\Repository\Institucion\InstitucionSedesRepository;
 use App\Repository\Institucion\RecursosHumanosRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
+use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Services\DoctrineHelper;
 use App\Services\HandlerFop;
 use App\Services\TraceService;
@@ -700,13 +701,13 @@ class InstitucionController extends AbstractController
      * @param Institucion $institucion
      * @return Response
      */
-    public function programasFormacion(Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function programasFormacion(Institucion $institucion, $option, SolicitudProgramaRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
             $postgrados = [];
             $carreras = [];
             if ($option == 'option1') {
-                $carreras = [];
+                $carreras = $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $institucion->getId()]);
             }
             if ($option == 'option2') {
                 $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId()]);
@@ -950,14 +951,6 @@ class InstitucionController extends AbstractController
             return $this->redirectToRoute('app_institucion_asignar_fum', ['id' => $institucionFum->getInstitucion()->getId()], Response::HTTP_SEE_OTHER);
         }
     }
-
-
-
-
-
-
-
-
 
 
 }
