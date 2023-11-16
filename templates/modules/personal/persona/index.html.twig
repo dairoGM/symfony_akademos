@@ -29,7 +29,7 @@
                     <th>No.</th>
                     <th>Foto</th>
                     <th>Nombre y apellidos</th>
-                    <th>Carné de identidad</th>
+                    <th>Estructura superior</th>
                     <th>Estructura</th>
                     <th>Responsabilidad</th>
                     <th class="text-center">Opciones</th>
@@ -45,9 +45,9 @@
                                 <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}"
                                      class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
                             </a></td>
-                        <td width="35%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
-                        <td width="17%">{{ item.carnetIdentidad }}</td>
-                        <td width="25%">{{ item.estructura.nombre | default('') }}</td>
+                        <td width="20%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+                        <td width="30%">{{ item.estructura.estructura.nombre | default('') }}</td>
+                        <td width="30%">{{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.responsabilidad.nombre | default('') }}</td>
 
 

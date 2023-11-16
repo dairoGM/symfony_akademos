@@ -86,8 +86,9 @@ class EstructuraRepository extends ServiceEntityRepository
     public function getExportarListado()
     {
         $qb = $this->createQueryBuilder('qb')
-            ->select('qb.id, qb.nombre, qb.activo, c.nombre as categoria')
+            ->select('qb.id, qb.nombre, qb.activo, c.nombre as categoria, ep.siglas as siglasPadre')
             ->innerJoin('qb.categoriaEstructura', 'c')
+            ->leftJoin('qb.estructura', 'ep')
             ->where("qb.activo = true");
         $qb->orderBy('qb.id', 'desc');
         $resul = $qb->getQuery()->getResult();
@@ -103,7 +104,8 @@ class EstructuraRepository extends ServiceEntityRepository
     public function getEstructurasDadoIdCategoria($categoriaEstructuraId)
     {
         $qb = $this->createQueryBuilder('qb')
-            ->select('qb.id, qb.nombre, qb.siglas')
+            ->select('qb.id, qb.nombre, qb.siglas, ep.siglas as siglasPadre')
+            ->leftJoin('qb.estructura', 'ep')
             ->where("qb.categoriaEstructura = $categoriaEstructuraId and qb.activo = true");
         $qb->orderBy('qb.nombre');
         $resul = $qb->getQuery()->getResult();
@@ -114,6 +116,7 @@ class EstructuraRepository extends ServiceEntityRepository
     public function geEstructuras($estructurasNegocio)
     {
         $qb = $this->createQueryBuilder('qb')
+            ->leftJoin('qb.estructura', 'ep')
             ->where("qb.activo = true and qb.id IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
         $qb->orderBy('qb.nombre');
         $resul = $qb->getQuery()->getResult();

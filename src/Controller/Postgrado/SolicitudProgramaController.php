@@ -64,7 +64,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function registrar(Request $request, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
-//        try {
+        try {
             $solicitudPrograma = new SolicitudPrograma();
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -88,10 +88,10 @@ class SolicitudProgramaController extends AbstractController
             return $this->render('modules/postgrado/solicitud_programa/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -545,10 +545,10 @@ class SolicitudProgramaController extends AbstractController
         try {
             $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
             $miembroCopep = $miembrosCopepRepository->getMiembroCopepDadoIdPersona($personaAutenticada->getId());
-
             return $this->render('modules/postgrado/solicitud_programa/votacion.html.twig', [
                     'solicitudPrograma' => $solicitudPrograma,
                     'miembroCopep' => $miembroCopep,
+//                    'existeVoto' => $solicitudProgramaVotacionRepository->existeVoto($personaAutenticada->getId()),
                     'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()], ['creado' => 'desc'])]
             );
         } catch (\Exception $exception) {
@@ -568,6 +568,7 @@ class SolicitudProgramaController extends AbstractController
         try {
             $allPost = $request->request->all();
             $existe = $solicitudProgramaVotacionRepository->findBy(['miembrosCopep' => $allPost['miembroCopep'], 'solicitudPrograma' => $allPost['solicitudPrograma']]);
+
             if (isset($existe[0])) {
                 $solicitudProgramaVotacionRepository->remove($existe[0], true);
             }
@@ -585,11 +586,11 @@ class SolicitudProgramaController extends AbstractController
             $cantidadVotosNo = count($solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $allPost['solicitudPrograma'], 'voto' => false]));
 
 
-            if ($cantidadVotosSi > ($cantidadMiembrosCopep / 2) + 1) {
+            if (($cantidadVotosSi > ($cantidadMiembrosCopep / 2) + 1) || $cantidadVotosSi == $cantidadMiembrosCopep) {
                 $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(5));// 'Aprobado'
                 $solicitudProgramaRepository->edit($solicitudProgramaEntidad, true);
 
-            } else if ($cantidadVotosNo > ($cantidadMiembrosCopep / 2) + 1) {
+            } else if (($cantidadVotosNo > ($cantidadMiembrosCopep / 2) + 1) || $cantidadVotosNo == $cantidadMiembrosCopep) {
                 $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(6));// 'Rechazado'
                 $solicitudProgramaRepository->edit($solicitudProgramaEntidad, true);
             }
@@ -597,7 +598,7 @@ class SolicitudProgramaController extends AbstractController
 
             return $this->json(true);
         } catch (\Exception $exception) {
-            return $this->json(false);
+            return $this->json($exception->getMessage());
         }
     }
 }

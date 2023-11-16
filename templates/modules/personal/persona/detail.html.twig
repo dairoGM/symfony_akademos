@@ -17,8 +17,15 @@
                 <h5 class="mb-0">
                     <b>Municipio:</b> {{ item.municipio.nombre | default('') }}
                 </h5>
+                <h5 class="mb-0">
+                    <b>Categoría docente:</b> {{ item.categoriaDocente.nombre | default('') }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Categoría científica:</b> {{ item.gradoAcademico.nombre | default('') }}
+                </h5>
             </div>
             <div class="col-5">
+                <h5 class="mb-0"><b>Estructura superior:</b> {{ item.estructura.estructura.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Estructura:</b> {{ item.estructura.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Responsabilidad:</b> {{ item.responsabilidad.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Usuario:</b> {{ item.usuario.email | default('') }}</h5>

@@ -32,7 +32,7 @@ class UserController extends AbstractController
     {
         try {
             return $this->render('modules/admin/usuario/index.html.twig', [
-                'usuarios' => $usuarioRepository->findBy([], ['id' => 'desc']),
+                'usuarios' => $usuarioRepository->getUsuarios(),
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());

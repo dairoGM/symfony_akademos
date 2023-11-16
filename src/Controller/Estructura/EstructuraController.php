@@ -5,6 +5,7 @@ namespace App\Controller\Estructura;
 use App\Entity\Estructura\Estructura;
 use App\Entity\Estructura\Plaza;
 use App\Entity\Security\User;
+use App\Export\Estructura\ExportListEstructuraToPdf;
 use App\Form\Estructura\EstructuraType;
 use App\Form\Estructura\PlazaType;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
@@ -79,7 +80,7 @@ class EstructuraController extends AbstractController
      */
     public function index(EstructuraRepository $estructuraRepository, Utils $utils)
     {
-//        try {
+        try {
             $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
             if (count($estructurasNegocio) > 0) {
                 $registros = $estructuraRepository->geEstructuras($estructurasNegocio);
@@ -94,10 +95,10 @@ class EstructuraController extends AbstractController
                 'registros' => $registros,
                 'dataShow' => $data,
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
@@ -393,7 +394,7 @@ class EstructuraController extends AbstractController
         try {
 //            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
 //            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructuras($id, $estructurasNegocio)));
-            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructurasTemp($id)));
+            return $this->json($utils->procesarEstructuraV2($estructuraRepository->geEstructurasDadoArrayEstructurasTemp($id)));
 
         } catch (\Exception $exception) {
             return new JsonResponse([]);
@@ -411,7 +412,7 @@ class EstructuraController extends AbstractController
     {
         $export = $estructuraRepository->getExportarListado();
         $export = \App\Services\DoctrineHelper::toArray($export);
-        return $handFop->exportToPdf(new \App\Export\Estructura\ExportListEstructuraToPdf($export));
+        return $handFop->exportToPdf(new ExportListEstructuraToPdf($export));
     }
 
     /**

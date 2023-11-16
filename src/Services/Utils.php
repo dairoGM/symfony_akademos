@@ -100,6 +100,19 @@ class Utils
         return $result;
     }
 
+    public function procesarEstructuraV2($nomenclador)
+    {
+        $result = [];
+        if (is_array($nomenclador)) {
+            foreach ($nomenclador as $value) {
+                $element['id'] = $value->getId();
+                $element['nombre'] = "(" . $value->getEstructura()->getSiglas() . ") " . $value->getNombre();
+                $result[] = $element;
+            }
+        }
+        return $result;
+    }
+
     public function procesarEstructura($nomenclador)
     {
         $element['id'] = $nomenclador->getId();

@@ -30,6 +30,8 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Foto</th>
+                    <th>Nombre y apellidos</th>
                     <th>Correo</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -38,6 +40,13 @@
                 {% for item in usuarios %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td width="1%">
+                            <a href="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                               target="_blank">
+                                <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
+                            </a></td>
+                        <td width="20%">{{ item.primer_nombre ~ ' ' ~ item.segundo_nombre ~' '~ item.primer_apellido ~ ' ' ~ item.segundo_apellido }}</td>
                         <td>{{ item.email }}</td>
                         <td class="text-center"  width="15%">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"

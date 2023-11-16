@@ -40,7 +40,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $entity;
     }
 
-     /**
+    /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -78,5 +78,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    public function getUsuarios()
+    {
+        $query = "select
+            seguridad.tbd_usuario.id,
+            tbd_persona.primer_nombre,
+            tbd_persona.segundo_nombre,
+            tbd_persona.primer_apellido,
+            tbd_persona.segundo_apellido,
+            tbd_persona.foto,
+            seguridad.tbd_usuario.email
+            from  seguridad.tbd_usuario
+            left join personal.tbd_persona on personal.tbd_persona.usuario_id = seguridad.tbd_usuario.id 
+            order by tbd_persona.primer_nombre";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        return $temp->fetchAllAssociative();
     }
 }

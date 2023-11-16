@@ -47,7 +47,7 @@
                 {% for item in registros %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ item.nombre }}</td>
+                        <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td>
                         <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
                         <td class="-text-center">
                             {% if '1' == item.activo %}

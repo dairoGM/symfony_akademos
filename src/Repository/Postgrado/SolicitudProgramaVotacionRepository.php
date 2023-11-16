@@ -48,4 +48,16 @@ class SolicitudProgramaVotacionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function existeVoto($personaId)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('qb.id')
+            ->innerJoin('qb.miembrosCopep', 'mC')
+            ->innerJoin('mC.miembro', 'p')
+            ->where("p.id = $personaId");
+
+        $resul = $qb->getQuery()->getResult();
+        return isset($resul[0]) ? true : false;
+    }
 }
