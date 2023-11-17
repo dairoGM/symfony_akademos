@@ -117,10 +117,14 @@ class PersonaRepository extends ServiceEntityRepository
     public function getExportarListado($estructurasNegocio)
     {
         $qb = $this->createQueryBuilder('qb')
-            ->select('qb.id, qb.primerNombre, qb.segundoNombre, qb.primerApellido, qb.segundoApellido, qb.activo, qb.carnetIdentidad')
-            ->where("qb.activo = true and  qb.estructura IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
+            ->select('qb.id, qb.primerNombre, qb.segundoNombre, qb.primerApellido, qb.segundoApellido, qb.activo, qb.carnetIdentidad');
+        if (count($estructurasNegocio) > 0)
+            $qb->where("qb.activo = '1' and  qb.estructura IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio));
+        else
+            $qb->where("qb.activo = '1'");
         $qb->orderBy('qb.id', 'desc');
         $resul = $qb->getQuery()->getResult();
+
         $final = [];
         foreach ($resul as $value) {
             $value['nombreCompleto'] = $value['primerNombre'] . ' ' . $value['segundoNombre'] . ' ' . $value['primerApellido'] . ' ' . $value['segundoApellido'];

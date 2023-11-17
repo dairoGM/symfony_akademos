@@ -37,6 +37,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Estructura superior</th>
                     <th>Nombre</th>
                     <th>Categoría de estructura</th>
                     <th>Estado</th>
@@ -46,8 +47,13 @@
                 <tbody>
                 {% for item in registros %}
                     <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td>
+                        <td width="1">{{ loop.index }}</td>
+                        <td>{{ item.estructura.nombre | default('') }}</td>
+{#                        {% if item.estructura.siglas is defined %}#}
+{#                            <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td>#}
+{#                        {% else %}#}
+                            <td>{{ item.nombre | default('')}}</td>
+{#                        {% endif %}#}
                         <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
                         <td class="-text-center">
                             {% if '1' == item.activo %}

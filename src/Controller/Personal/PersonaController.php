@@ -9,6 +9,7 @@ use App\Entity\Personal\Plantilla;
 use App\Entity\Personal\Responsable;
 use App\Entity\Security\User;
 use App\Entity\Traza\ConfiguracionTraza;
+use App\Export\Personal\ExportListPersonaToPdf;
 use App\Form\Personal\PersonaType;
 use App\Form\Personal\PlantillaType;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
@@ -23,6 +24,8 @@ use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Personal\TipoOrganizacionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Repository\Security\UserRepository;
+use App\Services\DoctrineHelper;
+use App\Services\HandlerFop;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -490,16 +493,17 @@ class PersonaController extends AbstractController
 
     /**
      * @Route("/exportar_pdf", name="app_persona_exportar_pdf", methods={"GET", "POST"})
-     * @param Request $request
-     * @param User $user
+     * @param HandlerFop $handFop
+     * @param PersonaRepository $personaRepository
+     * @param Utils $utils
      * @return Response
      */
-    public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, PersonaRepository $personaRepository, Utils $utils)
+    public function exportarPdf(HandlerFop $handFop, PersonaRepository $personaRepository, Utils $utils)
     {
         $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
         $export = $personaRepository->getExportarListado($estructurasNegocio);
-        $export = \App\Services\DoctrineHelper::toArray($export);
-        return $handFop->exportToPdf(new \App\Export\Personal\ExportListPersonaToPdf($export));
+        $export = DoctrineHelper::toArray($export);
+        return $handFop->exportToPdf(new ExportListPersonaToPdf($export));
     }
 
 }
