@@ -64,7 +64,7 @@ class SolicitudProgramaAcademicoType extends AbstractType
             ->add('resolucion', FileType::class, [
                 'label' => 'Resolución',
                 'mapped' => false,
-                'required' => $options['action'] == 'registrar',
+                'required' => false,
             ])
             ->add('fundamentacion', FileType::class, [
                 'label' => 'Fundamentación',

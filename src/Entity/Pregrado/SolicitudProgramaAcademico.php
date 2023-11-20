@@ -68,7 +68,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-Záéíóúàè.ìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -77,7 +77,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-Záéíóúàè.ìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )

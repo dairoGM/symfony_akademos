@@ -79,8 +79,15 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository
      * @return Response
      */
-    public function detail(ProgramaAcademicoReabiertoRepository $programaAcademicoReabiertoRepository, ProgramaAcademicoReabiertoInstitucionRepository $programaAcademicoReabiertoInstitucionRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, ModificacionPlanEstudioRepository $modificacionPlanEstudioRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function detail(ProgramaAcademicoReabiertoRepository                 $programaAcademicoReabiertoRepository,
+                           ProgramaAcademicoReabiertoInstitucionRepository      $programaAcademicoReabiertoInstitucionRepository,
+                           SolicitudProgramaAcademicoPlanEstudioRepository      $solicitudProgramaAcademicoPlanEstudioRepository,
+                           ModificacionPlanEstudioRepository                    $modificacionPlanEstudioRepository,
+                           SolicitudProgramaAcademico                           $solicitudProgramaAcademico,
+                           SolicitudProgramaAcademicoInstitucionRepository      $solicitudProgramaAcademicoInstitucionRepository,
+                           SolicitudProgramaAcademicoComisionNacionalRepository $solComNac)
     {
+
         $planEstudio = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
         $planEstudioAsociado = -1;
         if (is_array($planEstudio) && count($planEstudio) > 0) {
@@ -92,6 +99,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
             'format' => 'col2',
+            'comisionAsignada' => $solComNac->getComisionNacional($solicitudProgramaAcademico->getId()),
             'universidades' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]),
             'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado]),
             'universidadesIncorporadas' => isset($programaReabierto[0]) ? $programaAcademicoReabiertoInstitucionRepository->findBy(['programaAcademicoReabierto' => $programaReabierto[0]->getId()]) : []

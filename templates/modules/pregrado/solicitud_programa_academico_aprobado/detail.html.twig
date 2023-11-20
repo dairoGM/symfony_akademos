@@ -36,7 +36,7 @@
                 <h5 class="mb-0"><b>Centro rector:</b> {{ item.centroRector.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Duración del Curso Por
                         Encuentro:</b> {{ item.duracionCursoPorEncuentro | default('0') }} años</h5>
-                <h5 class="mb-0"><b>Comisión nacional:</b> {{ item.comisionNacional.nombre | default('') }} años</h5>
+                <h5 class="mb-0"><b>Comisión nacional:</b> {{ comisionAsignada | default('') }} </h5>
             </div>
         {% elseif format == 'col3' %}
             <div class="col-4">

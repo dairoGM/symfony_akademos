@@ -87,7 +87,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_solicitud_programa_academico_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $solicitudPrograma
+     * @param SolicitudProgramaAcademico $solicitudPrograma
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */

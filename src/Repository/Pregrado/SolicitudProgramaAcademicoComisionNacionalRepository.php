@@ -48,4 +48,17 @@ class SolicitudProgramaAcademicoComisionNacionalRepository extends ServiceEntity
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getComisionNacional($solicitudId)
+    {
+        $query = "SELECT tbd_comision_nacional.nombre
+                        FROM pregrado.tbr_solicitud_programa_academico_comision_nacional
+                        join pregrado.tbd_comision_nacional on tbd_comision_nacional.id = tbr_solicitud_programa_academico_comision_nacional.comision_nacional_id
+                        where pregrado.tbr_solicitud_programa_academico_comision_nacional.solicitud_programa_academico_id = $solicitudId";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        $temp = $temp->fetchAllAssociative();
+        return isset($temp[0]) ? $temp[0]['nombre'] : null;
+    }
 }
