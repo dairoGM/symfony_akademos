@@ -51,7 +51,7 @@ class EntidadType extends AbstractType
                     new NotBlank([],'Este valor no debe estar en blanco.')
                 ],
                 "attr" => [
-                    "data-inputmask" => '"mask": "(999) 999-9999"',
+                    "data-inputmask" => '"mask": "(99) 9 999-99"',
                     "data-mask" => ''
                 ]
             ])

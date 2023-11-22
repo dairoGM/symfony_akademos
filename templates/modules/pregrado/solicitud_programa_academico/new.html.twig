@@ -16,7 +16,7 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-                <div class="col-4 form-group">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tipoProgramaAcademico) }}
                     {{ form_widget(form.tipoProgramaAcademico) }}
                     {{ form_errors(form.tipoProgramaAcademico) }}
@@ -26,19 +26,18 @@
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
                 </div>
-                <div class="col-4 form-group">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.organismoDemandante) }}
                     {{ form_widget(form.organismoDemandante) }}
                     {{ form_errors(form.organismoDemandante) }}
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.tipoOrganismo) }}#}
-{#                    {{ form_widget(form.tipoOrganismo) }}#}
-{#                    {{ form_errors(form.tipoOrganismo) }}#}
-{#                </div>#}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.tipoOrganismo) }} #}
+                {#                    {{ form_widget(form.tipoOrganismo) }} #}
+                {#                    {{ form_errors(form.tipoOrganismo) }} #}
+                {#                </div> #}
             </div>
             <div class="row">
-
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.resolucion) }}
                     {{ form_widget(form.resolucion) }}
@@ -53,8 +52,37 @@
                           class="cargar-archivo1"> </span>
                     {{ form_errors(form.fundamentacion) }}
                 </div>
-
-
+            </div>
+            <hr>
+            <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos del solicitante</p></b>
+            </h5>
+            <hr>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreSolicitante) }}
+                    {{ form_widget(form.nombreSolicitante) }}
+                    {{ form_errors(form.nombreSolicitante) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.correoSolicitante) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        {{ form_widget(form.correoSolicitante) }}
+                        {{ form_errors(form.correoSolicitante) }}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.telefonoSolicitante) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {{ form_widget(form.telefonoSolicitante) }}
+                        {{ form_errors(form.telefonoSolicitante) }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -79,6 +107,6 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
-
+        $('[data-mask]').inputmask()
     </script>
 {% endblock %}

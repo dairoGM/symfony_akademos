@@ -107,6 +107,25 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      */
     private ?\App\Entity\Institucion\Institucion $centroRector;
 
+
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $nombreSolicitante = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $correoSolicitante = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $telefonoSolicitante = null;
+
+
     /**
      * @return EstadoProgramaAcademico|null
      */
@@ -331,6 +350,54 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setCentroRector(?\App\Entity\Institucion\Institucion $centroRector): void
     {
         $this->centroRector = $centroRector;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNombreSolicitante(): ?string
+    {
+        return $this->nombreSolicitante;
+    }
+
+    /**
+     * @param string|null $nombreSolicitante
+     */
+    public function setNombreSolicitante(?string $nombreSolicitante): void
+    {
+        $this->nombreSolicitante = $nombreSolicitante;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCorreoSolicitante(): ?string
+    {
+        return $this->correoSolicitante;
+    }
+
+    /**
+     * @param string|null $correoSolicitante
+     */
+    public function setCorreoSolicitante(?string $correoSolicitante): void
+    {
+        $this->correoSolicitante = $correoSolicitante;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTelefonoSolicitante(): ?string
+    {
+        return $this->telefonoSolicitante;
+    }
+
+    /**
+     * @param string|null $telefonoSolicitante
+     */
+    public function setTelefonoSolicitante(?string $telefonoSolicitante): void
+    {
+        $this->telefonoSolicitante = $telefonoSolicitante;
     }
 
 

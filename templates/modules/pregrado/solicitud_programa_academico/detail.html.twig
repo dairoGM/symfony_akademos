@@ -1,10 +1,10 @@
-    <div class="card">
+<div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col-6">
                 <h5 class="mb-0"><b>Tipo de programa
                         académico:</b> {{ item.tipoProgramaAcademico.nombre | default('') }}</h5>
-{#                <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5>#}
+                {#                <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5> #}
                 <h5 class="mb-0"><b>Resolución: </b> <a target="_blank"
                                                         href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/solicitud_programa_academico/resolucion/{{ item.resolucion }}">{{ item.resolucion }}</a>
                 </h5>
@@ -17,8 +17,24 @@
                 <h5 class="mb-0"><b>Estado del programa
                         académico:</b> {{ item.estadoProgramaAcademico.nombre | default('') }}
                 </h5>
-                <h5 class="mb-0"><b>Organismo o entidad demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Organismo o entidad
+                        demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
 
+            </div>
+        </div>
+        <hr>
+        <h6 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos del
+                    solicitante</p></b>
+        </h6>
+        <div class="row">
+            <div class="col-4">
+                <h5 class="mb-0"><b>Nombre(s) y apellidos:</b> {{ item.nombreSolicitante | default('') }}</h5>
+            </div>
+            <div class="col-4">
+                <h5 class="mb-0"><b>Correo:</b> {{ item.correoSolicitante | default('') }}</h5>
+            </div>
+            <div class="col-4">
+                <h5 class="mb-0"><b>Teléfono:</b> {{ item.telefonoSolicitante | default('') }}</h5>
             </div>
         </div>
     </div>

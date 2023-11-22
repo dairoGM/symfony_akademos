@@ -98,7 +98,7 @@ class PersonaType extends AbstractType
                 'label' => 'Teléfono particular',
                 'required' => false,
                 "attr" => [
-                    "data-inputmask" => '"mask": "(999) 999-9999"',
+                    "data-inputmask" => '"mask": "(99) 9 999-99"',
                     "data-mask" => ''
                 ]
             ])

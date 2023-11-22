@@ -45,7 +45,7 @@ class SolicitudProgramaType extends AbstractType
             ->add('telefonoCoordinador', TextType::class, [
                 'label' => 'Teléfono',
                 "attr" => [
-                    "data-inputmask" => '"mask": "(999) 999-9999"',
+                    "data-inputmask" => '"mask": "(99) 9 999-99"',
                     "data-mask" => ''
                 ]
             ])

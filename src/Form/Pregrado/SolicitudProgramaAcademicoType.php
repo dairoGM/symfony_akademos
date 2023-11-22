@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -70,6 +71,22 @@ class SolicitudProgramaAcademicoType extends AbstractType
                 'label' => 'Fundamentación',
                 'mapped' => false,
                 'required' => $options['action'] == 'registrar',
+            ])
+            ->add('nombreSolicitante', TextType::class, [
+                'label' => 'Nombre(s) y apellidos',
+                'required' => false
+            ])
+            ->add('correoSolicitante', EmailType::class, [
+                'label' => 'Correo',
+                'required' => false
+            ])
+            ->add('telefonoSolicitante', TextType::class, [
+                'label' => 'Teléfono',
+                'required' => false,
+                "attr" => [
+                    "data-inputmask" => '"mask": "(99) 9 999-99"',
+                    "data-mask" => ''
+                ]
             ]);
     }
 
