@@ -42,9 +42,9 @@
                         {% else %}
                             <td></td>
                         {% endif %}
-                        <td></td>
-                        <td>{{ item.duracionCursoDiurno | default('') }} años</td>
-                        <td>{{ item.duracionCursoPorEncuentro | default('') }} años</td>
+                        <td>{{ item.centroRector.nombre | default('') }}</td>
+                        <td>{% if item.duracionCursoDiurno is not null %} {{ item.duracionCursoDiurno | default('') }} años {% else %} {% endif %}</td>
+                        <td>{% if item.duracionCursoPorEncuentro is not null %}  {{ item.duracionCursoPorEncuentro | default('') }} años{% else %} {% endif %}</td>
                         <td>{{ item.estadoProgramaAcademico.nombre | default('') }}</td>
                         <td width="25%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
