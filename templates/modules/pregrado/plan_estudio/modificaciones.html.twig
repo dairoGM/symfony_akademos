@@ -30,9 +30,9 @@
                     <h5 class="mb-0"><b>Organismo
                             demandante:</b> {{ planEstudio.organismoDemandante.nombre | default('') }}</h5>
                     <h5 class="mb-0"><b>Duración del Curso
-                            Diurno:</b> {{ planEstudio.duracionCursoDiurno | default('0') }} años</h5>
+                            Diurno:</b>{% if planEstudio.duracionCursoDiurno is not null %} {{ planEstudio.duracionCursoDiurno | default('0') }} años  {% else %}   {% endif %}</h5>
                     <h5 class="mb-0"><b>Duración del Curso a
-                            Distancia:</b> {{ planEstudio.duracionCursoDistancia | default('0') }} años</h5>
+                            Distancia:</b> {{ planEstudio.duracionCursoDistancia | default('') }} </h5>
                 </div>
             </div>
         </div>
