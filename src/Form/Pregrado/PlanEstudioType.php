@@ -9,6 +9,7 @@ use App\Entity\Pregrado\Oace;
 use App\Entity\Pregrado\OrganismoDemandante;
 use App\Entity\Pregrado\OrganismoFormador;
 use App\Entity\Pregrado\PlanEstudio;
+use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\TipoPrograma;
 use App\Entity\Pregrado\TipoProgramaAcademico;
 use Doctrine\DBAL\Types\IntegerType;
@@ -40,11 +41,14 @@ class PlanEstudioType extends AbstractType
                 'empty_data' => null
             ])
             ->add('carrera', EntityType::class, [
-                'class' => Carrera::class,
+                'class' => SolicitudProgramaAcademico::class,
                 'label' => 'Programa académico de pregrado',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')
+                        ->join('u.estadoProgramaAcademico', 'e')
+                        ->where('u.activo = true and e.id=2')
+                        ->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

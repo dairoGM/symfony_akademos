@@ -22,10 +22,10 @@ class PlanEstudio extends BaseNomenclator
     private ?CursoAcademico $cursoAcademico;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\App\Entity\Personal\Carrera")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\SolicitudProgramaAcademico")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?\App\Entity\Personal\Carrera $carrera;
+    private ?\App\Entity\Pregrado\SolicitudProgramaAcademico $carrera;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -118,20 +118,22 @@ class PlanEstudio extends BaseNomenclator
     }
 
     /**
-     * @return Carrera|null
+     * @return SolicitudProgramaAcademico|null
      */
-    public function getCarrera(): ?Carrera
+    public function getCarrera(): ?SolicitudProgramaAcademico
     {
         return $this->carrera;
     }
 
     /**
-     * @param Carrera|null $carrera
+     * @param SolicitudProgramaAcademico|null $carrera
      */
-    public function setCarrera(?Carrera $carrera): void
+    public function setCarrera(?SolicitudProgramaAcademico $carrera): void
     {
         $this->carrera = $carrera;
     }
+
+
 
     /**
      * @return int|null
