@@ -56,7 +56,7 @@ class AprobarProgramaType extends AbstractType
                 'empty_data' => null
             ])
             ->add('fechaProximaAcreditacion', TextType::class, [
-                'label' => 'Fecha de próxima de acreditación',
+                'label' => 'Fecha próxima de acreditación',
                 'mapped' => false,
                 'attr' => [
                     'class' => 'date-time-picker'
