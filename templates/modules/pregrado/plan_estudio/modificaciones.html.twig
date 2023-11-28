@@ -15,7 +15,7 @@
                 <div class="col-4">
                     <h5 class="mb-0"><b>Curso académico:</b> {{ planEstudio.cursoAcademico.nombre | default('') }}</h5>
                     <h5 class="mb-0"><b>Año de aprobación:</b> {{ planEstudio.annoAprobacion | default('') }}</h5>
-                    <h5 class="mb-0"><b>AOCE de formación:</b> {{ planEstudio.oace.nombre | default('') }}</h5>
+                    <h5 class="mb-0"><b>Organismo formador:</b> {{ planEstudio.organismoFormador.nombre | default('') }}</h5>
                     <h5 class="mb-0"><b>Plan de estudio: </b> <a target="_blank"
                                                                  href="{{ app.request.getSchemeAndHttpHost() }}/uploads/plan_estudio/plan_estudio/{{ planEstudio.planEstudio }}">{{ planEstudio.planEstudio }}</a>
                     </h5>
