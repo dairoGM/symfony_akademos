@@ -69,12 +69,12 @@ class PlanEstudio extends BaseNomenclator
     private ?string $planEstudio = null;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $duracionCursoDiurno;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $duracionCursoPorEncuentro;
 
@@ -96,7 +96,7 @@ class PlanEstudio extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="Oace")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?Oace $oace;
 

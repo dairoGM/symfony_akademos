@@ -57,7 +57,7 @@ class PlanEstudioController extends AbstractController
             $planEstudioEntity = new PlanEstudio();
             $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted()  ) {
                 $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
                 $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
 
