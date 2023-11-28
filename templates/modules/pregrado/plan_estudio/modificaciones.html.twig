@@ -27,7 +27,7 @@
                     <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ planEstudio.fechaAprobacion | date('d/m/Y') }}</h5>
                 </div>
                 <div class="col-4">
-                    <h5 class="mb-0"><b>Organismo
+                    <h5 class="mb-0"><b>Organismo o entidad
                             demandante:</b> {{ planEstudio.organismoDemandante.nombre | default('') }}</h5>
                     <h5 class="mb-0"><b>Duración del Curso
                             Diurno:</b>{% if planEstudio.duracionCursoDiurno is not null %} {{ planEstudio.duracionCursoDiurno | default('0') }} años  {% else %}   {% endif %}</h5>
