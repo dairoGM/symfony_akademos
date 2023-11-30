@@ -79,7 +79,7 @@
         </div>
 
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_programa_index') }}"
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_programas_aprobados_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
@@ -89,6 +89,12 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        $('#aprobar_programa_annoAcreditacion').datetimepicker({
+            format: 'YYYY'
+        }).on('dp.change', function (e) {
+
+        });
 
         var fecha = "{% if solicitudPrograma.fechaProximaAcreditacion is empty %}  {{ solicitudPrograma.fechaProximaAcreditacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#aprobar_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));

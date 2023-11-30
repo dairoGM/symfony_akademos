@@ -37,7 +37,7 @@ class ProgramasAprobadosController extends AbstractController
     public function index(SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/postgrado/programas_aprobados/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->findBy(['estadoPrograma' => 5], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $solicitudProgramaRepository->findBy(['estadoPrograma' => 7], ['activo' => 'desc', 'id' => 'desc']),
         ]);
     }
 

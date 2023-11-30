@@ -48,4 +48,15 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getSolicitudes()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->innerJoin('qb.estadoPrograma', 'ep')
+            ->where("ep.id NOT IN(:valuesItems)")->setParameter('valuesItems', array_values([7]))
+            ->orderBy('qb.id', 'desc');
+
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

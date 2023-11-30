@@ -23,8 +23,12 @@ class AprobarProgramaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('annoAcreditacion', TextType::class, [
+            ->add('annoAcreditacion', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Año de acreditación',
+                'attr' => [
+                    'maxlength' => 4,
+                    'minlength' => 4
+                ],
                 'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('codigoPrograma', TextType::class, [
@@ -53,7 +57,8 @@ class AprobarProgramaType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'required' => false
             ])
             ->add('fechaProximaAcreditacion', TextType::class, [
                 'label' => 'Fecha próxima de acreditación',

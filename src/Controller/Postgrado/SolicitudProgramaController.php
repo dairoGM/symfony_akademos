@@ -50,7 +50,7 @@ class SolicitudProgramaController extends AbstractController
     public function index(SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/postgrado/solicitud_programa/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $solicitudProgramaRepository->getSolicitudes( ),
         ]);
     }
 
@@ -231,11 +231,11 @@ class SolicitudProgramaController extends AbstractController
                     $file->move("uploads/postgrado/dictamen_final", $file_name);
                 }
 
-                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(5));
+                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(7));
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_programas_aprobados_index', [], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('modules/postgrado/solicitud_programa/aprobar.html.twig', [
@@ -244,7 +244,7 @@ class SolicitudProgramaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_programas_aprobados_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -587,7 +587,7 @@ class SolicitudProgramaController extends AbstractController
 
 
             if (($cantidadVotosSi > ($cantidadMiembrosCopep / 2) + 1) || $cantidadVotosSi == $cantidadMiembrosCopep) {
-                $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(5));// 'Aprobado'
+                $solicitudProgramaEntidad->setEstadoPrograma($estadoProgramaRepository->find(5));// 'Pendiente de aprobación'
                 $solicitudProgramaRepository->edit($solicitudProgramaEntidad, true);
 
             } else if (($cantidadVotosNo > ($cantidadMiembrosCopep / 2) + 1) || $cantidadVotosNo == $cantidadMiembrosCopep) {
