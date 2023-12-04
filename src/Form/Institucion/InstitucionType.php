@@ -57,7 +57,7 @@ class InstitucionType extends AbstractType
                 'constraints' => [new Length(["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('codigo', TextType::class, [
-                'label' => 'Código',
+                'label' => 'Código REUP',
                 'constraints' => [new Length(["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 20, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('rector', TextType::class, [
@@ -65,10 +65,10 @@ class InstitucionType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('organigrama', FileType::class, [
-                'mapped' => false,
-                'required' => $options['action'] == 'registrar',
-            ])
+//            ->add('organigrama', FileType::class, [
+//                'mapped' => false,
+//                'required' => $options['action'] == 'registrar',
+//            ])
             ->add('fechaFundacion', TextType::class, [
                 'label' => 'Fecha de fundación',
                 'mapped' => false,
@@ -77,9 +77,7 @@ class InstitucionType extends AbstractType
                 ]
             ])
             ->add('lema', TextType::class, [
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
             ])
             ->add('mision', TextType::class, [
                 'label' => 'Misión',
@@ -129,11 +127,11 @@ class InstitucionType extends AbstractType
                     'readonly' => true
                 ]
             ])
-            ->add('campusUniversitario', TextType::class, [
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
-            ])
+//            ->add('campusUniversitario', TextType::class, [
+//                'constraints' => [
+//                    new NotBlank([], 'Este valor no debe estar en blanco.')
+//                ]
+//            ])
             ->add('gradoAcademicoRector', EntityType::class, [
                 'label' => 'Grado académico del rector',
                 'class' => GradoAcademico::class,
@@ -151,6 +149,7 @@ class InstitucionType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
+                'required' => false,
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
@@ -162,7 +161,8 @@ class InstitucionType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'required' => false,
             ]);
     }
 

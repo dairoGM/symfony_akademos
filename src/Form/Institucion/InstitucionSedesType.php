@@ -33,9 +33,10 @@ class InstitucionSedesType extends AbstractType
             ])
             ->add('coordenadasSede', TextType::class, [
                 'label' => 'Coordenadas',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
+//                'constraints' => [
+//                    new NotBlank([], 'Este valor no debe estar en blanco.')
+//                ]
             ])
             ->add('direccionSede', TextType::class, [
                 'label' => 'Dirección',

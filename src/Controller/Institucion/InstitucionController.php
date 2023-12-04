@@ -902,7 +902,7 @@ class InstitucionController extends AbstractController
     {
         try {
             $entidad = new InstitucionFum();
-            $form = $this->createForm(InstitucionFumType::class, $entidad, ['idEstructura' => $institucion->getEstructura()->getId(), 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_cum')]);
+            $form = $this->createForm(InstitucionFumType::class, $entidad, ['idEstructura' => $institucion->getEstructura()->getId(), 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_fum')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

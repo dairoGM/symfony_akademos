@@ -67,15 +67,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.organigrama) }}
-                    {{ form_widget(form.organigrama) }}
-                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
-                          class="cargar-archivo1"> </span>
-                    {{ form_errors(form.organigrama) }}
-                    <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/organigrama/{{ institucion.organigrama }}">{{ institucion.organigrama }}</a>
-                </div>
+{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
+{#                    {{ form_label(form.organigrama) }}#}
+{#                    {{ form_widget(form.organigrama) }}#}
+{#                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"#}
+{#                          class="cargar-archivo1"> </span>#}
+{#                    {{ form_errors(form.organigrama) }}#}
+{#                    <a id="doc_container" target="_blank"#}
+{#                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/organigrama/{{ institucion.organigrama }}">{{ institucion.organigrama }}</a>#}
+{#                </div>#}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.fechaFundacion) }}
                     <div class="input-group">
@@ -176,11 +176,11 @@
                         {{ form_errors(form.coordenadasSedePrincipal) }}
                     </div>
                 </div>
-                <div class="col-4 form-group">
-                    {{ form_label(form.campusUniversitario) }}
-                    {{ form_widget(form.campusUniversitario) }}
-                    {{ form_errors(form.campusUniversitario) }}
-                </div>
+{#                <div class="col-4 form-group">#}
+{#                    {{ form_label(form.campusUniversitario) }}#}
+{#                    {{ form_widget(form.campusUniversitario) }}#}
+{#                    {{ form_errors(form.campusUniversitario) }}#}
+{#                </div>#}
                 <div class="col-4 form-group">
                     {{ form_label(form.activo) }}
                     {{ form_widget(form.activo) }}

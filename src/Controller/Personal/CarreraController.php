@@ -6,6 +6,7 @@ use App\Entity\Personal\Carrera;
 use App\Entity\Security\User;
 use App\Form\Personal\CarreraType;
 use App\Repository\Personal\CarreraRepository;
+use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,19 +22,18 @@ class CarreraController extends AbstractController
 
     /**
      * @Route("/", name="app_carrera_index", methods={"GET"})
-     * @param CarreraRepository $carreraRepository
      * @return Response
      */
-    public function index(CarreraRepository $carreraRepository)
+    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
-        try {
+//        try {
             return $this->render('modules/personal/carrera/index.html.twig', [
-                'registros' => $carreraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+                'registros' => $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademico([2,8]),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_carrera_index', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_carrera_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
     /**
