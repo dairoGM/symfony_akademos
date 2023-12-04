@@ -13,6 +13,7 @@ use App\Entity\Institucion\InstitucionRedes;
 use App\Entity\Institucion\InstitucionRedesSociales;
 use App\Entity\Institucion\InstitucionRevistaCientifica;
 use App\Entity\Institucion\InstitucionSedes;
+use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Security\User;
 use App\Export\Institucion\ExportListInstitucionToPdf;
 use App\Export\Institucion\ExportListPlanEstudioToPdf;
@@ -219,7 +220,7 @@ class InstitucionController extends AbstractController
      * @param InstitucionEditorialRepository $institucionEditorialRepository
      * @return Response
      */
-    public function detail(InstitucionCumRepository $institucionCumRepository, InstitucionFumRepository $institucionFumRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
+    public function detail(SolicitudProgramaRepository $solicitudProgramaRepository, InstitucionCumRepository $institucionCumRepository, InstitucionFumRepository $institucionFumRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
     {
         return $this->render('modules/institucion/institucion/detail.html.twig', [
             'item' => $institucion,
@@ -233,6 +234,7 @@ class InstitucionController extends AbstractController
             'redesSociales' => $institucionRedesSocialesRepository->findBy(['institucion' => $institucion->getId()]),
             'redes' => $institucionRedesRepository->findBy(['institucion' => $institucion->getId()]),
             'recursosHumanos' => $institucionRecursoHumanoRepository->findBy(['institucion' => $institucion->getId()]),
+            'programasPostgrado' => $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId(), 'estadoPrograma'=>7]),
         ]);
     }
 
