@@ -71,15 +71,19 @@
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/solicitud_programa/dictamen/{{ item.dictamen }}">{{ item.dictamen }}</a>
                         </td>
                         <td>{{ item.comision.nombre | default('') }}</td>
-                        <td>{{ personaAutenticada.primerNombre | default('') ~' '~ personaAutenticada.segundoNombre | default('') ~ ' '~ personaAutenticada.primerApellido | default('') ~ ' '~ personaAutenticada.segundoApellido | default('') }}</td>
+                        <td>{{ item.propietarioDictamen.primerNombre | default('') ~' '~ item.propietarioDictamen.segundoNombre | default('') ~ ' '~ item.propietarioDictamen.primerApellido | default('') ~ ' '~ item.propietarioDictamen.segundoApellido | default('') }}</td>
                         <td>{{ item.rolComision.nombre | default('') }}</td>
 
+
                         <td width="15%" class="text-center">
-                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                            {% if item.propietarioDictamen.id | default('-1') == personaAutenticada.id %}
+                                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                        data-url="{{ path('app_solicitud_programa_eliminar_dictamen', {'id': item.id}) }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            {% endif %}
                         </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

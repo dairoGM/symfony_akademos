@@ -50,7 +50,7 @@ class SolicitudProgramaController extends AbstractController
     public function index(SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/postgrado/solicitud_programa/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudes( ),
+            'registros' => $solicitudProgramaRepository->getSolicitudes(),
         ]);
     }
 
@@ -380,7 +380,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function asociarDictamen(Request $request, MiembrosCopepRepository $miembrosCopepRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
     {
-        try {
+//        try {
             $entidad = new SolicitudProgramaDictamen();
             $comisiones = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
             $array = [];
@@ -395,7 +395,7 @@ class SolicitudProgramaController extends AbstractController
 
             $form = $this->createForm(SolicitudProgramaDictamenType::class, $entidad, $choices);
             $form->handleRequest($request);
-
+            $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
             if ($form->isSubmitted() && $form->isValid()) {
                 $exist = $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId(), 'rolComision' => $request->request->all()['solicitud_programa_dictamen']['rolComision'], 'comision' => $request->request->all()['solicitud_programa_dictamen']['comision']]);
                 if (empty($exist)) {
@@ -407,6 +407,7 @@ class SolicitudProgramaController extends AbstractController
                     }
 
 
+                    $entidad->setPropietarioDictamen($personaAutenticada);
                     $entidad->setSolicitudPrograma($solicitudPrograma);
                     $entidad->setComision($comisionRepository->find($request->request->all()['solicitud_programa_dictamen']['comision']));
                     $entidad->setRolComision($rolComisionRepository->find($request->request->all()['solicitud_programa_dictamen']['rolComision']));
@@ -442,13 +443,13 @@ class SolicitudProgramaController extends AbstractController
             return $this->render('modules/postgrado/solicitud_programa/asociar_dictamen.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma,
-                'personaAutenticada' => $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]),
+                'personaAutenticada' => $personaAutenticada,
                 'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+//        }
     }
 
     /**

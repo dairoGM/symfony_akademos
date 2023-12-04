@@ -3,6 +3,7 @@
 namespace App\Entity\Postgrado;
 
 use App\Entity\BaseEntity;
+use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,6 +30,11 @@ class SolicitudProgramaDictamen extends BaseEntity
      */
     private ?string $dictamen = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Personal\Persona" )
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?Persona $propietarioDictamen;
 
     /**
      * @ORM\ManyToOne(targetEntity="RolComision")
@@ -89,6 +95,22 @@ class SolicitudProgramaDictamen extends BaseEntity
         $this->solicitudPrograma = $solicitudPrograma;
 
         return $this;
+    }
+
+    /**
+     * @return Persona|null
+     */
+    public function getPropietarioDictamen(): ?Persona
+    {
+        return $this->propietarioDictamen;
+    }
+
+    /**
+     * @param Persona|null $propietarioDictamen
+     */
+    public function setPropietarioDictamen(?Persona $propietarioDictamen): void
+    {
+        $this->propietarioDictamen = $propietarioDictamen;
     }
 
 
