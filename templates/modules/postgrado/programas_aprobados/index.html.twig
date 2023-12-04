@@ -27,7 +27,7 @@
                     <th>Tipo de programa</th>
                     <th>Código</th>
                     <th>Universidad</th>
-                    <th>Resolución</th>
+{#                    <th>Resolución</th>#}
                     <th>Coordinador</th>
                     <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
@@ -41,7 +41,7 @@
                         <td>{{ item.tipoPrograma.nombre | default('') }}</td>
                         <td>{{ item.codigoPrograma | default('') }}</td>
                         <td>{{ item.universidad.nombre | default('') }}</td>
-                        <td>{{ item.resolucionPrograma | slice(0,item.resolucionPrograma|length - 5) }}</td>
+{#                        <td>{{ item.resolucionPrograma | slice(0,item.resolucionPrograma|length - 5) }}</td>#}
                         <td>{{ item.nombreCoordinador | default('') }}</td>
                         <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
                         <td width="15%" class="text-center">

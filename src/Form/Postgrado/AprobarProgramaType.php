@@ -29,6 +29,7 @@ class AprobarProgramaType extends AbstractType
                     'maxlength' => 4,
                     'minlength' => 4
                 ],
+                'required' => false,
                 'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('codigoPrograma', TextType::class, [
