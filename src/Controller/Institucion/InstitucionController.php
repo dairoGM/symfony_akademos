@@ -237,7 +237,7 @@ class InstitucionController extends AbstractController
             'redes' => $institucionRedesRepository->findBy(['institucion' => $institucion->getId()]),
             'recursosHumanos' => $institucionRecursoHumanoRepository->findBy(['institucion' => $institucion->getId()]),
             'programasPostgrado' => $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId(), 'estadoPrograma' => 7]),
-            'programasPregrado' => $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([[2, 7, 8], $institucion->getId(),]) //falta buscar en la universidad que se estudia
+            'programasPregrado' => $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([[2, 7, 8]], $institucion->getId()) //falta buscar en la universidad que se estudia
         ]);
     }
 
