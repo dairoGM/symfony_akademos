@@ -380,7 +380,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function asociarDictamen(Request $request, MiembrosCopepRepository $miembrosCopepRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
     {
-//        try {
+        try {
             $entidad = new SolicitudProgramaDictamen();
             $comisiones = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
             $array = [];
@@ -446,10 +446,10 @@ class SolicitudProgramaController extends AbstractController
                 'personaAutenticada' => $personaAutenticada,
                 'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
