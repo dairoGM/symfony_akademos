@@ -54,7 +54,7 @@ class Institucion extends BaseNomenclator
     private ?CategoriaAcreditacion $categoriaAcreditacion;
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="255")
+     * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $organigrama = null;
 
@@ -67,7 +67,7 @@ class Institucion extends BaseNomenclator
 
 
     /**
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $lema = null;
 
@@ -109,7 +109,7 @@ class Institucion extends BaseNomenclator
     private ?string $coordenadasSedePrincipal = null;
 
     /**
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $campusUniversitario = null;
 
