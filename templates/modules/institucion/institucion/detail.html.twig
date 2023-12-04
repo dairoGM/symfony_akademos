@@ -23,103 +23,7 @@
     </div>
 </div>
 <hr>
-<h5 class="mb-0"><b>Facultades</b></h5>
-<table class="table table-bordered table-striped dataTable">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in facultades %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombreFacultad | default('') }}</td>
-            <td>{{ item.descripcionFacultad | default('') }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
-
-<hr>
-<h5 class="mb-0"><b>Editoriales</b></h5>
-<table class="table table-bordered table-striped dataTable">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Nombre</th>
-        <th>Dirección electrónica</th>
-        <th>Descripción</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in editoriales %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombreEditorial | default('') }}</td>
-            <td>{{ item.direccionElectronicaEditorial | default('') }}</td>
-            <td>{{ item.descripcionEditorial | default('') }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
-
-<hr>
-<h5 class="mb-0"><b>Centros de estudios</b></h5>
-<table class="table table-bordered table-striped dataTable">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in centrosEstudios %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombreCentroEstudio | default('') }}</td>
-            <td>{{ item.descripcionCentroEstudio | default('') }}</td>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
-
-
-<hr>
-<h5 class="mb-0"><b>Revistas</b></h5>
-<table class="table table-bordered table-striped dataTable">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Nombre</th>
-        <th>Visibilidad</th>
-        <th>Indexada en</th>
-        <th>Dirección electrónica</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in revistas %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombreRevista | default('') }}</td>
-            <td>{{ item.visibilidad.nombre | default('') }}</td>
-            <td>{{ item.indexadaEn | default('') }}</td>
-            <td>{{ item.direccionElectronicaRevista | default('') }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
-
-<hr>
-<h5 class="mb-0"><b>Sedes</b></h5>
+<h5 class="mb-0"><b>Sedes Universitarias</b></h5>
 <table class="table table-bordered table-striped dataTable">
     <thead class="table-custom-header">
     <tr>
@@ -142,73 +46,27 @@
 
 </table>
 
+
 <hr>
-<h5 class="mb-0"><b>Redes sociales</b></h5>
+<h5 class="mb-0"><b>Facultades</b></h5>
 <table class="table table-bordered table-striped dataTable">
     <thead class="table-custom-header">
     <tr>
         <th>No.</th>
-        <th>Red social</th>
-        <th>Perfil</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in redesSociales %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.redSocial.nombre | default('') }}</td>
-            <td>{{ item.perfil | default('') }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-
-</table>
-
-<hr>
-<h5 class="mb-0"><b>Redes</b></h5>
-<table class="table table-bordered table-striped dataTable">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Nombre de la red</th>
-        <th>Rol</th>
+        <th>Nombre</th>
         <th>Descripción</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in redes %}
+    {% for item in facultades %}
         <tr>
             <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombreRed | default('') }}</td>
-            <td>{{ item.RolRedes.nombre | default('') }}</td>
-            <td>{{ item.descripcionRed | default('') }}</td>
+            <td>{{ item.nombreFacultad | default('') }}</td>
+            <td>{{ item.descripcionFacultad | default('') }}</td>
         </tr>
     {% endfor %}
     </tbody>
 
-</table>
-
-<hr>
-<h5 class="mb-0"><b>Recursos humanos</b></h5>
-<table class="table table-bordered table-striped dataTable" id="tbl-carrera">
-    <thead class="table-custom-header">
-    <tr>
-        <th>No.</th>
-        <th>Recursos humanos</th>
-        <th>Cantidad</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in recursosHumanos %}
-        <tr>
-            <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombre }}</td>
-            <td width="20%"><input style="width: 100%" type="text" id="rh_{{ item.id }}"
-                                   name="rh_{{ item.id }}" maxlength=4" minlength="1"
-                                   value="{{ recursosHumanosAsignados[item.id] | default(0) }}"></td>
-        </tr>
-    {% endfor %}
-    </tbody>
 </table>
 
 
@@ -256,3 +114,148 @@
     </tbody>
 
 </table>
+
+<hr>
+<h5 class="mb-0"><b>Centros de estudios</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in centrosEstudios %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombreCentroEstudio | default('') }}</td>
+            <td>{{ item.descripcionCentroEstudio | default('') }}</td>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+
+<hr>
+<h5 class="mb-0"><b>Redes sociales</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Red social</th>
+        <th>Perfil</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in redesSociales %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.redSocial.nombre | default('') }}</td>
+            <td>{{ item.perfil | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+
+<hr>
+<h5 class="mb-0"><b>Redes</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre de la red</th>
+        <th>Rol</th>
+        <th>Descripción</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in redes %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombreRed | default('') }}</td>
+            <td>{{ item.RolRedes.nombre | default('') }}</td>
+            <td>{{ item.descripcionRed | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+<hr>
+<h5 class="mb-0"><b>Revistas</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre</th>
+        <th>Visibilidad</th>
+        <th>Indexada en</th>
+        <th>Dirección electrónica</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in revistas %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombreRevista | default('') }}</td>
+            <td>{{ item.visibilidad.nombre | default('') }}</td>
+            <td>{{ item.indexadaEn | default('') }}</td>
+            <td>{{ item.direccionElectronicaRevista | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+<hr>
+<h5 class="mb-0"><b>Editoriales</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre</th>
+        <th>Dirección electrónica</th>
+        <th>Descripción</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in editoriales %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombreEditorial | default('') }}</td>
+            <td>{{ item.direccionElectronicaEditorial | default('') }}</td>
+            <td>{{ item.descripcionEditorial | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+<hr>
+<h5 class="mb-0"><b>Recursos humanos</b></h5>
+<table class="table table-bordered table-striped dataTable" id="tbl-carrera">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Recursos humanos</th>
+        <th>Cantidad</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in recursosHumanos %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombre }}</td>
+            <td width="20%"><input style="width: 100%" type="text" id="rh_{{ item.id }}"
+                                   name="rh_{{ item.id }}" maxlength=4" minlength="1"
+                                   value="{{ recursosHumanosAsignados[item.id] | default(0) }}"></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
