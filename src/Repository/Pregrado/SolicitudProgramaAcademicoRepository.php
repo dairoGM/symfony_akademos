@@ -70,11 +70,14 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         return $resul;
     }
 
-    public function getSolicitudProgramaAcademicoAprobado($estadoIds)
+    public function getSolicitudProgramaAcademicoAprobado($estadoIds, $id = null)
     {
         $qb = $this->createQueryBuilder('qb')
             ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds))
             ->orderBy('qb.id', 'desc');
+        if (!empty($id)) {
+            $qb->andWhere("qb.centroRector = $id");
+        }
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }

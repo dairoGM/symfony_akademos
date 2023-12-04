@@ -139,6 +139,32 @@
 </table>
 
 
+
+<hr>
+<h5 class="mb-0"><b>Programas de pregrado</b></h5>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre</th>
+
+        <th>Tipo de programa</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in programasPregrado %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td>{{ item.nombre | default('') }}</td>
+            <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+
 <hr>
 <h5 class="mb-0"><b>Programas de posgrado</b></h5>
 <table class="table table-bordered table-striped dataTable">
