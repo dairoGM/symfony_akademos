@@ -65,6 +65,12 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     $solicitudProgramaAcademico->setFundamentacion($file_name);
                     $file->move("uploads/pregrado/solicitud_programa_academico/fundamentacion", $file_name);
                 }
+                if (!empty($_FILES['solicitud_programa_academico']['name']['solicitud'])) {
+                    $file = $form['solicitud']->getData();
+                    $file_name = $_FILES['solicitud_programa_academico']['name']['solicitud'];
+                    $solicitudProgramaAcademico->setSolicitud($file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/solicitud", $file_name);
+                }
                 $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(1));//Solicitado
                 $solicitudProgramaRepository->add($solicitudProgramaAcademico, true);
 
@@ -108,6 +114,12 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     $file_name = $_FILES['solicitud_programa_academico']['name']['fundamentacion'];
                     $solicitudPrograma->setFundamentacion($file_name);
                     $file->move("uploads/pregrado/solicitud_programa_academico/fundamentacion", $file_name);
+                }
+                if (!empty($_FILES['solicitud_programa_academico']['name']['solicitud'])) {
+                    $file = $form['solicitud']->getData();
+                    $file_name = $_FILES['solicitud_programa_academico']['name']['solicitud'];
+                    $solicitudPrograma->setSolicitud($file_name);
+                    $file->move("uploads/pregrado/solicitud_programa_academico/solicitud", $file_name);
                 }
                 $solicitudProgramaRepository->edit($solicitudPrograma);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');

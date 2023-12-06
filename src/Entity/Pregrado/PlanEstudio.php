@@ -59,7 +59,7 @@ class PlanEstudio extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoProgramaAcademico")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?TipoProgramaAcademico $tipoProgramaAcademico;
 
@@ -79,7 +79,7 @@ class PlanEstudio extends BaseNomenclator
     private ?int $duracionCursoPorEncuentro;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      */
     private ?string $duracionCursoDistancia;
 
@@ -100,6 +100,10 @@ class PlanEstudio extends BaseNomenclator
      */
     private ?Oace $oace;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $documentoEjecutivo = null;
 
     /**
      * @return CursoAcademico|null
@@ -328,6 +332,22 @@ class PlanEstudio extends BaseNomenclator
     public function setOrganismoFormador(?OrganismoFormador $organismoFormador): void
     {
         $this->organismoFormador = $organismoFormador;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumentoEjecutivo(): ?string
+    {
+        return $this->documentoEjecutivo;
+    }
+
+    /**
+     * @param string|null $documentoEjecutivo
+     */
+    public function setDocumentoEjecutivo(?string $documentoEjecutivo): void
+    {
+        $this->documentoEjecutivo = $documentoEjecutivo;
     }
 
 

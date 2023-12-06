@@ -45,6 +45,11 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      */
     private ?string $fundamentacion = null;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $solicitud = null;
+
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -106,8 +111,6 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?\App\Entity\Institucion\Institucion $centroRector;
-
-
 
 
     /**
@@ -287,7 +290,6 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     }
 
 
-
     /**
      * @return string|null
      */
@@ -398,6 +400,22 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setTelefonoSolicitante(?string $telefonoSolicitante): void
     {
         $this->telefonoSolicitante = $telefonoSolicitante;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSolicitud(): ?string
+    {
+        return $this->solicitud;
+    }
+
+    /**
+     * @param string|null $solicitud
+     */
+    public function setSolicitud(?string $solicitud): void
+    {
+        $this->solicitud = $solicitud;
     }
 
 

@@ -33,36 +33,19 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.tipoProgramaAcademico) }}
-                    {{ form_widget(form.tipoProgramaAcademico) }}
-                    {{ form_errors(form.tipoProgramaAcademico) }}
-                </div>
-
-
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.carrera) }}
                     {{ form_widget(form.carrera) }}
                     {{ form_errors(form.carrera) }}
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.oace) }}#}
-{#                    {{ form_widget(form.oace) }}#}
-{#                    {{ form_errors(form.oace) }}#}
-{#                </div>#}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
-                    {{ form_label(form.organismoDemandante) }}
-                    {{ form_widget(form.organismoDemandante) }}
-                    {{ form_errors(form.organismoDemandante) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"  >
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.organismoFormador) }}
                     {{ form_widget(form.organismoFormador) }}
                     {{ form_errors(form.organismoFormador) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.ramaCiencia) }}
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
@@ -82,21 +65,15 @@
                     <a target="_blank"
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/plan_estudio/{{ planEstudio.planEstudio }}">{{ planEstudio.planEstudio }}</a>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoDiurno) }}
-                    {{ form_widget(form.duracionCursoDiurno) }}
-                    {{ form_errors(form.duracionCursoDiurno) }}
-                </div>
 
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoPorEncuentro) }}
-                    {{ form_widget(form.duracionCursoPorEncuentro) }}
-                    {{ form_errors(form.duracionCursoPorEncuentro) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoDistancia) }}
-                    {{ form_widget(form.duracionCursoDistancia) }}
-                    {{ form_errors(form.duracionCursoDistancia) }}
+                <div class="col-4  form-group">
+                    {{ form_label(form.documentoEjecutivo) }}
+                    {{ form_widget(form.documentoEjecutivo) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo5"> </span>
+                    {{ form_errors(form.documentoEjecutivo) }}
+                    <a target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/documento_ejecutivo/{{ planEstudio.documentoEjecutivo }}">{{ planEstudio.documentoEjecutivo }}</a>
                 </div>
 
                 <div class="col-12 form-group">
@@ -156,7 +133,8 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
-                            <button type="button" id="eliminar-doc" title="Eliminar" class="btn btn-outline-danger elementRemove"
+                            <button type="button" id="eliminar-doc" title="Eliminar"
+                                    class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_plan_estudio_eliminar_documento_editar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -190,6 +168,10 @@
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo1').html(filename);
         })
+        $('#plan_estudio_documentoEjecutivo').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo5').html(filename);
+        })
 
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
@@ -210,11 +192,11 @@
         var fecha = "{% if planEstudio.fechaAprobacion is empty %}  {{ planEstudio.fechaAprobacion | default('') }} {% else %}  {{ planEstudio.fechaAprobacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#plan_estudio_fechaAprobacion').val(fecha.replace(' ', ''));
 
-        {#if ("{{ planEstudio.tipoProgramaAcademico.id == 1 }}") {#}
-        {#    $('#organismo').hide();#}
-        {#} else {#}
-        {#    $('#rama').hide();#}
-        {#}#}
+        {# if ("{{ planEstudio.tipoProgramaAcademico.id == 1 }}") { #}
+        {#    $('#organismo').hide(); #}
+        {# } else { #}
+        {#    $('#rama').hide(); #}
+        {# } #}
 
 
         $('#plan_estudio_annoAprobacion').on('keydown keypress', function (e) {
@@ -275,7 +257,7 @@
                 xhr.open('POST', '{{ path('app_plan_estudio_registro_temporal_doc_edit') }}', true);
                 xhr.onreadystatechange = function (response) {
                 };
-               var res = xhr.send(data);
+                var res = xhr.send(data);
 
                 setTimeout(function () {
                     location.href = location.href;

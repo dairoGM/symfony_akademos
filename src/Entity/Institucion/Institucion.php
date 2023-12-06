@@ -20,7 +20,7 @@ class Institucion extends BaseNomenclator
     private ?string $logo = null;
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="10")
+     * @ORM\Column(type="string", nullable=false, length="100")
      */
     private ?string $siglas = null;
 

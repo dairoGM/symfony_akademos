@@ -6,6 +6,7 @@ use App\Entity\Pregrado\Documento;
 use App\Entity\Pregrado\ModificacionPlanEstudio;
 use App\Entity\Pregrado\PlanEstudio;
 use App\Entity\Pregrado\PlanEstudioDocumento;
+use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
 use App\Entity\Security\User;
 use App\Export\Pregrado\ExportListPlanEstudioToPdf;
 use App\Form\Pregrado\ModificacionPlanEstudioType;
@@ -15,7 +16,9 @@ use App\Repository\Pregrado\DocumentoRepository;
 use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
 use App\Repository\Pregrado\PlanEstudioDocumentoRepository;
 use App\Repository\Pregrado\PlanEstudioRepository;
+use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\HandlerFop;
+use App\Services\Utils;
 use Cassandra\Timestamp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,13 +54,13 @@ class PlanEstudioController extends AbstractController
      * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function registrar(Request $request, RequestStack $requestStack, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
+    public function registrar(Request $request, Utils $utils, RequestStack $requestStack, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
     {
         try {
             $planEstudioEntity = new PlanEstudio();
             $form = $this->createForm(PlanEstudioType::class, $planEstudioEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted()  ) {
+            if ($form->isSubmitted()) {
                 $planEstudioEntity->setNombre('Plan de estudio ' . $cursoAcademicoRepository->find($request->request->all()['plan_estudio']['cursoAcademico'])->getNombre());
                 $planEstudioEntity->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['plan_estudio']['fechaAprobacion']));
 
@@ -66,6 +69,12 @@ class PlanEstudioController extends AbstractController
                     $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
                     $planEstudioEntity->setPlanEstudio($file_name);
                     $file->move("uploads/pregrado/plan_estudio/plan_estudio", $file_name);
+                }
+                if (!empty($_FILES['plan_estudio']['name']['documentoEjecutivo'])) {
+                    $file = $form['documentoEjecutivo']->getData();
+                    $file_name = $_FILES['plan_estudio']['name']['documentoEjecutivo'];
+                    $planEstudioEntity->setDocumentoEjecutivo($file_name);
+                    $file->move("uploads/pregrado/plan_estudio/documento_ejecutivo", $file_name);
                 }
                 $documentos = $requestStack->getSession()->get('documentosPlanEstudio');
                 if (is_array($documentos)) {
@@ -81,6 +90,15 @@ class PlanEstudioController extends AbstractController
                 }
 
                 $planEstudioRepository->add($planEstudioEntity, true);
+
+
+                $entidad = new SolicitudProgramaAcademicoPlanEstudio();
+                $entidad->setSolicitudProgramaAcademico($planEstudioEntity->getCarrera());
+                $entidad->setPlanEstudio($planEstudioEntity);
+                $solicitudProgramaAcademicoRepository->add($entidad, true);
+
+//                $utils->guardarHistoricoEstadoProgramaAcademico($entidad->getSolicitudProgramaAcademico()->getId(), 5);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_plan_estudio_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -150,13 +168,24 @@ class PlanEstudioController extends AbstractController
                 if (!empty($_FILES['plan_estudio']['name']['planEstudio'])) {
                     if ($planEstudio->getPlanEstudio() != null) {
                         if (file_exists('uploads/pregrado/plan_estudio/' . $planEstudio->getPlanEstudio())) {
-                            unlink('uploads/pregrado/plan_estudio/' . $planEstudio->getPlanEstudio());
+                            unlink('uploads/pregrado/plan_estudio/plan_estudio/' . $planEstudio->getPlanEstudio());
                         }
                     }
                     $file = $form['planEstudio']->getData();
                     $file_name = $_FILES['plan_estudio']['name']['planEstudio'];
                     $planEstudio->setPlanEstudio($file_name);
                     $file->move("uploads/pregrado/plan_estudio", $file_name);
+                }
+                if (!empty($_FILES['plan_estudio']['name']['documentoEjecutivo'])) {
+                    if ($planEstudio->getPlanEstudio() != null) {
+                        if (file_exists('uploads/pregrado/plan_estudio/documento_ejecutivo/' . $planEstudio->getDocumentoEjecutivo())) {
+                            unlink('uploads/pregrado/plan_estudio/documento_ejecutivo/' . $planEstudio->getDocumentoEjecutivo());
+                        }
+                    }
+                    $file = $form['documentoEjecutivo']->getData();
+                    $file_name = $_FILES['plan_estudio']['name']['documentoEjecutivo'];
+                    $planEstudio->setDocumentoEjecutivo($file_name);
+                    $file->move("uploads/pregrado/plan_estudio/documento_ejecutivo", $file_name);
                 }
 
                 $planEstudioRepository->edit($planEstudio);
@@ -242,6 +271,12 @@ class PlanEstudioController extends AbstractController
                     $file_name = $_FILES['modificacion_plan_estudio']['name']['dictamen'];
                     $modificacion->setDictamen($file_name);
                     $file->move("uploads/pregrado/plan_estudio/modificaciones/dictamen", $file_name);
+                }
+                if (!empty($_FILES['modificacion_plan_estudio']['name']['documentoEjecutivo'])) {
+                    $file = $form['documentoEjecutivo']->getData();
+                    $file_name = $_FILES['modificacion_plan_estudio']['name']['documentoEjecutivo'];
+                    $modificacion->setDocumentoEjecutivo($file_name);
+                    $file->move("uploads/pregrado/plan_estudio/modificaciones/documento_ejecutivo", $file_name);
                 }
 
                 $modificacionPlanEstudioRepository->add($modificacion, true);

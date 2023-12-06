@@ -32,30 +32,16 @@
                     {{ form_widget(form.organismoDemandante) }}
                     {{ form_errors(form.organismoDemandante) }}
                 </div>
-                {#                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
-                {#                        {{ form_label(form.tipoOrganismo) }} #}
-                {#                        {{ form_widget(form.tipoOrganismo) }} #}
-                {#                        {{ form_errors(form.tipoOrganismo) }} #}
-                {#                    </div> #}
             </div>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.resolucion) }}
-                    {{ form_widget(form.resolucion) }}
+                    {{ form_label(form.solicitud) }}
+                    {{ form_widget(form.solicitud) }}
                     <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo"> </span>
-                    {{ form_errors(form.resolucion) }}
+                    {{ form_errors(form.solicitud) }}
                     <a target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/resolucion/{{ solicitudProgramaAcademico.resolucion }}">{{ solicitudProgramaAcademico.resolucion }}</a>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.fundamentacion) }}
-                    {{ form_widget(form.fundamentacion) }}
-                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
-                          class="cargar-archivo1"> </span>
-                    {{ form_errors(form.fundamentacion) }}
-                    <a target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/fundamentacion/{{ solicitudProgramaAcademico.fundamentacion }}">{{ solicitudProgramaAcademico.fundamentacion }}</a>
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa_academico/solicitud/{{ solicitudProgramaAcademico.solicitud }}">{{ solicitudProgramaAcademico.solicitud }}</a>
                 </div>
             </div>
             <hr>
@@ -104,13 +90,9 @@
 
 {% block javascripts %}
     <script>
-        $('#solicitud_programa_academico_resolucion').change(function () {
+        $('#solicitud_programa_academico_solicitud').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
-        })
-        $('#solicitud_programa_academico_fundamentacion').change(function () {
-            var filename = jQuery(this).val().split('\\').pop();
-            $('.cargar-archivo1').html(filename);
         })
         $('[data-mask]').inputmask()
     </script>

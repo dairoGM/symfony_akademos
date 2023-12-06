@@ -53,16 +53,16 @@ class PlanEstudioType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('tipoProgramaAcademico', EntityType::class, [
-                'label' => 'Tipo de programa académico',
-                'class' => TipoProgramaAcademico::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
+//            ->add('tipoProgramaAcademico', EntityType::class, [
+//                'label' => 'Tipo de programa académico',
+//                'class' => TipoProgramaAcademico::class,
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+//                },
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null
+//            ])
             ->add('annoAprobacion', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Año de aprobación',
                 'attr' => [
@@ -99,17 +99,17 @@ class PlanEstudioType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('organismoDemandante', EntityType::class, [
-                'label' => 'Organismo o entidad demandante',
-                'class' => OrganismoDemandante::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'required' => false,
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
+//            ->add('organismoDemandante', EntityType::class, [
+//                'label' => 'Organismo o entidad demandante',
+//                'class' => OrganismoDemandante::class,
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+//                },
+//                'required' => false,
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null
+//            ])
             ->add('ramaCiencia', EntityType::class, [
                 'label' => 'Rama de la ciencia',
                 'class' => RamaCiencia::class,
@@ -126,34 +126,39 @@ class PlanEstudioType extends AbstractType
                 'mapped' => false,
                 'required' => ($options['action'] == 'registrar'),
             ])
-            ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso Diurno (Años)',
-                'required' => false,
-                'attr' => [
-                    'min' => 1
-                ]
-            ])
-            ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Duración del Curso por Encuentros (Años)',
-                'required' => false,
-                'attr' => [
-                    'min' => 1
-                ]
-            ])
-            ->add('duracionCursoDistancia', ChoiceType::class, [
-                'label' => 'Duración del Curso a Distancia',
-                'choices' => ['No' => 'No', 'Sí' => 'Sí'],
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ],
-                'required' => false,
-            ])
+//            ->add('duracionCursoDiurno', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+//                'label' => 'Duración del Curso Diurno (Años)',
+//                'required' => false,
+//                'attr' => [
+//                    'min' => 1
+//                ]
+//            ])
+//            ->add('duracionCursoPorEncuentro', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+//                'label' => 'Duración del Curso por Encuentros (Años)',
+//                'required' => false,
+//                'attr' => [
+//                    'min' => 1
+//                ]
+//            ])
+//            ->add('duracionCursoDistancia', ChoiceType::class, [
+//                'label' => 'Duración del Curso a Distancia',
+//                'choices' => ['No' => 'No', 'Sí' => 'Sí'],
+//                'attr' => [
+//                    'class' => 'form-control'
+//                ],
+//                'constraints' => [
+//                    new NotBlank([], 'Este valor no debe estar en blanco.')
+//                ],
+//                'required' => false,
+//            ])
             ->add('descripcionPlanEstudio', TextareaType::class, [
                 'label' => 'Descripción',
                 'required' => false,
+            ])
+            ->add('documentoEjecutivo', FileType::class, [
+                'label' => 'Documento ejecutivo',
+                'mapped' => false,
+                'required' => $options['action'] == 'registrar',
             ]);
     }
 

@@ -86,6 +86,12 @@ class ModificacionPlanEstudio
      */
     protected $actualizado;
 
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $documentoEjecutivo = null;
+
     /**
      * @return PlanEstudio|null
      */
@@ -240,6 +246,22 @@ class ModificacionPlanEstudio
     public function setCursoAcademico(?CursoAcademico $cursoAcademico): void
     {
         $this->cursoAcademico = $cursoAcademico;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumentoEjecutivo(): ?string
+    {
+        return $this->documentoEjecutivo;
+    }
+
+    /**
+     * @param string|null $documentoEjecutivo
+     */
+    public function setDocumentoEjecutivo(?string $documentoEjecutivo): void
+    {
+        $this->documentoEjecutivo = $documentoEjecutivo;
     }
 
 

@@ -42,16 +42,6 @@ class SolicitudProgramaAcademicoType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-//            ->add('tipoOrganismo', EntityType::class, [
-//                'label' => 'Tipo de organismo',
-//                'class' => TipoOrganismo::class,
-//                'choice_label' => 'nombre',
-//                'query_builder' => function (EntityRepository $er) {
-//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-//                },
-//                'placeholder' => 'Seleccione',
-//                'empty_data' => null
-//            ])
             ->add('organismoDemandante', EntityType::class, [
                 'label' => 'Organismo o entidad demandante',
                 'class' => OrganismoDemandante::class,
@@ -62,13 +52,8 @@ class SolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('resolucion', FileType::class, [
-                'label' => 'Resolución',
-                'mapped' => false,
-                'required' => false,
-            ])
-            ->add('fundamentacion', FileType::class, [
-                'label' => 'Fundamentación',
+            ->add('solicitud', FileType::class, [
+                'label' => 'Solicitud',
                 'mapped' => false,
                 'required' => $options['action'] == 'registrar',
             ])

@@ -261,9 +261,9 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                     $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
                     $solicitudProgramaAcademicoComisionNacionalRepository->add($entidad, true);
 
-                    $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(4));
+                    $solicitudProgramaAcademico->setEstadoProgramaAcademico($estadoProgramaAcademicoRepository->find(5));
 
-                    $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(), 4);
+                    $utils->guardarHistoricoEstadoProgramaAcademico($solicitudProgramaAcademico->getId(), 5);
 
                     $solicitudProgramaAcademicoRepository->edit($solicitudProgramaAcademico);
 

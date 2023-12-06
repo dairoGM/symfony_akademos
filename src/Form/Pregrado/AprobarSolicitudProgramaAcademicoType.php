@@ -59,7 +59,7 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 ]
             ])
             ->add('descripcionAprobacion', TextareaType::class, [
-                'label' => 'Descripción',
+                'label' => 'Caracterización',
                 'required' => false,
             ]);
 

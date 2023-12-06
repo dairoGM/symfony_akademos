@@ -49,12 +49,15 @@ class ModificacionPlanEstudioType extends AbstractType
             ->add('planEstudioDoc', FileType::class, [
                 'label' => 'Plan de estudio',
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
+            ])
+            ->add('documentoEjecutivo', FileType::class, [
+                'label' => 'Documento ejecutivo',
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('dictamen', FileType::class, [
-                'label' => 'Dictamen de modificación PDE',
+                'label' => 'Dictamen de modificación',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')

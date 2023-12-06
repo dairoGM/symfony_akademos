@@ -32,30 +32,13 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.tipoProgramaAcademico) }}
-                    {{ form_widget(form.tipoProgramaAcademico) }}
-                    {{ form_errors(form.tipoProgramaAcademico) }}
-                </div>
-
-
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.carrera) }}
                     {{ form_widget(form.carrera) }}
                     {{ form_errors(form.carrera) }}
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.oace) }}#}
-{#                    {{ form_widget(form.oace) }}#}
-{#                    {{ form_errors(form.oace) }}#}
-{#                </div>#}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"  >
-                    {{ form_label(form.organismoDemandante) }}
-                    {{ form_widget(form.organismoDemandante) }}
-                    {{ form_errors(form.organismoDemandante) }}
-                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
                     {{ form_label(form.organismoFormador) }}
                     {{ form_widget(form.organismoFormador) }}
@@ -66,7 +49,6 @@
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
                 </div>
-
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.cursoAcademico) }}
                     {{ form_widget(form.cursoAcademico) }}
@@ -80,20 +62,11 @@
                     {{ form_errors(form.planEstudio) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoDiurno) }}
-                    {{ form_widget(form.duracionCursoDiurno) }}
-                    {{ form_errors(form.duracionCursoDiurno) }}
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoPorEncuentro) }}
-                    {{ form_widget(form.duracionCursoPorEncuentro) }}
-                    {{ form_errors(form.duracionCursoPorEncuentro) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.duracionCursoDistancia) }}
-                    {{ form_widget(form.duracionCursoDistancia) }}
-                    {{ form_errors(form.duracionCursoDistancia) }}
+                    {{ form_label(form.documentoEjecutivo) }}
+                    {{ form_widget(form.documentoEjecutivo) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo5"> </span>
+                    {{ form_errors(form.documentoEjecutivo) }}
                 </div>
             </div>
             <div class="row">
@@ -129,6 +102,10 @@
         $('#plan_estudio_planEstudio').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
+        })
+        $('#plan_estudio_documentoEjecutivo').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo5').html(filename);
         })
         $('#plan_estudio_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
