@@ -20,6 +20,7 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\HandlerFop;
 use App\Services\Utils;
 use Cassandra\Timestamp;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -51,10 +52,9 @@ class PlanEstudioController extends AbstractController
     /**
      * @Route("/registrar", name="app_plan_estudio_registrar", methods={"GET", "POST"})
      * @param Request $request
-     * @param PlanEstudioRepository $planEstudioRepository
      * @return Response
      */
-    public function registrar(Request $request, Utils $utils, RequestStack $requestStack, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository, DocumentoRepository $documentoRepository, PlanEstudioRepository $planEstudioRepository, CursoAcademicoRepository $cursoAcademicoRepository)
+    public function registrar(Request $request, EntityManagerInterface $em, RequestStack $requestStack, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, PlanEstudioDocumentoRepository $planEstudioDocumentoRepository, DocumentoRepository $documentoRepository, CursoAcademicoRepository $cursoAcademicoRepository)
     {
         try {
             $planEstudioEntity = new PlanEstudio();
@@ -88,14 +88,17 @@ class PlanEstudioController extends AbstractController
                     }
                     $requestStack->getSession()->remove('documentosPlanEstudio');
                 }
-
-                $planEstudioRepository->add($planEstudioEntity, true);
+                $em->persist($planEstudioEntity);
+                $em->flush();
+//                $planEstudioRepository->add($planEstudioEntity, true);
 
 
                 $entidad = new SolicitudProgramaAcademicoPlanEstudio();
                 $entidad->setSolicitudProgramaAcademico($planEstudioEntity->getCarrera());
                 $entidad->setPlanEstudio($planEstudioEntity);
-                $solicitudProgramaAcademicoRepository->add($entidad, true);
+
+                $em->persist($entidad);
+                $em->flush();
 
 //                $utils->guardarHistoricoEstadoProgramaAcademico($entidad->getSolicitudProgramaAcademico()->getId(), 5);
 

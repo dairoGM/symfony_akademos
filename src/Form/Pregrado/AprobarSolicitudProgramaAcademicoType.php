@@ -5,9 +5,11 @@ namespace App\Form\Pregrado;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
+use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -44,15 +46,22 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('duracionCursoDiurno', IntegerType::class, [
-                'label' => 'Duración del curso diurno (Años)',
+            ->add('duracionCursoDiurno', NumberType::class, [
+                'label' => '  ',
                 'required' => false,
                 'attr' => [
                     'min' => 1
                 ]
             ])
-            ->add('duracionCursoPorEncuentro', IntegerType::class, [
-                'label' => 'Duración del curso por encuentros (Años)',
+            ->add('duracionCursoPorEncuentro', NumberType::class, [
+                'label' => '  ',
+                'required' => false,
+                'attr' => [
+                    'min' => 1
+                ]
+            ])
+            ->add('duracionCursoADistancia', NumberType::class, [
+                'label' => '  ',
                 'required' => false,
                 'attr' => [
                     'min' => 1
@@ -61,6 +70,18 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
             ->add('descripcionAprobacion', TextareaType::class, [
                 'label' => 'Caracterización',
                 'required' => false,
+            ])
+            ->add('modalidadDiurno', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Diurno'
+            ])
+            ->add('modalidadPorEncuentro', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Por encuentros'
+            ])
+            ->add('modalidadADistancia', CheckboxType::class, [
+                'required' => false,
+                'label' => 'A distancia'
             ]);
 
     }

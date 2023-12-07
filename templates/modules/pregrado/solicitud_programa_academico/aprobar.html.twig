@@ -41,18 +41,48 @@
                     {{ form_errors(form.centroRector) }}
                 </div>
             </div>
+            <br>
             <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <label for="Modalidad">Modalidad</label>
+                </div>
+                <label for="Duración ">Duración </label>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.modalidadDiurno) }}
+                    {{ form_widget(form.modalidadDiurno) }}
+                    {{ form_errors(form.modalidadDiurno) }}
+                </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.duracionCursoDiurno) }}
                     {{ form_widget(form.duracionCursoDiurno) }}
                     {{ form_errors(form.duracionCursoDiurno) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.modalidadPorEncuentro) }}
+                    {{ form_widget(form.modalidadPorEncuentro) }}
+                    {{ form_errors(form.modalidadPorEncuentro) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.duracionCursoPorEncuentro) }}
                     {{ form_widget(form.duracionCursoPorEncuentro) }}
                     {{ form_errors(form.duracionCursoPorEncuentro) }}
                 </div>
-
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.modalidadADistancia) }}
+                    {{ form_widget(form.modalidadADistancia) }}
+                    {{ form_errors(form.modalidadADistancia) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionCursoADistancia) }}
+                    {{ form_widget(form.duracionCursoADistancia) }}
+                    {{ form_errors(form.duracionCursoADistancia) }}
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
@@ -87,18 +117,18 @@
         $('#aprobar_solicitud_programa_academico_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
-        $('#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro').on('keydown keypress', function (e) {
-            if (e.key.length === 1) {
-                if ($(this).val().length < 3) {
-                    $(this).val($(this).val() + e.key);
-                }
-                return false;
-            }
-        });
+        // $('#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro, #aprobar_solicitud_programa_academico_duracionCursoADistancia').on('keydown keypress', function (e) {
+        //     if (e.key.length === 1) {
+        //         if ($(this).val().length < 5) {
+        //             $(this).val($(this).val() + e.key);
+        //         }
+        //         return false;
+        //     }
+        // });
 
-        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro").bind("keypress", function (event) {
+        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro, #aprobar_solicitud_programa_academico_duracionCursoADistancia").bind("keypress", function (event) {
             if (event.charCode != 0) {
-                var regex = new RegExp("^[0-9-]*$");
+                var regex = new RegExp("^[,0-9-]*$");
                 var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
                 if (!regex.test(key)) {
                     event.preventDefault();

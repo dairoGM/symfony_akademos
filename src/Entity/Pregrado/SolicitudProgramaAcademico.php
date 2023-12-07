@@ -99,6 +99,24 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      * @ORM\Column(type="integer", nullable=true, length="255")
      */
     private ?int $duracionCursoPorEncuentro = null;
+    /**
+     * @ORM\Column(type="integer", nullable=true, length="255")
+     */
+    private ?int $duracionCursoADistancia = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $modalidadDiurno = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $modalidadPorEncuentro = false;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $modalidadADistancia = false;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -416,6 +434,70 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setSolicitud(?string $solicitud): void
     {
         $this->solicitud = $solicitud;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDuracionCursoADistancia()
+    {
+        return $this->duracionCursoADistancia;
+    }
+
+    /**
+     * @param int|null $duracionCursoADistancia
+     */
+    public function setDuracionCursoADistancia($duracionCursoADistancia)
+    {
+        $this->duracionCursoADistancia = $duracionCursoADistancia;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getModalidadDiurno()
+    {
+        return $this->modalidadDiurno;
+    }
+
+    /**
+     * @param bool|null $modalidadDiurno
+     */
+    public function setModalidadDiurno($modalidadDiurno)
+    {
+        $this->modalidadDiurno = $modalidadDiurno;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getModalidadPorEncuentro()
+    {
+        return $this->modalidadPorEncuentro;
+    }
+
+    /**
+     * @param bool|null $modalidadPorEncuentro
+     */
+    public function setModalidadPorEncuentro( $modalidadPorEncuentro)
+    {
+        $this->modalidadPorEncuentro = $modalidadPorEncuentro;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getModalidadADistancia()
+    {
+        return $this->modalidadADistancia;
+    }
+
+    /**
+     * @param bool|null $modalidadADistancia
+     */
+    public function setModalidadADistancia($modalidadADistancia)
+    {
+        $this->modalidadADistancia = $modalidadADistancia;
     }
 
 
