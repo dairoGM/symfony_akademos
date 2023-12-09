@@ -31,7 +31,7 @@
                     <th>Nombre</th>
                     <th>Siglas</th>
                     <th>Rector</th>
-                    <th>Estado</th>
+                    <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -50,13 +50,8 @@
                         <td>{{ item.nombre_siglas }}</td>
                         <td>{{ item.siglas }}</td>
                         <td>{{ item.rector }}</td>
-                        <td width="3%" class="-text-center">
-                            {% if '1' == item.activo %}
-                                <span class="ms-status -active">Habilitado</span>
-                            {% else %}
-                                <span class="ms-status">Deshabilitado</span>
-                            {% endif %}
-                        </td>
+                        <td>{{ item.catAcreditacion | default('') }}</td>
+
                         <td width="35%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_institucion_detail', {'id' : item.id}) }}"

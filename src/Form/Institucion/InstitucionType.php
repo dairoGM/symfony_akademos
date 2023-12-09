@@ -54,7 +54,7 @@ class InstitucionType extends AbstractType
                 'attr' => [
                     'readonly' => true
                 ],
-                'constraints' => [new Length(["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+                'constraints' => [new Length(["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 50, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('codigo', TextType::class, [
                 'label' => 'Código REUP',

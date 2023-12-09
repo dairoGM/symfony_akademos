@@ -59,9 +59,11 @@ class InstitucionRepository extends ServiceEntityRepository
                         qb.logo,
                         qb.siglas,
                         qb.activo,
-                        qb.codigo,                      
+                        qb.codigo, 
+                        ca.nombre as catAcreditacion,                     
                         concat(gradoAcademicoR.siglas,' ', qb.rector) as rector");
         $qb->innerJoin('qb.gradoAcademicoRector', 'gradoAcademicoR');
+        $qb->leftJoin('qb.categoriaAcreditacion', 'ca');
         $qb->orderBy('qb.nombre');
         $resul = $qb->getQuery()->getResult();
         return $resul;
