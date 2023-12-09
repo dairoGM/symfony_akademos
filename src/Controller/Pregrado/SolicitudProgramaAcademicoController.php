@@ -182,7 +182,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function aprobar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
-        try {
+//        try {
             $choices = [
                 'cartaAprobacion' => empty($solicitudPrograma->getCartaAprobacion()) ? 'registrar' : 'modificar'
             ];
@@ -228,10 +228,10 @@ class SolicitudProgramaAcademicoController extends AbstractController
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_academico_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 

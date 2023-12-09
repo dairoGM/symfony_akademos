@@ -3,6 +3,9 @@
 namespace App\Entity\Pregrado;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Institucion\Institucion;
+use App\Entity\Institucion\CategoriaAcreditacion;
+use App\Entity\Postgrado\RamaCiencia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -146,6 +149,29 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      */
     private ?string $telefonoSolicitante = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Postgrado\RamaCiencia")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?RamaCiencia $ramaCiencia;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?\App\Entity\Institucion\Institucion $centroSolicitante;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="50")
+     */
+    private ?string $codigoPrograma = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\CategoriaAcreditacion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?CategoriaAcreditacion $categoriaAcreditacion;
 
     /**
      * @return EstadoProgramaAcademico|null
@@ -499,6 +525,72 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     {
         $this->modalidadADistancia = $modalidadADistancia;
     }
+
+    /**
+     * @return RamaCiencia|null
+     */
+    public function getRamaCiencia(): ?RamaCiencia
+    {
+        return $this->ramaCiencia;
+    }
+
+    /**
+     * @param RamaCiencia|null $ramaCiencia
+     */
+    public function setRamaCiencia(?RamaCiencia $ramaCiencia): void
+    {
+        $this->ramaCiencia = $ramaCiencia;
+    }
+
+    /**
+     * @return Institucion|null
+     */
+    public function getCentroSolicitante(): ?Institucion
+    {
+        return $this->centroSolicitante;
+    }
+
+    /**
+     * @param Institucion|null $centroSolicitante
+     */
+    public function setCentroSolicitante(?Institucion $centroSolicitante): void
+    {
+        $this->centroSolicitante = $centroSolicitante;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCodigoPrograma(): ?string
+    {
+        return $this->codigoPrograma;
+    }
+
+    /**
+     * @param string|null $codigoPrograma
+     */
+    public function setCodigoPrograma(?string $codigoPrograma): void
+    {
+        $this->codigoPrograma = $codigoPrograma;
+    }
+
+    /**
+     * @return CategoriaAcreditacion|null
+     */
+    public function getCategoriaAcreditacion(): ?CategoriaAcreditacion
+    {
+        return $this->categoriaAcreditacion;
+    }
+
+    /**
+     * @param CategoriaAcreditacion|null $categoriaAcreditacion
+     */
+    public function setCategoriaAcreditacion(?CategoriaAcreditacion $categoriaAcreditacion): void
+    {
+        $this->categoriaAcreditacion = $categoriaAcreditacion;
+    }
+
+
 
 
 }

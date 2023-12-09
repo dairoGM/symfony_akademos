@@ -2,6 +2,7 @@
 
 namespace App\Form\Pregrado;
 
+use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AprobarSolicitudProgramaAcademicoType extends AbstractType
@@ -46,12 +48,28 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
+            ->add('categoriaAcreditacion', EntityType::class, [
+                'label' => 'Categoría de acreditación',
+                'class' => CategoriaAcreditacion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'required' => false
+            ])
             ->add('duracionCursoDiurno', NumberType::class, [
                 'label' => '  ',
                 'required' => false,
                 'attr' => [
                     'min' => 1
                 ]
+            ])
+            ->add('codigoPrograma', TextType::class, [
+                'label' => 'Código',
+                'required' => false,
+                'constraints' => [new Length(["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 50, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('duracionCursoPorEncuentro', NumberType::class, [
                 'label' => '  ',

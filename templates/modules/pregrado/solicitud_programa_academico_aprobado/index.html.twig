@@ -21,12 +21,12 @@
                     <th>No.</th>
                     <th>Programa académico</th>
                     <th>Tipo de programa académico</th>
-                    <th>Organismo demandante</th>
+                    <th>Rama de la ciencia</th>
                     <th>Fecha de aprobación</th>
                     <th>Centro rector</th>
                     {#                    <th>Duración del curso diurno</th> #}
                     {#                    <th>Duración del curso por encuentro</th> #}
-                    <th>Estado</th>
+                    <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -36,7 +36,7 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
-                        <td>{{ item.organismoDemandante.nombre | default('') }}</td>
+                        <td>{{ item.ramaCiencia.nombre | default('') }}</td>
                         {% if item.fechaAprobacion is not null %}
                             <td>{{ item.fechaAprobacion | date('d/m/Y') }}</td>
                         {% else %}
@@ -45,7 +45,7 @@
                         <td>{{ item.centroRector.nombre | default('') }}</td>
                         {#                        <td>{% if item.duracionCursoDiurno is not null %} {{ item.duracionCursoDiurno | default('') }} años {% else %} {% endif %}</td> #}
                         {#                        <td>{% if item.duracionCursoPorEncuentro is not null %}  {{ item.duracionCursoPorEncuentro | default('') }} años{% else %} {% endif %}</td> #}
-                        <td>{{ item.estadoProgramaAcademico.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
                         <td width="25%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.id}) }}"

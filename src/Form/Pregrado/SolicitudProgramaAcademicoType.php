@@ -3,6 +3,7 @@
 namespace App\Form\Pregrado;
 
 use App\Entity\Institucion\Institucion;
+use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\RolComision;
 use App\Entity\Pregrado\OrganismoDemandante;
 use App\Entity\Pregrado\TipoOrganismo;
@@ -51,6 +52,28 @@ class SolicitudProgramaAcademicoType extends AbstractType
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+            ])
+            ->add('ramaCiencia', EntityType::class, [
+                'label' => 'Rama de la ciencia',
+                'class' => RamaCiencia::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'required' => false
+            ])
+            ->add('centroSolicitante', EntityType::class, [
+                'label' => 'Centro solicitante',
+                'class' => Institucion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'required' => false
             ])
             ->add('solicitud', FileType::class, [
                 'label' => 'Solicitud',

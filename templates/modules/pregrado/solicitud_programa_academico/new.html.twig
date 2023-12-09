@@ -34,6 +34,16 @@
             </div>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.ramaCiencia) }}
+                    {{ form_widget(form.ramaCiencia) }}
+                    {{ form_errors(form.ramaCiencia) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.centroSolicitante) }}
+                    {{ form_widget(form.centroSolicitante) }}
+                    {{ form_errors(form.centroSolicitante) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.solicitud) }}
                     {{ form_widget(form.solicitud) }}
                     <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
