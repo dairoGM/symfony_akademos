@@ -1,10 +1,200 @@
 {% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Portada Pregrado{% endblock %}
+{% block stylesheets %}
+    <style>
+        /*@media (max-width: 575px) {*/
+        /*    .filter-dash-buttom{*/
+        /*        width: 100%;*/
+        /*    }*/
+        /*}*/
 
+
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .c {
+                min-width: 33.3% !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1400px) {
+            .p {
+                min-width: 33.3% !important;
+            }
+        }
+
+        .bg-blue {
+            background-color: #0E375F !important;
+        }
+
+    </style>
+{% endblock %}
 {% block body %}
 
-    Portada Pregrado
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total de Solicitudes</span>
+                            <h3><span class="info-box-number">{{ total_solicitudes }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Aprobados</span>
+                            <h3><span class="info-box-number">{{ programas_aprobados }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix hidden-md-up"></div>
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-trash"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Rechazados</span>
+                            <h3><span class="info-box-number">{{ programas_rechazados }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-recycle"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Reabierto</span>
+                            <h3><span class="info-box-number">{{ programas_reabiertos }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-blue elevation-1"><i class="fas fa-deaf"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Desactivado</span>
+                            <h3><span class="info-box-number">{{ programas_desactivados }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-pink elevation-1"><i class="fas fa-adjust"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Extintos</span>
+                            <h3><span class="info-box-number">{{ programas_extintos }}</span></h3>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+
+                               <span class="float-left badge bg-success">{{ programas_aprobados }}</span> Programas Aprobados </h5>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-center">
+                                        <strong>Por Áreas de la Ciencia</strong>
+                                    </p>
+                                    {% for item in por_rama_ciencia %}
+                                        <div class="progress-group">
+                                            {{ item.nombre }}
+                                            <span class="float-right"><b><span class="float-left badge bg-{{ item.color }}">{{ item.total }}</span></b></span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-{{ item.color }}"
+                                                     style="width: {{ item.total  * 100 /  programas_aprobados }}%"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-center">
+                                        <strong>Por Modalidad de Estudio</strong>
+                                    </p>
+                                    <div class="progress-group">
+                                        Diurno
+                                        <span class="float-right"><b><span class="float-left badge bg-primary">{{ por_modalidad['diurno'] }}</span></b> </span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-primary"
+                                                 style="width: {{ por_modalidad['diurno'] | default(0)  * 100 /  programas_aprobados }}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        A Distancia
+                                        <span class="float-right"><b><span class="float-left badge bg-danger">{{ por_modalidad['adistancia'] }}</span></b> </span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-danger"
+                                                 style="width: {{ por_modalidad['adistancia'] | default(0)  * 100 /  programas_aprobados }}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        <span class="progress-text">Por Encuentros</span>
+
+                                        <span class="float-right"><b><span class="float-left badge bg-success">{{ por_modalidad['por_encuentro'] }}</span></b> </span>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-success"
+                                                 style="width: {{ por_modalidad['por_encuentro'] | default(0)  * 100 /  programas_aprobados }}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Por Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ item.total | default(1)  * 100 /  programas_aprobados }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 {% endblock %}
 

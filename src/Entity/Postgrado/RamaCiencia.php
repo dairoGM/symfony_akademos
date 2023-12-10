@@ -22,6 +22,12 @@ class RamaCiencia extends BaseNomenclator
     private ?string $siglas=null;
 
 
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $color=null;
+
     public function getSiglas()
     {
         return $this->siglas;
@@ -33,4 +39,22 @@ class RamaCiencia extends BaseNomenclator
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string|null $color
+     */
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+
+
 }

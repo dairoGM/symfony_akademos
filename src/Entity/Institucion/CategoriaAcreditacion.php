@@ -17,6 +17,13 @@ class CategoriaAcreditacion extends BaseNomenclator
     private ?string $duracion = null;
 
 
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $color=null;
+
+
     public function getDuracion()
     {
         return $this->duracion;
@@ -28,4 +35,22 @@ class CategoriaAcreditacion extends BaseNomenclator
 
         return $this;
     }
+
+
+    /**
+     * @return string|null
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string|null $color
+     */
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+
 }
