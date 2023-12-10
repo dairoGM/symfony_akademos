@@ -30,6 +30,7 @@ class PortadaController extends AbstractController
         $parametros['por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia();
         $parametros['por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad();
         $parametros['por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion();
+        $parametros['por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector());
         return $this->render('modules/pregrado/portada/index.html.twig', $parametros);
 
     }

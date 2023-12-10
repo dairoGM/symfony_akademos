@@ -134,4 +134,16 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+
+    public function getSolicitudProgramaAcademicoAprobadoPorCentroRector()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('cr.siglas as name, count(qb.id) as y')
+            ->join('qb.centroRector', 'cr')
+            ->where('qb.estadoProgramaAcademico = 2')
+            ->groupBy('cr.siglas') ;
+
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }
