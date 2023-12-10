@@ -21,7 +21,7 @@
                     {{ form_widget(form.annoAprobacion) }}
                     {{ form_errors(form.annoAprobacion) }}
                 </div>
-                <div class="col-4 form-group">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.fechaAprobacion) }}
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -39,12 +39,12 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" >
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.organismoFormador) }}
                     {{ form_widget(form.organismoFormador) }}
                     {{ form_errors(form.organismoFormador) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"  >
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.ramaCiencia) }}
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
@@ -54,6 +54,9 @@
                     {{ form_widget(form.cursoAcademico) }}
                     {{ form_errors(form.cursoAcademico) }}
                 </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.planEstudio) }}
                     {{ form_widget(form.planEstudio) }}

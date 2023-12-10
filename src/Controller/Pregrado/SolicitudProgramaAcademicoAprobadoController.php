@@ -536,7 +536,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/moficiar.html.twig', [
+            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/modificar.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma
             ]);
