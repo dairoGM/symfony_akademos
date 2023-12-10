@@ -10,6 +10,7 @@ use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
+use App\Form\Pregrado\AprobarModificarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\ProgramaAcademicoDesactivadoType;
 use App\Form\Pregrado\ProgramaAcademicoReabiertoType;
@@ -514,4 +515,34 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/{id}/modificar", name="app_solicitud_programa_academico_aprobar_modificar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
+     * @param SolicitudProgramaAcademico $solicitudPrograma
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
+     * @return Response
+     */
+    public function aprobarModificar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    {
+        try {
+            $form = $this->createForm(AprobarModificarSolicitudProgramaAcademicoType::class, $solicitudPrograma, []);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $solicitudProgramaRepository->edit($solicitudPrograma, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/moficiar.html.twig', [
+                'form' => $form->createView(),
+                'solicitudPrograma' => $solicitudPrograma
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 }

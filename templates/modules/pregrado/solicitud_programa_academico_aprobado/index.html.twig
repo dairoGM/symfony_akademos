@@ -54,6 +54,12 @@
                             </button>
 
                             {% if item.estadoProgramaAcademico.id == 2 %} {# Aprobado #}
+                                <a title="Modificar"
+                                   href="{{ path('app_solicitud_programa_academico_aprobar_modificar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-edit"></i>
+                                </a>
+
                                 <a title="Asociar universidades en que se estudia "
                                    href="{{ path('app_solicitud_programa_academico_aprobado_asignar_universidad', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i

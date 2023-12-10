@@ -1,0 +1,108 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar información{% endblock %}
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Modificar información </h3>
+            </div>
+        </div>
+        {{ include('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', { 'item': solicitudPrograma, 'format':'col3' }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.centroRector) }}
+                    {{ form_widget(form.centroRector) }}
+                    {{ form_errors(form.centroRector) }}
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <label for="Modalidad">Modalidad</label>
+                </div>
+                <label for="Duración " style="margin-left: -15%">Duración </label>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 1%">
+                    {{ form_label(form.modalidadDiurno) }}
+                    {{ form_widget(form.modalidadDiurno) }}
+                    {{ form_errors(form.modalidadDiurno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: -15%">
+                    {{ form_label(form.duracionCursoDiurno) }}
+                    {{ form_widget(form.duracionCursoDiurno) }}
+                    {{ form_errors(form.duracionCursoDiurno) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 1%">
+                    {{ form_label(form.modalidadPorEncuentro) }}
+                    {{ form_widget(form.modalidadPorEncuentro) }}
+                    {{ form_errors(form.modalidadPorEncuentro) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: -15%">
+                    {{ form_label(form.duracionCursoPorEncuentro) }}
+                    {{ form_widget(form.duracionCursoPorEncuentro) }}
+                    {{ form_errors(form.duracionCursoPorEncuentro) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 1%">
+                    {{ form_label(form.modalidadADistancia) }}
+                    {{ form_widget(form.modalidadADistancia) }}
+                    {{ form_errors(form.modalidadADistancia) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-left: -15%">
+                    {{ form_label(form.duracionCursoADistancia) }}
+                    {{ form_widget(form.duracionCursoADistancia) }}
+                    {{ form_errors(form.duracionCursoADistancia) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.descripcionAprobacion) }}
+                    {{ form_widget(form.descripcionAprobacion) }}
+                    {{ form_errors(form.descripcionAprobacion) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel"
+               data-url="{{ path('app_solicitud_programa_academico_aprobado_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro, #aprobar_solicitud_programa_academico_duracionCursoADistancia").bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[,0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

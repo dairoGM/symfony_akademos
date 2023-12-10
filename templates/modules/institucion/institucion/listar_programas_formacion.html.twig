@@ -52,6 +52,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Carrera</th>
+                                <th>Rama de la ciencia</th>
+                                <th>Categoría de acreditación</th>
                                 <th class="text-center">Opciones</th>
                             </tr>
                             </thead>
@@ -60,9 +62,11 @@
                                 <tr>
                                     <td width="1%">{{ loop.index }}</td>
                                     <td>{{ item.solicitudProgramaAcademico.nombre | default('') }}</td>
+                                    <td>{{ item.solicitudProgramaAcademico.ramaCiencia.nombre | default('') }}</td>
+                                    <td>{{ item.solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }}</td>
                                     <td width="10%" class="text-center">
                                         <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                                data-url="{{ path('app_solicitud_programa_academico_detail', {'id' : item.solicitudProgramaAcademico.id}) }}"
+                                                data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.solicitudProgramaAcademico.id}) }}"
                                                 data-title="Detalles de la solicitud de programa">
                                             <i class="fa fa-eye "></i>
                                         </button>
