@@ -186,7 +186,7 @@
                                 {% for item in por_categoria_acreditacion %}
                                     <div class="col-sm-4 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ item.total | default(1)  * 100 /  programas_aprobados }}%</span>
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  programas_aprobados) | round(1, 'floor') }}%</span>
                                             <h5 class="description-header">{{ item.total | default(0) }}</h5>
                                             <span class="description-text">{{ item.nombre | default() }}</span>
                                         </div>
