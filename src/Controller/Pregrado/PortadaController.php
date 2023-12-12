@@ -22,15 +22,29 @@ class PortadaController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         $parametros['total_solicitudes'] = count($solicitudProgramaAcademicoRepository->findAll());
-        $parametros['programas_aprobados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([2]));
+
+        $parametros['carreras_aprobadas'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoByTipo([2], 1));
+        $parametros['cursos_aprobados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoByTipo([2], 2));
+        $parametros['total_aprobado'] = $parametros['carreras_aprobadas']+$parametros['cursos_aprobados'];
+
+
+
         $parametros['programas_rechazados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([3]));
         $parametros['programas_reabiertos'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([7]));
         $parametros['programas_extintos'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([8]));
         $parametros['programas_desactivados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([6]));
-        $parametros['por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia();
-        $parametros['por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad();
-        $parametros['por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion();
-        $parametros['por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector());
+
+        $parametros['carrera_por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia(1);
+        $parametros['curso_por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia(2);
+
+        $parametros['carrera_por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad(1);
+        $parametros['curso_por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad(2);
+
+        $parametros['carrera_por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(1);
+        $parametros['curso_por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(2);
+
+        $parametros['carrera_por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector(1));
+        $parametros['tecnico_por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector(2));
         return $this->render('modules/pregrado/portada/index.html.twig', $parametros);
 
     }
