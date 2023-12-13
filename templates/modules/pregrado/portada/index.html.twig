@@ -35,7 +35,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Programas de Formación de Pregrado</h1>
+                        <h5 class="m-0"><b>Programas de Formación de Pregrado</b></h5>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -47,7 +47,6 @@
             </div>
         </div>
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box">
@@ -120,7 +119,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title"><strong>
-                                <span class="float-left badge bg-success">  {{ carreras_aprobadas }}</span>&nbsp;&nbsp;Carreras
+                                    <span class="float-left badge bg-success">  {{ carreras_aprobadas }}</span>&nbsp;&nbsp;Carreras
                                     aprobadas </strong></h5>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -183,31 +182,30 @@
                             </div>
                         </div>
 
-                        {#                        <div class="card-footer"> #}
-                        {#                            <p class="text-center"> #}
-                        {#                                <strong>Por Categoría de Acreditación</strong> #}
-                        {#                            </p> #}
-                        {#                            <div class="row"> #}
-                        {#                                {% for item in por_categoria_acreditacion %} #}
-                        {#                                    <div class="col-sm-4 col-6"> #}
-                        {#                                        <div class="description-block border-right"> #}
-                        {#                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span> #}
-                        {#                                            <h5 class="description-header">{{ item.total | default(0) }}</h5> #}
-                        {#                                            <span class="description-text">{{ item.nombre | default() }}</span> #}
-                        {#                                        </div> #}
-
-                        {#                                    </div> #}
-                        {#                                {% endfor %} #}
-                        {#                            </div> #}
-                        {#                        </div> #}
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in carrera_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title"><strong>
-                                <span class="float-left badge bg-success">{{ cursos_aprobados }}</span> &nbsp;&nbsp;Cursos
-                                    Aprobados</strong> </h5>
+                                    <span class="float-left badge bg-success">{{ cursos_aprobados }}</span> &nbsp;&nbsp;Cursos
+                                    Aprobados</strong></h5>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
@@ -269,37 +267,66 @@
                             </div>
                         </div>
 
-                        {#                        <div class="card-footer"> #}
-                        {#                            <p class="text-center"> #}
-                        {#                                <strong>Por Categoría de Acreditación</strong> #}
-                        {#                            </p> #}
-                        {#                            <div class="row"> #}
-                        {#                                {% for item in por_categoria_acreditacion %} #}
-                        {#                                    <div class="col-sm-4 col-6"> #}
-                        {#                                        <div class="description-block border-right"> #}
-                        {#                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  cursos_aprobados) | round(1, 'floor') }}%</span> #}
-                        {#                                            <h5 class="description-header">{{ item.total | default(0) }}</h5> #}
-                        {#                                            <span class="description-text">{{ item.nombre | default() }}</span> #}
-                        {#                                        </div> #}
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in curso_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  cursos_aprobados) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
 
-                        {#                                    </div> #}
-                        {#                                {% endfor %} #}
-                        {#                            </div> #}
-                        {#                        </div> #}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-
             <div class="row">
                 <div class="col-6">
-                    <div id="container_carrera"></div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title"><strong>
+                                    <span class="float-left badge bg-success"></span>&nbsp;&nbsp;Carreras por Centro
+                                    Rector</strong></h5>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="container_carrera"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6">
-                    <div id="container_tecnico"></div>
-                </div>
-            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title"><strong>
+                                    <span class="float-left badge bg-success"></span> Técnicos por Centro
+                                    Rector </strong></h5>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
 
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="container_tecnico"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
 {% endblock %}
@@ -314,7 +341,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Carreras por Centro Rector'
+                    text: ' '
                 },
                 subtitle: {
                     align: 'left',
@@ -370,7 +397,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Técnicos por Centro Rector'
+                    text: ' '
                 },
                 subtitle: {
                     align: 'left',

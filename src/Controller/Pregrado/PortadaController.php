@@ -25,8 +25,7 @@ class PortadaController extends AbstractController
 
         $parametros['carreras_aprobadas'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoByTipo([2], 1));
         $parametros['cursos_aprobados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoByTipo([2], 2));
-        $parametros['total_aprobado'] = $parametros['carreras_aprobadas']+$parametros['cursos_aprobados'];
-
+        $parametros['total_aprobado'] = $parametros['carreras_aprobadas'] + $parametros['cursos_aprobados'];
 
 
         $parametros['programas_rechazados'] = count($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([3]));
