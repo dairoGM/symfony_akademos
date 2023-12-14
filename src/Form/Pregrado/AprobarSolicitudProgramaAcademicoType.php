@@ -48,6 +48,17 @@ class AprobarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
+            ->add('organismoFormador', EntityType::class, [
+                'label' => 'Organismo formador',
+                'class' => Institucion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'required' => false,
+                'empty_data' => null
+            ])
             ->add('categoriaAcreditacion', EntityType::class, [
                 'label' => 'Categoría de acreditación',
                 'class' => CategoriaAcreditacion::class,

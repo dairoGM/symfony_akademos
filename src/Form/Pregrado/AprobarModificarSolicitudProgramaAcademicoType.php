@@ -27,7 +27,6 @@ class AprobarModificarSolicitudProgramaAcademicoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
             ->add('centroRector', EntityType::class, [
                 'label' => 'Centro rector',
                 'class' => Institucion::class,
@@ -48,6 +47,17 @@ class AprobarModificarSolicitudProgramaAcademicoType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
                 'required' => false
+            ])
+            ->add('organismoFormador', EntityType::class, [
+                'label' => 'Organismo formador',
+                'class' => Institucion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'required' => false,
+                'empty_data' => null
             ])
             ->add('categoriaAcreditacion', EntityType::class, [
                 'label' => 'Categoría de acreditación',
