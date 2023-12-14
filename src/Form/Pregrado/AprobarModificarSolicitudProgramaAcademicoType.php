@@ -5,6 +5,7 @@ namespace App\Form\Pregrado;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\NivelAcreditacion;
+use App\Entity\Pregrado\OrganismoDemandante;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityRepository;
@@ -36,6 +37,17 @@ class AprobarModificarSolicitudProgramaAcademicoType extends AbstractType
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+            ])
+            ->add('organismoDemandante', EntityType::class, [
+                'label' => 'Organismo o entidad demandante',
+                'class' => OrganismoDemandante::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'required' => false
             ])
             ->add('categoriaAcreditacion', EntityType::class, [
                 'label' => 'Categoría de acreditación',

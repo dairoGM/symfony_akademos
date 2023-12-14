@@ -190,7 +190,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
             $form = $this->createForm(AprobarSolicitudProgramaAcademicoType::class, $solicitudPrograma, $choices);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted()) {
                 $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_solicitud_programa_academico']['fechaAprobacion']));
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(2));
 

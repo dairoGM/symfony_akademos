@@ -113,19 +113,53 @@
                     </div>
                 </div>
             </div>
-
+            {#            Seccion de graficos #}
             <div class="row">
                 <div class="col-md-6">
+                    {# Carreras Universitarias #}
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title"><strong>
-                                    <span class="float-left badge bg-success">  {{ carreras_aprobadas }}</span>&nbsp;&nbsp;Carreras
-                                    aprobadas </strong></h5>
+                                    <span class="float-left badge bg-success"></span>&nbsp;&nbsp;Carreras Universitarias</strong>
+                            </h5>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
 
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-group">
+                                    <p class="text-center">
+                                        <strong>Organismo Formador</strong>
+                                    </p>
+                                    <div id="container_carrera_organismo_formador"></div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-group">
+                                    <p class="text-center">
+                                        <strong>Organismo Demandante</strong>
+                                    </p>
+
+                                    <div id="container_carrera_organismo_demandante"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in carrera_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="card-body">
@@ -181,36 +215,57 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card-footer">
-                            <p class="text-center">
-                                <strong>Categoría de Acreditación</strong>
-                            </p>
-                            <div class="row">
-                                {% for item in carrera_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-6">
-                                        <div class="description-block border-right">
-                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
-                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
-                                            <span class="description-text">{{ item.nombre | default() }}</span>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                        <div class="card-body">
+                            <div id="container_carrera"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
+                    {# Programas de Formación de Ciclo Corto #}
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title"><strong>
-                                    <span class="float-left badge bg-success">{{ cursos_aprobados }}</span> &nbsp;&nbsp;Cursos
-                                    Aprobados</strong></h5>
+                                    <span class="float-left badge bg-success"></span>&nbsp;Programas de Formación de
+                                    Ciclo Corto</strong>
+                            </h5>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
 
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-group">
+                                    <p class="text-center">
+                                        <strong>Organismo Formador</strong>
+                                    </p>
+                                    <div id="container_ciclo_corto_organismo_formador"></div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 form-group">
+                                    <p class="text-center">
+                                        <strong>Organismo Demandante</strong>
+                                    </p>
+
+                                    <div id="container_ciclo_corto_organismo_demandante"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in ciclo_corto_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  ciclo_corto_aprobados) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="card-body">
@@ -219,113 +274,58 @@
                                     <p class="text-center">
                                         <strong> Áreas de la Ciencia</strong>
                                     </p>
-                                    {% for item in curso_por_rama_ciencia %}
+                                    {% for item in ciclo_corto_por_rama_ciencia %}
                                         <div class="progress-group">
                                             {{ item.nombre }}
                                             <span class="float-right"><b><span
                                                             class="float-left badge bg-{{ item.color }}">{{ item.total }}</span></b></span>
                                             <div class="progress progress-sm">
                                                 <div class="progress-bar bg-{{ item.color }}"
-                                                     style="width: {{ item.total  * 100 /  cursos_aprobados }}%"></div>
+                                                     style="width: {{ item.total  * 100 /  carreras_aprobadas }}%"></div>
                                             </div>
                                         </div>
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-6">
                                     <p class="text-center">
-                                        <strong> Modalidad de Estudio</strong>
+                                        <strong>Modalidad de Estudio</strong>
                                     </p>
                                     <div class="progress-group">
                                         Diurno
                                         <span class="float-right"><b><span
-                                                        class="float-left badge bg-primary">{{ curso_por_modalidad['diurno'] }}</span></b> </span>
+                                                        class="float-left badge bg-primary">{{ ciclo_corto_por_modalidad['diurno'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-primary"
-                                                 style="width: {{ curso_por_modalidad['diurno'] | default(0)  * 100 /  cursos_aprobados }}%"></div>
+                                                 style="width: {{ ciclo_corto_por_modalidad['diurno'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
                                         A Distancia
                                         <span class="float-right"><b><span
-                                                        class="float-left badge bg-danger">{{ curso_por_modalidad['adistancia'] }}</span></b> </span>
+                                                        class="float-left badge bg-danger">{{ ciclo_corto_por_modalidad['adistancia'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-danger"
-                                                 style="width: {{ curso_por_modalidad['adistancia'] | default(0)  * 100 /  cursos_aprobados }}%"></div>
+                                                 style="width: {{ ciclo_corto_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
                                         <span class="progress-text">Por Encuentros</span>
 
                                         <span class="float-right"><b><span
-                                                        class="float-left badge bg-success">{{ curso_por_modalidad['por_encuentro'] }}</span></b> </span>
+                                                        class="float-left badge bg-success">{{ ciclo_corto_por_modalidad['por_encuentro'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-success"
-                                                 style="width: {{ curso_por_modalidad['por_encuentro'] | default(0)  * 100 /  cursos_aprobados }}%"></div>
+                                                 style="width: {{ ciclo_corto_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card-footer">
-                            <p class="text-center">
-                                <strong>Categoría de Acreditación</strong>
-                            </p>
-                            <div class="row">
-                                {% for item in curso_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-6">
-                                        <div class="description-block border-right">
-                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  cursos_aprobados) | round(1, 'floor') }}%</span>
-                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
-                                            <span class="description-text">{{ item.nombre | default() }}</span>
-                                        </div>
-
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title"><strong>
-                                    <span class="float-left badge bg-success"></span>&nbsp;&nbsp;Carreras por Centro
-                                    Rector</strong></h5>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-
-                            </div>
-                        </div>
                         <div class="card-body">
-                            <div id="container_carrera"></div>
+                            <div id="container_ciclo_corto"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title"><strong>
-                                    <span class="float-left badge bg-success"></span> Técnicos por Centro
-                                    Rector </strong></h5>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div id="container_tecnico"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -335,7 +335,7 @@
     <script>
 
         $(document).ready(function () {
-            Highcharts.chart('container_carrera', {
+            Highcharts.chart('container_carrera_organismo_formador', {
                 chart: {
                     type: 'column'
                 },
@@ -386,12 +386,12 @@
                     {
                         name: 'Carreras',
                         colorByPoint: true,
-                        data: JSON.parse('{{ carrera_por_centro_rector | raw }}')
+                        data: JSON.parse('{{ carrera_organismo_formador | raw }}')
                     }
                 ],
 
             });
-            Highcharts.chart('container_tecnico', {
+            Highcharts.chart('container_carrera_organismo_demandante', {
                 chart: {
                     type: 'column'
                 },
@@ -440,9 +440,235 @@
 
                 series: [
                     {
-                        name: 'Técnicos',
+                        name: 'Carreras',
                         colorByPoint: true,
-                        data: JSON.parse('{{ tecnico_por_centro_rector | raw }}')
+                        data: JSON.parse('{{ carrera_organismo_demandante | raw }}')
+                    }
+                ],
+
+            });
+            Highcharts.chart('container_carrera', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    align: 'left',
+                    text: 'Carreras Universitarias por Centro Rector'
+                },
+                subtitle: {
+                    align: 'left',
+                    text: ''
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
+                    }
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f}'
+                        }
+                    },
+                    enableMouseTracking: false
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> <br/>'
+                },
+
+                series: [
+                    {
+                        name: 'Carreras',
+                        colorByPoint: true,
+                        data: JSON.parse('{{ carrera_por_centro_rector | raw }}')
+                    }
+                ],
+
+            });
+
+
+            Highcharts.chart('container_ciclo_corto', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    align: 'left',
+                    text: ' '
+                },
+                subtitle: {
+                    align: 'left',
+                    text: ''
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
+                    }
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f}'
+                        }
+                    },
+                    enableMouseTracking: false
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> <br/>'
+                },
+
+                series: [
+                    {
+                        name: 'Programas de Formación de Ciclo Corto',
+                        colorByPoint: true,
+                        data: JSON.parse('{{ ciclo_corto_por_centro_rector | raw }}')
+                    }
+                ],
+
+            });
+            Highcharts.chart('container_ciclo_corto_organismo_formador', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    align: 'left',
+                    text: ' '
+                },
+                subtitle: {
+                    align: 'left',
+                    text: ''
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
+                    }
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f}'
+                        }
+                    },
+                    enableMouseTracking: false
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> <br/>'
+                },
+
+                series: [
+                    {
+                        name: 'Programas de Formación de Ciclo Corto',
+                        colorByPoint: true,
+                        data: JSON.parse('{{ ciclo_corto_organismo_formador | raw }}')
+                    }
+                ],
+
+            });
+            Highcharts.chart('container_ciclo_corto_organismo_demandante', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    align: 'left',
+                    text: ' '
+                },
+                subtitle: {
+                    align: 'left',
+                    text: ''
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
+                    }
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.0f}'
+                        }
+                    },
+                    enableMouseTracking: false
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> <br/>'
+                },
+
+                series: [
+                    {
+                        name: 'Programas de Formación de Ciclo Corto',
+                        colorByPoint: true,
+                        data: JSON.parse('{{ ciclo_corto_organismo_demandante | raw }}')
                     }
                 ],
 

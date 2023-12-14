@@ -163,7 +163,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
 
 
     /**
-     * @ORM\Column(type="string", nullable=true, length="50")
+     * @ORM\Column(type="string", nullable=true, length="100")
      */
     private ?string $codigoPrograma = null;
 
@@ -569,7 +569,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     /**
      * @param string|null $codigoPrograma
      */
-    public function setCodigoPrograma(?string $codigoPrograma): void
+    public function setCodigoPrograma($codigoPrograma): void
     {
         $this->codigoPrograma = $codigoPrograma;
     }
