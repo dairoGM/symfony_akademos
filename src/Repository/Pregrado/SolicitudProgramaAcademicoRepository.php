@@ -115,11 +115,12 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
     public function getSolicitudProgramaAcademicoAprobadoPorModalidad($tipoProgramaAcademico)
     {
         $query = "select 
-            sum(case when pregrado.tbd_solicitud_programa_academico.modalidad_diurno then 1 else 0 end )as diurno,
-            sum(case when pregrado.tbd_solicitud_programa_academico.modalidad_adistancia then 1 else 0 end )as adistancia,
-            sum(case when pregrado.tbd_solicitud_programa_academico.modalidad_por_encuentro then 1 else 0 end )as por_encuentro
-            from pregrado.tbd_solicitud_programa_academico            
-            where estado_programa_academico_id = 2 and tipo_programa_academico_id='$tipoProgramaAcademico'";
+                sum(case when pregrado.tbr_solicitud_programa_academico_institucion.modalidad_diurno then 1 else 0 end )as diurno,
+                sum(case when pregrado.tbr_solicitud_programa_academico_institucion.modalidad_adistancia then 1 else 0 end )as adistancia,
+                sum(case when pregrado.tbr_solicitud_programa_academico_institucion.modalidad_por_encuentro then 1 else 0 end )as por_encuentro
+                from  pregrado.tbr_solicitud_programa_academico_institucion
+                join pregrado.tbd_solicitud_programa_academico on tbd_solicitud_programa_academico.id = tbr_solicitud_programa_academico_institucion.solicitud_programa_academico_id
+                where estado_programa_academico_id = 2 and tipo_programa_academico_id='$tipoProgramaAcademico'";
 
         $connect = $this->getEntityManager()->getConnection();
         $temp = $connect->executeQuery($query);

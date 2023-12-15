@@ -35,7 +35,7 @@ class PortadaController extends AbstractController
 
         $parametros['carrera_por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia(1);
         $parametros['ciclo_corto_por_rama_ciencia'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorRamaCiencia(2);
-        //solo suma las carreras principales, no las instancias asociadas a las universidades
+
         $parametros['carrera_por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad(1);
         $parametros['ciclo_corto_por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad(2);
 
