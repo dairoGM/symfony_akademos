@@ -190,7 +190,7 @@
                                                         class="float-left badge bg-primary">{{ carrera_por_modalidad['diurno'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-primary"
-                                                 style="width: {{ carrera_por_modalidad['diurno'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas>0 %} {{ (carrera_por_modalidad['diurno'] | default(0)  * 100) / carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -199,7 +199,7 @@
                                                         class="float-left badge bg-danger">{{ carrera_por_modalidad['adistancia'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-danger"
-                                                 style="width: {{ carrera_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas>0 %} {{ carrera_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -209,7 +209,7 @@
                                                         class="float-left badge bg-success">{{ carrera_por_modalidad['por_encuentro'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-success"
-                                                 style="width: {{ carrera_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas>0 %} {{ carrera_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                                         class="float-left badge bg-primary">{{ ciclo_corto_por_modalidad['diurno'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-primary"
-                                                 style="width: {{ ciclo_corto_por_modalidad['diurno'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['diurno'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -305,7 +305,7 @@
                                                         class="float-left badge bg-danger">{{ ciclo_corto_por_modalidad['adistancia'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-danger"
-                                                 style="width: {{ ciclo_corto_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -315,7 +315,7 @@
                                                         class="float-left badge bg-success">{{ ciclo_corto_por_modalidad['por_encuentro'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-success"
-                                                 style="width: {{ ciclo_corto_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}%"></div>
+                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                 </div>

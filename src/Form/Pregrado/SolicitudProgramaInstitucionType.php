@@ -27,17 +27,18 @@ class SolicitudProgramaInstitucionType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('categoriaAcreditacion', EntityType::class, [
-                'label' => 'Categoría de acreditación',
-                'class' => CategoriaAcreditacion::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null,
-                'required' => false
-            ]);
+//            ->add('categoriaAcreditacion', EntityType::class, [
+//                'label' => 'Categoría de acreditación',
+//                'class' => CategoriaAcreditacion::class,
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+//                },
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null,
+//                'required' => false
+//            ])
+        ;
 
     }
 
