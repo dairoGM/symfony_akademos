@@ -27,11 +27,28 @@
                     {{ form_errors(form.institucion) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    <button style="margin-top: 4%" class="btn btn-primary">Asociar</button>
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <label for="modalidad">Modalidad</label>
+                    <select id="modalidad" name="modalidad"
+                            class="form-control select2-hidden-accessible" data-select2-id="modalidad"
+                            tabindex="-1" aria-hidden="true">
+                        <option value="">Seleccione</option>
+                        {% for item2 in modalidades %}
+                            <option value="{{ item2.id }}">{{ item2.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    <button style=" margin-left: 94%" class="btn btn-primary">Asociar</button>
                 </div>
             </div>
         </div>
-
 
         {{ form_end(form) }}
         <hr>
@@ -42,6 +59,7 @@
                     <th>No.</th>
                     <th>Logo</th>
                     <th>Nombre</th>
+                    <th>Centro rector</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -58,6 +76,13 @@
                             </a>
                         </td>
                         <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td>
+                        <td width="10%" class="-text-center">
+                            {% if item.institucion.id == solicitudProgramaAcademico.centroRector.id %}
+                                <span class="ms-status -active">Si</span>
+                            {% else %}
+                                <span class="ms-status">No</span>
+                            {% endif %}
+                        </td>
 
                         <td width="15%" class="text-center">
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"

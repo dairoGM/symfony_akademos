@@ -133,10 +133,10 @@ class SolicitudProgramaAcademico extends BaseNomenclator
      */
     private ?\App\Entity\Institucion\Institucion $centroRector;
     /**
-     * @ORM\ManyToOne(targetEntity="\App\Entity\Institucion\Institucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pregrado\OrganismoFormador")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?\App\Entity\Institucion\Institucion $organismoFormador;
+    private ?\App\Entity\Pregrado\OrganismoFormador $organismoFormador;
 
 
     /**
@@ -596,17 +596,17 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     }
 
     /**
-     * @return Institucion|null
+     * @return OrganismoFormador|null
      */
-    public function getOrganismoFormador(): ?Institucion
+    public function getOrganismoFormador(): ?OrganismoFormador
     {
         return $this->organismoFormador;
     }
 
     /**
-     * @param Institucion|null $organismoFormador
+     * @param OrganismoFormador|null $organismoFormador
      */
-    public function setOrganismoFormador(?Institucion $organismoFormador): void
+    public function setOrganismoFormador(?OrganismoFormador $organismoFormador): void
     {
         $this->organismoFormador = $organismoFormador;
     }

@@ -118,31 +118,65 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function asignarUniversidad(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
-            $entidad = new SolicitudProgramaAcademicoInstitucion();
-            $form = $this->createForm(SolicitudProgramaInstitucionType::class, $entidad);
-            $form->handleRequest($request);
+        $entidad = new SolicitudProgramaAcademicoInstitucion();
+        $form = $this->createForm(SolicitudProgramaInstitucionType::class, $entidad);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $exist = $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId(), 'institucion' => $request->request->all()['solicitud_programa_institucion']['institucion']]);
-                if (empty($exist)) {
-                    $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
-                    $solicitudProgramaAcademicoInstitucionRepository->add($entidad, true);
+        $modalidades = [];
+        if ($solicitudProgramaAcademico->getModalidadDiurno()) {
+            $item['id'] = 'diurno';
+            $item['nombre'] = 'Diurno';
+            $modalidades[] = $item;
+        }
+        if ($solicitudProgramaAcademico->getModalidadPorEncuentro()) {
+            $item['id'] = 'por_encuentro';
+            $item['nombre'] = 'Por encuentro';
+            $modalidades[] = $item;
+        }
 
-                    $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-                    return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
+        if ($solicitudProgramaAcademico->getModalidadADistancia()) {
+            $item['id'] = 'a_distancia';
+            $item['nombre'] = 'A distancia';
+            $modalidades[] = $item;
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $exist = $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId(), 'institucion' => $request->request->all()['solicitud_programa_institucion']['institucion']]);
+            if (empty($exist)) {
+                $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
+
+                if (isset($request->request->all()['modalidad'])) {
+                    if ('diurno' == $request->request->all()['modalidad']) {
+                        $entidad->setModalidadDiurno(true);
+                        $entidad->setDuracionCursoDiurno($entidad->getSolicitudProgramaAcademico()->getDuracionCursoDiurno());
+                    }
+                    if ('por_encuentro' == $request->request->all()['modalidad']) {
+                        $entidad->setModalidadPorEncuentro(true);
+                        $entidad->setDuracionCursoPorEncuentro($entidad->getSolicitudProgramaAcademico()->getDuracionCursoPorEncuentro());
+                    }
+                    if ('a_distancia' == $request->request->all()['modalidad']) {
+                        $entidad->setModalidadADistancia(true);
+                        $entidad->setDuracionCursoADistancia($entidad->getSolicitudProgramaAcademico()->getDuracionCursoADistancia());
+                    }
                 }
-                $this->addFlash('error', 'El elemento ya existe.');
+                $solicitudProgramaAcademicoInstitucionRepository->add($entidad, true);
+
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
             }
+            $this->addFlash('error', 'El elemento ya existe.');
+            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
+        }
 
-            return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/asignar_universidad.html.twig', [
-                'form' => $form->createView(),
-                'solicitudProgramaAcademico' => $solicitudProgramaAcademico,
-                'registros' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
-            ]);
+        return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/asignar_universidad.html.twig', [
+            'form' => $form->createView(),
+            'modalidades' => $modalidades,
+            'solicitudProgramaAcademico' => $solicitudProgramaAcademico,
+            'registros' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
+        ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -519,12 +553,11 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_solicitud_programa_academico_aprobar_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param EstadoProgramaAcademicoRepository $estadoProgramaRepository
      * @param SolicitudProgramaAcademico $solicitudPrograma
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function aprobarModificar(Request $request, Utils $utils, EstadoProgramaAcademicoRepository $estadoProgramaRepository, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function aprobarModificar(Request $request, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
         try {
             $form = $this->createForm(AprobarModificarSolicitudProgramaAcademicoType::class, $solicitudPrograma, []);

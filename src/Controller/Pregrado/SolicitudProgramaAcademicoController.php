@@ -216,6 +216,14 @@ class SolicitudProgramaAcademicoController extends AbstractController
                     $newSolicitud = new SolicitudProgramaAcademicoInstitucion();
                     $newSolicitud->setInstitucion($solicitudPrograma->getCentroRector());
                     $newSolicitud->setSolicitudProgramaAcademico($solicitudPrograma);
+                    $newSolicitud->setCategoriaAcreditacion($solicitudPrograma->getCategoriaAcreditacion());
+                    $newSolicitud->setModalidadDiurno($solicitudPrograma->getModalidadDiurno());
+                    $newSolicitud->setModalidadADistancia($solicitudPrograma->getModalidadADistancia());
+                    $newSolicitud->setModalidadPorEncuentro($solicitudPrograma->getModalidadPorEncuentro());
+                    $newSolicitud->setDuracionCursoDiurno($solicitudPrograma->getDuracionCursoDiurno());
+                    $newSolicitud->setDuracionCursoADistancia($solicitudPrograma->getDuracionCursoADistancia());
+                    $newSolicitud->setDuracionCursoPorEncuentro($solicitudPrograma->getDuracionCursoPorEncuentro());
+
                     $solicitudProgramaAcademicoInstitucionRepository->add($newSolicitud, true);
                 }
 

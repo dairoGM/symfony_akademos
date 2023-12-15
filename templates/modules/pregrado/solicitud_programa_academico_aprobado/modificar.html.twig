@@ -103,7 +103,7 @@
 {% block javascripts %}
     <script>
 
-        $("#aprobar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_solicitud_programa_academico_duracionCursoPorEncuentro, #aprobar_solicitud_programa_academico_duracionCursoADistancia").bind("keypress", function (event) {
+        $("#aprobar_modificar_solicitud_programa_academico_duracionCursoDiurno, #aprobar_modificar_solicitud_programa_academico_duracionCursoPorEncuentro, #aprobar_modificar_solicitud_programa_academico_duracionCursoADistancia").bind("keypress", function (event) {
             if (event.charCode != 0) {
                 var regex = new RegExp("^[,0-9-]*$");
                 var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -111,6 +111,47 @@
                     event.preventDefault();
                     return false;
                 }
+            }
+        });
+        $('#aprobar_modificar_solicitud_programa_academico_modalidadDiurno').click(function () {
+            if (!$(this).prop('checked')) {
+                $('#aprobar_modificar_solicitud_programa_academico_duracionCursoDiurno').val(null);
+            }
+        });
+
+        $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').click(function () {
+            if (!$(this).prop('checked')) {
+                $('#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro').val(null);
+            }
+        });
+        $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').click(function () {
+            if (!$(this).prop('checked')) {
+                $('#aprobar_modificar_solicitud_programa_academico_duracionADistancia').val(null);
+            }
+        });
+
+        $("#aprobar_modificar_solicitud_programa_academico_duracionCursoDiurno").on('keydown keypress change keyup', function (e) {
+            if ($("#aprobar_modificar_solicitud_programa_academico_duracionCursoDiurno").val() != "") {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadDiurno').prop('checked', true);
+            } else {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadDiurno').prop('checked', false);
+            }
+        });
+
+
+        $("#aprobar_modificar_solicitud_programa_academico_duracionADistancia").on('keydown keypress change keyup', function (e) {
+            if ($("#aprobar_modificar_solicitud_programa_academico_duracionADistancia").val() != "") {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').prop('checked', true);
+            } else {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').prop('checked', false);
+            }
+        });
+
+        $("#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro").on('keydown keypress change keyup', function (e) {
+            if ($("#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro").val() != "") {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').prop('checked', true);
+            } else {
+                $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').prop('checked', false);
             }
         });
 

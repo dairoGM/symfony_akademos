@@ -6,6 +6,7 @@ use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Institucion\NivelAcreditacion;
 use App\Entity\Pregrado\OrganismoDemandante;
+use App\Entity\Pregrado\OrganismoFormador;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityRepository;
@@ -50,7 +51,7 @@ class AprobarModificarSolicitudProgramaAcademicoType extends AbstractType
             ])
             ->add('organismoFormador', EntityType::class, [
                 'label' => 'Organismo formador',
-                'class' => Institucion::class,
+                'class' => OrganismoFormador::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');

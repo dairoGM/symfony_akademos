@@ -85,21 +85,29 @@
                 <th>No.</th>
                 <th>Logo</th>
                 <th>Nombre</th>
+                <th>Centro rector</th>
             </tr>
             </thead>
             <tbody>
-            {% for item in universidades %}
+            {% for item2 in universidades %}
                 <tr>
                     <td width="1%">{{ loop.index }}</td>
                     <td width="1%">
                         <a
-                                href="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}"
+                                href="{% if item2.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item2.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}"
                                 target="_blank">
-                            <img src="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}"
+                            <img src="{% if item2.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item2.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}"
                                  style="width: 45px;height: 45px; object-fit: cover">
                         </a>
                     </td>
-                    <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td>
+                    <td>({{ item2.institucion.siglas | default('-') }}) {{ item2.institucion.nombre }}</td>
+                    <td width="20%" class="-text-center">
+                        {% if item2.institucion.id == item.centroRector.id %}
+                            <span class="ms-status -active">Si</span>
+                        {% else %}
+                            <span class="ms-status">No</span>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
