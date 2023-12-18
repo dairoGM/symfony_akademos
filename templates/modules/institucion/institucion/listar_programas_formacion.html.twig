@@ -63,7 +63,7 @@
                                     <td width="1%">{{ loop.index }}</td>
                                     <td>{{ item.solicitudProgramaAcademico.nombre | default('') }}</td>
                                     <td>{{ item.solicitudProgramaAcademico.ramaCiencia.nombre | default('') }}</td>
-                                    <td>{{ item.solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }}</td>
+                                    <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
                                     <td width="10%" class="text-center">
                                         <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                                 data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.solicitudProgramaAcademico.id}) }}"
