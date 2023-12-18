@@ -177,4 +177,17 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+
+    public function getSolicitudProgramaAcademicoAprobadoPorOrganismoFormador($tipoProgramaAcademico)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('cr.nombre as name, count(qb.id) as y')
+            ->join('qb.organismoFormador', 'cr')
+            ->join('qb.tipoProgramaAcademico', 'tp')
+            ->where("qb.estadoProgramaAcademico = 2 and tp.id = '$tipoProgramaAcademico'")
+            ->groupBy('cr.nombre');
+
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

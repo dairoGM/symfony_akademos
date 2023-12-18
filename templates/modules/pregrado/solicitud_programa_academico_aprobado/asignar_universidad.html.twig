@@ -26,6 +26,11 @@
                     {{ form_widget(form.institucion) }}
                     {{ form_errors(form.institucion) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     <label for="modalidad">Tipo de curso</label>
@@ -56,6 +61,7 @@
                     <th>Logo</th>
                     <th>Nombre</th>
                     <th>Centro rector</th>
+                    <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -79,6 +85,7 @@
                                 <span class="ms-status">No</span>
                             {% endif %}
                         </td>
+                        <td width="1%">{{ item.categoriaAcreditacion.nombre | default('') }}</td>
 
                         <td width="15%" class="text-center">
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
