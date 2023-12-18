@@ -47,7 +47,7 @@ class PortadaController extends AbstractController
         $parametros['ciclo_corto_por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector(2));
 
 
-        $parametros['carrera_organismo_formador'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorOrganismoFormador(2));
+        $parametros['carrera_organismo_formador'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorOrganismoFormador(1));
         $parametros['ciclo_corto_organismo_formador'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorOrganismoFormador(2));
 
         $parametros['carrera_organismo_demandante'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorOrganismoDemandante(1));

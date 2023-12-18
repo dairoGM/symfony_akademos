@@ -85,7 +85,7 @@
                                 <span class="ms-status">No</span>
                             {% endif %}
                         </td>
-                        <td width="1%">{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                        <td width="15%">{% if item.institucion.id == solicitudProgramaAcademico.centroRector.id %}{{ solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }} {% else %} {{ item.categoriaAcreditacion.nombre | default('') }} {% endif %}</td>
 
                         <td width="15%" class="text-center">
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"

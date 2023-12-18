@@ -3,13 +3,6 @@
 {% block title %}Portada Pregrado{% endblock %}
 {% block stylesheets %}
     <style>
-        /*@media (max-width: 575px) {*/
-        /*    .filter-dash-buttom{*/
-        /*        width: 100%;*/
-        /*    }*/
-        /*}*/
-
-
         @media (min-width: 1200px) and (max-width: 1400px) {
             .c {
                 min-width: 33.3% !important;
@@ -146,27 +139,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <p class="text-center">
-                                <strong>Categoría de Acreditación</strong>
-                            </p>
-                            <div class="row">
-                                {% for item in carrera_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-6">
-                                        <div class="description-block border-right">
-                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
-                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
-                                            <span class="description-text">{{ item.nombre | default() }}</span>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <p class="text-center">
-                                        <strong> Ramas de la Ciencia</strong>
+                                        <strong> Rama de la Ciencia</strong>
                                     </p>
                                     {% for item in carrera_por_rama_ciencia %}
                                         <div class="progress-group">
@@ -180,7 +157,10 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <div class="col-md-6">
+                                <div style="margin-top: 12%" class="col-md-12">
+                                    <div id="container_carrera"></div>
+                                </div>
+                                <div class="col-md-12">
                                     <p class="text-center">
                                         <strong>Tipo de curso</strong>
                                     </p>
@@ -215,8 +195,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div id="container_carrera"></div>
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in carrera_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-12">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -225,8 +218,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title"><strong>
-                                    <span class="float-left badge bg-success"></span>&nbsp;Programas de Formación de
-                                    Ciclo Corto</strong>
+                                    <span class="float-left badge bg-success"></span>&nbsp;&nbsp;Programas de Formación de Ciclo Corto</strong>
                             </h5>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -252,27 +244,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <p class="text-center">
-                                <strong>Categoría de Acreditación</strong>
-                            </p>
-                            <div class="row">
-                                {% for item in ciclo_corto_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-6">
-                                        <div class="description-block border-right">
-                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  ciclo_corto_aprobados) | round(1, 'floor') }}%</span>
-                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
-                                            <span class="description-text">{{ item.nombre | default() }}</span>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <p class="text-center">
-                                        <strong> Ramas de la Ciencia</strong>
+                                        <strong> Rama de la Ciencia</strong>
                                     </p>
                                     {% for item in ciclo_corto_por_rama_ciencia %}
                                         <div class="progress-group">
@@ -281,12 +257,15 @@
                                                             class="float-left badge bg-{{ item.color }}">{{ item.total }}</span></b></span>
                                             <div class="progress progress-sm">
                                                 <div class="progress-bar bg-{{ item.color }}"
-                                                     style="width: {{ item.total  * 100 /  carreras_aprobadas }}%"></div>
+                                                     style="width: {{ item.total  * 100 /  ciclo_corto_aprobados }}%"></div>
                                             </div>
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <div class="col-md-6">
+                                <div style="margin-top: 12%" class="col-md-12">
+                                    <div id="container_ciclo_corto"></div>
+                                </div>
+                                <div class="col-md-12">
                                     <p class="text-center">
                                         <strong>Tipo de curso</strong>
                                     </p>
@@ -296,7 +275,7 @@
                                                         class="float-left badge bg-primary">{{ ciclo_corto_por_modalidad['diurno'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-primary"
-                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['diurno'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
+                                                 style="width:{% if ciclo_corto_aprobados>0 %} {{ (ciclo_corto_por_modalidad['diurno'] | default(0)  * 100) / ciclo_corto_aprobados }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -305,7 +284,7 @@
                                                         class="float-left badge bg-danger">{{ ciclo_corto_por_modalidad['adistancia'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-danger"
-                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['adistancia'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
+                                                 style="width:{% if ciclo_corto_aprobados>0 %} {{ ciclo_corto_por_modalidad['adistancia'] | default(0)  * 100 /  ciclo_corto_aprobados }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                     <div class="progress-group">
@@ -315,14 +294,27 @@
                                                         class="float-left badge bg-success">{{ ciclo_corto_por_modalidad['por_encuentro'] }}</span></b> </span>
                                         <div class="progress progress-sm">
                                             <div class="progress-bar bg-success"
-                                                 style="width:{% if carreras_aprobadas > 0 %} {{ ciclo_corto_por_modalidad['por_encuentro'] | default(0)  * 100 /  carreras_aprobadas }}{% else %} 0 {% endif %}%"></div>
+                                                 style="width:{% if ciclo_corto_aprobados>0 %} {{ ciclo_corto_por_modalidad['por_encuentro'] | default(0)  * 100 /  ciclo_corto_aprobados }}{% else %} 0 {% endif %}%"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div id="container_ciclo_corto"></div>
+                        <div class="card-footer">
+                            <p class="text-center">
+                                <strong>Categoría de Acreditación</strong>
+                            </p>
+                            <div class="row">
+                                {% for item in ciclo_corto_por_categoria_acreditacion %}
+                                    <div class="col-sm-4 col-12">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  ciclo_corto_aprobados) | round(1, 'floor') }}%</span>
+                                            <h5 class="description-header">{{ item.total | default(0) }}</h5>
+                                            <span class="description-text">{{ item.nombre | default() }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
