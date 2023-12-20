@@ -2,6 +2,7 @@
 
 namespace App\Controller\Pregrado;
 
+use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class PortadaController extends AbstractController
      * @Route("", name="app_pregrado_portada", methods={"GET"})
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, SolicitudProgramaAcademicoInstitucionRepository  $solicitudProgramaAcademicoInstitucionRepository)
     {
         $parametros['total_solicitudes'] = count($solicitudProgramaAcademicoRepository->findAll());
 
@@ -40,8 +41,8 @@ class PortadaController extends AbstractController
         $parametros['ciclo_corto_por_modalidad'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorModalidad(2);
 
         //solo suma las carreras principales, no las instancias asociadas a las universidades
-        $parametros['carrera_por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(1);
-        $parametros['ciclo_corto_por_categoria_acreditacion'] = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(2);
+        $parametros['carrera_por_categoria_acreditacion'] = $solicitudProgramaAcademicoInstitucionRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(1);
+        $parametros['ciclo_corto_por_categoria_acreditacion'] = $solicitudProgramaAcademicoInstitucionRepository->getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion(2);
 
         $parametros['carrera_por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector(1));
         $parametros['ciclo_corto_por_centro_rector'] = json_encode($solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobadoPorCentroRector(2));

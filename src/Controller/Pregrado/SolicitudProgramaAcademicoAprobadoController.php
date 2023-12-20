@@ -17,6 +17,7 @@ use App\Form\Pregrado\ProgramaAcademicoReabiertoType;
 use App\Form\Pregrado\SolicitudProgramaComisionType;
 use App\Form\Pregrado\SolicitudProgramaInstitucionType;
 use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
+use App\Repository\Institucion\CategoriaAcreditacionRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
@@ -30,8 +31,10 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Services\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,7 +118,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository
      * @return Response
      */
-    public function asignarUniversidad(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function asignarUniversidad(Request $request, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
             $entidad = new SolicitudProgramaAcademicoInstitucion();
@@ -184,6 +187,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/asignar_universidad.html.twig', [
                 'form' => $form->createView(),
                 'modalidades' => $modalidades,
+                'categoriasAcreditacion' => $categoriaAcreditacionRepository->findBy([], ['nombre' => 'asc']),
                 'solicitudProgramaAcademico' => $solicitudProgramaAcademico,
                 'registros' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
             ]);
@@ -195,12 +199,11 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_universidad", name="app_solicitud_programa_academico_aprobado_eliminar_universidad", methods={"GET"})
-     * @param Request $request
      * @param SolicitudProgramaAcademicoInstitucion $solicitudProgramaAcademicoInstitucion
      * @param SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository
      * @return Response
      */
-    public function eliminarUniversidad(Request $request, SolicitudProgramaAcademicoInstitucion $solicitudProgramaAcademicoInstitucion, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    public function eliminarUniversidad(SolicitudProgramaAcademicoInstitucion $solicitudProgramaAcademicoInstitucion, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
             if ($solicitudProgramaAcademicoInstitucion instanceof SolicitudProgramaAcademicoInstitucion) {
@@ -261,11 +264,11 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar_plan_estudio", name="app_solicitud_programa_academico_aprobado_eliminar_plan_estudio", methods={"GET"})
-     * @param SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio
      * @param SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository
+     * @param SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio
      * @return Response
      */
-    public function eliminarPlanEstudio(Request $request, Utils $utils, SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function eliminarPlanEstudio(Utils $utils, SolicitudProgramaAcademicoPlanEstudio $solicitudProgramaAcademicoPlanEstudio, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository, EstadoProgramaAcademicoRepository $estadoProgramaAcademicoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             if ($solicitudProgramaAcademicoPlanEstudio instanceof SolicitudProgramaAcademicoPlanEstudio) {
@@ -570,7 +573,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function aprobarModificar(Request $request, SolicitudProgramaAcademico $solicitudPrograma, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
+    public function aprobarModificar(Request $request, SolicitudProgramaAcademico $solicitudPrograma, EntityManagerInterface $em, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         try {
             $form = $this->createForm(AprobarModificarSolicitudProgramaAcademicoType::class, $solicitudPrograma, []);
@@ -578,6 +581,32 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
+
+                $programaAcademicoInstitucion = $solicitudProgramaAcademicoInstitucionRepository->findBy([
+                    'solicitudProgramaAcademico' => $solicitudPrograma->getId(),
+                    'institucion' => $solicitudPrograma->getCentroRector()->getId()
+                ]);
+                $solicitudProgramaAcademicoInstitucion = null;
+                if (isset($programaAcademicoInstitucion[0]) && $programaAcademicoInstitucion[0] instanceof SolicitudProgramaAcademicoInstitucion) {
+                    $solicitudProgramaAcademicoInstitucion = $programaAcademicoInstitucion[0];
+                    $solicitudProgramaAcademicoInstitucion->setCategoriaAcreditacion($solicitudPrograma->getCategoriaAcreditacion());
+                } else {
+                    $solicitudProgramaAcademicoInstitucion = new SolicitudProgramaAcademicoInstitucion();
+                    $solicitudProgramaAcademicoInstitucion->setSolicitudProgramaAcademico($solicitudPrograma);
+                    $solicitudProgramaAcademicoInstitucion->setInstitucion($solicitudPrograma->getCentroRector());
+                }
+
+                $solicitudProgramaAcademicoInstitucion->setCategoriaAcreditacion($solicitudPrograma->getCategoriaAcreditacion());
+                $solicitudProgramaAcademicoInstitucion->setModalidadADistancia($solicitudPrograma->getModalidadADistancia());
+                $solicitudProgramaAcademicoInstitucion->setModalidadPorEncuentro($solicitudPrograma->getModalidadPorEncuentro());
+                $solicitudProgramaAcademicoInstitucion->setModalidadDiurno($solicitudPrograma->getModalidadDiurno());
+                $solicitudProgramaAcademicoInstitucion->setDuracionCursoDiurno($solicitudPrograma->getDuracionCursoDiurno());
+                $solicitudProgramaAcademicoInstitucion->setDuracionCursoADistancia($solicitudPrograma->getDuracionCursoADistancia());
+                $solicitudProgramaAcademicoInstitucion->setDuracionCursoPorEncuentro($solicitudPrograma->getDuracionCursoPorEncuentro());
+
+                $em->persist($solicitudProgramaAcademicoInstitucion);
+                $em->flush();
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -591,4 +620,40 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_index', [], Response::HTTP_SEE_OTHER);
         }
     }
+
+
+    /**
+     * Add package entity.
+     *
+     * @Route("/cambio_categoria_acreditacion", name="app_solicitud_programa_academico_aprobar_guardar_cambio_categoria_acreditacion", methods={"POST"})
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param CategoriaAcreditacionRepository $categoriaAcreditacionRepository
+     * @param SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository
+     * @return JsonResponse
+     */
+    public function guardarConfiguracion(Request $request, EntityManagerInterface $em, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
+    {
+        try {
+            $allPost = $request->request->all();
+
+            $solicitudProgramaAcademicoInstitucion = $solicitudProgramaAcademicoInstitucionRepository->find($allPost['id']);
+            if ($solicitudProgramaAcademicoInstitucion instanceof SolicitudProgramaAcademicoInstitucion) {
+                $categoriaAcreditacion = $categoriaAcreditacionRepository->find($allPost['categoriaAcreditacion']);
+                $solicitudProgramaAcademicoInstitucion->setCategoriaAcreditacion($categoriaAcreditacion);
+
+                $em->persist($solicitudProgramaAcademicoInstitucion);
+                if ($solicitudProgramaAcademicoInstitucion->getSolicitudProgramaAcademico()->getCentroRector()->getId() == $allPost['institucion']) {
+                    $solicitudProgramaAcademicoInstitucion->getSolicitudProgramaAcademico()->setCategoriaAcreditacion($categoriaAcreditacion);
+                    $em->persist($solicitudProgramaAcademicoInstitucion->getSolicitudProgramaAcademico());
+                }
+                $em->flush();
+            }
+
+            return $this->json(['message' => 'ok', 'status' => Response::HTTP_OK]);
+        } catch (\Exception $exception) {
+            return $this->json(['message' => $exception->getMessage(), 'status' => Response::HTTP_BAD_REQUEST]);
+        }
+    }
+
 }

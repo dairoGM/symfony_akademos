@@ -127,18 +127,6 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         return $temp->fetchAllAssociative()[0];
     }
 
-    public function getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion($tipoProgramaAcademico)
-    {
-        $qb = $this->createQueryBuilder('qb')
-            ->select('ca.nombre,ca.color, count(qb.id) as total')
-            ->join('qb.tipoProgramaAcademico', 'tp')
-            ->join('qb.categoriaAcreditacion', 'ca')
-            ->where("qb.estadoProgramaAcademico = 2  and tp.id = '$tipoProgramaAcademico'")
-            ->groupBy('ca.nombre, ca.color');
-
-        $resul = $qb->getQuery()->getResult();
-        return $resul;
-    }
 
     public function getSolicitudProgramaAcademicoAprobadoPorCentroRector($tipoProgramaAcademico)
     {

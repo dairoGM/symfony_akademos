@@ -48,4 +48,16 @@ class SolicitudProgramaAcademicoInstitucionRepository extends ServiceEntityRepos
             $this->getEntityManager()->flush();
         }
     }
+    public function getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion($tipoProgramaAcademico)
+    {
+        $qb = $this->createQueryBuilder('qa')
+            ->select('ca.nombre,ca.color, count(qa.id) as total')
+            ->join('qa.solicitudProgramaAcademico', 's')
+            ->join('s.tipoProgramaAcademico', 'tp')
+            ->join('s.categoriaAcreditacion', 'ca')
+            ->where("s.estadoProgramaAcademico = 2  and tp.id = '$tipoProgramaAcademico'")
+            ->groupBy('ca.nombre, ca.color');
+         $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

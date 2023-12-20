@@ -201,7 +201,7 @@
                             </p>
                             <div class="row">
                                 {% for item in carrera_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-12">
+                                    <div class="col-sm-3 col-12">
                                         <div class="description-block border-right">
                                             <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  carreras_aprobadas) | round(1, 'floor') }}%</span>
                                             <h5 class="description-header">{{ item.total | default(0) }}</h5>
@@ -306,7 +306,7 @@
                             </p>
                             <div class="row">
                                 {% for item in ciclo_corto_por_categoria_acreditacion %}
-                                    <div class="col-sm-4 col-12">
+                                    <div class="col-sm-3 col-12">
                                         <div class="description-block border-right">
                                             <span class="description-percentage text-{{ item.color }}"> </i> {{ (item.total | default(1)  * 100 /  ciclo_corto_aprobados) | round(1, 'floor') }}%</span>
                                             <h5 class="description-header">{{ item.total | default(0) }}</h5>

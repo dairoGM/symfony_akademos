@@ -85,7 +85,20 @@
                                 <span class="ms-status">No</span>
                             {% endif %}
                         </td>
-                        <td width="15%">{% if item.institucion.id == solicitudProgramaAcademico.centroRector.id %}{{ solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }} {% else %} {{ item.categoriaAcreditacion.nombre | default('') }} {% endif %}</td>
+                        <td>
+                            <select id="categoria_acreditacion_{{ item.id }}_{{ item.institucion.id }}_{{ solicitudProgramaAcademico.id }}"
+                                    name="categoria_acreditacion_{{ item.id }}_{{ item.institucion.id }}_{{ solicitudProgramaAcademico.id }}"
+                                    prop="id_{{ item.id }}">
+                                <option value="">Seleccione</option>
+                                {% for resp in categoriasAcreditacion %}
+                                    <option {% if resp.id == item.categoriaAcreditacion.id | default('') %} selected {% endif %}
+                                            value="{{ resp.id }}">{{ resp.nombre }} </option>
+                                {% endfor %}
+
+                            </select>
+
+                        </td>
+                        {#                        <td width="15%">{% if item.institucion.id == solicitudProgramaAcademico.centroRector.id %}{{ solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }} {% else %} {{ item.categoriaAcreditacion.nombre | default('') }} {% endif %}</td> #}
 
                         <td width="15%" class="text-center">
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
@@ -104,7 +117,38 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('select[id*=categoria_acreditacion_]').change(function (e) {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            var arr = $(this)[0].name.split('_');
+            console.log();
+            var solicitud = arr[4];
+            var id_asociacion = arr[2];
+            var institucion = arr[3];
+            var id_categoria_acreditacion = $(this).val();
 
+
+            $.post("{{ path('app_solicitud_programa_academico_aprobar_guardar_cambio_categoria_acreditacion') }}",
+                {
+                    solicitudProgramaAcademico: solicitud,
+                    institucion: institucion,
+                    id: id_asociacion,
+                    categoriaAcreditacion: id_categoria_acreditacion
+                },
+                function (data) {
+                    if (data.status == 200) {
+                        HoldOn.close()
+                        toastr.success("El elemento ha sido guardado satisfactoriamente.");
+                    } else {
+                        HoldOn.close()
+                        toastr.error(data.message);
+                    }
+                });
+
+        });
 
     </script>
 {% endblock %}

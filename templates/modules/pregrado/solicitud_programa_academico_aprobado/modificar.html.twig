@@ -121,12 +121,12 @@
 
         $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').click(function () {
             if (!$(this).prop('checked')) {
-                $('#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro').val(null);
+                $('#aprobar_modificar_solicitud_programa_academico_duracionCursoPorEncuentro').val(null);
             }
         });
         $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').click(function () {
             if (!$(this).prop('checked')) {
-                $('#aprobar_modificar_solicitud_programa_academico_duracionADistancia').val(null);
+                $('#aprobar_modificar_solicitud_programa_academico_duracionCursoADistancia').val(null);
             }
         });
 
@@ -139,16 +139,16 @@
         });
 
 
-        $("#aprobar_modificar_solicitud_programa_academico_duracionADistancia").on('keydown keypress change keyup', function (e) {
-            if ($("#aprobar_modificar_solicitud_programa_academico_duracionADistancia").val() != "") {
+        $("#aprobar_modificar_solicitud_programa_academico_duracionCursoADistancia").on('keydown keypress change keyup', function (e) {
+            if ($("#aprobar_modificar_solicitud_programa_academico_duracionCursoADistancia").val() != "") {
                 $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').prop('checked', true);
             } else {
                 $('#aprobar_modificar_solicitud_programa_academico_modalidadADistancia').prop('checked', false);
             }
         });
 
-        $("#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro").on('keydown keypress change keyup', function (e) {
-            if ($("#aprobar_modificar_solicitud_programa_academico_duracionPorEncuentro").val() != "") {
+        $("#aprobar_modificar_solicitud_programa_academico_duracionCursoPorEncuentro").on('keydown keypress change keyup', function (e) {
+            if ($("#aprobar_modificar_solicitud_programa_academico_duracionCursoPorEncuentro").val() != "") {
                 $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').prop('checked', true);
             } else {
                 $('#aprobar_modificar_solicitud_programa_academico_modalidadPorEncuentro').prop('checked', false);
