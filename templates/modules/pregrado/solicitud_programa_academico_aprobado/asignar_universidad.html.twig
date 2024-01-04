@@ -34,10 +34,10 @@
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     <label for="modalidad">Tipo de curso</label>
-                    <select id="modalidad" name="modalidad"
+                    <select id="modalidad" name="modalidad[]" multiple="multiple"
                             class="form-control select2-hidden-accessible" data-select2-id="modalidad"
                             tabindex="-1" aria-hidden="true">
-                        <option value="">Seleccione</option>
+                        {#                        <option value="">Seleccione</option> #}
                         {% for item2 in modalidades %}
                             <option value="{{ item2.id }}">{{ item2.nombre }}</option>
                         {% endfor %}
@@ -45,8 +45,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 form-group">
-                    <button style=" margin-left: 94%" class="btn btn-primary">Asociar</button>
+                <div class="col-12 form-group" style="text-align: right">
+                    <button class="btn btn-primary">Asociar</button>
                 </div>
             </div>
         </div>

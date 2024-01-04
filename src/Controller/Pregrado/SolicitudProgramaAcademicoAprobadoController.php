@@ -3,6 +3,7 @@
 namespace App\Controller\Pregrado;
 
 use App\Entity\NotificacionesUsuario;
+use App\Entity\Pregrado\MiembrosComisionNacional;
 use App\Entity\Pregrado\ProgramaAcademicoDesactivado;
 use App\Entity\Pregrado\ProgramaAcademicoReabierto;
 use App\Entity\Pregrado\ProgramaAcademicoReabiertoInstitucion;
@@ -89,7 +90,9 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                            ModificacionPlanEstudioRepository                    $modificacionPlanEstudioRepository,
                            SolicitudProgramaAcademico                           $solicitudProgramaAcademico,
                            SolicitudProgramaAcademicoInstitucionRepository      $solicitudProgramaAcademicoInstitucionRepository,
-                           SolicitudProgramaAcademicoComisionNacionalRepository $solComNac)
+                           SolicitudProgramaAcademicoComisionNacionalRepository $solComNac,
+                           SolicitudProgramaAcademicoComisionNacionalRepository $solComisionNacional,
+                           MiembrosComisionNacionalRepository                   $miembrosComisionNacional)
     {
 
         $planEstudio = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
@@ -100,9 +103,18 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
 
         $programaReabierto = $programaAcademicoReabiertoRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
 
+        $idComision = $solComisionNacional->getIdComisionNacional($solicitudProgramaAcademico->getId());
+
+        $presidente = $miembrosComisionNacional->findBy(['comision' => $idComision, 'rolComision' => 1]);
+        $nombrePresidente = null;
+        if (isset($presidente[0])) {
+            $nombrePresidente = $presidente[0]->getMiembro()->getPrimerNombre() . ' ' . $presidente[0]->getMiembro()->getSegundoNombre() . $presidente[0]->getMiembro()->getPrimerApellido() . $presidente[0]->getMiembro()->getSegundoApellido();
+        }
+
         return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', [
             'item' => $solicitudProgramaAcademico,
             'format' => 'col2',
+            'presindeteComision' => $nombrePresidente,
             'comisionAsignada' => $solComNac->getComisionNacional($solicitudProgramaAcademico->getId()),
             'universidades' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]),
             'modificacionesPlanEstudio' => $modificacionPlanEstudioRepository->findBy(['planEstudio' => $planEstudioAsociado]),
@@ -142,35 +154,38 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $item['nombre'] = 'A distancia';
                 $modalidades[] = $item;
             }
+//            pr($request->request->all());
 
             //validar tambien la modalidad
             if ($form->isSubmitted() && $form->isValid()) {
-                $campo = "modalidadDiurno";
-                if ('por_encuentro' == $request->request->all()) {
-                    $campo = "modalidadPorEncuentro";
-                }
-                if ('a_distancia' == $request->request->all()) {
-                    $campo = "modalidadADistancia";
-                }
+//                $campo = "modalidadDiurno";
+//                if ('por_encuentro' == $request->request->all()['modalidad']) {
+//                    $campo = "modalidadPorEncuentro";
+//                }
+//                if ('a_distancia' == $request->request->all()['modalidad']) {
+//                    $campo = "modalidadADistancia";
+//                }
+//
                 $exist = $solicitudProgramaAcademicoInstitucionRepository->findBy(
                     [
                         'solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId(),
                         'institucion' => $request->request->all()['solicitud_programa_institucion']['institucion'],
-                        "$campo" => true
+//                        "$campo" => 'true'
                     ]);
                 if (empty($exist)) {
                     $entidad->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
 
                     if (isset($request->request->all()['modalidad'])) {
-                        if ('diurno' == $request->request->all()['modalidad']) {
+//                        if ('diurno' == $request->request->all()['modalidad']) {
+                        if (in_array('diurno', $request->request->all()['modalidad'])) {
                             $entidad->setModalidadDiurno(true);
                             $entidad->setDuracionCursoDiurno($entidad->getSolicitudProgramaAcademico()->getDuracionCursoDiurno());
                         }
-                        if ('por_encuentro' == $request->request->all()['modalidad']) {
+                        if (in_array('por_encuentro', $request->request->all()['modalidad'])) {
                             $entidad->setModalidadPorEncuentro(true);
                             $entidad->setDuracionCursoPorEncuentro($entidad->getSolicitudProgramaAcademico()->getDuracionCursoPorEncuentro());
                         }
-                        if ('a_distancia' == $request->request->all()['modalidad']) {
+                        if (in_array('a_distancia', $request->request->all()['modalidad'])) {
                             $entidad->setModalidadADistancia(true);
                             $entidad->setDuracionCursoADistancia($entidad->getSolicitudProgramaAcademico()->getDuracionCursoADistancia());
                         }
