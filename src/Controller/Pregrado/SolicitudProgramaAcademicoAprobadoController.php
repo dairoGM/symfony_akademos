@@ -203,7 +203,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $this->addFlash('error', 'El elemento ya existe.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
             }
-            $registros = $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
+            $registros = $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()], ['id'=>'asc']);
             $data = [];
             if (is_array($registros) && count($registros) > 0) {
                 foreach ($registros as $value) {

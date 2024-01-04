@@ -147,6 +147,7 @@
                     if (data.status == 200) {
                         HoldOn.close()
                         toastr.success("El elemento ha sido guardado satisfactoriamente.");
+                        window.location.href = window.location
                     } else {
                         HoldOn.close()
                         toastr.error(data.message);
