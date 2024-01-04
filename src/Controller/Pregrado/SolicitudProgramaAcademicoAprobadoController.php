@@ -11,6 +11,9 @@ use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoComisionNacional;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoInstitucion;
 use App\Entity\Pregrado\SolicitudProgramaAcademicoPlanEstudio;
+use App\Export\Personal\ExportListPersonaToPdf;
+use App\Export\Pregrado\ExportListSolicitudProgramaAcademicoToPdf;
+use App\Export\Pregrado\ExportListSolicitudUniversidadesAsignadasToPdf;
 use App\Form\Pregrado\AprobarModificarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\AprobarSolicitudProgramaAcademicoType;
 use App\Form\Pregrado\ProgramaAcademicoDesactivadoType;
@@ -21,6 +24,7 @@ use App\Form\Pregrado\SolicitudProgramaPlanEstudioType;
 use App\Repository\Institucion\CategoriaAcreditacionRepository;
 use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
+use App\Repository\Personal\PersonaRepository;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
 use App\Repository\Pregrado\ModificacionPlanEstudioRepository;
@@ -31,6 +35,8 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoComisionNacionalRepository
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoPlanEstudioRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
+use App\Services\DoctrineHelper;
+use App\Services\HandlerFop;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -154,7 +160,6 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $item['nombre'] = 'A distancia';
                 $modalidades[] = $item;
             }
-//            pr($request->request->all());
 
             //validar tambien la modalidad
             if ($form->isSubmitted() && $form->isValid()) {
@@ -198,13 +203,25 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
                 $this->addFlash('error', 'El elemento ya existe.');
                 return $this->redirectToRoute('app_solicitud_programa_academico_aprobado_asignar_universidad', ['id' => $solicitudProgramaAcademico->getId()], Response::HTTP_SEE_OTHER);
             }
+            $registros = $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
+            $data = [];
+            if (is_array($registros) && count($registros) > 0) {
+                foreach ($registros as $value) {
+                    $item['nombre'] = "(" . $value->getInstitucion()->getSiglas() . ") " . $value->getInstitucion()->getNombre();
+                    $item['centro_rector'] = ($value->getInstitucion()->getId() == $solicitudProgramaAcademico->getCentroRector()->getId()) ? "Sí" : "No";
+                    $item['categoria_acreditacion'] = method_exists($value->getCategoriaAcreditacion(), 'getNombre') ? $value->getCategoriaAcreditacion()->getNombre() : null;
+                    $item['asignada_a'] = $solicitudProgramaAcademico->getNombre();
+                    $data[] = $item;
+                }
+            }
+            $request->getSession()->set('universidades_asignadas_' . $this->getUser()->getId(), $data);
 
             return $this->render('modules/pregrado/solicitud_programa_academico_aprobado/asignar_universidad.html.twig', [
                 'form' => $form->createView(),
                 'modalidades' => $modalidades,
                 'categoriasAcreditacion' => $categoriaAcreditacionRepository->findBy([], ['nombre' => 'asc']),
                 'solicitudProgramaAcademico' => $solicitudProgramaAcademico,
-                'registros' => $solicitudProgramaAcademicoInstitucionRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()])
+                'registros' => $registros
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -671,4 +688,16 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/exportar_pdf", name="app_solicitud_programa_academico_aprobar_universidades_asignadas_exportar_pdf", methods={"GET", "POST"})
+     * @param HandlerFop $handFop
+     * @return Response
+     */
+    public function exportarPdf(Request $request, HandlerFop $handFop)
+    {
+        $export = $request->getSession()->get('universidades_asignadas_' . $this->getUser()->getId());
+        $export = DoctrineHelper::toArray($export);
+        return $handFop->exportToPdf(new ExportListSolicitudUniversidadesAsignadasToPdf($export, ['asignada_a' => $export[0]['asignada_a'] ?? null]));
+
+    }
 }

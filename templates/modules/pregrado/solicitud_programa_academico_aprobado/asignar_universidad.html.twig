@@ -14,6 +14,11 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
                 <h3 class="card-title text-bold text-gray">Asignar universidades</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a title="Exportar universidades asignadas" class="btn btn-primary" target="_blank"
+                       href="{{ path('app_solicitud_programa_academico_aprobar_universidades_asignadas_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+                </div>
             </div>
         </div>
         {{ include('modules/pregrado/solicitud_programa_academico_aprobado/detail.html.twig', { 'item': solicitudProgramaAcademico, 'format':'col3' }) }}

@@ -12,6 +12,7 @@ use App\Form\Pregrado\SolicitudProgramaAcademicoType;
 use App\Repository\Pregrado\EstadoProgramaAcademicoRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
+use App\Services\DoctrineHelper;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -302,7 +303,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
     public function exportarPdf(Request $request, \App\Services\HandlerFop $handFop, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         $export = $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademico([1, 3]);
-        $export = \App\Services\DoctrineHelper::toArray($export);
+        $export = DoctrineHelper::toArray($export);
         return $handFop->exportToPdf(new ExportListSolicitudProgramaAcademicoToPdf($export));
     }
 }

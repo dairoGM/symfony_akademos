@@ -3,9 +3,10 @@
 
 namespace App\Export\Pregrado;
 
+use App\Services\ExportList;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ExportListSolicitudProgramaAcademicoToPdf extends \App\Services\ExportList
+class ExportListSolicitudProgramaAcademicoToPdf extends ExportList
 {
 
     private $datos;
