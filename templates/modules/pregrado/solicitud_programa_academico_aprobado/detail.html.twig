@@ -10,9 +10,9 @@
         {% if format == 'col2' %}
             <div class="col-6">
                 <h5 class="mb-0"><b>Nombre del programa académico:</b> {{ item.nombre | default('') }}</h5>
-{#                <h5 class="mb-0"><b>Tipo de programa:</b> {{ item.tipoProgramaAcademico.nombre | default('') }}#}
-{#                </h5>#}
-                <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5>
+                <h5 class="mb-0"><b>Tipo de programa:</b> {{ item.tipoProgramaAcademico.nombre | default('') }}
+                </h5>
+                {#                <h5 class="mb-0"><b>Tipo de organismo:</b> {{ item.tipoOrganismo.nombre | default('') }}</h5> #}
                 <h5 class="mb-0"><b>Organismo demandante:</b> {{ item.organismoDemandante.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Organismo formador:</b> {{ item.organismoFormador.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b>Fecha de aprobación:</b> {{ item.fechaAprobacion | date('d/m/Y') }}</h5>
@@ -158,33 +158,33 @@
         </table>
     </div>
     <hr>
-{#    <h5 class="mb-0"><b>Universidades incorporadas</b></h5>#}
-{#    <div class="card-body">#}
-{#        <table class="table table-bordered table-striped dataTable">#}
-{#            <thead class="table-custom-header">#}
-{#            <tr>#}
-{#                <th>No.</th>#}
-{#                <th>Logo</th>#}
-{#                <th>Nombre</th>#}
-{#            </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#            {% for item in universidadesIncorporadas %}#}
-{#                <tr>#}
-{#                    <td width="1%">{{ loop.index }}</td>#}
-{#                    <td width="1%">#}
-{#                        <a#}
-{#                                href="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}"#}
-{#                                target="_blank">#}
-{#                            <img src="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}"#}
-{#                                 style="width: 45px;height: 45px; object-fit: cover">#}
-{#                        </a>#}
-{#                    </td>#}
-{#                    <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{#    </div>#}
+    {#    <h5 class="mb-0"><b>Universidades incorporadas</b></h5> #}
+    {#    <div class="card-body"> #}
+    {#        <table class="table table-bordered table-striped dataTable"> #}
+    {#            <thead class="table-custom-header"> #}
+    {#            <tr> #}
+    {#                <th>No.</th> #}
+    {#                <th>Logo</th> #}
+    {#                <th>Nombre</th> #}
+    {#            </tr> #}
+    {#            </thead> #}
+    {#            <tbody> #}
+    {#            {% for item in universidadesIncorporadas %} #}
+    {#                <tr> #}
+    {#                    <td width="1%">{{ loop.index }}</td> #}
+    {#                    <td width="1%"> #}
+    {#                        <a #}
+    {#                                href="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }} {% else %} /assets/images/usuario.png {% endif %}" #}
+    {#                                target="_blank"> #}
+    {#                            <img src="{% if item.institucion.logo != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/institucion/logo/{{ item.institucion.logo }}{% else %} /assets/images/usuario.png {% endif %}" #}
+    {#                                 style="width: 45px;height: 45px; object-fit: cover"> #}
+    {#                        </a> #}
+    {#                    </td> #}
+    {#                    <td>({{ item.institucion.siglas | default('-') }}) {{ item.institucion.nombre }}</td> #}
+    {#                </tr> #}
+    {#            {% endfor %} #}
+    {#            </tbody> #}
+    {#        </table> #}
+    {#    </div> #}
 {% endif %}
 
