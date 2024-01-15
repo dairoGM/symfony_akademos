@@ -64,7 +64,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
     {
         $response = [];
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 5, 6, 7]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 6, 7]);
         if (is_array($registros)) {
             foreach ($registros as $value) {
                 $temp = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);

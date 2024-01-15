@@ -34,7 +34,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
      */
     public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository)
     {
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademico([1, 3]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademico([1, 3, 5]);
         return $this->render('modules/pregrado/solicitud_programa_academico/index.html.twig', [
             'registros' => $registros
         ]);
