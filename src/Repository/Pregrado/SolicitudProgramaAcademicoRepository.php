@@ -101,15 +101,30 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
 
     public function getSolicitudProgramaAcademicoAprobadoPorRamaCiencia($tipoProgramaAcademico)
     {
-        $qb = $this->createQueryBuilder('qb')
-            ->select('rm.nombre,rm.color, count(qb.id) as total')
-            ->join('qb.ramaCiencia', 'rm')
-            ->join('qb.tipoProgramaAcademico', 'tp')
-            ->where("qb.estadoProgramaAcademico = 2 and tp.id = '$tipoProgramaAcademico'")
-            ->groupBy('rm.nombre, rm.color');
+        $query = "SELECT nombre, color,
+                 (SELECT count(*) 
+                    FROM pregrado.tbd_solicitud_programa_academico t1_ 
+                    INNER JOIN postgrado.tbn_rama_ciencia t0_ ON t1_.rama_ciencia_id = t0_.id 
+                    INNER JOIN pregrado.tbn_tipo_programa_academico t2_ ON t1_.tipo_programa_academico_id = t2_.id 
+                    WHERE 
+                    t1_.estado_programa_academico_id = 2 AND 
+                    t2_.id = $tipoProgramaAcademico and r1.id = t0_.id)as total
+                    FROM postgrado.tbn_rama_ciencia r1
+                    order by total desc";
 
-        $resul = $qb->getQuery()->getResult();
-        return $resul;
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        return $temp->fetchAllAssociative() ;
+
+//        $qb = $this->createQueryBuilder('qb')
+//            ->select('rm.nombre,rm.color, count(qb.id) as total')
+//            ->join('qb.ramaCiencia', 'rm')
+//            ->join('qb.tipoProgramaAcademico', 'tp')
+//            ->where("qb.estadoProgramaAcademico = 2 and tp.id = '$tipoProgramaAcademico'")
+//            ->groupBy('rm.nombre, rm.color');
+//
+//        $resul = $qb->getQuery()->getResult();
+//        return $resul;
     }
 
     public function getSolicitudProgramaAcademicoAprobadoPorModalidad($tipoProgramaAcademico)
