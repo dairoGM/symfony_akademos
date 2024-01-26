@@ -73,7 +73,7 @@ class SolicitudPrograma extends BaseNomenclator
 
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="255")
+     * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $telefonoCoordinador = null;
 

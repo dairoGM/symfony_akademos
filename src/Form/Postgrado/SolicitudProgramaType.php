@@ -47,7 +47,8 @@ class SolicitudProgramaType extends AbstractType
                 "attr" => [
                     "data-inputmask" => '"mask": "(99) 9 999-99"',
                     "data-mask" => ''
-                ]
+                ],
+                'required' => false
             ])
             ->add('docPrograma', FileType::class, [
                 'label' => 'Adjuntar programa',
@@ -57,6 +58,7 @@ class SolicitudProgramaType extends AbstractType
             ->add('universidad', EntityType::class, [
                 'class' => Institucion::class,
                 'choice_label' => 'nombre',
+                'label' => 'Institución solicitante',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },

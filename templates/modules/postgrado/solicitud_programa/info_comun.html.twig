@@ -15,7 +15,7 @@
             <div class="col-6">
                 <h5 class="mb-0"><b>Tipo de
                         programa:</b> {{ solicitudPrograma.tipoPrograma.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Universidad:</b> {{ solicitudPrograma.universidad.nombre| default('') }}
+                <h5 class="mb-0"><b>Institución solicitante:</b> {{ solicitudPrograma.universidad.nombre| default('') }}
                 </h5>
                 <h5 class="mb-0"><b>Programa: </b> <a target="_blank"
                                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/solicitud_programa/{{ solicitudPrograma.docPrograma }}">{{ solicitudPrograma.docPrograma }}</a>

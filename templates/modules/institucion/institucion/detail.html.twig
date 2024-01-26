@@ -149,6 +149,7 @@
         <th>Nombre</th>
 
         <th>Tipo de programa</th>
+        <th>Categoría de Acreditación</th>
     </tr>
     </thead>
     <tbody>
@@ -157,6 +158,7 @@
             <td width="1%">{{ loop.index }}</td>
             <td>{{ item.nombre | default('') }}</td>
             <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
+            <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
             </td>
         </tr>
     {% endfor %}
