@@ -170,15 +170,26 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
 
     public function getSolicitudProgramaAcademicoAprobadoPorOrganismoDemandante($tipoProgramaAcademico)
     {
-        $qb = $this->createQueryBuilder('qb')
-            ->select('od.siglas as name, count(qb.id) as y')
-            ->join('qb.organismoDemandante', 'od')
-            ->join('qb.tipoProgramaAcademico', 'tp')
-            ->where("qb.estadoProgramaAcademico = 2 and tp.id = '$tipoProgramaAcademico'")
-            ->groupBy('od.siglas');
+//        $qb = $this->createQueryBuilder('qb')
+//            ->select('od.siglas as name, count(qb.id) as y')
+//            ->join('qb.organismoDemandante', 'od')
+//            ->join('qb.tipoProgramaAcademico', 'tp')
+//            ->where("qb.estadoProgramaAcademico = 2 and tp.id = '$tipoProgramaAcademico'")
+//            ->groupBy('od.siglas');
+//
+//        $resul = $qb->getQuery()->getResult();
+//        return $resul;
+        $query = "SELECT 
+                    siglas as name,
+                    (select count(*) from pregrado.tbd_solicitud_programa_academico
+                         where pregrado.tbd_solicitud_programa_academico.estado_programa_academico_id = 2 and pregrado.tbd_solicitud_programa_academico.tipo_programa_academico_id =$tipoProgramaAcademico  and
+                         pregrado.tbd_solicitud_programa_academico.organismo_demandante_id = pregrado.tbn_organismo_demandante.id) as y
+                    FROM pregrado.tbn_organismo_demandante where activo = true
+                    order by y desc";
 
-        $resul = $qb->getQuery()->getResult();
-        return $resul;
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        return $temp->fetchAllAssociative();
     }
 
     public function getSolicitudProgramaAcademicoAprobadoPorOrganismoFormador($tipoProgramaAcademico)
