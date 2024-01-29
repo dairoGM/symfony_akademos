@@ -50,14 +50,26 @@ class SolicitudProgramaAcademicoInstitucionRepository extends ServiceEntityRepos
     }
     public function getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion($tipoProgramaAcademico)
     {
-        $qb = $this->createQueryBuilder('qa')
-            ->select('ca.nombre,ca.color, count(qa.id) as total')
-            ->join('qa.solicitudProgramaAcademico', 's')
-            ->join('s.tipoProgramaAcademico', 'tp')
-            ->join('s.categoriaAcreditacion', 'ca')
-            ->where("s.estadoProgramaAcademico = 2  and tp.id = '$tipoProgramaAcademico'")
-            ->groupBy('ca.nombre, ca.color');
-         $resul = $qb->getQuery()->getResult();
-        return $resul;
+        $query = "SELECT t2.nombre,t2.color, count(*) as total
+                FROM pregrado.tbd_solicitud_programa_academico t0_ 
+                INNER JOIN pregrado.tbn_tipo_programa_academico t1_ ON t0_.tipo_programa_academico_id = t1_.id 
+                INNER JOIN institucion.tbn_categoria_acreditacion t2 on t2.id = t0_.categoria_acreditacion_id
+                WHERE t1_.id = '$tipoProgramaAcademico' AND t0_.estado_programa_academico_id = 2
+                group by t2.nombre,t2.color
+                order by t2.nombre ";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        return $temp->fetchAllAssociative();
+
+//        $qb = $this->createQueryBuilder('qa')
+//            ->select('ca.nombre,ca.color, count(qa.id) as total')
+//            ->join('qa.solicitudProgramaAcademico', 's')
+//            ->join('s.tipoProgramaAcademico', 'tp')
+//            ->join('s.categoriaAcreditacion', 'ca')
+//            ->where("s.estadoProgramaAcademico = 2  and tp.id = '$tipoProgramaAcademico'")
+//            ->groupBy('ca.nombre, ca.color');
+//         $resul = $qb->getQuery()->getResult();
+//        return $resul;
     }
 }
