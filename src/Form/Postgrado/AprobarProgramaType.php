@@ -23,18 +23,18 @@ class AprobarProgramaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('annoAcreditacion', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Año de acreditación',
-                'attr' => [
-                    'maxlength' => 4,
-                    'minlength' => 4
-                ],
-                'required' => false,
-                'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
-            ])
+//            ->add('annoAcreditacion', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+//                'label' => 'Año de acreditación',
+//                'attr' => [
+//                    'maxlength' => 4,
+//                    'minlength' => 4
+//                ],
+//                'required' => false,
+//                'constraints' => [new Length(["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 4, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+//            ])
             ->add('codigoPrograma', TextType::class, [
                 'label' => 'Código',
-                'constraints' => [new Length(["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 5, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
+                'constraints' => [new Length(["min" => 3, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}', "max" => 12, 'maxMessage' => 'El número máximo de caracteres es {{ limit }}']), new NotBlank()]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
@@ -61,13 +61,14 @@ class AprobarProgramaType extends AbstractType
                 'empty_data' => null,
                 'required' => false
             ])
-            ->add('fechaProximaAcreditacion', TextType::class, [
-                'label' => 'Fecha próxima de acreditación',
-                'mapped' => false,
-                'attr' => [
-                    'class' => 'date-time-picker'
-                ]
-            ]);
+//            ->add('fechaProximaAcreditacion', TextType::class, [
+//                'label' => 'Fecha próxima de acreditación',
+//                'mapped' => false,
+//                'attr' => [
+//                    'class' => 'date-time-picker'
+//                ]
+//            ])
+        ;
 
     }
 
