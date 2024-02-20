@@ -148,17 +148,18 @@ class InstitucionController extends AbstractController
     {
         try {
             $dataAnterior = $institucion;
+
+            $institucion->setNombre($institucion->getEstructura()->getNombre());
+            $institucion->setTelefono($institucion->getEstructura()->getTelefono());
+            $institucion->setCorreo($institucion->getEstructura()->getEmail());
+            $institucion->setSiglas($institucion->getEstructura()->getSiglas());
+            $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
+            $institucion->setCoordenadasSedePrincipal($institucion->getEstructura()->getUbicacion());
+
             $form = $this->createForm(InstitucionType::class, $institucion, ['action' => 'modificar', 'idCategoriaEstructura' => $this->getParameter('id_categoria_estructura_ies')]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-
-                $institucion->setNombre($institucion->getEstructura()->getNombre());
-                $institucion->setTelefono($institucion->getEstructura()->getTelefono());
-                $institucion->setCorreo($institucion->getEstructura()->getEmail());
-                $institucion->setSiglas($institucion->getEstructura()->getSiglas());
-                $institucion->setDireccionSedePrincipal($institucion->getEstructura()->getDireccion());
-                $institucion->setCoordenadasSedePrincipal($institucion->getEstructura()->getUbicacion());
 
                 $temp = explode('/', $request->request->all()['institucion']['fechaFundacion']);
                 $institucion->setFechaFundacion(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));

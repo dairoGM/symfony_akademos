@@ -202,7 +202,10 @@ class SolicitudProgramaController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_programa']['fechaProximaAcreditacion']));
+                $fechaProximaAcreditacion = $request->request->all()['aprobar_programa']['fechaProximaAcreditacion']??null;
+                if (!empty($fechaProximaAcreditacion)){
+                    $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $fechaProximaAcreditacion));
+                }
 
                 if (!empty($_FILES['aprobar_programa']['name']['resolucionPrograma'])) {
                     if ($solicitudPrograma->getResolucionPrograma() != null) {
