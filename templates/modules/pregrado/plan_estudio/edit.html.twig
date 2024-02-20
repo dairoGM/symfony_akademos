@@ -76,7 +76,9 @@
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/documento_ejecutivo/{{ planEstudio.documentoEjecutivo }}">{{ planEstudio.documentoEjecutivo }}</a>
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.descripcionPlanEstudio) }}
                     {{ form_widget(form.descripcionPlanEstudio) }}
                     {{ form_errors(form.descripcionPlanEstudio) }}
