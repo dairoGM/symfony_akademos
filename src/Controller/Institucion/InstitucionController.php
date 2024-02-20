@@ -716,7 +716,7 @@ class InstitucionController extends AbstractController
                 $carreras = $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $institucion->getId()]);
             }
             if ($option == 'option2') {
-                $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId()]);
+                $postgrados = $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId(), 'estadoPrograma' => 7]);
             }
             return $this->render('modules/institucion/institucion/listar_programas_formacion.html.twig', [
                 'carreras' => $carreras,
