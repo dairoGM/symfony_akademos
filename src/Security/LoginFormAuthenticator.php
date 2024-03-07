@@ -93,7 +93,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
             $session->set('foto_usuario_autenticado', $persona->getFoto());
             $session->set('nombre_usuario_autenticado', $persona->getPrimerNombre() . ' ' . $persona->getSegundoNombre() . ' ' . $persona->getPrimerApellido() . ' ' . $persona->getSegundoApellido());
-            $session->set('responsabilidad_usuario_autenticado', $persona->getResponsabilidad()->getNombre());
+//            $session->set('responsabilidad_usuario_autenticado', $persona->getResponsabilidad()->getNombre());
+            $session->set('responsabilidad_usuario_autenticado', method_exists($persona->getResponsabilidad(), 'getNombre') ? $persona->getResponsabilidad()->getNombre() : null);
             $session->set('estructura_usuario_autenticado', $persona->getEstructura()->getId());
             $session->set('id_persona_usuario_autenticado', $persona->getId());
             $session->set('password_change_first_time', $user->getPasswordChangeFirstTime());
