@@ -493,6 +493,9 @@
                             });
                     }
                 })
+                const removeAccents = (str) => {
+                    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                }
 
                 $('select').change(function (e) {
                     var fecha = new Date();
@@ -514,11 +517,12 @@
                     var existeUsuario = false;
                     usuarioDefinido = false;
                     for (var i = 0; i < combinaciones.length; i++) {
+                        var email =removeAccents(combinaciones[i] + '' + dominio);
                         var response = jQuery.ajax({
                             url: "{{ path('app_persona_existe_usuario') }}",
                             type: 'POST',
                             data: {
-                                email: combinaciones[i] + '' + dominio
+                                email: email
                             },
                             success: function (result) {
                                 existeUsuario = result
@@ -527,7 +531,7 @@
                         });
                         if (!existeUsuario) {
                             usuarioDefinido = true;
-                            $('#persona_usuario').val(combinaciones[i] + '' + dominio);
+                            $('#persona_usuario').val(email);
                             var cadena = combinaciones[i].split('.');
                             var primeraLetra = cadena[0].charAt(0).toUpperCase();
                             var clave = primeraLetra + '.' + cadena[1] + fecha.getFullYear() + '**';
