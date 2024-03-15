@@ -223,7 +223,7 @@ class InstitucionController extends AbstractController
      * @param InstitucionEditorialRepository $institucionEditorialRepository
      * @return Response
      */
-    public function detail(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, SolicitudProgramaRepository $solicitudProgramaRepository, InstitucionCumRepository $institucionCumRepository, InstitucionFumRepository $institucionFumRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
+    public function detail(SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, SolicitudProgramaRepository $solicitudProgramaRepository, InstitucionCumRepository $institucionCumRepository, InstitucionFumRepository $institucionFumRepository, InstitucionRecursoHumanoRepository $institucionRecursoHumanoRepository, InstitucionRedesRepository $institucionRedesRepository, InstitucionRedesSocialesRepository $institucionRedesSocialesRepository, InstitucionSedesRepository $institucionSedesRepository, InstitucionRevistaCientificaRepository $institucionRevistaCientificaRepository, InstitucionCentrosEstudiosRepository $institucionCentrosEstudiosRepository, Institucion $institucion, InstitucionEditorialRepository $institucionEditorialRepository, InstitucionFacultadesRepository $institucionFacultadesRepository)
     {
         return $this->render('modules/institucion/institucion/detail.html.twig', [
             'item' => $institucion,
@@ -238,7 +238,8 @@ class InstitucionController extends AbstractController
             'redes' => $institucionRedesRepository->findBy(['institucion' => $institucion->getId()]),
             'recursosHumanos' => $institucionRecursoHumanoRepository->findBy(['institucion' => $institucion->getId()]),
             'programasPostgrado' => $solicitudProgramaRepository->findBy(['universidad' => $institucion->getId(), 'estadoPrograma' => 7]),
-            'programasPregrado' => $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([[2, 3, 4, 5, 6, 7, 8]], $institucion->getId()) //falta buscar en la universidad que se estudia
+            //'programasPregradoCentroRector' => $solicitudProgramaAcademicoRepository->getSolicitudProgramaAcademicoAprobado([[2, 3, 4, 5, 6, 7, 8]], $institucion->getId()), //falta buscar en la universidad que se estudia;
+            'programasPregradoNoCentroRector'=> $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $institucion->getId()])
         ]);
     }
 

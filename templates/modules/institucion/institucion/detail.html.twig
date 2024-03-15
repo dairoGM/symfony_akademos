@@ -147,18 +147,26 @@
     <tr>
         <th>No.</th>
         <th>Nombre</th>
-
         <th>Tipo de programa</th>
         <th>Categoría de Acreditación</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in programasPregrado %}
+{#    {% for item in programasPregradoCentroRector %}#}
+{#        <tr>#}
+{#            <td width="1%">{{ loop.index }}</td>#}
+{#            <td>{{ item.nombre | default('') }}</td>#}
+{#            <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>#}
+{#            <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>#}
+{#            </td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+    {% for item in programasPregradoNoCentroRector %}
         <tr>
             <td width="1%">{{ loop.index }}</td>
-            <td>{{ item.nombre | default('') }}</td>
-            <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
-            <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+            <td>{{ item.solicitudProgramaAcademico.nombre | default('') }}</td>
+            <td>{{ item.solicitudProgramaAcademico.tipoProgramaAcademico.nombre | default('') }}</td>
+            <td>{{ item.solicitudProgramaAcademico.categoriaAcreditacion.nombre | default('') }}</td>
             </td>
         </tr>
     {% endfor %}
