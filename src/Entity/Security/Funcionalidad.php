@@ -24,7 +24,7 @@ class Funcionalidad extends BaseEntity implements AuthorityInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -34,7 +34,7 @@ class Funcionalidad extends BaseEntity implements AuthorityInterface
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )

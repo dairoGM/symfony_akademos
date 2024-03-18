@@ -56,7 +56,7 @@ class CursoAcademico
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )

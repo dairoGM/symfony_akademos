@@ -20,7 +20,7 @@ class Rol extends BaseEntity implements AuthorityInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -30,7 +30,7 @@ class Rol extends BaseEntity implements AuthorityInterface
     /**
      * @ORM\Column(type="text", length=180, nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )

@@ -31,7 +31,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=11, unique=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -40,7 +40,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=11, unique=true, nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -50,7 +50,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -60,7 +60,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -70,7 +70,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
@@ -80,7 +80,7 @@ class Persona extends BaseEntity
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\Regex(
-     *           pattern= "/^[0-9a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
      *           message= "Caracteres no válidos, por favor verifique."
      * )
