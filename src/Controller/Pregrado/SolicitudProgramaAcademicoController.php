@@ -194,7 +194,7 @@ class SolicitudProgramaAcademicoController extends AbstractController
             if ($form->isSubmitted()) {
                 $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['aprobar_solicitud_programa_academico']['fechaAprobacion']));
                 $solicitudPrograma->setEstadoProgramaAcademico($estadoProgramaRepository->find(2));
-
+                $solicitudPrograma->setDescripcion($solicitudPrograma->getDescripcionAprobacion());
                 $utils->guardarHistoricoEstadoProgramaAcademico($solicitudPrograma->getId(), 2);
 
                 if (!empty($_FILES['aprobar_solicitud_programa_academico']['name']['cartaAprobacion'])) {

@@ -612,6 +612,7 @@ class SolicitudProgramaAcademicoAprobadoController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                $solicitudPrograma->setDescripcion($solicitudPrograma->getDescripcionAprobacion());
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
                 $programaAcademicoInstitucion = $solicitudProgramaAcademicoInstitucionRepository->findBy([
