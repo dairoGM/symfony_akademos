@@ -44,7 +44,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
 
 
     /**
-     * @ORM\Column(type="string", nullable=true, length="255")
+     * @ORM\Column(type="text", nullable=true, length="255")
      */
     private ?string $fundamentacion = null;
 
@@ -74,11 +74,12 @@ class SolicitudProgramaAcademico extends BaseNomenclator
 
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $descripcionAprobacion = null;
+
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $descripcionNoAprobacion = null;
 
@@ -112,7 +113,7 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     private ?bool $modalidadADistancia = false;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length="255")
+     * @ORM\Column(type="text", nullable=true, length="255")
      */
     private ?string $dictamen = null;
 
