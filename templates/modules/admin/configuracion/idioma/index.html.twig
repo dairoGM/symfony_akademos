@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Comisiones nacionales{% endblock %}
+{% block title %}Idiomas{% endblock %}
 
 {% block body %}
 
@@ -10,9 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de comisiones nacionales</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2"
-                   href="{{ path('app_comision_nacional_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de idiomas</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_configuracion_idioma_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -25,7 +24,7 @@
                 <tr>
                     <th>No.</th>
                     <th>Nombre</th>
-                    <th>Miembros</th>
+                    <th>Siglas</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -35,17 +34,7 @@
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
-                        <td>
-                            <ul class="list-inline">
-                                {% for item1 in item.miembros %}
-                                    <li class="list-inline-item">
-                                        <img title="{{ item1.miembro.primerNombre ~ ' ' ~ item1.miembro.segundoNombre ~' '~ item1.miembro.primerApellido ~ ' ' ~ item1.miembro.segundoApellido }}" src="{% if item1.miembro.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item1.miembro.foto }}{% else %} /assets/images/usuario.png {% endif %}"
-                                             class="img-circle" alt="{{ item1.miembro.primerNombre }}"
-                                             style="width: 40px;height: 40px; object-fit: cover; cursor: pointer">
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </td>
+                        <td>{{ item.siglas }}</td>
                         <td width="3%" class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
@@ -55,17 +44,17 @@
                         </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_comision_nacional_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la comisión nacional">
+                                    data-url="{{ path('app_configuracion_idioma_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles del idioma">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_comision_nacional_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_configuracion_idioma_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_comision_nacional_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_configuracion_idioma_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -83,10 +72,3 @@
 {% endblock %}
 
 
-{% block javascripts %}
-    <script>
-        localStorage.removeItem('nombre');
-        localStorage.removeItem('descripcion');
-        localStorage.removeItem('activo');
-    </script>
-{% endblock %}

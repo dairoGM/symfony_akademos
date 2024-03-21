@@ -29,11 +29,19 @@ class CopepController extends AbstractController
      * @param CopepRepository $copepRepository
      * @return Response
      */
-    public function index(Request $request, CopepRepository $copepRepository)
+    public function index(Request $request, CopepRepository $copepRepository, MiembrosCopepRepository $miembrosCopepRepository)
     {
         $request->getSession()->remove('array_personas_asignadas');
+        $registros = $copepRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $response = [];
+        if (is_array($registros) && count($registros) > 0) {
+            foreach ($registros as $value) {
+                $value->miembros = $miembrosCopepRepository->findBy(['copep' => $value->getId()]);
+                $response[] = $value;
+            }
+        }
         return $this->render('modules/postgrado/copep/index.html.twig', [
-            'registros' => $copepRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $response,
         ]);
     }
 

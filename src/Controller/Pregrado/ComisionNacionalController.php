@@ -8,6 +8,7 @@ use App\Entity\Pregrado\ComisionNacional;
 use App\Entity\Pregrado\MiembrosComisionNacional;
 use App\Form\Pregrado\ComisionNacionalType;
 use App\Repository\Personal\PersonaRepository;
+use App\Repository\Postgrado\MiembrosComisionRepository;
 use App\Repository\Pregrado\ComisionNacionalRepository;
 use App\Repository\Pregrado\MiembrosComisionNacionalRepository;
 use App\Repository\Postgrado\RolComisionRepository;
@@ -31,11 +32,19 @@ class ComisionNacionalController extends AbstractController
      * @param ComisionNacionalRepository $comisionRepository
      * @return Response
      */
-    public function index(Request $request, ComisionNacionalRepository $comisionRepository)
+    public function index(Request $request, ComisionNacionalRepository $comisionRepository, MiembrosComisionNacionalRepository $miembrosComisionRepository)
     {
         $request->getSession()->remove('array_personas_asignadas');
+        $registros = $comisionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $response = [];
+        if (is_array($registros) && count($registros) > 0){
+            foreach ($registros as $value){
+                $value->miembros = $miembrosComisionRepository->findBy(['comision' => $value->getId()]);
+                $response[] = $value;
+            }
+        }
         return $this->render('modules/pregrado/comision_nacional/index.html.twig', [
-            'registros' => $comisionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $response,
         ]);
     }
 

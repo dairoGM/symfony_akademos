@@ -29,11 +29,19 @@ class ComisionController extends AbstractController
      * @param ComisionRepository $comisionRepository
      * @return Response
      */
-    public function index(Request $request, ComisionRepository $comisionRepository)
+    public function index(Request $request, ComisionRepository $comisionRepository, MiembrosComisionRepository $miembrosComisionRepository)
     {
         $request->getSession()->remove('array_personas_asignadas');
+        $registros =  $comisionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $response = [];
+        if (is_array($registros) && count($registros) > 0){
+            foreach ($registros as $value){
+                $value->miembros = $miembrosComisionRepository->findBy(['comision' => $value->getId()]);
+                $response[] = $value;
+            }
+        }
         return $this->render('modules/postgrado/comision/index.html.twig', [
-            'registros' => $comisionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $response,
         ]);
     }
 

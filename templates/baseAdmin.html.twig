@@ -18,11 +18,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/admin.css') }}">
-    {#    <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4.min.css') }}">#}
+    {#    <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4.min.css') }}"> #}
 
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
-    {#    <link rel="icon" type="image/x-icon"#}
-    {#          href="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}">#}
+    {#    <link rel="icon" type="image/x-icon" #}
+    {#          href="{{ asset('assets/images/869px-Coat_of_arms_of_the_Artemisa_Province.svg.png') }}"> #}
 
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -38,18 +38,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/MarkerCluster.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/MarkerCluster.Default.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/icheck-bootstrap.min.css') }}">
-    {#    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-clockpicker.min.css') }}">#}
-    {#    <link rel="stylesheet" href="{{ asset('assets/css/datepicker.min.css') }}">#}
+    {#    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-clockpicker.min.css') }}"> #}
+    {#    <link rel="stylesheet" href="{{ asset('assets/css/datepicker.min.css') }}"> #}
 
     <link rel="stylesheet" href="{{ asset('assets/proton/style.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fullCalendar/main.css') }}">
-    {#    <link rel="stylesheet" href="{{ asset('assets/jquery-ui-timepicker/css/jquery-ui.min.css') }}">#}
-    {#    <link rel="stylesheet" href="{{ asset('assets/jquery-ui-timepicker/css/jquery-ui-timepicker-addon.min.css') }}">#}
+    {#    <link rel="stylesheet" href="{{ asset('assets/jquery-ui-timepicker/css/jquery-ui.min.css') }}"> #}
+    {#    <link rel="stylesheet" href="{{ asset('assets/jquery-ui-timepicker/css/jquery-ui-timepicker-addon.min.css') }}"> #}
 
     <link rel="stylesheet" href="{{ asset('assets/dateTimePicker/bootstrap-datetimepicker.min.css') }}">
 
     <!-- Theme style -->
     <style>
+        .table td {
+            padding-top: 1%
+        }
+
         label span.invalid-feedback {
             display: none !important;
         }
@@ -207,12 +211,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% endif %}
 
 
-{#                {% if hasRoles('ROLE_HOME_REPORT') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_reporte_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'reporte' %} active {% endif %}">Reportes</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_REPORT') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_reporte_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'reporte' %} active {% endif %}">Reportes</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
 
                 {% if hasRoles('ROLE_HOME_TRAZAS') %}
                     <li class=" d-none d-sm-inline-block">
@@ -255,34 +259,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                 </li>
                 <!-- Navbar Search -->
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">#}
-                {#                        <i class="fas fa-search"></i>#}
-                {#                    </a>#}
-                {#                    <div class="navbar-search-block">#}
-                {#                        <form class="form-inline">#}
-                {#                            <div class="input-group input-group-sm">#}
-                {#                                <input class="form-control form-control-navbar" type="search" placeholder="Search"#}
-                {#                                       aria-label="Search">#}
-                {#                                <div class="input-group-append">#}
-                {#                                    <button class="btn btn-navbar" type="submit">#}
-                {#                                        <i class="fas fa-search"></i>#}
-                {#                                    </button>#}
-                {#                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">#}
-                {#                                        <i class="fas fa-times"></i>#}
-                {#                                    </button>#}
-                {#                                </div>#}
-                {#                            </div>#}
-                {#                        </form>#}
-                {#                    </div>#}
-                {#                </li>#}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" data-widget="navbar-search" href="#" role="button"> #}
+                {#                        <i class="fas fa-search"></i> #}
+                {#                    </a> #}
+                {#                    <div class="navbar-search-block"> #}
+                {#                        <form class="form-inline"> #}
+                {#                            <div class="input-group input-group-sm"> #}
+                {#                                <input class="form-control form-control-navbar" type="search" placeholder="Search" #}
+                {#                                       aria-label="Search"> #}
+                {#                                <div class="input-group-append"> #}
+                {#                                    <button class="btn btn-navbar" type="submit"> #}
+                {#                                        <i class="fas fa-search"></i> #}
+                {#                                    </button> #}
+                {#                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search"> #}
+                {#                                        <i class="fas fa-times"></i> #}
+                {#                                    </button> #}
+                {#                                </div> #}
+                {#                            </div> #}
+                {#                        </form> #}
+                {#                    </div> #}
+                {#                </li> #}
 
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    {#                    <a class="nav-link" data-toggle="dropdown" href="#">#}
-                    {#                        <i class="far fa-comments"></i>#}
-                    {#                        <span id="chat_cant_mensages" class="badge badge-danger navbar-badge"></span>#}
-                    {#                    </a>#}
+                    {#                    <a class="nav-link" data-toggle="dropdown" href="#"> #}
+                    {#                        <i class="far fa-comments"></i> #}
+                    {#                        <span id="chat_cant_mensages" class="badge badge-danger navbar-badge"></span> #}
+                    {#                    </a> #}
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div id="lastmsg"></div>
 
@@ -303,8 +307,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         {# <!-- Message End --> #}
                         {# </a> #}
                         <div class="dropdown-divider"></div>
-                        {#                        <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir#}
-                        {#                            al chat</a>#}
+                        {#                        <a target="_blank" href="{{ path('app_chat_redirect') }}" class="dropdown-item dropdown-footer">Ir #}
+                        {#                            al chat</a> #}
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
@@ -315,16 +319,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer"></div>
                 </li>
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">#}
-                {#                        <i class="fas fa-expand-arrows-alt"></i>#}
-                {#                    </a>#}
-                {#                </li>#}
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">#}
-                {#                        <i class="fas fa-th-large"></i>#}
-                {#                    </a>#}
-                {#                </li>#}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" data-widget="fullscreen" href="#" role="button"> #}
+                {#                        <i class="fas fa-expand-arrows-alt"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"> #}
+                {#                        <i class="fas fa-th-large"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}" role="button">
                         <i class="fas fa-sign-out-alt"></i>
@@ -339,21 +343,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{ path('app_admin_home') }}" class="brand-link">
-            {#            <img  src="{{ asset('images/logo_principal.png') }}" >#}
-            <span class="brand-text font-weight-light" style="font-weight: bold !important;">AKADEMOS</span>
+            {#            <img  src="{{ asset('images/logo_principal.png') }}" > #}
+            <span class="brand-text font-weight-light" style="font-weight: bold !important; margin-left: 27%">AKADEMOS</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="{% if  app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}"
-                         class="img-circle"
-                         style="width: 40px;height: 40px; object-fit: cover">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">{{ app.user.email }}</a>
+            {#            <div class="user-panel mt-3 pb-3 mb-3 d-flex"> #}
+            {#                <div class="image"> #}
+            {#                    <img src="{% if  app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}" #}
+            {#                         class="img-circle" #}
+            {#                         style="width: 40px;height: 40px; object-fit: cover"> #}
+            {#                </div> #}
+            {#                <div class="info"> #}
+            {#                    <a href="#" class="d-block">{{ app.user.email }}</a> #}
+            {#                </div> #}
+            {#            </div> #}
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="margin-top: -6% !important">
+                <div class="card-widget widget-user">
+                    <div class="widget-user-header" style="background-color: #0e375f; height: 118px">
+                        <h3 class="widget-user-username" style="color:#D6D6D6;font-size: 20px;font-weight: bold !important; margin-left: -6%">{{ app.session.get('nombre_usuario_autenticado') | slice(0, 25) }}</h3>
+                        <h5 class="widget-user-desc" style="color:#D6D6D6; margin-left: -6%;font-size: 14px">{{ app.user.email }}</h5>
+                    </div>
+                    <div class="widget-user-image" style="top: 59px">
+                        <img class="img-circle elevation-2" style="width: 73px"
+                             src="{% if app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}"
+                             alt="User Avatar">
+                    </div>
                 </div>
             </div>
 
@@ -476,8 +493,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('assets/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/bootbox.min.js') }}"></script>
 <script src="{{ asset('assets/js/HoldOn.js') }}"></script>
-{#<script src="{{ asset('assets/js/bootstrap-clockpicker.min.js') }}"></script>#}
-{#<script src="{{ asset('assets/jquery-ui-timepicker/js/jquery-ui-timepicker-addon.min.js') }}"></script>#}
+{# <script src="{{ asset('assets/js/bootstrap-clockpicker.min.js') }}"></script> #}
+{# <script src="{{ asset('assets/jquery-ui-timepicker/js/jquery-ui-timepicker-addon.min.js') }}"></script> #}
 <script src="{{ asset('assets/highcharts/highcharts.js') }}"></script>
 <script src="{{ asset('assets/highcharts/modules/exporting.js') }}"></script>
 <script src="{{ asset('assets/highcharts/modules/export-data.js') }}"></script>
@@ -491,12 +508,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('assets/leaftlet/leaflet.extra-markers.js') }}"></script>
 <script src="{{ asset('assets/leaftlet/leaflet.markercluster.js') }}"></script>
 <script src="{{ asset('assets/js/jstree.min.js') }}"></script>
-{#<script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>#}
+{# <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script> #}
 <script src="{{ asset('assets/fullCalendar/moment.min.js') }}"></script>
 
 <script src="{{ asset('assets/fullCalendar/main.js') }}"></script>
 <script src="{{ asset('assets/fullCalendar/locales-all.js') }}"></script>
-{#<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>#}
+{# <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script> #}
 
 
 <script src="{{ asset('assets/dateTimePicker/moment.es.js') }}"></script>
@@ -504,7 +521,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
 
-{#<script src="{{ asset('assets/jquery/jquery-sortable.js') }}"></script>#}
+{# <script src="{{ asset('assets/jquery/jquery-sortable.js') }}"></script> #}
 {% block javascripts %}{% endblock %}
 <script>
 
@@ -546,7 +563,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         $(".dataTable").DataTable({
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
-            "responsive": false, "lengthChange": true, "autoWidth": false, "scrollX": true,
+            "responsive": true, "lengthChange": true, "autoWidth": false, "scrollX": true,
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -648,8 +665,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             let href = $(e).attr('href')
 
-            {#console.log('hrefff', href)#}
-            {#console.log('path', '{{ app.request.pathinfo }}')#}
+            {# console.log('hrefff', href) #}
+            {# console.log('path', '{{ app.request.pathinfo }}') #}
 
             if ('{{ app.request.pathinfo }}'.includes(href)) {
                 $($(e)).addClass('active')
