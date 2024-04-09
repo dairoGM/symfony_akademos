@@ -22,6 +22,11 @@
                     {{ form_errors(form.nombre) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoComision) }}
+                    {{ form_widget(form.tipoComision) }}
+                    {{ form_errors(form.tipoComision) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.activo) }}
                     {{ form_widget(form.activo) }}
                     {{ form_errors(form.activo) }}
@@ -137,7 +142,7 @@
 
 {% block javascripts %}
     <script>
-
+        $('#comision_tipoComision').children("option").filter("[value='']").remove().change()
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
             var flag = true;

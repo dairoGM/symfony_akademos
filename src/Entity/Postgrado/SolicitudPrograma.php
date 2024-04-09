@@ -2,6 +2,7 @@
 
 namespace App\Entity\Postgrado;
 
+use App\Entity\BaseEntity;
 use App\Entity\BaseNomenclator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -13,11 +14,44 @@ use App\Entity\Institucion\Institucion;
  * @ORM\Entity
  * @ORM\Table(name="postgrado.tbd_solicitud_programa")
  */
-class SolicitudPrograma extends BaseNomenclator
+class SolicitudPrograma extends BaseEntity
 {
     /**
+     * @ORM\Column(type="string", nullable=false)
+     * @Assert\Regex(
+     *           pattern= "/^[,0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           match=   true,
+     *           message= "Caracteres no válidos, por favor verifique."
+     * )
+     */
+    private ?string $nombre = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descripcion = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $activo = true;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Postgrado\TipoSolicitud")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?TipoSolicitud $tipoSolicitud;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Postgrado\TipoSolicitudClasificacion")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?TipoSolicitudClasificacion $tipoSolicitudClasificacion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="EstadoPrograma")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?EstadoPrograma $estadoPrograma;
 
@@ -36,27 +70,27 @@ class SolicitudPrograma extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoPrograma")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?TipoPrograma $tipoPrograma;
 
     /**
      * @ORM\ManyToOne(targetEntity="RamaCiencia")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?RamaCiencia $ramaCiencia;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="ModalidadPrograma")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?ModalidadPrograma $modalidadPrograma;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="PresencialidadPrograma")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?PresencialidadPrograma $presencialidadPrograma;
 
@@ -364,7 +398,74 @@ class SolicitudPrograma extends BaseNomenclator
         $this->originalDe = $originalDe;
     }
 
+    /**
+     * @return TipoSolicitud|null
+     */
+    public function getTipoSolicitud(): ?TipoSolicitud
+    {
+        return $this->tipoSolicitud;
+    }
+
+    /**
+     * @param TipoSolicitud|null $tipoSolicitud
+     */
+    public function setTipoSolicitud(?TipoSolicitud $tipoSolicitud): void
+    {
+        $this->tipoSolicitud = $tipoSolicitud;
+    }
+
+    /**
+     * @return TipoSolicitudClasificacion|null
+     */
+    public function getTipoSolicitudClasificacion(): ?TipoSolicitudClasificacion
+    {
+        return $this->tipoSolicitudClasificacion;
+    }
+
+    /**
+     * @param TipoSolicitudClasificacion|null $tipoSolicitudClasificacion
+     */
+    public function setTipoSolicitudClasificacion(?TipoSolicitudClasificacion $tipoSolicitudClasificacion): void
+    {
+        $this->tipoSolicitudClasificacion = $tipoSolicitudClasificacion;
+    }
 
 
+
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
 
 }

@@ -17,9 +17,29 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoSolicitud) }}
+                    {{ form_widget(form.tipoSolicitud) }}
+                    {{ form_errors(form.tipoSolicitud) }}
+                </div>
+                <div id="div_tipoSolicitudClasificacion" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoSolicitudClasificacion) }}
+                    {{ form_widget(form.tipoSolicitudClasificacion) }}
+                    {{ form_errors(form.tipoSolicitudClasificacion) }}
+                </div>
+                <div id="div_universidadesRed" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.universidadesRed) }}
+                    {{ form_widget(form.universidadesRed) }}
+                    {{ form_errors(form.universidadesRed) }}
+                </div>
+                <div id="div_nombre" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
+                </div>
+                <div id="div_nombreExistente" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.nombreExistente) }}
+                    {{ form_widget(form.nombreExistente) }}
+                    {{ form_errors(form.nombreExistente) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tipoPrograma) }}
@@ -31,14 +51,14 @@
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
                 </div>
-            </div>
-            <div class="row">
+{#            </div>#}
+{#            <div class="row">#}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.universidad) }}
                     {{ form_widget(form.universidad) }}
                     {{ form_errors(form.universidad) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div id="div_originalDe" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.originalDe) }}
                     {{ form_widget(form.originalDe) }}
                     {{ form_errors(form.originalDe) }}
@@ -53,8 +73,8 @@
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ solicitudPrograma.docPrograma }}">{{ solicitudPrograma.docPrograma }}</a>
                 </div>
 
-            </div>
-            <div class="row">
+{#            </div>#}
+{#            <div class="row">#}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.modalidadPrograma) }}
                     {{ form_widget(form.modalidadPrograma) }}
@@ -110,10 +130,97 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('#solicitud_programa_universidadesRed').val({{ institucionIntervienen | raw }}).change();
+        $('#solicitud_programa_nombreExistente').val({{ solicitudPrograma.descripcion | default(-1) }}).change();
+
+        $('#div_tipoSolicitudClasificacion').hide();
+        $('#div_universidadesRed').hide();
+        $('#div_nombreExistente').hide();
+
+        $('#solicitud_programa_tipoSolicitudClasificacion').children("option").filter("[value='']").remove().change()
+
+
+        $('#solicitud_programa_nombreExistente').change(function () {
+            if ($(this).val() != "") {
+                $('#solicitud_programa_nombre').val($('#solicitud_programa_nombreExistente').find('option:selected').text());
+            }
+        })
+
         $('#solicitud_programa_docPrograma').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
+
         $('[data-mask]').inputmask()
+
+        if ($('#solicitud_programa_tipoSolicitud').val() == '{{ id_tipo_solicitud_red }}') {//es red
+            $('#div_originalDe').hide();
+            $('#div_tipoSolicitudClasificacion').hide();
+            $('#div_universidadesRed').show();
+            $('#div_nombreExistente').hide();
+            $('#div_nombre').show();
+        }
+        if ($('#solicitud_programa_tipoSolicitud').val() == '{{ id_tipo_solicitud_propio }}') {//es propio
+            $('#div_originalDe').show();
+            $('#div_tipoSolicitudClasificacion').show();
+            $('#div_universidadesRed').hide();
+        }
+
+        $('#solicitud_programa_tipoSolicitud').on('change', function () {
+            $('#solicitud_programa_universidadesRed').val(null).change();
+            $('#div_tipoSolicitudClasificacion').hide();
+            $('#div_universidadesRed').hide();
+            $('#div_nombreExistente').hide();
+            $('#div_nombre').show();
+
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            if ($(this).val() == '{{ id_tipo_solicitud_red }}') {//es red
+                $('#div_originalDe').hide();
+                $('#div_tipoSolicitudClasificacion').hide();
+                $('#div_universidadesRed').show();
+                $('#div_nombreExistente').hide();
+                $('#div_nombre').show();
+            }
+            if ($(this).val() == '{{ id_tipo_solicitud_propio }}') {//es propio
+                $('#div_originalDe').show();
+                $('#div_tipoSolicitudClasificacion').show();
+                $('#div_universidadesRed').hide();
+            }
+            HoldOn.close()
+        });
+
+        if ( $('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_exitente }}') {//mostrar el componente de seleccion
+            $('#div_nombreExistente').show();
+            $('#div_nombre').hide();
+            $('#div_originalDe').show();
+        }
+        if ( $('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_nuevo }}') {//mostrar el componente de nuevo normal
+            $('#div_nombreExistente').hide();
+            $('#div_nombre').show();
+            $('#div_originalDe').hide();
+        }
+
+        $('#solicitud_programa_tipoSolicitudClasificacion').on('change', function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            if ($(this).val() == '{{ id_tipo_solicitud_clasificacion_exitente }}') {//mostrar el componente de seleccion
+                $('#div_nombreExistente').show();
+                $('#div_nombre').hide();
+                $('#div_originalDe').show();
+            }
+            if ($(this).val() == '{{ id_tipo_solicitud_clasificacion_nuevo }}') {//mostrar el componente de nuevo normal
+                $('#div_nombreExistente').hide();
+                $('#div_nombre').show();
+                $('#div_originalDe').hide();
+            }
+            HoldOn.close()
+        });
     </script>
 {% endblock %}

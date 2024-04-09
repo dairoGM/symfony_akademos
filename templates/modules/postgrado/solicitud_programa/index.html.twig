@@ -36,7 +36,7 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.nombre  | default('')  }}</td>
+                        <td>{{ item.nombre  | default('') }}</td>
                         <td>{{ item.tipoPrograma.nombre | default('') }}</td>
                         <td>{{ item.ramaCiencia.nombre | default('') }}</td>
                         <td>{{ item.universidad.nombre | default('') }}</td>
@@ -48,18 +48,20 @@
                                     data-title="Detalles de la solicitud del programa">
                                 <i class="fa fa-eye "></i>
                             </button>
-                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 and item.estadoPrograma.id != 7%}
+                            {% if item.tipoSolicitud.id is defined and item.tipoSolicitud.id == 1 %}
+                                <a title="Asignar comisión coordinadora"
+                                   href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id, 'tipo':'2'}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-address-book"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 and item.estadoPrograma.id != 7 %}
                                 <a title="Modificar"
                                    href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-edit"></i>
                                 </a>
                             {% endif %}
-{#                            <a title="Descargar programa" target="_blank" class="btn btn-outline-primary"#}
-{#                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ item.docPrograma }}">#}
-{#                                <i#}
-{#                                        class="fa fa-download"></i>#}
-{#                            </a>#}
                             {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 1 %}
                                 <a title="Asignar comisión"
                                    href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"

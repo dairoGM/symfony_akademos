@@ -1,0 +1,69 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Configurar clasificaciones{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Configurar clasificaciones</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.clasificacion) }}
+                    {{ form_widget(form.clasificacion) }}
+                    {{ form_errors(form.clasificacion) }}
+                </div>
+
+                <div class="col-4 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 1.5%">
+                    <button class="btn btn-primary" id="btn-asociar">Asociar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table id="tbl-asociados" class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Clasificación</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in clasificaciones %}
+                    <tr>
+                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                        <td>{{ item.clasificacion | default('') }}</td>
+                        <td style="width: 3%" class="text-center">
+                            <a title="Eliminar" class="btn btn-outline-danger elementRemove"
+                               data-url="{{ path('app_tipo_solicitud_eliminar_nivel', {'id': item.id}) }}"
+                               data-title=""
+                               data-content="¿Está seguro que desea realizar la acción?" type="button"><i
+                                        class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#btn-asociar').click(function (e) {
+            $("[name='tipo_solicitud_clasificacion']").attr('action', 'config_clasificacion');
+            $('#tipo_solicitud_clasificacion').submit();
+
+        });
+    </script>
+{% endblock %}

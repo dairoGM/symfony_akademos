@@ -41,6 +41,10 @@ parameters:
     id_categoria_estructura_facultad: '%env(id_categoria_estructura_facultad)%'
     id_categoria_estructura_cum: '%env(id_categoria_estructura_cum)%'
     id_categoria_estructura_fum: '%env(id_categoria_estructura_fum)%'
+    id_tipo_solicitud_red: '%env(id_tipo_solicitud_red)%'
+    id_tipo_solicitud_propio: '%env(id_tipo_solicitud_propio)%'
+    id_tipo_solicitud_clasificacion_nuevo: '%env(id_tipo_solicitud_clasificacion_nuevo)%'
+    id_tipo_solicitud_clasificacion_exitente: '%env(id_tipo_solicitud_clasificacion_exitente)%'
 
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
 

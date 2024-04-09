@@ -97,6 +97,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if  hasRoles('ROLE_GEST_TIP_SOLICITUD_POST') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de solicitudes</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}

@@ -12,4 +12,28 @@ use Doctrine\ORM\Mapping as ORM;
 class Comision extends BaseNomenclator
 {
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Postgrado\TipoComision")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?TipoComision $tipoComision;
+
+    /**
+     * @return TipoComision|null
+     */
+    public function getTipoComision(): ?TipoComision
+    {
+        return $this->tipoComision;
+    }
+
+    /**
+     * @param TipoComision|null $tipoComision
+     */
+    public function setTipoComision(?TipoComision $tipoComision): void
+    {
+        $this->tipoComision = $tipoComision;
+    }
+
+
+
 }

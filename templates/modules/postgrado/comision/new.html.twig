@@ -22,6 +22,11 @@
                     {{ form_errors(form.nombre) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoComision) }}
+                    {{ form_widget(form.tipoComision) }}
+                    {{ form_errors(form.tipoComision) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.activo) }}
                     {{ form_widget(form.activo) }}
                     {{ form_errors(form.activo) }}
@@ -142,6 +147,11 @@
         $('#comision_nombre').val(localStorage.getItem('nombre'));
         $('#comision_descripcion').val(localStorage.getItem('descripcion'));
         $('#comision_activo').val(localStorage.getItem('activo'));
+        $('#comision_tipoComision').val(localStorage.getItem('tipoComision'));
+
+        $('#comision_tipoComision').children("option").filter("[value='']").remove().change()
+        $('#comision_tipoComision').val(1).change();
+
 
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
@@ -149,6 +159,7 @@
             localStorage.setItem('nombre', $('#comision_nombre').val());
             localStorage.setItem('descripcion', $('#comision_descripcion').val());
             localStorage.setItem('activo', $('#comision_activo').val());
+            localStorage.setItem('tipoComision', $('#comision_tipoComision').val());
             var flag = true;
             if ($('input[id*=asignados_]').length > 0) {
                 var arrayId = [];

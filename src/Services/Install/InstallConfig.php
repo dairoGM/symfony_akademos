@@ -202,6 +202,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_TIPPROGRAM", "Gestionar tipo de programa", "Gestionar tipo de programa");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_RAMCIENC", "Gestionar rama de la ciencia", "Gestionar rama de la ciencia");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_ROLESPOS ", "Gestionar roles", "Gestionar roles");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_TIP_SOLICITUD_POST ", "Gestionar tipos de solicitudes", "Gestionar tipos de solicitudes");
 
         return $functionalities;
     }
@@ -338,6 +339,7 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_SOLPROG")
             ->addFunctionality("ROLE_GEST_PROGAPROB")
             ->addFunctionality("ROLE_GEST_PROGEXTINT")
+            ->addFunctionality("ROLE_GEST_TIP_SOLICITUD_POST")
             ->addFunctionality("ROLE_GEST_OACE");
 
 

@@ -7,6 +7,7 @@ use App\Entity\Personal\Persona;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\SolicitudProgramaComision;
 use App\Entity\Postgrado\SolicitudProgramaDictamen;
+use App\Entity\Postgrado\SolicitudProgramaInstitucion;
 use App\Entity\Postgrado\SolicitudProgramaVotacion;
 use App\Entity\Security\User;
 use App\Form\Postgrado\AprobarProgramaType;
@@ -16,6 +17,8 @@ use App\Form\Postgrado\NoAprobarProgramaType;
 use App\Form\Postgrado\RevisionDictamenType;
 use App\Form\Postgrado\SolicitudProgramaDictamenType;
 use App\Form\Postgrado\SolicitudProgramaType;
+use App\Repository\Institucion\InstitucionFumRepository;
+use App\Repository\Institucion\InstitucionRepository;
 use App\Repository\NotificacionesUsuarioRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Postgrado\ComisionRepository;
@@ -25,8 +28,10 @@ use App\Repository\Postgrado\MiembrosCopepRepository;
 use App\Repository\Postgrado\RolComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaDictamenRepository;
+use App\Repository\Postgrado\SolicitudProgramaInstitucionRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
 use App\Repository\Postgrado\SolicitudProgramaVotacionRepository;
+use App\Services\DoctrineHelper;
 use App\Services\TraceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,13 +67,42 @@ class SolicitudProgramaController extends AbstractController
      * @param EstadoProgramaRepository $estadoProgramaRepository
      * @return Response
      */
-    public function registrar(Request $request, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
+    public function registrar(Request $request, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
         try {
             $solicitudPrograma = new SolicitudPrograma();
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'registrar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+            $post = $request->request->all();
+
+            if ($form->isSubmitted()) {
+
+                if ($this->getParameter('id_tipo_solicitud_red') == $post['solicitud_programa']['tipoSolicitud']) {//tipo red
+                    if (isset($post['solicitud_programa']['universidadesRed']) && count($post['solicitud_programa']['universidadesRed']) > 0) {
+                        foreach ($post['solicitud_programa']['universidadesRed'] as $value) {
+                            $item = new SolicitudProgramaInstitucion();
+                            $item->setSolicitudPrograma($solicitudPrograma);
+                            $item->setInstitucion($institucionRepository->find($value));
+                            $solicitudProgramaInstitucionRepository->add($item);
+                        }
+                    } else {
+                        $this->addFlash('error', 'El campo Instituciones que intervienen es obligatorio.');
+                        return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+                    }
+                } else if ($this->getParameter('id_tipo_solicitud_propio') == $post['solicitud_programa']['tipoSolicitud']) {//tipo propio
+                    if ($this->getParameter('id_tipo_solicitud_clasificacion_exitente') == $post['solicitud_programa']['tipoSolicitudClasificacion']) {//clasificacion es existente
+                        if (!empty($post['solicitud_programa']['originalDe'])) {
+                            $item = new SolicitudProgramaInstitucion();
+                            $item->setSolicitudPrograma($solicitudPrograma);
+                            $item->setInstitucion($institucionRepository->find($post['solicitud_programa']['originalDe']));
+                            $solicitudProgramaInstitucionRepository->add($item);
+                        } else {
+                            $this->addFlash('error', 'El campo Programa original de es obligatorio.');
+                            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+                        }
+                    }
+                }
+
 
                 if (!empty($_FILES['solicitud_programa']['name']['docPrograma'])) {
                     $file = $form['docPrograma']->getData();
@@ -77,8 +111,13 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(1));
                     $file->move("uploads/postgrado/solicitud_programa", $file_name);
                 }
+
+                if (isset($post['solicitud_programa']['nombreExistente']) && !empty($post['solicitud_programa']['nombreExistente'])) {
+                    $solicitudPrograma->setDescripcion($post['solicitud_programa']['nombreExistente']);
+                }
+
                 $solicitudProgramaRepository->add($solicitudPrograma, true);
-                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
+                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
 
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -87,6 +126,10 @@ class SolicitudProgramaController extends AbstractController
 
             return $this->render('modules/postgrado/solicitud_programa/new.html.twig', [
                 'form' => $form->createView(),
+                'id_tipo_solicitud_red' => $this->getParameter('id_tipo_solicitud_red'),
+                'id_tipo_solicitud_propio' => $this->getParameter('id_tipo_solicitud_propio'),
+                'id_tipo_solicitud_clasificacion_nuevo' => $this->getParameter('id_tipo_solicitud_clasificacion_nuevo'),
+                'id_tipo_solicitud_clasificacion_exitente' => $this->getParameter('id_tipo_solicitud_clasificacion_exitente'),
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -103,14 +146,44 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function modificar(Request $request, TraceService $traceService, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function modificar(Request $request, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
-            $dataAnterior = \App\Services\DoctrineHelper::toArray($solicitudPrograma);
+            $dataAnterior = DoctrineHelper::toArray($solicitudPrograma);
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'modificar']);
             $form->handleRequest($request);
+            $post = $request->request->all();
+            if ($form->isSubmitted()) {
+                $institucionIntervienen = $solicitudProgramaInstitucionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+                if (is_array($institucionIntervienen)) {
+                    foreach ($institucionIntervienen as $value) {
+                        $solicitudProgramaInstitucionRepository->remove($value, true);
+                    }
+                }
 
-            if ($form->isSubmitted() && $form->isValid()) {
+                if ($this->getParameter('id_tipo_solicitud_red') == $post['solicitud_programa']['tipoSolicitud']) {//tipo red
+                    if (isset($post['solicitud_programa']['universidadesRed']) && count($post['solicitud_programa']['universidadesRed']) > 0) {
+
+                        foreach ($post['solicitud_programa']['universidadesRed'] as $value) {
+                            $item = new SolicitudProgramaInstitucion();
+                            $item->setSolicitudPrograma($solicitudPrograma);
+                            $item->setInstitucion($institucionRepository->find($value));
+                            $solicitudProgramaInstitucionRepository->add($item);
+                        }
+                    } else {
+                        $this->addFlash('error', 'El campo Instituciones que intervienen es obligatorio.');
+                        return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+                    }
+                } else if ($this->getParameter('id_tipo_solicitud_propio') == $post['solicitud_programa']['tipoSolicitud']) {//tipo propio
+                    if ($this->getParameter('id_tipo_solicitud_clasificacion_exitente') == $post['solicitud_programa']['tipoSolicitudClasificacion']) {//clasificacion es existente
+                        if (!empty($post['solicitud_programa']['originalDe'])) {
+                            $item = new SolicitudProgramaInstitucion();
+                            $item->setSolicitudPrograma($solicitudPrograma);
+                            $item->setInstitucion($institucionRepository->find($post['solicitud_programa']['originalDe']));
+                            $solicitudProgramaInstitucionRepository->add($item);
+                        }
+                    }
+                }
 
                 if (!empty($_FILES['solicitud_programa']['name']['docPrograma'])) {
                     if ($solicitudPrograma->getDocPrograma() != null) {
@@ -123,19 +196,31 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setDocPrograma($file_name);
                     $file->move("uploads/solicitud_programa", $file_name);
                 }
+                if (isset($post['solicitud_programa']['nombreExistente']) && !empty($post['solicitud_programa']['nombreExistente'])) {
+                    $solicitudPrograma->setDescripcion($post['solicitud_programa']['nombreExistente']);
+                }
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
-
-                $traceService->registrar($this->getParameter('accion_modificar'), $this->getParameter('objeto_solicitud_programa'), $dataAnterior, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
-
+                $traceService->registrar($this->getParameter('accion_modificar'), $this->getParameter('objeto_solicitud_programa'), $dataAnterior, DoctrineHelper::toArray($solicitudPrograma));
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
-
+            $institucionIntervienen = $solicitudProgramaInstitucionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            $arr = [];
+            if (is_array($institucionIntervienen)) {
+                foreach ($institucionIntervienen as $value) {
+                    $arr[] = $value->getInstitucion()->getId();
+                }
+            }
             return $this->render('modules/postgrado/solicitud_programa/edit.html.twig', [
                 'form' => $form->createView(),
-                'solicitudPrograma' => $solicitudPrograma
+                'solicitudPrograma' => $solicitudPrograma,
+                'institucionIntervienen' => json_encode($arr),
+                'id_tipo_solicitud_red' => $this->getParameter('id_tipo_solicitud_red'),
+                'id_tipo_solicitud_propio' => $this->getParameter('id_tipo_solicitud_propio'),
+                'id_tipo_solicitud_clasificacion_nuevo' => $this->getParameter('id_tipo_solicitud_clasificacion_nuevo'),
+                'id_tipo_solicitud_clasificacion_exitente' => $this->getParameter('id_tipo_solicitud_clasificacion_exitente')
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -170,7 +255,7 @@ class SolicitudProgramaController extends AbstractController
                 $solicitudProgramaRepository->remove($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
 
-                $traceService->registrar($this->getParameter('accion_eliminar'), $this->getParameter('objeto_solicitud_programa'), null, \App\Services\DoctrineHelper::toArray($solicitudPrograma));
+                $traceService->registrar($this->getParameter('accion_eliminar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
             $this->addFlash('error', 'Error en la entrada de datos');
@@ -197,13 +282,12 @@ class SolicitudProgramaController extends AbstractController
                 'dictamenFinal' => empty($solicitudPrograma->getDictamenFinal()) ? 'registrar' : 'modificar'
             ];
 
-
             $form = $this->createForm(AprobarProgramaType::class, $solicitudPrograma, $choices);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $fechaProximaAcreditacion = $request->request->all()['aprobar_programa']['fechaProximaAcreditacion']??null;
-                if (!empty($fechaProximaAcreditacion)){
+                $fechaProximaAcreditacion = $request->request->all()['aprobar_programa']['fechaProximaAcreditacion'] ?? null;
+                if (!empty($fechaProximaAcreditacion)) {
                     $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $fechaProximaAcreditacion));
                 }
 
@@ -215,7 +299,6 @@ class SolicitudProgramaController extends AbstractController
                     }
 
                     $file = $form['resolucionPrograma']->getData();
-                    $ext = explode('.', $_FILES['aprobar_programa']['name']['resolucionPrograma']);
                     $file_name = $_FILES['aprobar_programa']['name']['resolucionPrograma'];
                     $solicitudPrograma->setResolucionPrograma($file_name);
                     $file->move("uploads/postgrado/resolucion_programa", $file_name);
@@ -228,7 +311,6 @@ class SolicitudProgramaController extends AbstractController
                     }
 
                     $file = $form['dictamenFinal']->getData();
-                    $ext = explode('.', $_FILES['aprobar_programa']['name']['dictamenFinal']);
                     $file_name = $_FILES['aprobar_programa']['name']['dictamenFinal'];
                     $solicitudPrograma->setDictamenFinal($file_name);
                     $file->move("uploads/postgrado/dictamen_final", $file_name);
@@ -275,7 +357,6 @@ class SolicitudProgramaController extends AbstractController
                     }
 
                     $file = $form['dictamenFinal']->getData();
-                    $ext = explode('.', $_FILES['no_aprobar_programa']['name']['dictamenFinal']);
                     $file_name = $_FILES['no_aprobar_programa']['name']['dictamenFinal'];
                     $solicitudPrograma->setDictamenFinal($file_name);
                     $file->move("uploads/postgrado/dictamen_final", $file_name);
@@ -300,7 +381,7 @@ class SolicitudProgramaController extends AbstractController
 
 
     /**
-     * @Route("/{id}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
+     * @Route("/{id}/{tipo}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
      * @param Request $request
      * @param MiembrosComisionRepository $miembrosComisionRepository
      * @param NotificacionesUsuarioRepository $notificacionesUsuarioRepository
@@ -311,16 +392,19 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asignarComision(Request $request, MiembrosComisionRepository $miembrosComisionRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
+    public function asignarComision(Request $request, $tipo = '1', MiembrosComisionRepository $miembrosComisionRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
     {
         try {
-            $form = $this->createForm(ComisionProgramaType::class);
+            $form = $this->createForm(ComisionProgramaType::class, null, ['idTipoComision' => $tipo]);
+
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $comisiones = $solicitudProgramaComisionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
                 if (is_array($comisiones) && count($comisiones) > 0) {
                     foreach ($comisiones as $values) {
-                        $solicitudProgramaComisionRepository->remove($values, true);
+                        if (1 == $values->getComision()->getTipoComision()->getId()) {
+                            $solicitudProgramaComisionRepository->remove($values, true);
+                        }
                     }
                 }
 
@@ -330,21 +414,24 @@ class SolicitudProgramaController extends AbstractController
                     $nueva->setComision($comisionRepository->find($value));
                     $solicitudProgramaComisionRepository->add($nueva, true);
 
-                    /*Notificacion*/
-                    $miembros = $miembrosComisionRepository->findBy(['comision' => $value]);
-                    if (is_array($miembros)) {
-                        foreach ($miembros as $valueMiembros) {
-                            $nuevaNotificacion = new NotificacionesUsuario();
-                            $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
-                            $nuevaNotificacion->setLeido(false);
-                            $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudPrograma->getNombre() . ' le ha sido asignada para revisión.');
-                            $nuevaNotificacion->setUsuarioEnvia($this->getUser());
-                            $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                    if (1 == $tipo) {//si la comision es estandar
+                        /*Notificacion*/
+                        $miembros = $miembrosComisionRepository->findBy(['comision' => $value]);
+                        if (is_array($miembros)) {
+                            foreach ($miembros as $valueMiembros) {
+                                $nuevaNotificacion = new NotificacionesUsuario();
+                                $nuevaNotificacion->setUsuarioRecive($valueMiembros->getMiembro()->getUsuario());
+                                $nuevaNotificacion->setLeido(false);
+                                $nuevaNotificacion->setTexto('La solicitud del programa: ' . $solicitudPrograma->getNombre() . ' le ha sido asignada para revisión.');
+                                $nuevaNotificacion->setUsuarioEnvia($this->getUser());
+                                $notificacionesUsuarioRepository->add($nuevaNotificacion, true);
+                            }
                         }
+                        $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(2));
                     }
+
                 }
 
-                $solicitudPrograma->setEstadoPrograma($estadoProgramaRepository->find(2));
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');

@@ -8,6 +8,8 @@ use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\RamaCiencia;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\TipoPrograma;
+use App\Entity\Postgrado\TipoSolicitud;
+use App\Entity\Postgrado\TipoSolicitudClasificacion;
 use App\Entity\Postgrado\Universidad;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -65,9 +67,35 @@ class SolicitudProgramaType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
+            ->add('universidadesRed', EntityType::class, [
+                'class' => Institucion::class,
+                'label' => 'Instituciones que intervienen',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'mapped' => false,
+                'multiple' => true,
+                'required' => false
+            ])
             ->add('originalDe', EntityType::class, [
                 'label' => 'Programa original de',
                 'class' => Institucion::class,
+                'required' => false,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('nombreExistente', EntityType::class, [
+                'label' => 'Programas',
+                'class' => SolicitudPrograma::class,
+                'required' => false,
+                'mapped' => false,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
@@ -84,6 +112,28 @@ class SolicitudProgramaType extends AbstractType
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+            ])
+            ->add('tipoSolicitud', EntityType::class, [
+                'label' => 'Tipo de solicitud',
+                'class' => TipoSolicitud::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('tipoSolicitudClasificacion', EntityType::class, [
+                'label' => 'Clasificación',
+                'class' => TipoSolicitudClasificacion::class,
+                'choice_label' => 'clasificacion',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.id > 0')->orderBy('u.clasificacion', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => 2,
+                'required' => false
+
             ])
             ->add('ramaCiencia', EntityType::class, [
                 'label' => 'Rama de la ciencia',
