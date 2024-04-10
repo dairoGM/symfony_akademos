@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Akademos - MES{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*@media (max-width: 575px) {*/
+        /*    .filter-dash-buttom{*/
+        /*        width: 100%;*/
+        /*    }*/
+        /*}*/
+
+
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .c {
+                min-width: 33.3% !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1400px) {
+            .p {
+                min-width: 33.3% !important;
+            }
+        }
+
+        .bg-blue {
+            background-color: #0E375F !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row mr-1">
+        <div class="col-4 mb-4">
+            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">All</h6> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
+            {#                </div> #}
+
+            <div style="min-height: 155px;background-color: #8080801c;font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
+                <span>Personal</span>
+            </div>
+        </div>
+
+        <div class="col-4 mb-4">
+            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access</h6> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
+            {#                </div> #}
+
+            <div style="min-height: 155px;background: linear-gradient(50deg, #244892,#DFE2E9);color: white;font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
+                <span>Estructura</span>
+            </div>
+        </div>
+
+
+        <div class="col-4 mb-4">
+            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
+            {#                </div> #}
+
+            <div style="min-height: 155px; background: linear-gradient(90deg, #881461, #D34223); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
+                <span>Posgrado</span>
+            </div>
+        </div>
+
+        <div class="col-4 mb-4">
+            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
+            {#                </div> #}
+
+            <div style="min-height: 155px; background: linear-gradient(90deg, #881461, #f60f58); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
+                <span>Pregrado</span>
+            </div>
+        </div>
+
+        <div class="col-4 mb-4">
+            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
+            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
+            {#                </div> #}
+
+            <div style="min-height: 155px; background: linear-gradient(90deg, #400a6e, #680ff6); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
+                <span>Instituciones</span>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+
+{% endblock %}
+

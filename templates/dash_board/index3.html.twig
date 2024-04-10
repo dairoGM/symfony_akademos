@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Akademos - MES{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*@media (max-width: 575px) {*/
+        /*    .filter-dash-buttom{*/
+        /*        width: 100%;*/
+        /*    }*/
+        /*}*/
+
+
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .c {
+                min-width: 33.3% !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1400px) {
+            .p {
+                min-width: 33.3% !important;
+            }
+        }
+
+        .bg-blue {
+            background-color: #0E375F !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="container_app" class="row" style="align-content: center; padding-left: 6%;">
+        <div class="col-md-3" style="padding-left: 3%; ">
+            <a href="{{ path('app_admin_home') }}">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 c">
+                            <!-- small box -->
+                            <div class="small-box shadow-sm"
+                                 style="border-left: 4px solid #0E375F; background-color: #f2f2f2a8; height: 160%;width: 530%">
+                                <div class="inner " data-toggle="tooltip" data-placcement="top" title=""
+                                     data-original-title="">
+                                    <h5 class="mb-0 text-truncate text-muted" style="font-weight: bold">
+                                    </h5>
+                                </div>
+                                <i class="fa fa-clone"
+                                   style="font-size: 66px;position: absolute;opacity: 0.2;right: 26px;top: 62px;"></i>
+
+                                <div class="row m-0" style="height: 25%">
+                                    <div class="col-6  mb-1"
+                                         style="display: flex;justify-content: center;flex-direction: column; margin-top: -14px">
+                                        <h1 class="" style=" font-weight: 600; color: #0E375F">Pregrado</h1>
+                                        <div class="progress" style="width: 100%;height: 6px;">
+                                            <div class="progress-bar"
+                                                 style="width: 97%; background-color: #0E375F"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <div class="col-md-3" style="padding-left: 3%;  ">
+            <a href="{{ path('app_admin_home') }}" style="padding-right: 10%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 c">
+                            <!-- small box -->
+                            <div class="small-box shadow-sm"
+                                 style="border-left: 4px solid #0E375F; background-color: #f2f2f2a8; height: 160%;width: 530%">
+                                <div class="inner " data-toggle="tooltip" data-placcement="top" title=""
+                                     data-original-title="">
+                                    <h5 class="mb-0 text-truncate text-muted" style="font-weight: bold">
+                                    </h5>
+                                </div>
+                                <i class="fa fa-clone"
+                                   style="font-size: 66px;position: absolute;opacity: 0.2;right: 26px;top: 62px;"></i>
+
+                                <div class="row m-0" style="height: 25%">
+                                    <div class="col-6  mb-1"
+                                         style="display: flex;justify-content: center;flex-direction: column; margin-top: -14px">
+                                        <h1 class="" style=" font-weight: 600; color: #0E375F">Postgrado</h1>
+                                        <div class="progress" style="width: 100%;height: 6px;">
+                                            <div class="progress-bar"
+                                                 style="width: 97%; background-color: #0E375F"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <div class="col-md-3" style="padding-left: 3%;  ">
+            <a href="{{ path('app_admin_home') }}" style="padding-right: 10%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 c">
+                            <!-- small box -->
+                            <div class="small-box shadow-sm"
+                                 style="border-left: 4px solid #0E375F; background-color: #f2f2f2a8; height: 160%;width: 530%">
+                                <div class="inner " data-toggle="tooltip" data-placcement="top" title=""
+                                     data-original-title="">
+                                    <h5 class="mb-0 text-truncate text-muted" style="font-weight: bold">
+                                    </h5>
+                                </div>
+                                <i class="fa fa-clone"
+                                   style="font-size: 66px;position: absolute;opacity: 0.2;right: 26px;top: 62px;"></i>
+
+                                <div class="row m-0" style="height: 25%">
+                                    <div class="col-6  mb-1"
+                                         style="display: flex;justify-content: center;flex-direction: column; margin-top: -14px">
+                                        <h1 class="" style=" font-weight: 600; color: #0E375F">Instituciones</h1>
+                                        <div class="progress" style="width: 100%;height: 6px;">
+                                            <div class="progress-bar"
+                                                 style="width: 97%; background-color: #0E375F"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ path('app_admin_home') }}" style="padding-right: 10%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 c">
+                            <!-- small box -->
+                            <div class="small-box shadow-sm"
+                                 style="border-left: 4px solid #0E375F; background-color: #f2f2f2a8; height: 160%;width: 500%">
+                                <div class="inner " data-toggle="tooltip" data-placcement="top" title=""
+                                     data-original-title="">
+                                    <h5 class="mb-0 text-truncate text-muted" style="font-weight: bold">
+                                    </h5>
+                                </div>
+                                <i class="fa fa-clone"
+                                   style="font-size: 66px;position: absolute;opacity: 0.2;right: 26px;top: 62px;"></i>
+
+                                <div class="row m-0" style="height: 25%">
+                                    <div class="col-6  mb-1"
+                                         style="display: flex;justify-content: center;flex-direction: column; margin-top: -14px">
+                                        <h1 class="" style=" font-weight: 600; color: #0E375F">SISTEMA - 4</h1>
+                                        <div class="progress" style="width: 100%;height: 6px;">
+                                            <div class="progress-bar"
+                                                 style="width: 97%; background-color: #0E375F"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+
+{% endblock %}
+

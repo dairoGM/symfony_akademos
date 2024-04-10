@@ -98,7 +98,7 @@ class SolicitudProgramaType extends AbstractType
                 'mapped' => false,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where('u.estadoPrograma=7 and u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
