@@ -37,23 +37,23 @@
                     <a id="doc_container" target="_blank"
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/resolucion_programa/{{ solicitudPrograma.resolucionPrograma }}">{{ solicitudPrograma.resolucionPrograma }}</a>
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.annoAcreditacion) }}#}
-{#                    {{ form_widget(form.annoAcreditacion) }}#}
-{#                    {{ form_errors(form.annoAcreditacion) }}#}
-{#                </div>#}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.annoAcreditacion) }} #}
+                {#                    {{ form_widget(form.annoAcreditacion) }} #}
+                {#                    {{ form_errors(form.annoAcreditacion) }} #}
+                {#                </div> #}
             </div>
             <div class="row">
-{#                <div class="col-4 form-group">#}
-{#                    {{ form_label(form.fechaProximaAcreditacion) }}#}
-{#                    <div class="input-group">#}
-{#                        <div class="input-group-prepend">#}
-{#                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>#}
-{#                        </div>#}
-{#                        {{ form_widget(form.fechaProximaAcreditacion) }}#}
-{#                        {{ form_errors(form.fechaProximaAcreditacion) }}#}
-{#                    </div>#}
-{#                </div>#}
+                {#                <div class="col-4 form-group"> #}
+                {#                    {{ form_label(form.fechaProximaAcreditacion) }} #}
+                {#                    <div class="input-group"> #}
+                {#                        <div class="input-group-prepend"> #}
+                {#                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> #}
+                {#                        </div> #}
+                {#                        {{ form_widget(form.fechaProximaAcreditacion) }} #}
+                {#                        {{ form_errors(form.fechaProximaAcreditacion) }} #}
+                {#                    </div> #}
+                {#                </div> #}
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.dictamenFinal) }}
@@ -64,7 +64,11 @@
                     <a id="doc_container" target="_blank"
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/postgrado/dictamen_final/{{ solicitudPrograma.dictamenFinal }}">{{ solicitudPrograma.dictamenFinal }}</a>
                 </div>
-
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaAprobacion) }}
+                    {{ form_widget(form.fechaAprobacion) }}
+                    {{ form_errors(form.fechaAprobacion) }}
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
@@ -96,6 +100,9 @@
         var fecha = "{% if solicitudPrograma.fechaProximaAcreditacion is empty %}  {{ solicitudPrograma.fechaProximaAcreditacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#aprobar_programa_fechaProximaAcreditacion').val(fecha.replace(' ', ''));
 
+        var fechaAprobacion = "{% if solicitudPrograma.fechaAprobacion is empty %}  {{ solicitudPrograma.fechaAprobacion | default('') }} {% else %}  {{ solicitudPrograma.fechaProximaAcreditacion|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#aprobar_programa_fechaAprobacion').val(fechaAprobacion.replace(' ', ''));
+
 
         $('#aprobar_programa_resolucionPrograma').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
@@ -107,6 +114,9 @@
             $('.cargar-archivo1').html(filename);
         })
         $('#aprobar_programa_fechaProximaAcreditacion').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#aprobar_programa_fechaAprobacion').datetimepicker({
             format: 'DD/MM/YYYY'
         });
         $('[id=aprobar_programa_annoAcreditacion]').bind("keypress", function (event) {

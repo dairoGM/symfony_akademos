@@ -84,6 +84,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Programa de posgrado</th>
+                                <th>Código</th>
+                                <th>Tipo de programa</th>
                                 <th class="text-center">Opciones</th>
                             </tr>
                             </thead>
@@ -92,6 +94,8 @@
                                 <tr>
                                     <td width="1%">{{ loop.index }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.codigoPrograma | default('') }}</td>
+                                    <td>{{ item.tipoPrograma.nombre | default('') }}</td>
                                     <td width="10%" class="text-center">
                                         <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                                 data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"

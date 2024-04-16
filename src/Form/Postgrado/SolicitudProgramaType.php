@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -147,6 +148,7 @@ class SolicitudProgramaType extends AbstractType
             ])
             ->add('modalidadPrograma', EntityType::class, [
                 'class' => ModalidadPrograma::class,
+                'label' => 'Modalidad de dedicación',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
@@ -156,12 +158,27 @@ class SolicitudProgramaType extends AbstractType
             ])
             ->add('presencialidadPrograma', EntityType::class, [
                 'class' => PresencialidadPrograma::class,
+                'label' => 'Modalidad de estudio',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+            ])
+            ->add('duracionPrograma', IntegerType::class, [
+                'label' => 'Duración del programa',
+                'required' => false,
+                'attr' => [
+                    'min' => 1
+                ]
+            ])
+            ->add('cantidadCreditos', IntegerType::class, [
+                'label' => 'Cantidad de créditos',
+                'required' => false,
+                'attr' => [
+                    'min' => 1
+                ]
             ]);
     }
 

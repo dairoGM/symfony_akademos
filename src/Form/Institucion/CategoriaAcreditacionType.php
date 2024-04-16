@@ -25,6 +25,9 @@ class CategoriaAcreditacionType extends AbstractType
             ->add('duracion', IntegerType::class, [
                 'label' => 'Duración',
                 'required' => false,
+                'attr' => [
+                    'min' => 1
+                ]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',

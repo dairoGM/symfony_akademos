@@ -51,8 +51,8 @@
                     {{ form_widget(form.ramaCiencia) }}
                     {{ form_errors(form.ramaCiencia) }}
                 </div>
-{#            </div>#}
-{#            <div class="row">#}
+                {#            </div> #}
+                {#            <div class="row"> #}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.universidad) }}
                     {{ form_widget(form.universidad) }}
@@ -73,8 +73,8 @@
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/solicitud_programa/{{ solicitudPrograma.docPrograma }}">{{ solicitudPrograma.docPrograma }}</a>
                 </div>
 
-{#            </div>#}
-{#            <div class="row">#}
+                {#            </div> #}
+                {#            <div class="row"> #}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.modalidadPrograma) }}
                     {{ form_widget(form.modalidadPrograma) }}
@@ -84,6 +84,16 @@
                     {{ form_label(form.presencialidadPrograma) }}
                     {{ form_widget(form.presencialidadPrograma) }}
                     {{ form_errors(form.presencialidadPrograma) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.duracionPrograma) }}
+                    {{ form_widget(form.duracionPrograma) }}
+                    {{ form_errors(form.duracionPrograma) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cantidadCreditos) }}
+                    {{ form_widget(form.cantidadCreditos) }}
+                    {{ form_errors(form.cantidadCreditos) }}
                 </div>
             </div>
             <h6 class="mb-0"><b><p
@@ -193,12 +203,12 @@
             HoldOn.close()
         });
 
-        if ( $('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_exitente }}') {//mostrar el componente de seleccion
+        if ($('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_exitente }}') {//mostrar el componente de seleccion
             $('#div_nombreExistente').show();
             $('#div_nombre').hide();
             $('#div_originalDe').show();
         }
-        if ( $('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_nuevo }}') {//mostrar el componente de nuevo normal
+        if ($('#solicitud_programa_tipoSolicitudClasificacion').val() == '{{ id_tipo_solicitud_clasificacion_nuevo }}') {//mostrar el componente de nuevo normal
             $('#div_nombreExistente').hide();
             $('#div_nombre').show();
             $('#div_originalDe').hide();

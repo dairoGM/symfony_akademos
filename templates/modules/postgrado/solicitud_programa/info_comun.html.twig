@@ -6,13 +6,17 @@
                 <h5 class="mb-0"><b>Rama de la
                         ciencia:</b> {{ solicitudPrograma.ramaCiencia.nombre| default('') }}</h5>
                 <h5 class="mb-0"><b>Programa original de:</b> {{ item.originalDe.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Modalidad:</b> {{ solicitudPrograma.modalidadPrograma.nombre| default('') }}
+                <h5 class="mb-0"><b>Modalidad de
+                        dedicación:</b> {{ solicitudPrograma.modalidadPrograma.nombre| default('') }}
                 </h5>
                 <h5 class="mb-0">
-                    <b>Presencialidad:</b> {{ solicitudPrograma.presencialidadPrograma.nombre| default('') }}
+                    <b>Modalidad de estudio:</b> {{ solicitudPrograma.presencialidadPrograma.nombre| default('') }}
                 </h5>
                 <h5 class="mb-0">
                     <b>Tipo de solicitud:</b> {{ solicitudPrograma.tipoSolicitud.nombre| default('') }}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Duración del programa:</b> {{ solicitudPrograma.duracionPrograma | default('') }}
                 </h5>
             </div>
             <div class="col-6">
@@ -25,7 +29,16 @@
                 </h5>
                 <h5 class="mb-0"><b>Estado del
                         programa:</b> {{ solicitudPrograma.estadoPrograma.nombre| default('') }}</h5>
-                <h5 class="mb-0"><b>Categoría de acreditación:</b> {{ solicitudPrograma.categoriaAcreditacion.nombre| default('') }}</h5>
+                <h5 class="mb-0"><b>Categoría de
+                        acreditación:</b> {{ solicitudPrograma.categoriaAcreditacion.nombre| default('') }}</h5>
+                <h5 class="mb-0">
+                    <b>Cantidad de créditos :</b> {{ solicitudPrograma.cantidadCreditos | default('') }}
+                </h5>
+                <h5 class="mb-0">
+
+                    <b>Fecha de aprobación del
+                        programa:</b>{% if solicitudPrograma.fechaAprobacion is not null %} {{ solicitudPrograma.fechaAprobacion | date('d-m-Y') }} {% else %}   {% endif %}
+                </h5>
             </div>
         </div>
     </div>

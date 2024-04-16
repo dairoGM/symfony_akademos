@@ -291,6 +291,11 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setFechaProximaAcreditacion(\DateTime::createFromFormat('d/m/Y', $fechaProximaAcreditacion));
                 }
 
+                $fechaAprobacion = $request->request->all()['aprobar_programa']['fechaAprobacion'] ?? null;
+                if (!empty($fechaAprobacion)) {
+                    $solicitudPrograma->setFechaAprobacion(\DateTime::createFromFormat('d/m/Y', $fechaAprobacion));
+                }
+
                 if (!empty($_FILES['aprobar_programa']['name']['resolucionPrograma'])) {
                     if ($solicitudPrograma->getResolucionPrograma() != null) {
                         if (file_exists('uploads/postgrado/resolucion_programa/' . $solicitudPrograma->getResolucionPrograma())) {

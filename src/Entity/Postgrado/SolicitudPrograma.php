@@ -132,6 +132,22 @@ class SolicitudPrograma extends BaseEntity
     private $fechaProximaAcreditacion;
 
 
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaAprobacion;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $duracionPrograma;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $cantidadCreditos;
+
+
     public function getFechaProximaAcreditacion()
     {
         return $this->fechaProximaAcreditacion;
@@ -431,7 +447,6 @@ class SolicitudPrograma extends BaseEntity
     }
 
 
-
     public function getNombre()
     {
         return $this->nombre;
@@ -467,5 +482,54 @@ class SolicitudPrograma extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getDuracionPrograma(): ?int
+    {
+        return $this->duracionPrograma;
+    }
+
+    /**
+     * @param int|null $duracionPrograma
+     */
+    public function setDuracionPrograma(?int $duracionPrograma): void
+    {
+        $this->duracionPrograma = $duracionPrograma;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCantidadCreditos(): ?int
+    {
+        return $this->cantidadCreditos;
+    }
+
+    /**
+     * @param int|null $cantidadCreditos
+     */
+    public function setCantidadCreditos(?int $cantidadCreditos): void
+    {
+        $this->cantidadCreditos = $cantidadCreditos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaAprobacion()
+    {
+        return $this->fechaAprobacion;
+    }
+
+    /**
+     * @param mixed $fechaAprobacion
+     */
+    public function setFechaAprobacion($fechaAprobacion): void
+    {
+        $this->fechaAprobacion = $fechaAprobacion;
+    }
+
 
 }
