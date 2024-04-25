@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Service\ReportFop;
+use App\Services\ReportFilterTrait;
 
 abstract class ExportListHeader implements ReportFop
 {

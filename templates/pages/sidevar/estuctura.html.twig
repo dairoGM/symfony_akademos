@@ -97,11 +97,20 @@
                 <ul class="nav nav-treeview">
                     {% if hasRoles('ROLE_GEST_PROVIN') %}
                         <li class="nav-item">
+                            <a href="{{ path('app_pais_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Países</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ path('app_provincia_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Provincias</p>
                             </a>
                         </li>
+
+
+
                     {% endif %}
                     {% if hasRoles('ROLE_GEST_MUNICP') %}
                         <li class="nav-item">

@@ -152,6 +152,87 @@
                 </div>
             </div>
         {% endif %}
+
+
+
+        {% if hasRoles('ROLE_HOME_REPORT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Cooperación</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasRoles('ROLE_HOME_REPORT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Visitas</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasRoles('ROLE_HOME_REPORT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Trámites</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasRoles('ROLE_HOME_REPORT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Economía</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasRoles('ROLE_HOME_REPORT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Convenios</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+
+
     </div>
 
 {% endblock %}

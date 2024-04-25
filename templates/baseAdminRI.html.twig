@@ -192,64 +192,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% if hasRoles('ROLE_HOME_PREGR') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_pregrado_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Pregrado</a>
-                    </li>
-                {% endif %}
-
-                {% if hasRoles('ROLE_HOME_POSTG') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_postgrado_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'postgrado' %} active {% endif %}">Posgrado</a>
-                    </li>
-                {% endif %}
-
-                {% if hasRoles('ROLE_HOME_INSTIT') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_institucion_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a>
-                    </li>
-                {% endif %}
-
-                {% if hasRoles('ROLE_HOME_TRAZAS') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_traza_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'traza' %} active {% endif %}">Trazas</a>
-                    </li>
-                {% endif %}
-
-                {#MODULOS DE RI#}
-{#                {% if hasRoles('ROLE_HOME_PREGR') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_cooperacion_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'cooperacion' %} active {% endif %}">Cooperación</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
-
-{#                {% if hasRoles('ROLE_HOME_PREGR') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_visita_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'visita' %} active {% endif %}">Visitas</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
-
-                {% if hasRoles('ROLE_HOME_PREGR') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_tramite_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' %} active {% endif %}">Trámites</a>
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Cooperación</a>
                     </li>
                 {% endif %}
 
                 {% if hasRoles('ROLE_HOME_PREGR') %}
                     <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_economia_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'economia' %} active {% endif %}">Economía</a>
+                        <a href="{{ path('app_pregrado_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Visitas</a>
                     </li>
                 {% endif %}
 
                 {% if hasRoles('ROLE_HOME_PREGR') %}
                     <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_convenio_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a>
+                        <a href="{{ path('app_pregrado_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Trámites</a>
+                    </li>
+                {% endif %}
+
+                {% if hasRoles('ROLE_HOME_PREGR') %}
+                    <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_pregrado_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Economía</a>
+                    </li>
+                {% endif %}
+
+                {% if hasRoles('ROLE_HOME_PREGR') %}
+                    <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_pregrado_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'pregrado' %} active {% endif %}">Convenios</a>
                     </li>
                 {% endif %}
             </ul>
@@ -370,9 +341,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="{{ path('app_admin_home') }}" class="brand-link">
+        <a href="{{ path('app_admin_home_ri') }}" class="brand-link">
             {#            <img  src="{{ asset('images/logo_principal.png') }}" > #}
-            <span class="brand-text font-weight-light" style="font-weight: bold !important; margin-left: 27%">AKADEMOS</span>
+            <span class="brand-text font-weight-light" style="font-weight: bold !important; font-size: 15px">RELACIONES INTERNACIONALES</span>
         </a>
 
         <!-- Sidebar -->
@@ -406,55 +377,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar Menu -->
             {% if 'app_usuario_cambiar_clave' not in app.request.get('_route') %}
                 {% if app.request.pathinfo|split('/')[1] == 'estructura' %}
-                    {% include 'pages/sidevar/estuctura.html.twig' %}
+                    {% include '../pages/sidevar/estuctura.html.twig' %}
                 {% endif %}
 
                 {% if app.request.pathinfo|split('/')[1] == 'personal' %}
-                    {% include 'pages/sidevar/personal.html.twig' %}
+                    {% include '../pages/sidevar/personal.html.twig' %}
                 {% endif %}
 
-                {% if app.request.pathinfo|split('/')[1] == 'postgrado' %}
-                    {% include 'pages/sidevar/postgrado.html.twig' %}
-                {% endif %}
+
 
                 {% if app.request.pathinfo|split('/')[1] == 'pregrado' %}
-                    {% include 'pages/sidevar/pregrado.html.twig' %}
+                    {% include '../pages/sidevar/pregrado.html.twig' %}
                 {% endif %}
 
-                {% if app.request.pathinfo|split('/')[1] == 'institucion' %}
-                    {% include 'pages/sidevar/institucion.html.twig' %}
-                {% endif %}
+
 
                 {% if app.request.pathinfo|split('/')[1] == 'administracion' %}
-                    {% include 'pages/sidevar/administracion.html.twig' %}
+                    {% include '../pages/sidevar/administracion.html.twig' %}
                 {% endif %}
 
                 {% if app.request.pathinfo|split('/')[1] == 'reporte' %}
-                    {% include 'pages/sidevar/reporte.html.twig' %}
+                    {% include '../pages/sidevar/reporte.html.twig' %}
                 {% endif %}
 
                 {% if app.request.pathinfo|split('/')[1] == 'traza' %}
-                    {% include 'pages/sidevar/traza.html.twig' %}
+                    {% include '../pages/sidevar/traza.html.twig' %}
                 {% endif %}
-
-
-
-                {% if app.request.pathinfo|split('/')[1] == 'tramite' %}
-                    {% include 'pages/sidevar/tramite.html.twig' %}
-                {% endif %}
-                {% if app.request.pathinfo|split('/')[1] == 'economia' %}
-                    {% include 'pages/sidevar/economia.html.twig' %}
-                {% endif %}
-                {% if app.request.pathinfo|split('/')[1] == 'convenio' %}
-                    {% include 'pages/sidevar/convenio.html.twig' %}
-                {% endif %}
-                {% if app.request.pathinfo|split('/')[1] == 'visita' %}
-                    {% include 'pages/sidevar/visita.html.twig' %}
-                {% endif %}
-                {% if app.request.pathinfo|split('/')[1] == 'cooperacion' %}
-                    {% include 'pages/sidevar/cooperacion.html.twig' %}
-                {% endif %}
-
             {% endif %}
             <!-- /.sidebar-menu -->
         </div>

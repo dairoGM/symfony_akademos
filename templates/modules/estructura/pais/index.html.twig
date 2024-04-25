@@ -1,0 +1,58 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Países{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de países</h3>
+                {#                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_pais_new') }}"><i class="fa fa-plus"></i> #}
+                {#                    </a> #}
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No</th>
+                    <th>Nombre</th>
+                    <th>ISO2</th>
+                    <th>ISO3</th>
+                    <th>Código telefónico</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pais in pais %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ pais.nombre | default('') }}</td>
+                        <td>{{ pais.iso2 | default('') }}</td>
+                        <td>{{ pais.iso3 | default('') }}</td>
+                        <td>{{ pais.codigoTelefonico | default('') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+
+{% endblock %}
+

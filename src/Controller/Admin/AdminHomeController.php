@@ -13,38 +13,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class AdminHomeController extends AbstractController
 {
     /**
-     * @Route("/admin/home", name="app_admin_home")
+     * @Route("/relaciones_internacionales/home", name="app_admin_home_ri")
      */
-    public function index(PersonaRepository $personaRepository): Response
+    public function indexRi(): Response
     {
+        return $this->render('modules/admin/ri.html.twig');
+    }
 
-        $personas = $personaRepository->findAll();
-
-
-        $municipios = [];
-        $categorias = [];
-
-        foreach ($personas as $persona){
-            $municipios[$persona->getMunicipio()->getNombre()][] = $persona->getId();
-
-            $categorias[$persona->getClasificacionPersona()->getNombre()][] = $persona->getId();
-        }
-
-        $categoriasChat = [];
-
-        foreach ($categorias as $clave => $valor){
-            $aux = [];
-            $aux['name'] = $clave;
-            $aux['y'] = count($valor);
-            $categoriasChat[] = $aux;
-        }
-
-
-        return $this->render('modules/admin/index.html.twig', [
-            'data' => $municipios,
-            'clasificacion' => json_encode($categoriasChat),
-            'lista' => [],
-        ]);
+    /**
+     * @Route("/akademos/home", name="app_admin_home")
+     */
+    public function index(): Response
+    {
+        return $this->render('modules/admin/akademos.html.twig');
     }
 
     /**
@@ -55,7 +36,6 @@ class AdminHomeController extends AbstractController
      */
     public function eliminar(EntityManagerInterface $entityManager, TodoLista $id): Response
     {
-
 
 
         $entityManager->remove($id);

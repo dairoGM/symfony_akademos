@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Akademos - MES{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*@media (max-width: 575px) {*/
+        /*    .filter-dash-buttom{*/
+        /*        width: 100%;*/
+        /*    }*/
+        /*}*/
+
+
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .c {
+                min-width: 33.3% !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1400px) {
+            .p {
+                min-width: 33.3% !important;
+            }
+        }
+
+        .bg-blue {
+            background-color: #0E375F !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row" style="align-content: center">
+        {% if hasRoles('ROLE_HOME_REPORT') or
+            hasRoles('ROLE_HOME_TRAZAS') or
+            hasRoles('ROLE_HOME_POSTG') or
+            hasRoles('ROLE_HOME_PREGR') or
+            hasRoles('ROLE_HOME_PERSONAL') or
+            hasRoles('ROLE_HOME_STRUCT') or
+            hasRoles('ROLE_PORTADA_ADMIN') or
+            hasRoles('ROLE_HOME_INSTIT') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Akademos</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <a href="{{ path('app_admin_home') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>Relaciones Internacionales</h3>
+                    <p><br><br></p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <a href="{{ path('app_admin_home_ri') }}" class="small-box-footer">Entrar <i
+                            class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+
+{% endblock %}
+
