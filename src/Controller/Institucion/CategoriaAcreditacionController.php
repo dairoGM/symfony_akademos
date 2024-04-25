@@ -40,7 +40,7 @@ class CategoriaAcreditacionController extends AbstractController
      */
     public function registrar(Request $request, CategoriaAcreditacionRepository $categoriaAcreditacionRepository)
     {
-//        try {
+        try {
             $catDocenteEntity = new CategoriaAcreditacion();
             $form = $this->createForm(CategoriaAcreditacionType::class, $catDocenteEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -53,10 +53,10 @@ class CategoriaAcreditacionController extends AbstractController
             return $this->render('modules/institucion/categoria_acreditacion/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_categoria_acreditacion_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_categoria_acreditacion_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -69,7 +69,7 @@ class CategoriaAcreditacionController extends AbstractController
      */
     public function modificar(Request $request, CategoriaAcreditacion $categoriaAcreditacion, CategoriaAcreditacionRepository $categoriaAcreditacionRepository)
     {
-//        try {
+        try {
             $form = $this->createForm(CategoriaAcreditacionType::class, $categoriaAcreditacion, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -82,10 +82,10 @@ class CategoriaAcreditacionController extends AbstractController
             return $this->render('modules/institucion/categoria_acreditacion/edit.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_categoria_acreditacion_modificar', ['id' => $categoriaAcreditacion], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_categoria_acreditacion_modificar', ['id' => $categoriaAcreditacion], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
