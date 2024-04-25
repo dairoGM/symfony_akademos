@@ -6,7 +6,7 @@ use App\Entity\BaseNomenclator;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\TipoInstitucion;
 use App\Entity\Personal\GradoAcademico;
-use App\Entity\Estructura\Estructura;
+use App\Entity\Estructura\Pais;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -20,6 +20,11 @@ class InstitucionExtranjera extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=false, length="100")
      */
+    private ?string $provincia = null;
+
+ /**
+     * @ORM\Column(type="string", nullable=false, length="100")
+     */
     private ?string $siglas = null;
 
     /**
@@ -28,7 +33,7 @@ class InstitucionExtranjera extends BaseNomenclator
     private ?string $codigo = null;
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="255")
+     * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $rector = null;
 
@@ -36,7 +41,7 @@ class InstitucionExtranjera extends BaseNomenclator
      * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Pais")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Pais $pais = null;
+    private ?Pais $pais ;
 
 
     /**
@@ -56,7 +61,7 @@ class InstitucionExtranjera extends BaseNomenclator
     private ?string $correo = null;
 
     /**
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $direccionSedePrincipal = null;
 
@@ -213,6 +218,22 @@ class InstitucionExtranjera extends BaseNomenclator
     public function setCoordenadasSedePrincipal(?string $coordenadasSedePrincipal): void
     {
         $this->coordenadasSedePrincipal = $coordenadasSedePrincipal;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProvincia(): ?string
+    {
+        return $this->provincia;
+    }
+
+    /**
+     * @param string|null $provincia
+     */
+    public function setProvincia(?string $provincia): void
+    {
+        $this->provincia = $provincia;
     }
 
 }
