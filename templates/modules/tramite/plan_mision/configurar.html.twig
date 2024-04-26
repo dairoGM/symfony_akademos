@@ -1,0 +1,233 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Configurar plan de misión{% endblock %}
+
+{% block body %}
+    <form id="form" name="form" action="" method="post">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                    <h3 class="card-title text-bold text-gray">Configurar plan de misión</h3>
+
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <input type="hidden" id="planMidion" name="planMision" value="{{ planMisionId }}">
+                <table class="table table-bordered table-striped dataTable">
+                    <thead class="table-custom-header">
+                    <tr>
+                        <th>No.</th>
+                        <th></th>
+                        <th>Nombre y apellidos</th>
+                        <th>Cargo</th>
+
+                        <th>País</th>
+                        <th>Objetivo del viaje</th>
+                        <th>Fecha</th>
+                        <th>Duración en días</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in registros %}
+                        <tr>
+                            <td width="1%">{{ loop.index }}</td>
+                            <td width="1%" style="width: 4%"><input type="checkbox" name="asignados_{{ item.id }}"
+                                                                    id="asignados_{{ item.id }}"
+                                                                    value="{{ item.id }}"></td>
+                            <td width="20%"><p
+                                        id="nombre_persona_{{ item.id }}">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</p>
+                            </td>
+                            <td>
+                                <p id="responsabilidad_{{ item.id }}">{{ item.responsabilidad.nombre | default('') }}</p>
+                            </td>
+
+                            <td>
+                                <select id="pais_{{ item.id }}"
+                                        name="pais_{{ item.id }}">
+                                    <option value="">Seleccione</option>
+                                    {% for resp in paises %}
+                                        <option value="{{ resp.id }}">{{ resp.nombre }} </option>
+                                    {% endfor %}
+
+                                </select>
+                            </td>
+                            <td>
+                            <textarea id="objetivo_{{ item.id }}" name="objetivo_{{ item.id }}"
+                                      class="form-control"></textarea>
+                            </td>
+                            <td width="10%">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input type="text" id="fecha_{{ item.id }}" name="fecha_{{ item.id }}"
+                                           required="required" class="date-time-picker form-control">
+
+                                </div>
+                            </td>
+                            <td width="7%">
+                                <input type="number" id="duracion_{{ item.id }}" name="duracion_{{ item.id }}" min="1">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+                <button class="btn btn-primary" id="btn-asociar">Asociar</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped dataTable">
+                    <thead class="table-custom-header">
+                    <tr>
+                        <th>No.</th>
+
+                        <th>Nombre y apellidos</th>
+                        <th>Cargo</th>
+                        <th>País</th>
+                        <th>Objetivo del viaje</th>
+                        <th>Fecha</th>
+                        <th>Duración en días</th>
+                        <th class="text-center">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in registrosAsignados %}
+                        <tr>
+                            <td width="1%">{{ loop.index }}</td>
+                            <td width="20%">{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
+                            <td>{{ item.persona.estructura.estructura.nombre | default('') }}</td>
+                            <td>{{ item.pais.nombre | default('') }}</td>
+                            <td>{{ item.objetivo | default('') }}</td>
+                            <td>{{ item.fecha | date('d/m/Y') }}</td>
+                            <td>{{ item.duracion | default('') }}</td>
+                            <td style="width: 3%" class="text-center">
+                                <a title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                   data-url="{{ path('app_plan_mision_eliminar_persona_asignada_registrar', {'id': item.id}) }}"
+                                   data-title=""
+                                   data-content="¿Está seguro que desea realizar la acción?" type="button"><i
+                                            class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+                <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_mision_index') }}"
+                   data-title=""
+                   data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('input[id*=fecha_]').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('[id*=duracion_]').bind("keypress", function (event) {
+            if (event.charCode != 0) {
+                var regex = new RegExp("^[0-9-]*$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        $('#btn-asociar').click(function (e) {
+            e.preventDefault();
+            var flag = true;
+            if ($('input[id*=asignados_]').length > 0) {
+                var arrayId = [];
+                $('input[id*=asignados_]').each(function (item, element) {
+                    if (element.checked) {
+                        var id = element.id.replace('asignados_', '')
+                        console.log(element);
+
+                        var obj = new Object();
+                        obj.id_persona = element.value;
+                        obj.plan_mision_id = {{ planMisionId }};
+                        obj.nombre_responsabilidad = $('#responsabilidad_' + id).text()
+                        obj.nombre_persona = $('#nombre_persona_' + id).text()
+
+                        var pais = $('#pais_' + id).val();
+                        if (pais != "") {
+                            obj.id_pais = pais;
+                            obj.nombre_pais = $('#pais_' + id + ' option:selected').text();
+                        } else {
+                            flag = false;
+                            toastr.warning("El país es obligatorio por cada persona.");
+                            return;
+                        }
+
+                        var objetivo = $('#objetivo_' + id).val();
+                        if (objetivo != "") {
+                            obj.objetivo = objetivo;
+                        } else {
+                            flag = false;
+                            toastr.warning("El objetivo es obligatorio por cada persona.");
+                            return;
+                        }
+
+                        var fecha = $('#fecha_' + id).val();
+                        if (fecha != "") {
+                            obj.fecha = fecha;
+                        } else {
+                            flag = false;
+                            toastr.warning("La fecha es obligatorio por cada persona.");
+                            return;
+                        }
+
+                        var duracion = $('#duracion_' + id).val();
+                        if (duracion != "") {
+                            obj.duracion = duracion;
+                        } else {
+                            flag = false;
+                            toastr.warning("La duración es obligatorio por cada persona.");
+                            return;
+                        }
+                        if (flag) {
+                            arrayId.push(obj);
+                        }
+                    }
+                });
+                console.log(arrayId);
+
+                if (arrayId.length > 0 && flag) {
+                    HoldOn.open({
+                        theme: "sk-cube-grid",
+                        message: 'Por favor espere...',
+                        textColor: "white"
+                    });
+                    $.post("{{ path('app_plan_mision_persona_registrar') }}",
+                        {
+                            arrayId: arrayId
+                        },
+                        function (data) {
+                            HoldOn.close()
+                            $(window).attr('location', "{{ path('app_plan_mision_configurar', {'id' : planMisionId }) }}")
+                        });
+                } else {
+                    HoldOn.close()
+                    if (flag) {
+                        toastr.warning("Debe de seleccionar al menos una persona.");
+                    }
+                }
+            }
+        });
+        $('#btn_aceptar').click(function (e) {
+            e.preventDefault();
+            $('#form').submit()
+        });
+    </script>
+{% endblock %}

@@ -19,19 +19,19 @@ class PlanMisionDetalles extends BaseEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Tramite\PlanMision")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?PlanMision $planMision ;
+    private ?PlanMision $planMision;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Personal\Persona")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?Persona $persona ;
+    private ?Persona $persona;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Pais")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Pais $pais ;
+    private ?Pais $pais;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -129,6 +129,21 @@ class PlanMisionDetalles extends BaseEntity
         $this->duracion = $duracion;
     }
 
+    /**
+     * @return PlanMision|null
+     */
+    public function getPlanMision(): ?PlanMision
+    {
+        return $this->planMision;
+    }
+
+    /**
+     * @param PlanMision|null $planMision
+     */
+    public function setPlanMision(?PlanMision $planMision): void
+    {
+        $this->planMision = $planMision;
+    }
 
 
 }

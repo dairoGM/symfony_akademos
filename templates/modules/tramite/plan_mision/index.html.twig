@@ -51,6 +51,10 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
+                            <a title="Configurar" href="{{ path('app_plan_mision_configurar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fas fa-cog"></i>
+                            </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_plan_mision_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
