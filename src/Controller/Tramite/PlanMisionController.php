@@ -9,8 +9,10 @@ use App\Entity\Tramite\PlanMisionDetalles;
 use App\Form\Tramite\PlanMisionType;
 use App\Repository\Estructura\PaisRepository;
 use App\Repository\Personal\PersonaRepository;
+use App\Repository\Security\UserRepository;
 use App\Repository\Tramite\PlanMisionDetallesRepository;
 use App\Repository\Tramite\PlanMisionRepository;
+use App\Services\HandlerFop;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -218,5 +220,18 @@ class PlanMisionController extends AbstractController
         } catch (\Exception $exception) {
             return $this->json(true);
         }
+    }
+
+    /**
+     * @Route("/{id}/exportar_excel", name="app_plan_mision_exportar_excel", methods={"GET", "POST"})
+     * @param HandlerFop $handFop
+     * @param PlanMision $planMision
+     * @return void
+     */
+    public function exportarExcel(HandlerFop $handFop, PlanMision $planMision, PlanMisionDetallesRepository $planMisionDetallesRepository)
+    {
+        $export = $planMisionDetallesRepository->findBy(['planMision' => $planMision->getId()], ['id' => 'desc']);
+        $html = $this->render('modules/tramite/plan_mision/plan_mision_excel.html.twig', ['datos' => $export, 'planMision' => $planMision])->getContent();
+        $handFop->exportToExcel($html, $planMision->getNombre());
     }
 }

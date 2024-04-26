@@ -1,0 +1,34 @@
+<html>
+<header>
+    <meta charset="UTF-8">
+</header>
+<b>
+    <center><label>{{ planMision.nombre | default('') }}</label></center>
+</b>
+<table>
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Nombre y apellidos</th>
+        <th>Cargo</th>
+        <th>País</th>
+        <th>Objetivo del viaje</th>
+        <th>Fecha</th>
+        <th>Duración en días</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in datos %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td width="20%">{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
+            <td>{{ item.persona.responsabilidad.nombre | default('') }}</td>
+            <td>{{ item.pais.nombre | default('') }}</td>
+            <td>{{ item.objetivo | default('') }}</td>
+            <td>{{ item.fecha | date('d/m/Y') }}</td>
+            <td>{{ item.duracion | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</html>

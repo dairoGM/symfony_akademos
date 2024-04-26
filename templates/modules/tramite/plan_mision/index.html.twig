@@ -55,6 +55,10 @@
                                class="btn btn-outline-primary"><i
                                         class="fas fa-cog"></i>
                             </a>
+                            <a target="_blank" title="Exportar a excel" href="{{ path('app_plan_mision_exportar_excel', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fas fa-file-excel"></i>
+                            </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_plan_mision_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
