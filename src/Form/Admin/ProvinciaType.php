@@ -31,15 +31,11 @@ class ProvinciaType extends AbstractType
                 'required' => false,
                 'label' => 'Habilitado',
             ])
-            ->add('codigo', IntegerType::class, [
+            ->add('codigo', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Código',
-                'constraints' => [
-                    new Length(
-                        ["min" => 2, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}',
-
-                        ]
-                    ),
-                    new NotBlank()]
+                'attr' => [
+                    'min' => 1
+                ]
             ])
             ->add('siglas', TextType::class, [
                 'label' => 'Siglas',

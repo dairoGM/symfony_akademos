@@ -25,15 +25,14 @@ class MunicipioType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('codigo', IntegerType::class, [
+            ->add('codigo', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Código',
-                'constraints' => [
-                    new Length(
-                        ["min" => 4, 'minMessage' => 'El número mínimo de caracteres es {{ limit }}']),
-                    new NotBlank()]
+                'attr' => [
+                    'min' => 1
+                ]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
