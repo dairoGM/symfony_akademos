@@ -99,10 +99,12 @@ class PlanMisionController extends AbstractController
      * @param PlanMision $planMision
      * @return Response
      */
-    public function detail(PlanMision $planMision)
+    public function detail(PlanMision $planMision, PlanMisionDetallesRepository $planMisionDetallesRepository)
     {
         return $this->render('modules/tramite/plan_mision/detail.html.twig', [
             'item' => $planMision,
+            'registrosAsignados' => $planMisionDetallesRepository->findBy(['planMision' => $planMision->getId()]),
+
         ]);
     }
 
@@ -137,36 +139,36 @@ class PlanMisionController extends AbstractController
      */
     public function configurar(Request $request, PaisRepository $paisRepository, PersonaRepository $personaRepository, PlanMision $planMision, PlanMisionDetallesRepository $planMisionDetallesRepository)
     {
-//        try {
-        $personas = $personaRepository->findBy([], ['primerNombre' => 'asc']);
-        $registrosAsignados = $planMisionDetallesRepository->findBy(['planMision' => $planMision->getId()]);
-        $registros = [];
-        foreach ($personas as $value) {
-            $exist = false;
-            if (is_array($registrosAsignados)) {
-                foreach ($registrosAsignados as $value1) {
-                    if ($value->getId() == $value1->getPersona()->getId()) {
-                        $exist = true;
-                        break;
+        try {
+            $personas = $personaRepository->findBy([], ['primerNombre' => 'asc']);
+            $registrosAsignados = $planMisionDetallesRepository->findBy(['planMision' => $planMision->getId()]);
+            $registros = [];
+            foreach ($personas as $value) {
+                $exist = false;
+                if (is_array($registrosAsignados)) {
+                    foreach ($registrosAsignados as $value1) {
+                        if ($value->getId() == $value1->getPersona()->getId()) {
+                            $exist = true;
+                            break;
+                        }
                     }
+                }
+
+                if (!$exist) {
+                    $registros[] = $value;
                 }
             }
 
-            if (!$exist) {
-                $registros[] = $value;
-            }
+            return $this->render('modules/tramite/plan_mision/configurar.html.twig', [
+                'registros' => $registros,
+                'registrosAsignados' => $registrosAsignados,
+                'paises' => $paisRepository->findBy([], ['nombre' => 'asc']),
+                'planMisionId' => $planMision->getId(),
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_mision_configurar', ['id' => $planMision->getId()], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('modules/tramite/plan_mision/configurar.html.twig', [
-            'registros' => $registros,
-            'registrosAsignados' => $registrosAsignados,
-            'paises' => $paisRepository->findBy([], ['nombre' => 'asc']),
-            'planMisionId' => $planMision->getId(),
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_plan_mision_configurar', ['id' => $planMision->getId()], Response::HTTP_SEE_OTHER);
-//        }
     }
 
     /**

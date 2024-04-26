@@ -85,7 +85,6 @@
                     <thead class="table-custom-header">
                     <tr>
                         <th>No.</th>
-
                         <th>Nombre y apellidos</th>
                         <th>Cargo</th>
                         <th>País</th>
@@ -100,7 +99,7 @@
                         <tr>
                             <td width="1%">{{ loop.index }}</td>
                             <td width="20%">{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
-                            <td>{{ item.persona.estructura.estructura.nombre | default('') }}</td>
+                            <td>{{ item.persona.responsabilidad.nombre | default('') }}</td>
                             <td>{{ item.pais.nombre | default('') }}</td>
                             <td>{{ item.objetivo | default('') }}</td>
                             <td>{{ item.fecha | date('d/m/Y') }}</td>
