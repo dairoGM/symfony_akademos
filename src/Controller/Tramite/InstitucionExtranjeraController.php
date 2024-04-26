@@ -5,8 +5,11 @@ namespace App\Controller\Tramite;
 use App\Entity\Tramite\InstitucionExtranjera;
 use App\Entity\Security\User;
 use App\Form\Tramite\InstitucionExtranjeraType;
+use App\Repository\Estructura\PlazaRepository;
 use App\Repository\Tramite\InstitucionExtranjeraRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +42,7 @@ class InstitucionExtranjeraController extends AbstractController
      */
     public function registrar(Request $request, InstitucionExtranjeraRepository $institucionExtranjeraRepository)
     {
-//        try {
+        try {
             $entidad = new InstitucionExtranjera();
             $form = $this->createForm(InstitucionExtranjeraType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -52,10 +55,10 @@ class InstitucionExtranjeraController extends AbstractController
             return $this->render('modules/tramite/institucion_extranjera/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_institucion_extranjera_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_institucion_extranjera_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -122,4 +125,21 @@ class InstitucionExtranjeraController extends AbstractController
         }
     }
 
+    /**
+     * Add package entity.
+     *
+     * @Route("/{id}/institucion_dado_pais", name="app_institucion_extranjera_institucion_dado_pais", methods={"GET"})
+     * @param Request $request
+     * @param $id
+     * @param InstitucionExtranjeraRepository $institucionExtranjeraRepository
+     * @return JsonResponse
+     */
+    public function getInstitucionDadoPais(Request $request, $id, InstitucionExtranjeraRepository $institucionExtranjeraRepository): JsonResponse
+    {
+        try {
+            return $this->json($institucionExtranjeraRepository->findBy(['pais' => $id]));
+        } catch (\Exception $exception) {
+            return new JsonResponse([]);
+        }
+    }
 }

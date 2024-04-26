@@ -91,6 +91,24 @@
         $('#convenio_fechaCaducidad').datetimepicker({
             format: 'DD/MM/YYYY'
         });
-
+        $('#convenio_pais').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_institucion_extranjera_institucion_dado_pais', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    $('#convenio_institucionExtranjera option').remove();
+                    $('#convenio_institucionExtranjera').append(new Option('Seleccione', ""));
+                    for (var i = 0; i < data.length; i++) {
+                        $('#convenio_institucionExtranjera').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
     </script>
 {% endblock %}
