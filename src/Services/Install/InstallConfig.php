@@ -234,7 +234,6 @@ class InstallConfig
     }
 
 
-
     /**
      * Define una Lista de Funcionalidades para Tramites
      *
@@ -405,24 +404,21 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_ROLESPOS");
 
 
-
         $roles[] = Role::createRole('ROL_CONVENIO', "Administrador de Convenio", "Rol con permiso a la gestion de Convenio")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_CONVENIO")
-            ->addFunctionality("ROLE_GEST_TIPO")
-            ->addFunctionality("ROLE_GEST_MODALIDAD")
             ->addFunctionality("ROLE_GEST_CONVENIO")
-             ;
+            ->addFunctionality("ROLE_GEST_TIPO")
+            ->addFunctionality("ROLE_GEST_MODALIDAD");
 
 
-        $roles[] = Role::createRole('ROL_TRAMITES', "Administrador de Convenio", "Rol con permiso a la gestion de Tramites")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+        $roles[] = Role::createRole('ROL_TRAMITES', "Administrador de Trámites", "Rol con permiso a la gestion de Trámites")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_TRAMITES")
-            ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
             ->addFunctionality("ROLE_GEST_PLAN_MISION")
+            ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
             ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
-            ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA")
-        ;
+            ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA");
         return $roles;
     }
 }

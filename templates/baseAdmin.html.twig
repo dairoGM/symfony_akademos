@@ -232,24 +232,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 {#                    </li>#}
 {#                {% endif %}#}
 
-                {% if hasRoles('ROLE_HOME_PREGR') %}
+                {% if hasRoles('ROLE_HOME_TRAMITES') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_tramite_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' %} active {% endif %}">Trámites</a>
                     </li>
                 {% endif %}
 
-                {% if hasRoles('ROLE_HOME_PREGR') %}
+                {% if hasRoles('ROLE_HOME_ECONOMIA') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_economia_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'economia' %} active {% endif %}">Economía</a>
                     </li>
                 {% endif %}
 
-                {% if hasRoles('ROLE_HOME_PREGR') %}
+                {% if hasRoles('ROLE_HOME_CONVENIO') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_convenio_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Instrumentos jurídico</a>
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a>
                     </li>
                 {% endif %}
             </ul>

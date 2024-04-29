@@ -15,7 +15,7 @@
             </a>
         </li>
 
-        {% if hasRoles('ROLE_GEST_INSTIT') %}
+        {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -35,7 +35,7 @@
                 </ul>
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_GEST_TIPINST') or hasRoles('ROLE_GEST_CATACRED') %}
+        {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') or hasRoles('ROLE_GEST_INST_EXTRANJERA') or hasRoles('ROLE_GEST_CONCEPTO_SALIDA') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -46,7 +46,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_GEST_TIPINST') %}
+                    {% if hasRoles('ROLE_GEST_CONCEPTO_SALIDA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_concepto_salida_index') }}"
                                class="nav-link nav-link-menu">
@@ -54,7 +54,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_CATACRED') %}
+                    {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') %}
                         <li class="nav-item">
                             <a href="{{ path('app_tipo_pasaporte_index') }}"
                                class="nav-link nav-link-menu">
@@ -62,7 +62,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_CATACRED') %}
+                    {% if hasRoles('ROLE_GEST_INST_EXTRANJERA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_institucion_extranjera_index') }}"
                                class="nav-link nav-link-menu">
