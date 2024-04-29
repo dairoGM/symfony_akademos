@@ -59,6 +59,13 @@ class InstallFuntionalityService implements InstallFunctionalityInterface
         //Postgrado...ok
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForPostgrado());
 
+        /**************************************DRI***********************************************/
+        //Convenio
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForConvenio());
+
+        //Tramites
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForTramites());
+
         return $functionalities;
     }
 

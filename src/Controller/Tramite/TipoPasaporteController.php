@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/tramite/tipo_pasaporte")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATACRED")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_TIPO_PASAPORTE")
  */
 class TipoPasaporteController extends AbstractController
 {

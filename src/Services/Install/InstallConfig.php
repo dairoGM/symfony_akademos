@@ -30,6 +30,12 @@ class InstallConfig
         $modules[] = Module::createModule("MODULE_INSTIT", "Módulo de Intituciones", "Módulo de Intituciones");
         $modules[] = Module::createModule("MODULE_PREGR", "Módulo de Pregrado", "Módulo de Pregrado");
         $modules[] = Module::createModule("MODULE_POSTG", "Módulo de Postgrado", "Módulo de Postgrado");
+        /***********************************DRI*************************************/
+        $modules[] = Module::createModule("MODULE_CONVENIO", "Módulo de Convenio", "Módulo de Convenio");
+        $modules[] = Module::createModule("MODULE_TRAMITE", "Módulo de Trámites", "Módulo de Trámites");
+        $modules[] = Module::createModule("MODULE_COOPERACION", "Módulo de Cooperación", "Módulo de Cooperación");
+        $modules[] = Module::createModule("MODULE_VISITA", "Módulo de Visitas", "Módulo de Visitas");
+        $modules[] = Module::createModule("MODULE_ECONOMIA", "Módulo de Economía", "Módulo de Economía");
 
         return $modules;
     }
@@ -208,6 +214,50 @@ class InstallConfig
     }
 
     /**
+     * Define una Lista de Funcionalidades para Convenio
+     *
+     * For create one -> Functionality::createFunctionality("ROLE_MODULO_ESTRUCTURA", "Módulo de Convenio")
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForConvenio(): array
+    {
+        $functionalities = array();
+
+        //Convenio
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_HOME_CONVENIO", "Portada de Convenio", "Portada de Convenio");
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_TIPO", "Gestión de tipos de convenios", "Gestión de tipos de convenios");
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_MODALIDAD", "Gestión de modalidades de convenios", "Gestión de modalidades de convenios");
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_CONVENIO", "Gestión de convenios", "Gestión de convenios");
+
+        return $functionalities;
+    }
+
+
+
+    /**
+     * Define una Lista de Funcionalidades para Tramites
+     *
+     * For create one -> Functionality::createFunctionality("ROLE_MODULO_ESTRUCTURA", "Módulo de Tramites")
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForTramites(): array
+    {
+        $functionalities = array();
+
+        //Tramites
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_HOME_TRAMITES", "Portada de Trámites", "Portada de Trámites");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TIPO_PASAPORTE", "Gestión de tipos de pasaportes", "Gestión de tipos de pasaportes");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION", "Gestión de planes de misión", "Gestión de planes de misión");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_CONCEPTO_SALIDA", "Gestión de conceptos de salida", "Gestión de conceptos de salida");
+
+        return $functionalities;
+    }
+
+
+    /**
      * Define una Lista de Funcionalidades para Reporte
      *
      * For create one -> Functionality::createFunctionality("ROLE_MODULO_REPORTE", "Módulo de Reporte")
@@ -354,6 +404,25 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_RAMCIENC")
             ->addFunctionality("ROLE_GEST_ROLESPOS");
 
+
+
+        $roles[] = Role::createRole('ROL_CONVENIO', "Administrador de Convenio", "Rol con permiso a la gestion de Convenio")
+            ->addFunctionality("ROLE_PORTADA_ADMIN")
+            ->addFunctionality("ROLE_HOME_CONVENIO")
+            ->addFunctionality("ROLE_GEST_TIPO")
+            ->addFunctionality("ROLE_GEST_MODALIDAD")
+            ->addFunctionality("ROLE_GEST_CONVENIO")
+             ;
+
+
+        $roles[] = Role::createRole('ROL_TRAMITES', "Administrador de Convenio", "Rol con permiso a la gestion de Tramites")
+            ->addFunctionality("ROLE_PORTADA_ADMIN")
+            ->addFunctionality("ROLE_HOME_TRAMITES")
+            ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
+            ->addFunctionality("ROLE_GEST_PLAN_MISION")
+            ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
+            ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA")
+        ;
         return $roles;
     }
 }

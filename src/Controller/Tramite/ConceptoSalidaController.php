@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/tramite/concepto_salida")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CATACRED")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CONCEPTO_SALIDA")
  */
 class ConceptoSalidaController extends AbstractController
 {
