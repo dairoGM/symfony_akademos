@@ -162,6 +162,7 @@ class PlanMisionController extends AbstractController
             }
 
             return $this->render('modules/tramite/plan_mision/configurar.html.twig', [
+                'planMision' => $planMision,
                 'registros' => $registros,
                 'registrosAsignados' => $registrosAsignados,
                 'paises' => $paisRepository->findBy([], ['nombre' => 'asc']),
