@@ -64,6 +64,8 @@
 
  {% block javascripts %}
      <script>
+         $('#email').val($('#email').val().replace(' ', ''))
+
          window.addEventListener("load", function () {
              // icono para mostrar contraseña
              showPassword = document.querySelector('.show-password');
