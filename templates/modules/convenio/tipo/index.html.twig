@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Instrumentos jurídicos{% endblock %}
+{% block title %}Tipos {% endblock %}
 
 {% block body %}
 
@@ -10,8 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de instrumentos jurídicos</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_convenio_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de tipos</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_tipo_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -23,14 +23,8 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
-                    <th>Nombre</th>
-                    <th>Institución cubana</th>
-                    <th>Institución extranjera</th>
-                    <th>País</th>
-                    <th>Fecha suscribe</th>
-                    <th>Fecha caducidad</th>
-                    <th>Cantidad de acciones</th>
-
+                    <th>Nombre</th> 
+                    <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -38,27 +32,27 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.nombre }}</td>
-                        <td>{{ item.institucionCubana.nombre | default('') }}</td>
-                        <td>{{ item.institucionExtranjera.nombre | default('') }}</td>
-                        <td>{{ item.pais.nombre | default('') }}</td>
-                        <td>{{ item.fechaSuscribe | date('d/m/Y') }}</td>
-                        <td>{{ item.fechaCaducidad | date('d/m/Y') }}</td>
-                        <td>{{ item.cantidadAcciones | default('') }}</td>
-
+                        <td>{{ item.nombre }}</td> 
+                        <td width="3%" class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_convenio_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles del instrumento jurídico">
+                                    data-url="{{ path('app_tipo_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la modalidad">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_convenio_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_tipo_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_convenio_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_tipo_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>

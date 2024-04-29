@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modificar convenio{% endblock %}
+{% block title %}Modificar instrumento jurídico{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Modificar convenio</h3>
+                <h3 class="card-title text-bold text-gray">Modificar instrumento jurídico</h3>
 
             </div>
         </div>
@@ -20,6 +20,16 @@
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.modalidad) }}
+                    {{ form_widget(form.modalidad) }}
+                    {{ form_errors(form.modalidad) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipo) }}
+                    {{ form_widget(form.tipo) }}
+                    {{ form_errors(form.tipo) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.institucionCubana) }}

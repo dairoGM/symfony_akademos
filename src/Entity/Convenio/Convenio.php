@@ -11,10 +11,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Convenio.tbd_convenio")
+ * @ORM\Table(name="convenio.tbd_convenio")
  */
 class Convenio extends BaseNomenclator
 {
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Modalidad")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Modalidad $modalidad;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Tipo")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Tipo $tipo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
@@ -147,6 +158,38 @@ class Convenio extends BaseNomenclator
     public function setCantidadAcciones(?int $cantidadAcciones): void
     {
         $this->cantidadAcciones = $cantidadAcciones;
+    }
+
+    /**
+     * @return Modalidad|null
+     */
+    public function getModalidad(): ?Modalidad
+    {
+        return $this->modalidad;
+    }
+
+    /**
+     * @param Modalidad|null $modalidad
+     */
+    public function setModalidad(?Modalidad $modalidad): void
+    {
+        $this->modalidad = $modalidad;
+    }
+
+    /**
+     * @return Tipo|null
+     */
+    public function getTipo(): ?Tipo
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * @param Tipo|null $tipo
+     */
+    public function setTipo(?Tipo $tipo): void
+    {
+        $this->tipo = $tipo;
     }
 
 

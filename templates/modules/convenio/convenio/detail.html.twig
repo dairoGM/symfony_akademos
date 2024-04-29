@@ -11,6 +11,14 @@
     <div class="col-6">
         <h5 class="mb-0"><b>Institución extranjera:</b> {{ item.institucionExtranjera.nombre | default('') }}</h5>
     </div>
+
+    <div class="col-6">
+        <h5 class="mb-0"><b>Modalidad:</b> {{ item.modalidad.nombre | default('') }}</h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Tipo:</b> {{ item.tipo.nombre | default('') }}</h5>
+    </div>
+
     <div class="col-6">
         <h5 class="mb-0"><b>Fecha suscribe:</b> {{ item.fechaSuscribe | date('d/m/Y') }}</h5>
     </div>

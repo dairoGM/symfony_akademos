@@ -3,6 +3,8 @@
 namespace App\Form\Convenio;
 
 use App\Entity\Convenio\Convenio;
+use App\Entity\Convenio\Modalidad;
+use App\Entity\Convenio\Tipo;
 use App\Entity\Estructura\Pais;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Tramite\InstitucionExtranjera;
@@ -27,6 +29,26 @@ class ConvenioType extends AbstractType
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
+            ])
+            ->add('modalidad', EntityType::class, [
+                'class' => Modalidad::class,
+                'label' => 'Modalidad',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('tipo', EntityType::class, [
+                'class' => Tipo::class,
+                'label' => 'Tipo',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
             ])
             ->add('institucionExtranjera', EntityType::class, [
                 'class' => InstitucionExtranjera::class,
@@ -58,7 +80,6 @@ class ConvenioType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-
             ->add('cantidadAcciones', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
                 'label' => 'Cantidad de acciones ejecutadas en el año',
                 'required' => false,

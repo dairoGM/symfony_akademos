@@ -21,7 +21,7 @@
                    class="nav-link nav-link-menu">
                     <i class="nav-icon fa fa-university"></i>
                     <p>
-                        Convenios
+                        Instrumentos jurídicos
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -29,7 +29,7 @@
                     <li class="nav-item">
                         <a href="{{ path('app_convenio_index') }}"
                            class="nav-link nav-link-menu">
-                            <p>Convenios</p>
+                            <p>Instrumentos jurídicos</p>
                         </a>
                     </li>
                 </ul>
@@ -48,17 +48,17 @@
                 <ul class="nav nav-treeview">
                     {% if hasRoles('ROLE_GEST_TIPINST') %}
                         <li class="nav-item">
-                            <a href="{{ path('app_tipo_institucion_index') }}"
+                            <a href="{{ path('app_modalidad_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Tipo de institución</p>
+                                <p>Modalidad</p>
                             </a>
                         </li>
                     {% endif %}
                     {% if hasRoles('ROLE_GEST_CATACRED') %}
                         <li class="nav-item">
-                            <a href="{{ path('app_categoria_acreditacion_index') }}"
+                            <a href="{{ path('app_tipo_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Categoría de acreditación</p>
+                                <p>Tipos</p>
                             </a>
                         </li>
                     {% endif %}
