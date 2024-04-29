@@ -106,7 +106,8 @@ class Utils
         if (is_array($nomenclador)) {
             foreach ($nomenclador as $value) {
                 $element['id'] = $value->getId();
-                $element['nombre'] = "(" . $value->getEstructura()->getSiglas() . ") " . $value->getNombre();
+                $siglas = method_exists($value->getEstructura(), 'getSiglas') ? $value->getEstructura()->getSiglas() : null;
+                $element['nombre'] = !empty($siglas) ? "(" . $value->getEstructura()->getSiglas() . ") " . $value->getNombre() : $value->getNombre();
                 $result[] = $element;
             }
         }
