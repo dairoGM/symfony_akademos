@@ -15,7 +15,7 @@
             </a>
         </li>
 
-        {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
+        {% if hasRoles('ROLE_GEST_PLAN_MISION') or hasRoles('ROLE_GEST_FICHA_SALIDA') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -25,14 +25,26 @@
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ path('app_plan_mision_index') }}"
-                           class="nav-link nav-link-menu">
-                            <p>Planes de misión</p>
-                        </a>
-                    </li>
-                </ul>
+                {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_plan_mision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Planes de misión</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% if hasRoles('ROLE_GEST_FICHA_SALIDA') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_ficha_salida_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Fichas de salida</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
             </li>
         {% endif %}
         {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') or hasRoles('ROLE_GEST_INST_EXTRANJERA') or hasRoles('ROLE_GEST_CONCEPTO_SALIDA') %}

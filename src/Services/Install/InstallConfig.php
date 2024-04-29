@@ -251,6 +251,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION", "Gestión de planes de misión", "Gestión de planes de misión");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_CONCEPTO_SALIDA", "Gestión de conceptos de salida", "Gestión de conceptos de salida");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_FICHA_SALIDA", "Gestión de ficha de salida", "Gestión de ficha de salida");
 
         return $functionalities;
     }
@@ -353,14 +354,14 @@ class InstallConfig
 
 
         $roles[] = Role::createRole('ROL_REPORT', "Visualizador de Reportes", "Rol con permisos a todos los reportes")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_REPORT")
             ->addFunctionality("ROLE_ESTPL_REP")
             ->addFunctionality("ROLE_MAPIND_REP")
             ->addFunctionality("ROLE_PROGRAM_REP");
 
         $roles[] = Role::createRole('ROL_TRAZ', "Administrador de Trazas", "Rol con permiso a las trazas del sistema")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_ACCTION")
             ->addFunctionality("ROLE_OBJ_TRZ")
             ->addFunctionality("ROLE_TYPTRZ")
@@ -368,14 +369,14 @@ class InstallConfig
 
 
         $roles[] = Role::createRole('ROL_INSTIT', "Administrador de Instituciones", "Rol con permiso a la gestion de Instituciones")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_INSTIT")
             ->addFunctionality("ROLE_GEST_TIPINST")
             ->addFunctionality("ROLE_GEST_CATACRED");
 
 
         $roles[] = Role::createRole('ROL_PREGRADO', "Administrador de Pregrado", "Rol con permiso a la gestion de Pregrado")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_PREGR")
             ->addFunctionality("ROLE_GEST_CURACAD")
             ->addFunctionality("ROLE_GEST_ESTPROGACAD")
@@ -393,7 +394,7 @@ class InstallConfig
 
 
         $roles[] = Role::createRole('ROL_POSGRADO', "Administrador de Posgrado", "Rol con permiso a la gestion de Posgrado")
-            ->addFunctionality("ROLE_PORTADA_ADMIN")
+//            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_POSTG")
             ->addFunctionality("ROLE_GEST_SOLPROGRAM")
             ->addFunctionality("ROLE_GEST_PROGRAMAPROB")
@@ -418,7 +419,8 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_PLAN_MISION")
             ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
             ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
-            ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA");
+            ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA")
+            ->addFunctionality("ROLE_GEST_FICHA_SALIDA");
         return $roles;
     }
 }

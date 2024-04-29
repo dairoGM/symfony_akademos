@@ -69,7 +69,7 @@ class PersonaController extends AbstractController
     }
 
     /**
-     * @Route("/registrar", name="app_persona_registrar", methods={"GET", "POST"})
+     * @Route("/{origin}/registrar", name="app_persona_registrar", methods={"GET", "POST"}, defaults={"origin":"default"})
      * @param TipoOrganizacionRepository $tipoOrganizacionRepository
      * @param OrganizacionRepository $organizacionRepository
      * @param EntityManagerInterface $em
@@ -81,7 +81,7 @@ class PersonaController extends AbstractController
      * @param ResponsabilidadRepository $responsabilidadRepository
      * @return Response
      */
-    public function registrar(TipoOrganizacionRepository $tipoOrganizacionRepository, OrganizacionRepository $organizacionRepository, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $encoder, PersonaRepository $personaRepository, MunicipioRepository $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository)
+    public function registrar(TipoOrganizacionRepository $tipoOrganizacionRepository, $origin, OrganizacionRepository $organizacionRepository, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $encoder, PersonaRepository $personaRepository, MunicipioRepository $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository)
     {
         $persona = new Persona();
         $choices = [
@@ -154,7 +154,13 @@ class PersonaController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_persona_index', [], Response::HTTP_SEE_OTHER);
+
+            if ('ficha_salida' == $origin) {
+                return $this->redirectToRoute('app_ficha_salida_registrar_v2', ['id' => $persona->getId()], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_persona_index', [], Response::HTTP_SEE_OTHER);
+            }
+
         }
 
 

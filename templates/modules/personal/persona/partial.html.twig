@@ -1,0 +1,28 @@
+<div class="row" style="margin-top: 1%">
+    <div class="col-1">
+        <h5 class="mb-0"><b></b> <img
+                    src="{% if persona.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ persona.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                    class="img-circle" alt="{{ persona.primerNombre }}"
+                    style="width: 120px;height: 120px; object-fit: cover"></h5>
+    </div>
+    <div class="col-5">
+        <h5 class="mb-0">
+            <b>Nombre:</b> {{ persona.primerNombre ~ ' ' ~ persona.segundoNombre ~' '~ persona.primerApellido ~ ' ' ~ persona.segundoApellido }}
+        </h5>
+        <h5 class="mb-0">
+            <b>CI:</b> {{ persona.carnetIdentidad }}
+        </h5>
+        <h5 class="mb-0">
+            <b>Provincia:</b> {{ persona.provincia.nombre | default('') }}
+        </h5>
+        <h5 class="mb-0">
+            <b>Municipio:</b> {{ persona.municipio.nombre | default('') }}
+        </h5>
+    </div>
+    <div class="col-5">
+        <h5 class="mb-0"><b>Estructura:</b> {{ persona.estructura.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Responsabilidad:</b> {{ persona.responsabilidad.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Usuario:</b> {{ persona.usuario.email | default('') }}</h5>
+    </div>
+</div>
+<hr>

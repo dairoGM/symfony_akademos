@@ -77,7 +77,6 @@ class ConvenioController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $temp = explode('/', $request->request->all()['convenio']['fechaSuscribe']);
-
                 $convenio->setFechaSuscribe(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
                 $temp = explode('/', $request->request->all()['convenio']['fechaCaducidad']);

@@ -1,0 +1,126 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar ficha de salida{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Adicionar ficha de salida</h3>
+                <a title="Nueva búsqueda" class="btn btn-primary mr-2"
+                   href="{{ path('app_ficha_salida_registrar') }}"><i
+                            class="fa fa-search"></i>
+                </a>
+            </div>
+        </div>
+        <!-- /.card-header -->
+
+        {% if registros | length == 0 %}
+            <section class="content-header">
+                <div class="container-fluid">
+                    <h2 class="text-center display-4">Búsqueda de persona</h2>
+                </div>
+            </section>
+
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <form id="form" method="post" action="{{ path('app_ficha_salida_registrar') }}">
+                                <div class="input-group input-group-lg">
+                                    <input type="search" name="busqueda" id="busqueda"
+                                           class="form-control form-control-lg"
+                                           autofocus
+                                           placeholder="Entre el CI de la persona que desea buscar" value="">
+                                    <div class="input-group-append">
+                                        <button id="btn_submit" type="submit" class="btn btn-lg btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {% if registros|length == 0 and busqueda != null %}
+                                    <br>
+                                    <div class="info-box mb-3 bg-warning" style="min-height: 45px">
+                                        <div class="info-box-content">
+                                            <b><span style="text-align: center" class="info-box-text"><i
+                                                            class="fas fa-tag"></i> No existe ninguna persona con ese CI</span></b>
+                                        </div>
+                                    </div>
+                                    <center>
+                                        <div style="alignment: center" class="card-footer">
+                                            <button id="btn_nuevo_registro" title="Adicionar nuevo registro"
+                                                    type="submit"
+                                                    class="btn btn-primary">Adicionar nuevo registro
+                                            </button>
+                                        </div>
+                                    </center>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        {% endif %}
+
+        {% if registros | length > 0 %}
+            {#            <section class="content"> #}
+            <br>
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>Nombre y apellidos</th>
+                    <th>Grado científico</th>
+                    <th>Estructura superior</th>
+                    <th>Estructura</th>
+                    <th>Responsabilidad</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="20%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+                        <td width="30%">{{ item.gradoAcademico.nombre | default('') }}</td>
+                        <td width="30%">{{ item.estructura.estructura.nombre | default('') }}</td>
+                        <td width="30%">{{ item.estructura.nombre | default('') }}</td>
+                        <td>{{ item.responsabilidad.nombre | default('') }}</td>
+                        <td class="text-center" width="30%">
+                            <button title="Adicionar ficha de salida" class="btn btn-outline-primary elementRemove"
+                                    data-url="{{ path('app_ficha_salida_registrar_v2', {'id': item.id}) }}">
+                                <i class="fa fa-check-square"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+            {#            </section> #}
+        {% else %}
+            <section class="content">
+                <br>
+                <br>
+                <br>
+                <br>
+            </section>
+        {% endif %}
+
+
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#btn_nuevo_registro').on('click', function (e) {
+            e.preventDefault();
+            window.location = '{{ path('app_persona_registrar', {'origin': 'ficha_salida'}) }}'
+        });
+    </script>
+{% endblock %}
