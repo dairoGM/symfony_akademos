@@ -7,6 +7,7 @@ use App\Entity\Tramite\ConceptoSalida;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
 use App\Entity\Tramite\FichaSalidaEstado;
+use App\Form\Tramite\CambioEstadoSalidaType;
 use App\Form\Tramite\ConceptoSalidaType;
 use App\Form\Tramite\FichaSalidaType;
 use App\Repository\Personal\PersonaRepository;
@@ -37,7 +38,7 @@ class FichaSalidaController extends AbstractController
     public function index(FichaSalidaRepository $fichaSalidaRepository)
     {
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
-            'registros' => $fichaSalidaRepository->findBy([], ['id' => 'desc']),
+            'registros' => $fichaSalidaRepository->findBy(['estadoFichaSalida' => $this->getParameter('estado_salida_creada')], ['id' => 'desc']),
         ]);
     }
 
@@ -198,4 +199,40 @@ class FichaSalidaController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/{id}/cambiar_estado", name="app_ficha_salida_cambiar_estado", methods={"GET", "POST"})
+     * @param Request $request
+     * @param FichaSalida $fichaSalida
+     * @param FichaSalidaEstadoRepository $fichaSalidaEstadoRepository
+     * @return Response
+     */
+    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
+    {
+        try {
+            $entidad = new FichaSalidaEstado();
+            $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entidad->setFichaSalida($fichaSalida);
+                $fichaSalidaEstadoRepository->edit($entidad);
+
+                $fichaSalida->setEstadoFichaSalida($entidad->getEstadoFichaSalida());
+                $fichaSalidaRepository->edit($fichaSalida, true);
+
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/tramite/ficha_salida/cambioEstado.html.twig', [
+                'form' => $form->createView(),
+                'fichaSalida' => $fichaSalida,
+                'persona' => $fichaSalida->getPersona()
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_ficha_salida_cambiar_estado', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
+        }
+    }
 }
