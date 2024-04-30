@@ -35,8 +35,8 @@
                         <th>No.</th>
                         <th></th>
                         <th>Nombre y apellidos</th>
+                        <th>Estructura</th>
                         <th>Cargo</th>
-
                         <th>País</th>
                         <th>Objetivo del viaje</th>
                         <th>Fecha</th>
@@ -54,8 +54,12 @@
                                         id="nombre_persona_{{ item.id }}">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</p>
                             </td>
                             <td>
+                                <p id="estructura_{{ item.id }}">{{ item.estructura.nombre | default('') }}</p>
+                            </td>
+                            <td>
                                 <p id="responsabilidad_{{ item.id }}">{{ item.responsabilidad.nombre | default('') }}</p>
                             </td>
+
 
                             <td>
                                 <select id="pais_{{ item.id }}"
