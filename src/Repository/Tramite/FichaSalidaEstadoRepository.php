@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method FichaSalidaEstado[]    findAll()
  * @method FichaSalidaEstado[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FichaSalidaEstadoEstadoRepository extends ServiceEntityRepository
+class FichaSalidaEstadoRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -13,6 +13,7 @@ use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
+use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,7 +72,7 @@ class FichaSalidaController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, FichaSalidaEstadoEstadoRepository $fichaSalidaEstadoEstadoRepository)
+    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository)
     {
         try {
             $entidad = new FichaSalida();
@@ -94,7 +95,7 @@ class FichaSalidaController extends AbstractController
                 $fichaSalidaEstado->setFichaSalida($entidad);
                 $fichaSalidaEstado->setEstadoFichaSalida($estadoFicha);
                 $fichaSalidaEstado->setDescripcion('Creada');
-                $fichaSalidaEstadoEstadoRepository->add($fichaSalidaEstado, true);
+                $fichaSalidaEstadoRepository->add($fichaSalidaEstado, true);
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
