@@ -48,6 +48,13 @@ parameters:
 
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
 
+    estado_salida_creada: '%env(estado_salida_creada)%'
+    estado_salida_aprobada_rd: '%env(estado_salida_aprobada_rd)%'
+    estado_salida_aprobada_especialista: '%env(estado_salida_aprobada_especialista)%'
+    estado_salida_aprobada_firmada: '%env(estado_salida_aprobada_firmada)%'
+    estado_salida_viajando: '%env(estado_salida_viajando)%'
+    estado_salida_finalizada: '%env(estado_salida_finalizada)%'
+
 
 
 services:

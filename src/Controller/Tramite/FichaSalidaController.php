@@ -10,6 +10,7 @@ use App\Form\Tramite\ConceptoSalidaType;
 use App\Form\Tramite\FichaSalidaType;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
+use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,7 +69,7 @@ class FichaSalidaController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository)
+    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
     {
         try {
             $entidad = new FichaSalida();
@@ -84,6 +85,7 @@ class FichaSalidaController extends AbstractController
                 $entidad->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']));
                 $entidad->setFechaCaducidadPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']));
 
+                $entidad->setEstadoFichaSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_creada')));
                 $fichaSalidaRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
