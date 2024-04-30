@@ -123,6 +123,12 @@ class FichaSalida extends BaseEntity
     private $aprobadoFactoresIes = false;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tramite\EstadoFichaSalida")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?EstadoFichaSalida $estadoFichaSalida;
+
+    /**
      * @return Persona|null
      */
     public function getPersona(): ?Persona
@@ -408,6 +414,22 @@ class FichaSalida extends BaseEntity
     public function setAprobadoFactoresIes(bool $aprobadoFactoresIes): void
     {
         $this->aprobadoFactoresIes = $aprobadoFactoresIes;
+    }
+
+    /**
+     * @return EstadoFichaSalida|null
+     */
+    public function getEstadoFichaSalida(): ?EstadoFichaSalida
+    {
+        return $this->estadoFichaSalida;
+    }
+
+    /**
+     * @param EstadoFichaSalida|null $estadoFichaSalida
+     */
+    public function setEstadoFichaSalida(?EstadoFichaSalida $estadoFichaSalida): void
+    {
+        $this->estadoFichaSalida = $estadoFichaSalida;
     }
 
 

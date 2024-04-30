@@ -65,6 +65,12 @@
                                 <p>Conceptos de salida</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ path('app_estado_ficha_salida_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Estados de salida</p>
+                            </a>
+                        </li>
                     {% endif %}
                     {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') %}
                         <li class="nav-item">
