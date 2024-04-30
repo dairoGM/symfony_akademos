@@ -6,11 +6,13 @@ use App\Entity\Personal\Persona;
 use App\Entity\Tramite\ConceptoSalida;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
+use App\Entity\Tramite\FichaSalidaEstado;
 use App\Form\Tramite\ConceptoSalidaType;
 use App\Form\Tramite\FichaSalidaType;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
+use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,7 +71,7 @@ class FichaSalidaController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
+    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, FichaSalidaEstadoEstadoRepository $fichaSalidaEstadoEstadoRepository)
     {
         try {
             $entidad = new FichaSalida();
@@ -84,9 +86,16 @@ class FichaSalidaController extends AbstractController
                 $entidad->setFechaRegresoReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoReal']));
                 $entidad->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']));
                 $entidad->setFechaCaducidadPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']));
-
-                $entidad->setEstadoFichaSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_creada')));
+                $estadoFicha = $estadoFichaSalidaRepository->find($this->getParameter('estado_salida_creada'));
+                $entidad->setEstadoFichaSalida($estadoFicha);
                 $fichaSalidaRepository->add($entidad, true);
+
+                $fichaSalidaEstado = new FichaSalidaEstado();
+                $fichaSalidaEstado->setFichaSalida($entidad);
+                $fichaSalidaEstado->setEstadoFichaSalida($estadoFicha);
+                $fichaSalidaEstado->setDescripcion('Creada');
+                $fichaSalidaEstadoEstadoRepository->add($fichaSalidaEstado, true);
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
             }
