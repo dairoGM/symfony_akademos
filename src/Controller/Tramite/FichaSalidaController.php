@@ -40,22 +40,22 @@ class FichaSalidaController extends AbstractController
         $allPost = $request->request->all();
 
         if (isset($allPost['estado']) && !empty($allPost['estado'])) {
-            $request->getSession()->set('fil_estado', $allPost['estado']);
-            $request->getSession()->set('text_fil', $estadoFichaSalidaRepository->find($allPost['estado'])->getNombre());
+            $request->getSession()->set('ficha_salida_fil_estado', $allPost['estado']);
+            $request->getSession()->set('ficha_salida_text_fil_estado', $estadoFichaSalidaRepository->find($allPost['estado'])->getNombre());
         }
         if (isset($allPost['estado']) && empty($allPost['estado'])) {
-            $request->getSession()->remove('fil_estado');
-            $request->getSession()->remove('text_fil');
+            $request->getSession()->remove('ficha_salida_fil_estado');
+            $request->getSession()->remove('ficha_salida_text_fil_estado');
         }
         $filtros = [];
-        if ($request->getSession()->has('fil_estado')) {
-            $filtros['estadoFichaSalida'] = $request->getSession()->get('fil_estado');
+        if ($request->getSession()->has('ficha_salida_fil_estado')) {
+            $filtros['estadoFichaSalida'] = $request->getSession()->get('ficha_salida_fil_estado');
         }
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
             'registros' => $fichaSalidaRepository->findBy($filtros, ['id' => 'desc']),
-            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['nombre'=>'asc']),
-            'fil_estado' => $request->getSession()->get('fil_estado'),
-            'text_fil' => $request->getSession()->has('text_fil') ? " (Estado=" . $request->getSession()->get('text_fil') . ")" : null,
+            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['id'=>'asc']),
+            'fil_estado' => $request->getSession()->get('ficha_salida_fil_estado'),
+            'text_fil' => $request->getSession()->has('ficha_salida_text_fil_estado') ? " (Estado=" . $request->getSession()->get('ficha_salida_text_fil_estado') . ")" : null,
         ]);
     }
 
