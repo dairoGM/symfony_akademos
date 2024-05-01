@@ -53,7 +53,7 @@ class FichaSalidaController extends AbstractController
         }
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
             'registros' => $fichaSalidaRepository->findBy($filtros, ['id' => 'desc']),
-            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true]),
+            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['nombre'=>'asc']),
             'fil_estado' => $request->getSession()->get('fil_estado'),
             'text_fil' => $request->getSession()->has('text_fil') ? " (Estado=" . $request->getSession()->get('text_fil') . ")" : null,
         ]);
