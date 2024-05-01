@@ -18,7 +18,53 @@
             </div>
         </div>
         <!-- /.card-header -->
+        <div class="col-md-12">
+            <div class="card">
+{#                <div class="card-header">#}
+{#                    <h3 class="card-title">Collapsible Accordion</h3>#}
+{#                </div>#}
+
+                <div class="card-body">
+
+                    <div id="accordion">
+                        <div class="card" >
+                            <div class="card-header" style="background: #134679">
+                                <h4 class="card-title w-100">
+                                    <a style="color: #FFFFFF" class="d-block w-100 collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="false">
+                                        Búsqueda avanzada {{ text_fil }}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="required" for="estadoFicha">Estado</label>
+                                            <select id="estadoFicha" name="estadoFicha"
+                                                    class="form-control select2-hidden-accessible"
+                                                    data-select2-id="estadoFicha"
+                                                    tabindex="-1" aria-hidden="true">
+                                                <option value="">Seleccione</option>
+                                                {% for item2 in estados %}
+                                                    <option {% if item2.id == fil_estado %} selected {% endif %}
+                                                            value="{{ item2.id }}">{{ item2.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
         <div class="card-body">
+
+
             <table class="table table-bordered table-striped dataTable">
                 <thead class="table-custom-header">
                 <tr>
@@ -29,6 +75,7 @@
                     <th>País</th>
                     <th>Salida prevista</th>
                     <th>Estancia</th>
+                    <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -43,6 +90,7 @@
                         <td>{{ item.pais.nombre | default('') }}</td>
                         <td>{{ item.fechaSalidaPrevista | date('d/m/Y') }}</td>
                         <td>{{ item.tiempoEstancia | default('') }}</td>
+                        <td>{{ item.estadoFichaSalida.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
                             {#                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction" #}
                             {#                                    data-url="{{ path('app_ficha_salida_detail', {'id' : item.id}) }}" #}
@@ -77,4 +125,25 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    <script>
 
+        $('#estadoFicha').change(function (e) {
+            var estado = $(this).val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_ficha_salida_index') }}",
+                {
+                    estado: estado
+                },
+                function (data) {
+                    $(window).attr('location', window.location)
+                    HoldOn.close()
+                });
+        });
+
+    </script>
+{% endblock %}

@@ -56,10 +56,7 @@ class FichaSalidaType extends AbstractType
                 'empty_data' => null
             ])
             ->add('provinciaExtranjera', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false
             ])
             ->add('conceptoSalida', EntityType::class, [
                 'class' => ConceptoSalida::class,

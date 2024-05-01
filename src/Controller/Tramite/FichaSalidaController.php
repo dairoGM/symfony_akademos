@@ -31,21 +31,40 @@ class FichaSalidaController extends AbstractController
 {
 
     /**
-     * @Route("/", name="app_ficha_salida_index", methods={"GET"})
+     * @Route("/", name="app_ficha_salida_index", methods={"GET", "POST"})
      * @param fichaSalidaRepository $fichaSalidaRepository
      * @return Response
      */
-    public function index(FichaSalidaRepository $fichaSalidaRepository)
+    public function index(Request $request, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
     {
+        $allPost = $request->request->all();
+
+        if (isset($allPost['estado']) && !empty($allPost['estado'])) {
+            $request->getSession()->set('fil_estado', $allPost['estado']);
+            $request->getSession()->set('text_fil', $estadoFichaSalidaRepository->find($allPost['estado'])->getNombre());
+        }
+        if (isset($allPost['estado']) && empty($allPost['estado'])) {
+            $request->getSession()->remove('fil_estado');
+            $request->getSession()->remove('text_fil');
+        }
+        $filtros = [];
+        if ($request->getSession()->has('fil_estado')) {
+            $filtros['estadoFichaSalida'] = $request->getSession()->get('fil_estado');
+        }
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
-            'registros' => $fichaSalidaRepository->findBy(['estadoFichaSalida' => $this->getParameter('estado_salida_creada')], ['id' => 'desc']),
+            'registros' => $fichaSalidaRepository->findBy($filtros, ['id' => 'desc']),
+            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true]),
+            'fil_estado' => $request->getSession()->get('fil_estado'),
+            'text_fil' => $request->getSession()->has('text_fil') ? " (Estado=" . $request->getSession()->get('text_fil') . ")" : null,
         ]);
     }
 
     /**
      * @Route("/registrar", name="app_ficha_salida_registrar", methods={"GET", "POST"})
      * @param Request $request
-     * @param fichaSalidaRepository $fichaSalidaRepository
+     * @param PersonaRepository $personaRepository
+     * @param ResponsableRepository $responsableRepository
+     * @param Utils $utils
      * @return Response
      */
     public function registrar(Request $request, PersonaRepository $personaRepository, ResponsableRepository $responsableRepository, Utils $utils)
@@ -82,12 +101,24 @@ class FichaSalidaController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entidad->setPersona($persona);
 
-                $entidad->setFechaSalidaPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaPrevista']));
-                $entidad->setFechaSalidaReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaReal']));
-                $entidad->setFechaRegresoPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoPrevista']));
-                $entidad->setFechaRegresoReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoReal']));
-                $entidad->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']));
-                $entidad->setFechaCaducidadPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']));
+                if (!empty($request->request->all()['ficha_salida']['fechaSalidaPrevista'])) {
+                    $entidad->setFechaSalidaPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaPrevista']));
+                }
+                if (!empty($request->request->all()['ficha_salida']['fechaSalidaReal'])) {
+                    $entidad->setFechaSalidaReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaReal']));
+                }
+                if (!empty($request->request->all()['ficha_salida']['fechaRegresoPrevista'])) {
+                    $entidad->setFechaRegresoPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoPrevista']));
+                }
+                if (!empty($request->request->all()['ficha_salida']['fechaRegresoReal'])) {
+                    $entidad->setFechaRegresoReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoReal']));
+                }
+                if (!empty($request->request->all()['ficha_salida']['fechaEmisionPasaporte'])) {
+                    $entidad->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']));
+                }
+                if (!empty($request->request->all()['ficha_salida']['fechaCaducidadPasaporte'])) {
+                    $entidad->setFechaCaducidadPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']));
+                }
                 $estadoFicha = $estadoFichaSalidaRepository->find($this->getParameter('estado_salida_creada'));
                 $entidad->setEstadoFichaSalida($estadoFicha);
                 $fichaSalidaRepository->add($entidad, true);
@@ -211,7 +242,7 @@ class FichaSalidaController extends AbstractController
     {
         try {
             $entidad = new FichaSalidaEstado();
-            $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar']);
+            $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar', 'estadoActual' => $fichaSalida->getEstadoFichaSalida()->getId()]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -232,7 +263,7 @@ class FichaSalidaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_ficha_salida_cambiar_estado', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ficha_salida_cambiar_estado', ['id' => $fichaSalida->getId()], Response::HTTP_SEE_OTHER);
         }
     }
 }

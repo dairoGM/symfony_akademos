@@ -18,13 +18,13 @@ class FichaSalidaEstado extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tramite\FichaSalida")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?FichaSalida $fichaSalida;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tramite\EstadoFichaSalida")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?EstadoFichaSalida $estadoFichaSalida;
 

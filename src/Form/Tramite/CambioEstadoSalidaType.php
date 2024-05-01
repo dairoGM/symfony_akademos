@@ -23,8 +23,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CambioEstadoSalidaType extends AbstractType
 {
+    private $estadoActual;
+
+    public function __construct()
+    {
+        $this->estadoActual = null;
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $this->estadoActual = $options['estadoActual'];
         $builder
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
@@ -33,10 +42,11 @@ class CambioEstadoSalidaType extends AbstractType
             ->add('estadoFichaSalida', EntityType::class, [
                 'class' => EstadoFichaSalida::class,
                 'label' => 'Estado',
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    $estadoActual = $this->estadoActual;
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.id <> $estadoActual")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
@@ -47,6 +57,7 @@ class CambioEstadoSalidaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => FichaSalidaEstado::class,
+            'estadoActual' => [],
         ]);
     }
 }

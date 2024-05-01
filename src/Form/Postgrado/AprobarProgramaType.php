@@ -64,6 +64,7 @@ class AprobarProgramaType extends AbstractType
             ->add('fechaAprobacion', TextType::class, [
                 'label' => 'Fecha de aprobación del programa',
                 'required' => false,
+                'mapped' => false,
                 'attr' => [
                     'class' => 'date-time-picker'
                 ]
