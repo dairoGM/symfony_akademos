@@ -64,7 +64,7 @@ class TipoController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_tipo_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param Convenio $tipo
+     * @param Tipo $tipo
      * @param TipoRepository $tipoRepository
      * @return Response
      */
@@ -93,11 +93,10 @@ class TipoController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_tipo_detail", methods={"GET", "POST"})
-     * @param Request $request
      * @param Convenio $tipoPrograma
      * @return Response
      */
-    public function detail(Request $request, Tipo $tipo)
+    public function detail(Tipo $tipo)
     {
         return $this->render('modules/convenio/tipo/detail.html.twig', [
             'item' => $tipo,
@@ -106,7 +105,7 @@ class TipoController extends AbstractController
 
     /**
      * @Route("/{id}/eliminar", name="app_tipo_eliminar", methods={"GET"})
-     * @param Convenio $tipo
+     * @param Tipo $tipo
      * @param TipoRepository $tipoRepository
      * @return Response
      */

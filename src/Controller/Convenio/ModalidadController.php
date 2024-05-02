@@ -62,7 +62,7 @@ class ModalidadController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_modalidad_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param Convenio $modalidad
+     * @param Modalidad $modalidad
      * @param ModalidadRepository $modalidadRepository
      * @return Response
      */
@@ -91,29 +91,27 @@ class ModalidadController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_modalidad_detail", methods={"GET", "POST"})
-     * @param Request $request
-     * @param Convenio $tipoPrograma
+     * @param Modalidad $modalidad
      * @return Response
      */
-    public function detail(Request $request, Convenio $convenio)
+    public function detail(Modalidad $modalidad)
     {
         return $this->render('modules/convenio/modalidad/detail.html.twig', [
-            'item' => $convenio,
+            'item' => $modalidad,
         ]);
     }
 
     /**
      * @Route("/{id}/eliminar", name="app_modalidad_eliminar", methods={"GET"})
-     * @param Request $request
-     * @param Convenio $convenio
+     * @param Modalidad $modalidad
      * @param ModalidadRepository $modalidadRepository
      * @return Response
      */
-    public function eliminar(Request $request, Convenio $convenio, ModalidadRepository $modalidadRepository)
+    public function eliminar(Modalidad $modalidad, ModalidadRepository $modalidadRepository)
     {
         try {
-            if ($modalidadRepository->find($convenio) instanceof Modalidad) {
-                $modalidadRepository->remove($convenio, true);
+            if ($modalidadRepository->find($modalidad) instanceof Modalidad) {
+                $modalidadRepository->remove($modalidad, true);
                 $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
                 return $this->redirectToRoute('app_modalidad_index', [], Response::HTTP_SEE_OTHER);
             }
