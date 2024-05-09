@@ -32,66 +32,6 @@
 
 {% block body %}
     <div class="row" style="align-content: center">
-        {% if hasRoles('ROLE_HOME_PERSONAL') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Personal</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <a href="{{ path('app_personal_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
-        {% if hasRoles('ROLE_HOME_STRUCT') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Estructura</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <a href="{{ path('app_estructura_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
-        {% if hasRoles('ROLE_PORTADA_ADMIN') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Administración</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    <a href="{{ path('app_administracion_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
-        {% if hasRoles('ROLE_HOME_INSTIT') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Instituciones</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="nav-icon fa fa-university"></i>
-                    </div>
-                    <a href="{{ path('app_institucion_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
         {% if hasRoles('ROLE_HOME_PREGR') %}
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-blue">
@@ -122,115 +62,22 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasRoles('ROLE_HOME_TRAZAS') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Trazas</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-clone"></i>
-                    </div>
-                    <a href="{{ path('app_traza_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
-{#        {% if hasRoles('ROLE_HOME_REPORT') %}#}
-{#            <div class="col-lg-4 col-6">#}
-{#                <div class="small-box bg-blue">#}
-{#                    <div class="inner">#}
-{#                        <h3>Reportes</h3>#}
-{#                        <p><br><br></p>#}
-{#                    </div>#}
-{#                    <div class="icon">#}
-{#                        <i class="fa fa-bars"></i>#}
-{#                    </div>#}
-{#                    <a href="{{ path('app_reporte_portada') }}" class="small-box-footer">Entrar <i#}
-{#                                class="fas fa-arrow-circle-right"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
 
-        {% if hasRoles('ROLE_HOME_TRAMITES') %}
+        {% if hasRoles('ROLE_HOME_CONVENIO') or hasRoles('ROLE_HOME_TRAMITES') or  hasRoles('ROLE_HOME_COOPERACION') or hasRoles('ROLE_HOME_VISITA') or hasRoles('ROLE_HOME_ECONOMIA')  %}
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-blue">
                     <div class="inner">
-                        <h3>Trámites</h3>
+                        <h3>Internacionalización</h3>
                         <p><br><br></p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-address-book"></i>
+                        <i class="fa fa-globe"></i>
                     </div>
                     <a href="{{ path('app_tramite_portada') }}" class="small-box-footer">Entrar <i
                                 class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         {% endif %}
-
-        {% if hasRoles('ROLE_HOME_CONVENIO') %}
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-blue">
-                    <div class="inner">
-                        <h3>Convenios</h3>
-                        <p><br><br></p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-globe"></i>
-                    </div>
-                    <a href="{{ path('app_convenio_portada') }}" class="small-box-footer">Entrar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        {% endif %}
-
-{#        {% if hasRoles('ROLE_HOME_COOPERACION') %}#}
-{#            <div class="col-lg-4 col-6">#}
-{#                <div class="small-box bg-blue">#}
-{#                    <div class="inner">#}
-{#                        <h3>Cooperación</h3>#}
-{#                        <p><br><br></p>#}
-{#                    </div>#}
-{#                    <div class="icon">#}
-{#                        <i class="fa fa-bars"></i>#}
-{#                    </div>#}
-{#                    <a href="{{ path('app_cooperacion_portada') }}" class="small-box-footer">Entrar <i#}
-{#                                class="fas fa-arrow-circle-right"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
-
-{#        {% if hasRoles('ROLE_HOME_VISITA') %}#}
-{#            <div class="col-lg-4 col-6">#}
-{#                <div class="small-box bg-blue">#}
-{#                    <div class="inner">#}
-{#                        <h3>Visitas</h3>#}
-{#                        <p><br><br></p>#}
-{#                    </div>#}
-{#                    <div class="icon">#}
-{#                        <i class="fa fa-bars"></i>#}
-{#                    </div>#}
-{#                    <a href="{{ path('app_visita_portada') }}" class="small-box-footer">Entrar <i#}
-{#                                class="fas fa-arrow-circle-right"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {% if hasRoles('ROLE_HOME_ECONOMIA') %}#}
-{#            <div class="col-lg-4 col-6">#}
-{#                <div class="small-box bg-blue">#}
-{#                    <div class="inner">#}
-{#                        <h3>Economía</h3>#}
-{#                        <p><br><br></p>#}
-{#                    </div>#}
-{#                    <div class="icon">#}
-{#                        <i class="fa fa-bars"></i>#}
-{#                    </div>#}
-{#                    <a href="{{ path('app_economia_portada') }}" class="small-box-footer">Entrar <i#}
-{#                                class="fas fa-arrow-circle-right"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
 
 
 
