@@ -23,7 +23,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class LoadCountry extends Command
 {
-
     protected static $defaultName = 'app-load-country';
 
     private $doctrine;
@@ -73,7 +72,6 @@ class LoadCountry extends Command
         foreach ($finder as $file) {
             $csv = $file;
         }
-
         if (($handle = fopen($csv->getRealPath(), "r")) !== FALSE) {
             $i = 0;
             while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
