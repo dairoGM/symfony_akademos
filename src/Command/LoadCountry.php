@@ -105,6 +105,7 @@ class LoadCountry extends Command
         $duration = round((microtime(true) - $tiempo_inicial), 2) . 's';
         $this->io->success('Duration: ' . $duration, 2);
         return 1;
+        //test
     }
 
 }
