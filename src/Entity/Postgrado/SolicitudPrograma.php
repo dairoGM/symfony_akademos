@@ -17,7 +17,7 @@ use App\Entity\Institucion\Institucion;
 class SolicitudPrograma extends BaseEntity
 {
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\Regex(
      *           pattern= "/^[,0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
