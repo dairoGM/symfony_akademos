@@ -141,11 +141,11 @@ class SolicitudPrograma extends BaseEntity
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $duracionPrograma;
+    private ?int $duracionPrograma = 0;
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $cantidadCreditos;
+    private ?int $cantidadCreditos = 0;
 
 
     public function getFechaProximaAcreditacion()
@@ -486,7 +486,7 @@ class SolicitudPrograma extends BaseEntity
     /**
      * @return int|null
      */
-    public function getDuracionPrograma(): ?int
+    public function getDuracionPrograma()
     {
         return $this->duracionPrograma;
     }
@@ -498,6 +498,7 @@ class SolicitudPrograma extends BaseEntity
     {
         $this->duracionPrograma = $duracionPrograma;
     }
+
 
     /**
      * @return int|null
