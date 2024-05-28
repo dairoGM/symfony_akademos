@@ -124,7 +124,6 @@ class SolicitudPrograma extends BaseEntity
      */
     private ?CategoriaAcreditacion $categoriaAcreditacion = null;
 
-
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
