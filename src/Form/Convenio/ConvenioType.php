@@ -80,13 +80,13 @@ class ConvenioType extends AbstractType
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
             ])
-            ->add('cantidadAcciones', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
-                'label' => 'Cantidad de acciones ejecutadas en el año',
-                'required' => false,
-                'attr' => [
-                    'min' => 1
-                ]
-            ])
+//            ->add('cantidadAcciones', \Symfony\Component\Form\Extension\Core\Type\IntegerType::class, [
+//                'label' => 'Cantidad de acciones ejecutadas en el año',
+//                'required' => false,
+//                'attr' => [
+//                    'min' => 1
+//                ]
+//            ])
             ->add('fechaSuscribe', TextType::class, [
                 'mapped' => false,
                 'attr' => [
