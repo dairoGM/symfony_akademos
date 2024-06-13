@@ -16,6 +16,35 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Nombre:</b> {{ convenio.nombre }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Institución cubana:</b> {{ convenio.institucionCubana.nombre | default('') }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="mb-0"><b>País:</b> {{ convenio.pais.nombre | default('') }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Institución extranjera:</b> {{ convenio.institucionExtranjera.nombre | default('') }}</h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Modalidad:</b> {{ convenio.modalidad.nombre | default('') }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Tipo:</b> {{ convenio.tipo.nombre | default('') }}</h5>
+                </div>
+
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Fecha suscribe:</b> {{ convenio.fechaSuscribe | date('d/m/Y') }}</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="mb-0"><b>Fecha caducidad:</b> {{ convenio.fechaCaducidad | date('d/m/Y') }}</h5>
+                </div>
+            </div>
+<hr>
+            <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
