@@ -69,26 +69,26 @@
                         {{ form_errors(form.fechaRegresoPrevista) }}
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.fechaSalidaReal) }}
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        {{ form_widget(form.fechaSalidaReal) }}
-                        {{ form_errors(form.fechaSalidaReal) }}
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.fechaRegresoReal) }}
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        {{ form_widget(form.fechaRegresoReal) }}
-                        {{ form_errors(form.fechaRegresoReal) }}
-                    </div>
-                </div>
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.fechaSalidaReal) }} #}
+                {#                    <div class="input-group"> #}
+                {#                        <div class="input-group-prepend"> #}
+                {#                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> #}
+                {#                        </div> #}
+                {#                        {{ form_widget(form.fechaSalidaReal) }} #}
+                {#                        {{ form_errors(form.fechaSalidaReal) }} #}
+                {#                    </div> #}
+                {#                </div> #}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.fechaRegresoReal) }} #}
+                {#                    <div class="input-group"> #}
+                {#                        <div class="input-group-prepend"> #}
+                {#                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> #}
+                {#                        </div> #}
+                {#                        {{ form_widget(form.fechaRegresoReal) }} #}
+                {#                        {{ form_errors(form.fechaRegresoReal) }} #}
+                {#                    </div> #}
+                {#                </div> #}
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tiempoEstancia) }}
@@ -156,8 +156,8 @@
         });
 
 
-        $('#ficha_salida_fechaSalidaPrevista, #ficha_salida_fechaRegresoPrevista, #ficha_salida_fechaSalidaReal, ' +
-            '#ficha_salida_fechaRegresoReal, #ficha_salida_fechaEmisionPasaporte, ' +
+        $('#ficha_salida_fechaSalidaPrevista, #ficha_salida_fechaRegresoPrevista,' +
+            ' #ficha_salida_fechaEmisionPasaporte, ' +
             '#ficha_salida_fechaCaducidadPasaporte').datetimepicker({
             format: 'DD/MM/YYYY'
         });

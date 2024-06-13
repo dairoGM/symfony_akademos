@@ -16,12 +16,13 @@
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
-                {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
+
+                {% if hasRoles('ROLE_GEST_FICHA_SALIDA') %}
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ path('app_plan_mision_index') }}"
+                            <a href="{{ path('app_ficha_salida_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Planes de misión</p>
+                                <p>Plan de misión</p>
                             </a>
                         </li>
                     </ul>
@@ -49,6 +50,14 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_plan_mision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Plan de misión</p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if hasRoles('ROLE_GEST_CONCEPTO_SALIDA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_concepto_salida_index') }}"
@@ -79,6 +88,7 @@
                             </a>
                         </li>
                     {% endif %}
+
                 </ul>
             </li>
         {% endif %}

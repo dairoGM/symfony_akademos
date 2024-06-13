@@ -36,7 +36,7 @@ class FichaSalidaType extends AbstractType
             ])
             ->add('pais', EntityType::class, [
                 'class' => Pais::class,
-                'label' => 'País',
+                'label' => 'País de destino',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
@@ -56,7 +56,8 @@ class FichaSalidaType extends AbstractType
                 'empty_data' => null
             ])
             ->add('provinciaExtranjera', TextType::class, [
-                'required' => false
+                'required' => false,
+                'label' => 'Ciudad extranjera',
             ])
             ->add('conceptoSalida', EntityType::class, [
                 'class' => ConceptoSalida::class,
@@ -87,22 +88,22 @@ class FichaSalidaType extends AbstractType
                     'class' => 'date-time-picker'
                 ]
             ])
-            ->add('fechaSalidaReal', TextType::class, [
-                'label' => 'Fecha de salida real',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'class' => 'date-time-picker'
-                ]
-            ])
-            ->add('fechaRegresoReal', TextType::class, [
-                'label' => 'Fecha de regreso real',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'class' => 'date-time-picker'
-                ]
-            ])
+//            ->add('fechaSalidaReal', TextType::class, [
+//                'label' => 'Fecha de salida real',
+//                'mapped' => false,
+//                'required' => false,
+//                'attr' => [
+//                    'class' => 'date-time-picker'
+//                ]
+//            ])
+//            ->add('fechaRegresoReal', TextType::class, [
+//                'label' => 'Fecha de regreso real',
+//                'mapped' => false,
+//                'required' => false,
+//                'attr' => [
+//                    'class' => 'date-time-picker'
+//                ]
+//            ])
             ->add('tiempoEstancia', IntegerType::class, [
                 'label' => 'Tiempo de estancia',
                 'required' => false,
