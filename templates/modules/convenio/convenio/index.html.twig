@@ -29,7 +29,7 @@
                     <th>País</th>
                     <th>Fecha suscribe</th>
                     <th>Fecha caducidad</th>
-                    <th>Cantidad de acciones</th>
+{#                    <th>Cantidad de acciones</th>#}
 
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -44,7 +44,7 @@
                         <td>{{ item.pais.nombre | default('') }}</td>
                         <td>{{ item.fechaSuscribe | date('d/m/Y') }}</td>
                         <td>{{ item.fechaCaducidad | date('d/m/Y') }}</td>
-                        <td>{{ item.cantidadAcciones | default('') }}</td>
+{#                        <td>{{ item.cantidadAcciones | default('') }}</td>#}
 
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
