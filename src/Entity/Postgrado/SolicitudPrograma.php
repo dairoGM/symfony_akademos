@@ -17,7 +17,7 @@ use App\Entity\Institucion\Institucion;
 class SolicitudPrograma extends BaseEntity
 {
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\Regex(
      *           pattern= "/^[,0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
@@ -124,7 +124,6 @@ class SolicitudPrograma extends BaseEntity
      */
     private ?CategoriaAcreditacion $categoriaAcreditacion = null;
 
-
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
@@ -141,11 +140,11 @@ class SolicitudPrograma extends BaseEntity
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $duracionPrograma;
+    private ?int $duracionPrograma = 0;
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $cantidadCreditos;
+    private ?int $cantidadCreditos = 0;
 
 
     public function getFechaProximaAcreditacion()
@@ -486,7 +485,7 @@ class SolicitudPrograma extends BaseEntity
     /**
      * @return int|null
      */
-    public function getDuracionPrograma(): ?int
+    public function getDuracionPrograma()
     {
         return $this->duracionPrograma;
     }
@@ -498,6 +497,7 @@ class SolicitudPrograma extends BaseEntity
     {
         $this->duracionPrograma = $duracionPrograma;
     }
+
 
     /**
      * @return int|null

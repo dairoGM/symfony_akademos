@@ -264,6 +264,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                     </li>
                 {% endif %}
+                {% if hasRoles('ROLE_HOME_INSTIT') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_institucion_portada') }}">
+                            <i class="fa fa-university" data-toggle="tooltip" data-placement="bottom"
+                               title="Instituciones"></i>
+                        </a>
+                    </li>
+                {% endif %}
                 {% if hasRoles('ROLE_HOME_STRUCT') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_estructura_portada') }}">
@@ -277,6 +285,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a class="nav-link" href="{{ path('app_administracion_portada') }}">
                             <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom"
                                title="Administración"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if hasRoles('ROLE_HOME_TRAZAS') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_traza_portada') }}">
+                            <i class="fa fa-clone" data-toggle="tooltip" data-placement="bottom"
+                               title="Trazas"></i>
                         </a>
                     </li>
                 {% endif %}
