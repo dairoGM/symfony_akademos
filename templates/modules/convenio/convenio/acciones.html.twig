@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Definir acciones{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Definir acciones</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <button id="btn_submit" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in acciones %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="95%">{{ item.nombre }}</td>
+                        <td>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_convenio_eliminar_accion', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#btn_submit').click(function (e) {
+            e.preventDefault();
+
+            $('form[name="convenio_acciones"]').attr('action', 'acciones');
+            $('form[name="convenio_acciones"]').submit();
+        })
+    </script>
+{% endblock %}

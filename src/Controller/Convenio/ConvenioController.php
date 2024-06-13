@@ -3,8 +3,11 @@
 namespace App\Controller\Convenio;
 
 use App\Entity\Convenio\Convenio;
+use App\Entity\Convenio\ConvenioAccion;
+use App\Form\Convenio\ConvenioAccionesType;
 use App\Form\Convenio\ConvenioType;
 use App\Repository\Convenio\ConvenioRepository;
+use App\Repository\Convenio\ConvenioAccionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -133,6 +136,64 @@ class ConvenioController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_convenio_index', [], Response::HTTP_SEE_OTHER);
         }
+    }
+
+    /**
+     * @Route("/{id}/acciones", name="app_convenio_acciones", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Convenio $convenio
+     * @param ConvenioAccionRepository $convenioAccionRepository
+     * @return Response
+     */
+    public function acciones(Request $request, Convenio $convenio, ConvenioAccionRepository $convenioAccionRepository)
+    {
+        try {
+            $new = new ConvenioAccion();
+            $form = $this->createForm(ConvenioAccionesType::class, $new, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $new->setConvenio($convenio);
+                $convenioAccionRepository->add($new, true);
+
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_convenio_acciones', ['id' => $convenio->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/convenio/convenio/acciones.html.twig', [
+                'form' => $form->createView(),
+                'convenio' => $convenio,
+                'acciones' => $convenioAccionRepository->findBy(['convenio' => $convenio->getId()])
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_convenio_acciones', ['id' => $convenio->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/eliminar_accion", name="app_convenio_eliminar_accion", methods={"GET"})
+     * @param Request $request
+     * @param ConvenioAccion $convenioAccion
+     * @param ConvenioAccionRepository $convenioAccionRepository
+     * @return Response
+     */
+    public function eliminarAccion(Request $request, ConvenioAccion $convenioAccion, ConvenioAccionRepository $convenioAccionRepository)
+    {
+        $id = $convenioAccion->getConvenio()->getId();
+        try {
+            if ($convenioAccionRepository->find($convenioAccion) instanceof ConvenioAccion) {
+                $convenioAccionRepository->remove($convenioAccion, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_convenio_acciones', ['id' => $id], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_convenio_acciones', ['id' => $id], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_convenio_acciones', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+
     }
 
 }
