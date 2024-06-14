@@ -27,12 +27,23 @@
                         </li>
                     </ul>
                 {% endif %}
+
                 {% if hasRoles('ROLE_GEST_FICHA_SALIDA') %}
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ path('app_ficha_salida_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Fichas de salida</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% if hasRoles('ROLE_GEST_DOCUMENTO_SALIDA') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_documento_salida_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Documentos de salida</p>
                             </a>
                         </li>
                     </ul>

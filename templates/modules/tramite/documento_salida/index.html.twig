@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Fichas de salida{% endblock %}
+{% block title %}Documentos de salida{% endblock %}
 
 {% block body %}
 
@@ -9,12 +9,7 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
-                <h3 class="card-title text-bold text-gray">Listado de fichas de salida</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_ficha_salida_registrar') }}"><i
-                            class="fa fa-plus"></i>
-                </a>
-
+                <h3 class="card-title text-bold text-gray">Documentos de salida</h3>
             </div>
         </div>
         <!-- /.card-header -->
@@ -99,7 +94,7 @@
                             {#                                <i class="fa fa-eye "></i> #}
                             {#                            </button> #}
 
-                            {% if item.estadoFichaSalida.id != 3 %}
+                            {% if item.estadoFichaSalida.id != 2 %}
                                 <a title="Modificar" href="{{ path('app_ficha_salida_modificar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-edit"></i>

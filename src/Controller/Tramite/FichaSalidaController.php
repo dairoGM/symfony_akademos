@@ -4,6 +4,7 @@ namespace App\Controller\Tramite;
 
 use App\Entity\Personal\Persona;
 use App\Entity\Tramite\ConceptoSalida;
+use App\Entity\Tramite\DocumentoSalida;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
 use App\Entity\Tramite\FichaSalidaConceptoGasto;
@@ -14,6 +15,7 @@ use App\Form\Tramite\FichaSalidaType;
 use App\Repository\Economia\ConceptoGastoRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
+use App\Repository\Tramite\DocumentoSalidaRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaConceptoGastoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
@@ -287,7 +289,7 @@ class FichaSalidaController extends AbstractController
      * @param FichaSalidaEstadoRepository $fichaSalidaEstadoRepository
      * @return Response
      */
-    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
+    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
     {
         try {
             $entidad = new FichaSalidaEstado();
@@ -301,6 +303,27 @@ class FichaSalidaController extends AbstractController
                 $fichaSalida->setEstadoFichaSalida($entidad->getEstadoFichaSalida());
                 $fichaSalidaRepository->edit($fichaSalida, true);
 
+                if ($entidad->getEstadoFichaSalida()->getId() == $this->getParameter('estado_salida_aprobada_rd')) {//Aprobada por RD
+                    $documentoSalida = new DocumentoSalida();
+                    $documentoSalida->setFichaSalida($fichaSalida);
+                    $documentoSalida->setConceptoSalida($fichaSalida->getConceptoSalida());
+                    $documentoSalida->setEstadoFichaSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_revision')));
+                    $documentoSalida->setFechaSalidaReal($fichaSalida->getFechaSalidaReal());
+                    $documentoSalida->setPais($fichaSalida->getPais());
+                    $documentoSalida->setCartaInvitacion($fichaSalida->getCartaInvitacion());
+                    $documentoSalida->setNumeroPasaporte($fichaSalida->getNumeroPasaporte());
+                    $documentoSalida->setTipoPasaporte($fichaSalida->getTipoPasaporte());
+                    $documentoSalida->setFechaCaducidadPasaporte($fichaSalida->getFechaCaducidadPasaporte());
+                    $documentoSalida->setFechaEmisionPasaporte($fichaSalida->getFechaEmisionPasaporte());
+                    $documentoSalida->setFechaSalidaPrevista($fichaSalida->getFechaSalidaPrevista());
+                    $documentoSalida->setFechaRegresoPrevista($fichaSalida->getFechaRegresoPrevista());
+                    $documentoSalida->setObjetivo($fichaSalida->getObjetivo());
+                    $documentoSalida->setInstitucionCubana($fichaSalida->getInstitucionCubana());
+                    $documentoSalida->setInstitucionExtranjera($fichaSalida->getInstitucionExtranjera());
+                    $documentoSalida->setTiempoEstancia($fichaSalida->getTiempoEstancia());
+                    $documentoSalida->setPersona($fichaSalida->getPersona());
+                    $documentoSalidaRepository->add($documentoSalida, true);
+                }
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
             }
