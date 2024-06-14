@@ -32,5 +32,4 @@ class EstadoFichaSalida extends BaseNomenclator
         $this->documentoSalida = $documentoSalida;
     }
 
-
 }
