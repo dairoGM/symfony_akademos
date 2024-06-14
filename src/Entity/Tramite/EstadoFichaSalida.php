@@ -11,8 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EstadoFichaSalida extends BaseNomenclator
 {
-
-
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
