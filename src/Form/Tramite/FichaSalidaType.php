@@ -11,6 +11,7 @@ use App\Entity\Tramite\InstitucionExtranjera;
 use App\Entity\Tramite\TipoPasaporte;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -154,6 +155,11 @@ class FichaSalidaType extends AbstractType
                 'attr' => [
                     'class' => 'date-time-picker'
                 ]
+            ])
+            ->add('cartaInvitacion', FileType::class, [
+                'label' => 'Carta de invitaciónn',
+                'mapped' => false,
+                'required' => false,
             ]);
 //            ->add('requiereVisa', CheckboxType::class, [
 //                'required' => false,

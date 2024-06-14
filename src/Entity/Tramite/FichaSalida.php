@@ -129,6 +129,11 @@ class FichaSalida extends BaseEntity
     private ?EstadoFichaSalida $estadoFichaSalida;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $cartaInvitacion = null;
+
+    /**
      * @return Persona|null
      */
     public function getPersona(): ?Persona
@@ -430,6 +435,22 @@ class FichaSalida extends BaseEntity
     public function setEstadoFichaSalida(?EstadoFichaSalida $estadoFichaSalida): void
     {
         $this->estadoFichaSalida = $estadoFichaSalida;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCartaInvitacion(): ?string
+    {
+        return $this->cartaInvitacion;
+    }
+
+    /**
+     * @param string|null $cartaInvitacion
+     */
+    public function setCartaInvitacion(?string $cartaInvitacion): void
+    {
+        $this->cartaInvitacion = $cartaInvitacion;
     }
 
 

@@ -1,0 +1,93 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Planes de misión{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de planes de misión </h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_plan_mision_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <label>Planes de misión</label>
+                    <select id="planMision" name="planMision"
+                            class="form-control select2-hidden-accessible"
+                            data-select2-id="estadoFicha"
+                            tabindex="-1" aria-hidden="true">
+                        <option value="">Seleccione</option>
+                        {% for item2 in registros %}
+                            <option {% if item2.id == last %} selected {% endif %}
+                                    value="{{ item2.id }}">{{ item2.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Cargo</th>
+                    <th>País</th>
+                    <th>Objetivo del viaje</th>
+                    <th>Fecha</th>
+                    <th>Duración en días</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registrosAsignados %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="20%">{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
+                        <td>{{ item.persona.responsabilidad.nombre | default('') }}</td>
+                        <td>{{ item.pais.nombre | default('') }}</td>
+                        <td>{{ item.objetivo | default('') }}</td>
+                        <td>{{ item.fecha | date('d/m/Y') }}</td>
+                        <td>{{ item.duracion | default('') }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#planMision').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                var url = "{{ path('app_cambio_filtro_plan', {'id':'idP'}) }}";
+                url = url.replace('idP', $(this).val());
+                $.get(url, function (data) {
+                    setTimeout(function () {
+                        $(window).attr('location', window.location)
+                    }, 500);
+                    HoldOn.close()
+                });
+            }
+        });
+    </script>
+{% endblock %}

@@ -130,7 +130,13 @@
                         {{ form_errors(form.fechaCaducidadPasaporte) }}
                     </div>
                 </div>
-
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cartaInvitacion) }}
+                    {{ form_widget(form.cartaInvitacion) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.cartaInvitacion) }}
+                </div>
 {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
 {#                    {{ form_label(form.requiereVisa) }}#}
 {#                    {{ form_widget(form.requiereVisa) }}#}
@@ -154,6 +160,11 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('#ficha_salida_cartaInvitacion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
         $('#btn_aceptar').on('click', function (e) {
             e.preventDefault();
             $('form[name="ficha_salida"]').attr('action', 'registrar-v2');

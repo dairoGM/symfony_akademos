@@ -46,7 +46,7 @@ class CambioEstadoSalidaType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $estadoActual = $this->estadoActual;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.id <> $estadoActual")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.documentoSalida = false and u.id <> $estadoActual")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

@@ -12,4 +12,27 @@ use Doctrine\ORM\Mapping as ORM;
 class EstadoFichaSalida extends BaseNomenclator
 {
 
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $documentoSalida = true;
+
+    /**
+     * @return bool|null
+     */
+    public function getDocumentoSalida(): ?bool
+    {
+        return $this->documentoSalida;
+    }
+
+    /**
+     * @param bool|null $documentoSalida
+     */
+    public function setDocumentoSalida(?bool $documentoSalida): void
+    {
+        $this->documentoSalida = $documentoSalida;
+    }
+
+
 }

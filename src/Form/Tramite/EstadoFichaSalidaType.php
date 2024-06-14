@@ -31,6 +31,10 @@ class EstadoFichaSalidaType extends AbstractType
             ->add('activo', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Habilitado'
+            ])
+            ->add('documentoSalida', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Estado para documento de salida'
             ]);
     }
 

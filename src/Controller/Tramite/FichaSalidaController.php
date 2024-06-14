@@ -56,7 +56,7 @@ class FichaSalidaController extends AbstractController
         }
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
             'registros' => $fichaSalidaRepository->findBy($filtros, ['id' => 'desc']),
-            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['id' => 'asc']),
+            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true, 'documentoSalida' => false], ['nombre' => 'asc']),
             'fil_estado' => $request->getSession()->get('ficha_salida_fil_estado'),
             'text_fil' => $request->getSession()->has('ficha_salida_text_fil_estado') ? " (Estado=" . $request->getSession()->get('ficha_salida_text_fil_estado') . ")" : null,
         ]);
@@ -125,6 +125,14 @@ class FichaSalidaController extends AbstractController
                 }
                 $estadoFicha = $estadoFichaSalidaRepository->find($this->getParameter('estado_salida_creada'));
                 $entidad->setEstadoFichaSalida($estadoFicha);
+
+                if (!empty($_FILES['ficha_salida']['name']['cartaInvitacion'])) {
+                    $file = $form['cartaInvitacion']->getData();
+                    $file_name = $_FILES['ficha_salida']['name']['cartaInvitacion'];
+                    $entidad->setCartaInvitacion($file_name);
+                    $file->move("uploads/tramites/ficha_salida/carta_invitacion", $file_name);
+                }
+
                 $fichaSalidaRepository->add($entidad, true);
 
                 $fichaSalidaEstado = new FichaSalidaEstado();
@@ -166,61 +174,72 @@ class FichaSalidaController extends AbstractController
      */
     public function modificar(Request $request, FichaSalida $fichaSalida, FichaSalidaRepository $fichaSalidaRepository, ConceptoGastoRepository $conceptoGastoRepository, FichaSalidaConceptoGastoRepository $fichaSalidaConceptoGastoRepository)
     {
-//        try {
-        $form = $this->createForm(FichaSalidaType::class, $fichaSalida, ['action' => 'modificar']);
-        $form->handleRequest($request);
-        $allPost = $request->request->all();
-        $conceptoGastosAsociados = $fichaSalidaConceptoGastoRepository->findBy(['fichaSalida' => $fichaSalida->getId()]);
+        try {
+            $form = $this->createForm(FichaSalidaType::class, $fichaSalida, ['action' => 'modificar']);
+            $form->handleRequest($request);
+            $allPost = $request->request->all();
+            $conceptoGastosAsociados = $fichaSalidaConceptoGastoRepository->findBy(['fichaSalida' => $fichaSalida->getId()]);
 
-        if ($form->isSubmitted()/* && $form->isValid()*/) {
-            $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaPrevista']);
-            $fichaSalida->setFechaSalidaPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+            if ($form->isSubmitted()/* && $form->isValid()*/) {
+                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaPrevista']);
+                $fichaSalida->setFechaSalidaPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
 //                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaReal']);
 //                $fichaSalida->setFechaSalidaReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-            $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoPrevista']);
-            $fichaSalida->setFechaRegresoPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoPrevista']);
+                $fichaSalida->setFechaRegresoPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
 //                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoReal']);
 //                $fichaSalida->setFechaRegresoReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-            $temp = explode('/', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']);
-            $fichaSalida->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+                $temp = explode('/', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']);
+                $fichaSalida->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-            $temp = explode('/', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']);
-            $fichaSalida->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+                $temp = explode('/', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']);
+                $fichaSalida->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
+                if (!empty($_FILES['ficha_salida']['name']['cartaInvitacion'])) {
+                    if ($fichaSalida->getCartaInvitacion() != null) {
+                        if (file_exists('uploads/tramites/ficha_salida/carta_invitacion/' . $fichaSalida->getCartaInvitacion())) {
+                            unlink('uploads/tramites/ficha_salida/carta_invitacion/' . $fichaSalida->getCartaInvitacion());
+                        }
+                    }
+                    $file = $form['cartaInvitacion']->getData();
+                    $file_name = $_FILES['ficha_salida']['name']['cartaInvitacion'];
+                    $fichaSalida->setCartaInvitacion($file_name);
+                    $file->move("uploads/tramites/ficha_salida/carta_invitacion", $file_name);
+                }
 
+                foreach ($conceptoGastosAsociados as $value) {
+                    $fichaSalidaConceptoGastoRepository->remove($value, true);
+                }
+
+                foreach ($allPost['ficha_salida']['conceptoGasto'] as $value) {
+                    $conceptoGasto = new FichaSalidaConceptoGasto();
+                    $conceptoGasto->setFichaSalida($fichaSalida);
+                    $conceptoGasto->setConceptoGasto($conceptoGastoRepository->find($value));
+                    $fichaSalidaConceptoGastoRepository->add($conceptoGasto, true);
+                }
+
+                $fichaSalidaRepository->edit($fichaSalida);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $conceptos = [];
             foreach ($conceptoGastosAsociados as $value) {
-                $fichaSalidaConceptoGastoRepository->remove($value, true);
+                $conceptos[] = $value->getConceptoGasto()->getId();
             }
-
-            foreach ($allPost['ficha_salida']['conceptoGasto'] as $value) {
-                $conceptoGasto = new FichaSalidaConceptoGasto();
-                $conceptoGasto->setFichaSalida($fichaSalida);
-                $conceptoGasto->setConceptoGasto($conceptoGastoRepository->find($value));
-                $fichaSalidaConceptoGastoRepository->add($conceptoGasto, true);
-            }
-
-            $fichaSalidaRepository->edit($fichaSalida);
-            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-            return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+            return $this->render('modules/tramite/ficha_salida/edit.html.twig', [
+                'form' => $form->createView(),
+                'fichaSalida' => $fichaSalida,
+                'persona' => $fichaSalida->getPersona(),
+                'conceptoGastosAsociados' => json_encode($conceptos)
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_ficha_salida_modificar', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
         }
-        $conceptos = [];
-        foreach ($conceptoGastosAsociados as $value) {
-            $conceptos[] = $value->getConceptoGasto()->getId();
-        }
-        return $this->render('modules/tramite/ficha_salida/edit.html.twig', [
-            'form' => $form->createView(),
-            'fichaSalida' => $fichaSalida,
-            'persona' => $fichaSalida->getPersona(),
-            'conceptoGastosAsociados' => json_encode($conceptos)
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_ficha_salida_modificar', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
-//        }
     }
 
 

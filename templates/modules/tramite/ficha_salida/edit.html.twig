@@ -129,17 +129,25 @@
                         {{ form_errors(form.fechaCaducidadPasaporte) }}
                     </div>
                 </div>
-
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.requiereVisa) }}#}
-{#                    {{ form_widget(form.requiereVisa) }}#}
-{#                    {{ form_errors(form.requiereVisa) }}#}
-{#                </div>#}
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.aprobadoFactoresIes) }}#}
-{#                    {{ form_widget(form.aprobadoFactoresIes) }}#}
-{#                    {{ form_errors(form.aprobadoFactoresIes) }}#}
-{#                </div>#}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.cartaInvitacion) }}
+                    {{ form_widget(form.cartaInvitacion) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.cartaInvitacion) }}
+                    <a target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/ficha_salida/carta_invitacion/{{ fichaSalida.cartaInvitacion }}">{{ fichaSalida.cartaInvitacion }}</a>
+                </div>
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.requiereVisa) }} #}
+                {#                    {{ form_widget(form.requiereVisa) }} #}
+                {#                    {{ form_errors(form.requiereVisa) }} #}
+                {#                </div> #}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.aprobadoFactoresIes) }} #}
+                {#                    {{ form_widget(form.aprobadoFactoresIes) }} #}
+                {#                    {{ form_errors(form.aprobadoFactoresIes) }} #}
+                {#                </div> #}
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -153,6 +161,11 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('#ficha_salida_cartaInvitacion').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+
         $('#ficha_salida_fechaSalidaPrevista').val('{{ fichaSalida.fechaSalidaPrevista | date('d-m-Y') }}');
         $('#ficha_salida_fechaRegresoPrevista').val('{{ fichaSalida.fechaRegresoPrevista | date('d-m-Y') }}');
         {# $('#ficha_salida_fechaSalidaReal').val('{{ fichaSalida.fechaSalidaReal | date('d-m-Y') }}'); #}

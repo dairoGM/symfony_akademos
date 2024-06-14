@@ -11,7 +11,8 @@
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
                 <h3 class="card-title text-bold text-gray">Listado de estados de salida</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estado_ficha_salida_registrar') }}"><i
+                <a title="Adicionar" class="btn btn-primary mr-2"
+                   href="{{ path('app_estado_ficha_salida_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -25,6 +26,7 @@
                     <th>No.</th>
                     <th>Nombre</th>
                     <th>Estado</th>
+                    <th>Estado para documento de salida</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -38,6 +40,13 @@
                                 <span class="ms-status -active">Habilitado</span>
                             {% else %}
                                 <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
+                        <td width="15%" class="-text-center">
+                            {% if '1' == item.documentoSalida %}
+                                <center><span align="center" class="ms-status -active">Si</span></center>
+                            {% else %}
+                                <center><span align="center" class="ms-status">No</span></center>
                             {% endif %}
                         </td>
                         <td width="15%" class="text-center">
