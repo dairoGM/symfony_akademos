@@ -6,13 +6,16 @@ use App\Entity\Personal\Persona;
 use App\Entity\Tramite\ConceptoSalida;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
+use App\Entity\Tramite\FichaSalidaConceptoGasto;
 use App\Entity\Tramite\FichaSalidaEstado;
 use App\Form\Tramite\CambioEstadoSalidaType;
 use App\Form\Tramite\ConceptoSalidaType;
 use App\Form\Tramite\FichaSalidaType;
+use App\Repository\Economia\ConceptoGastoRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
+use App\Repository\Tramite\FichaSalidaConceptoGastoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
@@ -53,7 +56,7 @@ class FichaSalidaController extends AbstractController
         }
         return $this->render('modules/tramite/ficha_salida/index.html.twig', [
             'registros' => $fichaSalidaRepository->findBy($filtros, ['id' => 'desc']),
-            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['id'=>'asc']),
+            'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true], ['id' => 'asc']),
             'fil_estado' => $request->getSession()->get('ficha_salida_fil_estado'),
             'text_fil' => $request->getSession()->has('ficha_salida_text_fil_estado') ? " (Estado=" . $request->getSession()->get('ficha_salida_text_fil_estado') . ")" : null,
         ]);
@@ -92,13 +95,14 @@ class FichaSalidaController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function registrarV2(Request $request, Persona $persona, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository)
+    public function registrarV2(Request $request, Persona $persona, ConceptoGastoRepository $conceptoGastoRepository, FichaSalidaConceptoGastoRepository $fichaSalidaConceptoGastoRepository, FichaSalidaRepository $fichaSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository)
     {
         try {
             $entidad = new FichaSalida();
             $form = $this->createForm(FichaSalidaType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $allPost = $request->request->all();
                 $entidad->setPersona($persona);
 
                 if (!empty($request->request->all()['ficha_salida']['fechaSalidaPrevista'])) {
@@ -129,6 +133,13 @@ class FichaSalidaController extends AbstractController
                 $fichaSalidaEstado->setDescripcion('Creada');
                 $fichaSalidaEstadoRepository->add($fichaSalidaEstado, true);
 
+                foreach ($allPost['ficha_salida']['conceptoGasto'] as $value) {
+                    $conceptoGasto = new FichaSalidaConceptoGasto();
+                    $conceptoGasto->setFichaSalida($entidad);
+                    $conceptoGasto->setConceptoGasto($conceptoGastoRepository->find($value));
+                    $fichaSalidaConceptoGastoRepository->add($conceptoGasto, true);
+                }
+
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -147,50 +158,69 @@ class FichaSalidaController extends AbstractController
     /**
      * @Route("/{id}/modificar", name="app_ficha_salida_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param User $fichaSalida
+     * @param FichaSalida $fichaSalida
      * @param fichaSalidaRepository $fichaSalidaRepository
+     * @param ConceptoGastoRepository $conceptoGastoRepository
+     * @param FichaSalidaConceptoGastoRepository $fichaSalidaConceptoGastoRepository
      * @return Response
      */
-    public function modificar(Request $request, FichaSalida $fichaSalida, FichaSalidaRepository $fichaSalidaRepository)
+    public function modificar(Request $request, FichaSalida $fichaSalida, FichaSalidaRepository $fichaSalidaRepository, ConceptoGastoRepository $conceptoGastoRepository, FichaSalidaConceptoGastoRepository $fichaSalidaConceptoGastoRepository)
     {
-        try {
-            $form = $this->createForm(FichaSalidaType::class, $fichaSalida, ['action' => 'modificar']);
-            $form->handleRequest($request);
+//        try {
+        $form = $this->createForm(FichaSalidaType::class, $fichaSalida, ['action' => 'modificar']);
+        $form->handleRequest($request);
+        $allPost = $request->request->all();
+        $conceptoGastosAsociados = $fichaSalidaConceptoGastoRepository->findBy(['fichaSalida' => $fichaSalida->getId()]);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaPrevista']);
-                $fichaSalida->setFechaSalidaPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+        if ($form->isSubmitted()/* && $form->isValid()*/) {
+            $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaPrevista']);
+            $fichaSalida->setFechaSalidaPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaReal']);
-                $fichaSalida->setFechaSalidaReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+//                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaReal']);
+//                $fichaSalida->setFechaSalidaReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoPrevista']);
-                $fichaSalida->setFechaRegresoPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+            $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoPrevista']);
+            $fichaSalida->setFechaRegresoPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoReal']);
-                $fichaSalida->setFechaRegresoReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+//                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoReal']);
+//                $fichaSalida->setFechaRegresoReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']);
-                $fichaSalida->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+            $temp = explode('/', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']);
+            $fichaSalida->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $temp = explode('/', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']);
-                $fichaSalida->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+            $temp = explode('/', $request->request->all()['ficha_salida']['fechaCaducidadPasaporte']);
+            $fichaSalida->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
 
-                $fichaSalidaRepository->edit($fichaSalida);
-                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+            foreach ($conceptoGastosAsociados as $value) {
+                $fichaSalidaConceptoGastoRepository->remove($value, true);
             }
 
-            return $this->render('modules/tramite/ficha_salida/edit.html.twig', [
-                'form' => $form->createView(),
-                'fichaSalida' => $fichaSalida,
-                'persona' => $fichaSalida->getPersona()
-            ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_ficha_salida_modificar', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
+            foreach ($allPost['ficha_salida']['conceptoGasto'] as $value) {
+                $conceptoGasto = new FichaSalidaConceptoGasto();
+                $conceptoGasto->setFichaSalida($fichaSalida);
+                $conceptoGasto->setConceptoGasto($conceptoGastoRepository->find($value));
+                $fichaSalidaConceptoGastoRepository->add($conceptoGasto, true);
+            }
+
+            $fichaSalidaRepository->edit($fichaSalida);
+            $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+            return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
         }
+        $conceptos = [];
+        foreach ($conceptoGastosAsociados as $value) {
+            $conceptos[] = $value->getConceptoGasto()->getId();
+        }
+        return $this->render('modules/tramite/ficha_salida/edit.html.twig', [
+            'form' => $form->createView(),
+            'fichaSalida' => $fichaSalida,
+            'persona' => $fichaSalida->getPersona(),
+            'conceptoGastosAsociados' => json_encode($conceptos)
+        ]);
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_ficha_salida_modificar', ['id' => $fichaSalida], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 

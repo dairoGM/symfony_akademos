@@ -43,6 +43,11 @@
                     {{ form_widget(form.conceptoSalida) }}
                     {{ form_errors(form.conceptoSalida) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.conceptoGasto) }}
+                    {{ form_widget(form.conceptoGasto) }}
+                    {{ form_errors(form.conceptoGasto) }}
+                </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.Objetivo) }}
                     {{ form_widget(form.Objetivo) }}
@@ -126,16 +131,16 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.requiereVisa) }}
-                    {{ form_widget(form.requiereVisa) }}
-                    {{ form_errors(form.requiereVisa) }}
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.aprobadoFactoresIes) }}
-                    {{ form_widget(form.aprobadoFactoresIes) }}
-                    {{ form_errors(form.aprobadoFactoresIes) }}
-                </div>
+{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
+{#                    {{ form_label(form.requiereVisa) }}#}
+{#                    {{ form_widget(form.requiereVisa) }}#}
+{#                    {{ form_errors(form.requiereVisa) }}#}
+{#                </div>#}
+{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
+{#                    {{ form_label(form.aprobadoFactoresIes) }}#}
+{#                    {{ form_widget(form.aprobadoFactoresIes) }}#}
+{#                    {{ form_errors(form.aprobadoFactoresIes) }}#}
+{#                </div>#}
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">

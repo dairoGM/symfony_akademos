@@ -2,6 +2,7 @@
 
 namespace App\Form\Tramite;
 
+use App\Entity\Economia\ConceptoGasto;
 use App\Entity\Estructura\Pais;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Tramite\ConceptoSalida;
@@ -68,6 +69,18 @@ class FichaSalidaType extends AbstractType
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+            ])
+            ->add('conceptoGasto', EntityType::class, [
+                'class' => ConceptoGasto::class,
+                'label' => 'Concepto de gasto',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'mapped' => false,
+                'multiple' => true,
             ])
             ->add('Objetivo', TextareaType::class, [
                 'required' => false,
@@ -141,15 +154,15 @@ class FichaSalidaType extends AbstractType
                 'attr' => [
                     'class' => 'date-time-picker'
                 ]
-            ])
-            ->add('requiereVisa', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Requiere visa'
-            ])
-            ->add('aprobadoFactoresIes', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Aprobado por los factores en la IES'
             ]);
+//            ->add('requiereVisa', CheckboxType::class, [
+//                'required' => false,
+//                'label' => 'Requiere visa'
+//            ])
+//            ->add('aprobadoFactoresIes', CheckboxType::class, [
+//                'required' => false,
+//                'label' => 'Aprobado por los factores en la IES'
+//            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

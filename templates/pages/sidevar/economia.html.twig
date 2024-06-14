@@ -6,7 +6,6 @@
              with font-awesome or any other icon font library -->
 
 
-
         {% if hasRoles('ROLE_GEST_INSTIT') %}
             <li class="nav-item">
                 <a href="#"
@@ -38,10 +37,9 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-
-                    {% if hasRoles('ROLE_GEST_CATACRED') %}
+                    {% if hasRoles('ROLE_GEST_CONCEPTO_GASTO') %}
                         <li class="nav-item">
-                            <a href="{{ path('app_categoria_acreditacion_index') }}"
+                            <a href="{{ path('app_concepto_gasto_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Conceptos de gastos</p>
                             </a>
