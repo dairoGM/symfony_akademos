@@ -50,7 +50,7 @@
                 {% endif %}
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') or hasRoles('ROLE_GEST_INST_EXTRANJERA') or hasRoles('ROLE_GEST_CONCEPTO_SALIDA') %}
+        {% if hasRoles('ROLE_GEST_TIPO_PASAPORTE') or hasRoles('ROLE_GEST_INST_EXTRANJERA') or hasRoles('ROLE_GEST_CONCEPTO_SALIDA')  or hasRoles('ROLE_GEST_TRAMITE') or hasRoles('ROLE_GEST_PLAN_MISION') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -96,6 +96,14 @@
                             <a href="{{ path('app_institucion_extranjera_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Instituciones extranjeras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TRAMITE') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tramite_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Trámites</p>
                             </a>
                         </li>
                     {% endif %}
