@@ -281,7 +281,15 @@ class FichaSalidaController extends AbstractController
     {
         try {
             $entidad = new FichaSalidaEstado();
-            $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar', 'estadoActual' => $fichaSalida->getEstadoFichaSalida()->getId()]);
+            $estadoFinal = 1;
+            $estadoActual = $fichaSalida->getEstadoFichaSalida()->getId();
+            if ($estadoActual == 1) {
+                $estadoFinal = 2;
+            }
+            if ($estadoActual == 2) {
+                $estadoFinal = 3;
+            }
+            $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar', 'estadoActual' => $estadoActual, 'estadoFinal' => $estadoFinal]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
