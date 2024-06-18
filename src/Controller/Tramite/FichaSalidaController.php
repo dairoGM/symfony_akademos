@@ -5,6 +5,7 @@ namespace App\Controller\Tramite;
 use App\Entity\Personal\Persona;
 use App\Entity\Tramite\ConceptoSalida;
 use App\Entity\Tramite\DocumentoSalida;
+use App\Entity\Tramite\DocumentoSalidaTramite;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
 use App\Entity\Tramite\FichaSalidaConceptoGasto;
@@ -16,11 +17,13 @@ use App\Repository\Economia\ConceptoGastoRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
 use App\Repository\Tramite\DocumentoSalidaRepository;
+use App\Repository\Tramite\DocumentoSalidaTramiteRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaConceptoGastoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
+use App\Repository\Tramite\TramiteRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -277,7 +280,7 @@ class FichaSalidaController extends AbstractController
      * @param FichaSalidaEstadoRepository $fichaSalidaEstadoRepository
      * @return Response
      */
-    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
+    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, TramiteRepository $tramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
     {
         try {
             $entidad = new FichaSalidaEstado();
@@ -304,10 +307,10 @@ class FichaSalidaController extends AbstractController
                     $documentoSalida->setFichaSalida($fichaSalida);
                     $documentoSalida->setConceptoSalida($fichaSalida->getConceptoSalida());
                     $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_revision')));
-                    $documentoSalida->setFechaSalidaReal($fichaSalida->getFechaSalidaReal());
                     $documentoSalida->setPais($fichaSalida->getPais());
                     $documentoSalida->setCartaInvitacion($fichaSalida->getCartaInvitacion());
-                    $documentoSalida->setNumeroPasaporte($fichaSalida->getNumeroPasaporte());
+                    $pasaporte = $fichaSalida->getNumeroPasaporte();
+                    $documentoSalida->setNumeroPasaporte($pasaporte);
                     $documentoSalida->setTipoPasaporte($fichaSalida->getTipoPasaporte());
                     $documentoSalida->setFechaCaducidadPasaporte($fichaSalida->getFechaCaducidadPasaporte());
                     $documentoSalida->setFechaEmisionPasaporte($fichaSalida->getFechaEmisionPasaporte());
@@ -319,6 +322,13 @@ class FichaSalidaController extends AbstractController
                     $documentoSalida->setTiempoEstancia($fichaSalida->getTiempoEstancia());
                     $documentoSalida->setPersona($fichaSalida->getPersona());
                     $documentoSalidaRepository->add($documentoSalida, true);
+
+                    if (empty($pasaporte)) {
+                        $tramites = new DocumentoSalidaTramite();
+                        $tramites->setDocumentoSalida($documentoSalida);
+                        $tramites->setTramite($tramiteRepository->find($this->getParameter('tramite_confeccion_pasaporte')));
+                        $documentoSalidaTramiteRepository->add($tramites, true);
+                    }
                 }
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
