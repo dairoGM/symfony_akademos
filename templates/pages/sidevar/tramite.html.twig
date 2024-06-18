@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_PLAN_MISION') or hasRoles('ROLE_GEST_FICHA_SALIDA') %}
+        {% if hasRoles('ROLE_GEST_PLAN_MISION') or hasRoles('ROLE_GEST_FICHA_SALIDA') or hasRoles('ROLE_GEST_DOCUMENTO_SALIDA') or hasRoles('ROLE_GEST_FICHA_SALIDA') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -17,7 +17,7 @@
                     </p>
                 </a>
 
-                {% if hasRoles('ROLE_GEST_FICHA_SALIDA') %}
+                {% if hasRoles('ROLE_GEST_PLAN_MISION') %}
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ path('app_plan_mision_detalles_index') }}"
@@ -44,6 +44,16 @@
                             <a href="{{ path('app_documento_salida_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Documentos de salida</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% if hasRoles('ROLE_GEST_PASAPORTE') %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_pasaporte_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Pasaportes</p>
                             </a>
                         </li>
                     </ul>

@@ -10,6 +10,7 @@ use App\Entity\Tramite\FichaSalida;
 use App\Entity\Security\User;
 use App\Entity\Tramite\FichaSalidaConceptoGasto;
 use App\Entity\Tramite\FichaSalidaEstado;
+use App\Entity\Tramite\Pasaporte;
 use App\Form\Tramite\CambioEstadoSalidaType;
 use App\Form\Tramite\ConceptoSalidaType;
 use App\Form\Tramite\FichaSalidaType;
@@ -23,6 +24,7 @@ use App\Repository\Tramite\FichaSalidaConceptoGastoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoEstadoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
+use App\Repository\Tramite\PasaporteRepository;
 use App\Repository\Tramite\TramiteRepository;
 use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -280,7 +282,7 @@ class FichaSalidaController extends AbstractController
      * @param FichaSalidaEstadoRepository $fichaSalidaEstadoRepository
      * @return Response
      */
-    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, TramiteRepository $tramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
+    public function cambiarEstado(Request $request, FichaSalida $fichaSalida, PasaporteRepository $pasaporteRepository, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, TramiteRepository $tramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository, FichaSalidaEstadoRepository $fichaSalidaEstadoRepository, FichaSalidaRepository $fichaSalidaRepository)
     {
         try {
             $entidad = new FichaSalidaEstado();
@@ -328,6 +330,10 @@ class FichaSalidaController extends AbstractController
                         $tramites->setDocumentoSalida($documentoSalida);
                         $tramites->setTramite($tramiteRepository->find($this->getParameter('tramite_confeccion_pasaporte')));
                         $documentoSalidaTramiteRepository->add($tramites, true);
+
+                        $solicitudPasaporte = new Pasaporte();
+                        $solicitudPasaporte->setPersona($documentoSalida->getPersona());
+                        $pasaporteRepository->add($solicitudPasaporte, true);
                     }
                 }
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');

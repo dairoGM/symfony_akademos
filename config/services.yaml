@@ -57,7 +57,6 @@ parameters:
     estado_salida_viajando: '%env(estado_salida_viajando)%'
     estado_salida_finalizada: '%env(estado_salida_finalizada)%'
 
-
     tramite_confeccion_pasaporte: '%env(tramite_confeccion_pasaporte)%'
 
 

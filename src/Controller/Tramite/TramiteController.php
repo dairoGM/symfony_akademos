@@ -40,7 +40,7 @@ class TramiteController extends AbstractController
     public function registrar(Request $request, TramiteRepository $tramiteRepository)
     {
         try {
-            $entidad = new tramite();
+            $entidad = new Tramite();
             $form = $this->createForm(TramiteType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {

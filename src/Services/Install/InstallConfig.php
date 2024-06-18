@@ -256,6 +256,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TRAMITE", "Gestión de trámites", "Gestión de trámites");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_FICHA_SALIDA", "Gestión de ficha de salida", "Gestión de ficha de salida");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_DOCUMENTO_SALIDA", "Gestión de documento de salida", "Gestión de documento de salida");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PASAPORTE", "Gestión pasaportes", "Gestión de pasaportes");
 
         return $functionalities;
     }
