@@ -249,9 +249,31 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_HOME_TRAMITES", "Portada de Trámites", "Portada de Trámites");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TIPO_PASAPORTE", "Gestión de tipos de pasaportes", "Gestión de tipos de pasaportes");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION", "Gestión de planes de misión", "Gestión de planes de misión");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION_DETALLES", "Listado de personas en plan de misión", "Listado de personas en plan de misión");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_CONCEPTO_SALIDA", "Gestión de conceptos de salida", "Gestión de conceptos de salida");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_ESTADO_SALIDA", "Gestión de estados de salida", "Gestión de estados de salida");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TRAMITE", "Gestión de trámites", "Gestión de trámites");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_FICHA_SALIDA", "Gestión de ficha de salida", "Gestión de ficha de salida");
+        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_DOCUMENTO_SALIDA", "Gestión de documento de salida", "Gestión de documento de salida");
+
+        return $functionalities;
+    }
+
+    /**
+     * Define una Lista de Funcionalidades para Economia
+     *
+     * For create one -> Functionality::createFunctionality("ROLE_MODULO_ESTRUCTURA", "Módulo de Economia")
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForEconomia(): array
+    {
+        $functionalities = array();
+
+        //Economia
+        $functionalities[] = Functionality::createFunctionality("MODULE_ECONOMIA", "ROLE_HOME_ECONOMIA", "Portada de Economía", "Portada de Economía");
+        $functionalities[] = Functionality::createFunctionality("MODULE_ECONOMIA", "ROLE_GEST_CONCEPTO_GASTO", "Gestión de concepto de gasto", "Gestión de concepto de gasto");
 
         return $functionalities;
     }
@@ -417,10 +439,19 @@ class InstallConfig
 //            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_TRAMITES")
             ->addFunctionality("ROLE_GEST_PLAN_MISION")
+            ->addFunctionality("ROLE_GEST_PLAN_MISION_DETALLES")
             ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
             ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
             ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA")
-            ->addFunctionality("ROLE_GEST_FICHA_SALIDA");
+            ->addFunctionality("ROLE_GEST_FICHA_SALIDA")
+            ->addFunctionality("ROLE_GEST_DOCUMENTO_SALIDA")
+            ->addFunctionality("ROLE_GEST_TRAMITE");
+
+
+        $roles[] = Role::createRole('ROL_ECONOMIA', "Administrador de Economía", "Rol con permiso a la gestion de Economía", "")
+            ->addFunctionality("ROLE_HOME_ECONOMIA")
+            ->addFunctionality("ROLE_GEST_CONCEPTO_GASTO");
+
         return $roles;
     }
 }

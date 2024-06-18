@@ -66,6 +66,10 @@ class InstallFuntionalityService implements InstallFunctionalityInterface
         //Tramites
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForTramites());
 
+
+        //Economia
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForEconomia());
+
         return $functionalities;
     }
 

@@ -1,0 +1,70 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar fecha de salida y regreso{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar fecha de salida y regreso</h3>
+
+            </div>
+        </div>
+        {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaSalidaReal) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaSalidaReal) }}
+                        {{ form_errors(form.fechaSalidaReal) }}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaRegresoReal) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaRegresoReal) }}
+                        {{ form_errors(form.fechaRegresoReal) }}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_documento_salida_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_submit" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#asignar_fecha_salida_fechaSalidaReal').val('{{ documentoSalida.fechaSalidaReal | date('d-m-Y') }}');
+        $('#asignar_fecha_salida_fechaRegresoReal').val('{{ documentoSalida.fechaRegresoReal | date('d-m-Y') }}');
+
+        $('#asignar_fecha_salida_fechaSalidaReal, #asignar_fecha_salida_fechaRegresoReal').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#btn_submit').click(function (e) {
+            e.preventDefault();
+
+            $('form[name="asignar_fecha_salida"]').attr('action', 'asignar_fecha_salida_regreso');
+            $('form[name="asignar_fecha_salida"]').submit();
+        })
+
+    </script>
+{% endblock %}

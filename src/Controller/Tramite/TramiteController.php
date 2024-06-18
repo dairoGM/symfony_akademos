@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/tramite/tramite")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_INST_EXTRANJERA")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_TRAMITE")
  */
 class TramiteController extends AbstractController
 {

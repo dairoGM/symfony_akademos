@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/economia/portada")
- * @IsGranted("ROLE_ADMIN", "ROLE_HOME_INSTIT")
+ * @IsGranted("ROLE_ADMIN", "ROLE_HOME_ECONOMIA")
  */
 class PortadaController extends AbstractController
 {

@@ -66,26 +66,22 @@ class DocumentoSalida extends BaseEntity
 
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaSalidaPrevista;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaRegresoPrevista;
 
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaSalidaReal;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaRegresoReal;
@@ -109,12 +105,10 @@ class DocumentoSalida extends BaseEntity
     private ?string $numeroPasaporte;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaEmisionPasaporte;
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaCaducidadPasaporte;
@@ -132,7 +126,7 @@ class DocumentoSalida extends BaseEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Tramite\EstadoFichaSalida")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?EstadoFichaSalida $estadoFichaSalida;
+    private ?EstadoFichaSalida $estadoDocumentoSalida;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -430,17 +424,17 @@ class DocumentoSalida extends BaseEntity
     /**
      * @return EstadoFichaSalida|null
      */
-    public function getEstadoFichaSalida(): ?EstadoFichaSalida
+    public function getEstadoDocumentoSalida(): ?EstadoFichaSalida
     {
-        return $this->estadoFichaSalida;
+        return $this->estadoDocumentoSalida;
     }
 
     /**
-     * @param EstadoFichaSalida|null $estadoFichaSalida
+     * @param EstadoFichaSalida|null $estadoDocumentoSalida
      */
-    public function setEstadoFichaSalida(?EstadoFichaSalida $estadoFichaSalida): void
+    public function setEstadoDocumentoSalida(?EstadoFichaSalida $estadoDocumentoSalida): void
     {
-        $this->estadoFichaSalida = $estadoFichaSalida;
+        $this->estadoDocumentoSalida = $estadoDocumentoSalida;
     }
 
     /**

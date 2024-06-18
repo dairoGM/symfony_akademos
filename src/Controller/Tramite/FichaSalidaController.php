@@ -110,14 +110,8 @@ class FichaSalidaController extends AbstractController
                 if (!empty($request->request->all()['ficha_salida']['fechaSalidaPrevista'])) {
                     $entidad->setFechaSalidaPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaPrevista']));
                 }
-                if (!empty($request->request->all()['ficha_salida']['fechaSalidaReal'])) {
-                    $entidad->setFechaSalidaReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaSalidaReal']));
-                }
                 if (!empty($request->request->all()['ficha_salida']['fechaRegresoPrevista'])) {
                     $entidad->setFechaRegresoPrevista(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoPrevista']));
-                }
-                if (!empty($request->request->all()['ficha_salida']['fechaRegresoReal'])) {
-                    $entidad->setFechaRegresoReal(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaRegresoReal']));
                 }
                 if (!empty($request->request->all()['ficha_salida']['fechaEmisionPasaporte'])) {
                     $entidad->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']));
@@ -186,14 +180,8 @@ class FichaSalidaController extends AbstractController
                 $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaPrevista']);
                 $fichaSalida->setFechaSalidaPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-//                $temp = explode('/', $request->request->all()['ficha_salida']['fechaSalidaReal']);
-//                $fichaSalida->setFechaSalidaReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
-
                 $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoPrevista']);
                 $fichaSalida->setFechaRegresoPrevista(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
-
-//                $temp = explode('/', $request->request->all()['ficha_salida']['fechaRegresoReal']);
-//                $fichaSalida->setFechaRegresoReal(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
                 $temp = explode('/', $request->request->all()['ficha_salida']['fechaEmisionPasaporte']);
                 $fichaSalida->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
@@ -307,7 +295,7 @@ class FichaSalidaController extends AbstractController
                     $documentoSalida = new DocumentoSalida();
                     $documentoSalida->setFichaSalida($fichaSalida);
                     $documentoSalida->setConceptoSalida($fichaSalida->getConceptoSalida());
-                    $documentoSalida->setEstadoFichaSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_revision')));
+                    $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_revision')));
                     $documentoSalida->setFechaSalidaReal($fichaSalida->getFechaSalidaReal());
                     $documentoSalida->setPais($fichaSalida->getPais());
                     $documentoSalida->setCartaInvitacion($fichaSalida->getCartaInvitacion());

@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/tramite/estado_ficha_salida")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_CONCEPTO_SALIDA")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTADO_SALIDA")
  */
 class EstadoFichaSalidaController extends AbstractController
 {

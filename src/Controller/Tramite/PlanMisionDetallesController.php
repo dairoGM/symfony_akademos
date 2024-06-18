@@ -22,7 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/tramite/plan_mision_detalles")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PLAN_MISION")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PLAN_MISION_DETALLES")
  */
 class PlanMisionDetallesController extends AbstractController
 {

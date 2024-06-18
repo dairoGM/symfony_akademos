@@ -86,27 +86,40 @@
                         <td>{{ item.pais.nombre | default('') }}</td>
                         <td>{{ item.fechaSalidaPrevista | date('d/m/Y') }}</td>
                         <td>{{ item.tiempoEstancia | default('') }}</td>
-                        <td>{{ item.estadoFichaSalida.nombre | default('') }}</td>
+                        <td>{{ item.estadoDocumentoSalida.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
-                            {#                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction" #}
-                            {#                                    data-url="{{ path('app_ficha_salida_detail', {'id' : item.id}) }}" #}
-                            {#                                    data-title="Detalles de la ficha de salida"> #}
-                            {#                                <i class="fa fa-eye "></i> #}
-                            {#                            </button> #}
-
-                            {% if item.estadoFichaSalida.id != 2 %}
-                                <a title="Modificar" href="{{ path('app_ficha_salida_modificar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-edit"></i>
-                                </a>
-                                <a title="Cambiar de estado"
-                                   href="{{ path('app_ficha_salida_cambiar_estado', {'id': item.id}) }}"
+                            {% if item.estadoDocumentoSalida.id == 4 %}{# Revisión por el especialista DRI #}
+                                <a title="Asignar trámites"
+                                   href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-address-book"></i>
                                 </a>
-                                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                        data-url="{{ path('app_ficha_salida_eliminar', {'id': item.id}) }}">
-                                    <i class="fa fa-trash"></i>
+                            {% endif %}
+                            {% if item.estadoDocumentoSalida.id == 5 %}{# Firmado por directivo DRI #}
+                                <a title="Asignar trámites"
+                                   href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-address-book"></i>
+                                </a>
+
+                                <button title="Enviar a trámites " class="btn btn-outline-primary elementRemove"
+                                        data-url="{{ path('app_documento_salida_enviarA_tramite', {'id': item.id}) }}">
+                                    <i class="fa fa-hammer"></i>
+                                </button>
+                            {% endif %}
+
+                            {% if item.estadoDocumentoSalida.id == 6 %} {# En tramite #}
+                                <a title="Definir fechas de salida y regreso"
+                                   href="{{ path('app_documento_salida_asignar_fecha_salida_regreso', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-plane-departure"></i>
+                                </a>
+                            {% endif %}
+
+                            {% if item.estadoDocumentoSalida.id == 7 %} {# Viajando #}
+                                <button title="Finalizar salida " class="btn btn-outline-primary elementRemove"
+                                        data-url="{{ path('app_documento_salida_finalizar_salida', {'id': item.id}) }}">
+                                    <i class="fa fa-plane-arrival"></i>
                                 </button>
                             {% endif %}
                         </td>
@@ -134,7 +147,7 @@
                 message: 'Por favor espere...',
                 textColor: "white"
             });
-            $.post("{{ path('app_ficha_salida_index') }}",
+            $.post("{{ path('app_documento_salida_index') }}",
                 {
                     estado: estado
                 },

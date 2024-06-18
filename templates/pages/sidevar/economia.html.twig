@@ -6,27 +6,27 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_INSTIT') %}
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link nav-link-menu">
-                    <i class="nav-icon fa fa-university"></i>
-                    <p>
-                        Economía
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ path('app_institucion_index') }}"
-                           class="nav-link nav-link-menu">
-                            <p>IES</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        {% endif %}
-        {% if hasRoles('ROLE_GEST_TIPINST') or hasRoles('ROLE_GEST_CATACRED') %}
+{#        {% if hasRoles('ROLE_HOME_ECONOMIA') %}#}
+{#            <li class="nav-item">#}
+{#                <a href="#"#}
+{#                   class="nav-link nav-link-menu">#}
+{#                    <i class="nav-icon fa fa-university"></i>#}
+{#                    <p>#}
+{#                        Economía#}
+{#                        <i class="right fas fa-angle-left"></i>#}
+{#                    </p>#}
+{#                </a>#}
+{#                <ul class="nav nav-treeview">#}
+{#                    <li class="nav-item">#}
+{#                        <a href="{{ path('app_institucion_index') }}"#}
+{#                           class="nav-link nav-link-menu">#}
+{#                            <p>IES</p>#}
+{#                        </a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        {% endif %}#}
+        {% if hasRoles('ROLE_GEST_CONCEPTO_GASTO')  %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">

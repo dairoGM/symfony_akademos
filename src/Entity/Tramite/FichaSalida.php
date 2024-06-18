@@ -60,26 +60,22 @@ class FichaSalida extends BaseEntity
 
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaSalidaPrevista;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaRegresoPrevista;
 
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaSalidaReal;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaRegresoReal;
@@ -103,12 +99,11 @@ class FichaSalida extends BaseEntity
     private ?string $numeroPasaporte;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaEmisionPasaporte;
+
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaCaducidadPasaporte;
