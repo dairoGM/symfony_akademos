@@ -128,7 +128,7 @@ class FichaSalidaType extends AbstractType
             ->add('tipoPasaporte', EntityType::class, [
                 'class' => TipoPasaporte::class,
                 'label' => 'Tipo de pasaporte',
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');

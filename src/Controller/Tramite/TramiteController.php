@@ -68,7 +68,7 @@ class TramiteController extends AbstractController
      */
     public function modificar(Request $request, Tramite $tramite, TramiteRepository $tramiteRepository)
     {
-        try {
+//        try {
             $form = $this->createForm(TramiteType::class, $tramite, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -81,10 +81,10 @@ class TramiteController extends AbstractController
             return $this->render('modules/tramite/tramite/edit.html.twig', [
                 'form' => $form->createView(),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_tramite_modificar', ['id' => $tramite], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_tramite_modificar', ['id' => $tramite], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 

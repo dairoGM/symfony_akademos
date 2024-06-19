@@ -333,6 +333,7 @@ class FichaSalidaController extends AbstractController
 
                         $solicitudPasaporte = new Pasaporte();
                         $solicitudPasaporte->setPersona($documentoSalida->getPersona());
+                        $solicitudPasaporte->setTipoPasaporte($documentoSalida->getTipoPasaporte());
                         $pasaporteRepository->add($solicitudPasaporte, true);
                     }
                 }

@@ -4,6 +4,7 @@ namespace App\Controller\Tramite;
 
 use App\Entity\Tramite\Pasaporte;
 use App\Entity\Security\User;
+use App\Form\Tramite\PasaporteType;
 use App\Form\Tramite\TramiteType;
 use App\Repository\Tramite\PasaporteRepository;
 use App\Repository\Tramite\TramiteRepository;
@@ -74,13 +75,21 @@ class PasaporteController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $temp = explode('/', $request->request->all()['pasaporte']['fechaEmisionPasaporte']);
+                $pasaporte->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+
+                $temp = explode('/', $request->request->all()['pasaporte']['fechaCaducidadPasaporte']);
+                $pasaporte->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+
                 $pasaporteRepository->edit($pasaporte);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_pasaporte_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('modules/pasaporte/pasaporte/edit.html.twig', [
+            return $this->render('modules/tramite/pasaporte/edit.html.twig', [
                 'form' => $form->createView(),
+                'pasaporte'=>$pasaporte
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
