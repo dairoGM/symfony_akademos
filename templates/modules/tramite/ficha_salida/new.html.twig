@@ -66,8 +66,7 @@
         {% endif %}
 
         {% if registros | length > 0 %}
-            {#            <section class="content"> #}
-            <br>
+        <div class="card-body">
             <table class="table table-bordered table-striped dataTable">
                 <thead class="table-custom-header">
                 <tr>
@@ -99,15 +98,15 @@
 
             </table>
             {#            </section> #}
-        {% else %}
-            <section class="content">
-                <br>
-                <br>
-                <br>
-                <br>
-            </section>
-        {% endif %}
-
+            {% else %}
+                <section class="content">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </section>
+            {% endif %}
+        </div>
 
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
 

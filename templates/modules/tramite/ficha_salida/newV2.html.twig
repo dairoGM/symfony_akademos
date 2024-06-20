@@ -13,7 +13,7 @@
             </div>
         </div>
         {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
-
+        <input type="hidden" name="idPersona" value="{{ persona.id }}" id="idPersona">
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
@@ -137,16 +137,16 @@
                           class="cargar-archivo"> </span>
                     {{ form_errors(form.cartaInvitacion) }}
                 </div>
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.requiereVisa) }}#}
-{#                    {{ form_widget(form.requiereVisa) }}#}
-{#                    {{ form_errors(form.requiereVisa) }}#}
-{#                </div>#}
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.aprobadoFactoresIes) }}#}
-{#                    {{ form_widget(form.aprobadoFactoresIes) }}#}
-{#                    {{ form_errors(form.aprobadoFactoresIes) }}#}
-{#                </div>#}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.requiereVisa) }} #}
+                {#                    {{ form_widget(form.requiereVisa) }} #}
+                {#                    {{ form_errors(form.requiereVisa) }} #}
+                {#                </div> #}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.aprobadoFactoresIes) }} #}
+                {#                    {{ form_widget(form.aprobadoFactoresIes) }} #}
+                {#                    {{ form_errors(form.aprobadoFactoresIes) }} #}
+                {#                </div> #}
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -192,6 +192,42 @@
                     $('#ficha_salida_institucionExtranjera').append(new Option('Seleccione', ""));
                     for (var i = 0; i < data.length; i++) {
                         $('#ficha_salida_institucionExtranjera').append(new Option(data[i].nombre, data[i].id));
+                    }
+                    HoldOn.close()
+                });
+            }
+        });
+        $('#ficha_salida_tipoPasaporte').on('change', function () {
+            if ($(this).val() != "") {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+
+                let url = "{{ path('app_pasaporte_get_pasaporte_dado_tipo', {'tipo':'idP', 'idPersona':'userP' }) }}";
+                url = url.replace('idP', $(this).val());
+                url = url.replace('userP', $('#idPersona').val());
+
+                $.get(url, function (data) {
+                    $('#ficha_salida_numeroPasaporte').val(null)
+                    $('#ficha_salida_fechaEmisionPasaporte').val('')
+                    $('#ficha_salida_fechaCaducidadPasaporte').val('')
+                    if (data.fechaEmisionPasaporte != undefined) {
+                        $('#ficha_salida_numeroPasaporte').val(data.numeroPasaporte)
+                        var date1 = data.fechaEmisionPasaporte.split('T');
+                        if (Array.isArray(date1)) {
+                            $temp = date1[0].split('-');
+                            var fecha = $temp[2] + '/' + $temp[1] + '/' + $temp[0];
+                            $('#ficha_salida_fechaEmisionPasaporte').val(fecha)
+                        }
+
+                        var date1 = data.fechaCaducidadPasaporte.split('T');
+                        if (Array.isArray(date1)) {
+                            $temp = date1[0].split('-');
+                            var fecha = $temp[2] + '/' + $temp[1] + '/' + $temp[0];
+                            $('#ficha_salida_fechaCaducidadPasaporte').val(fecha)
+                        }
                     }
                     HoldOn.close()
                 });

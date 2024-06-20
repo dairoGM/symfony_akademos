@@ -1,0 +1,79 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar pasaporte{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Adicionar pasaporte</h3>
+
+            </div>
+        </div>
+        {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        <input type="hidden" name="idPersona" value="{{ persona.id }}" id="idPersona">
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoPasaporte) }}
+                    {{ form_widget(form.tipoPasaporte) }}
+                    {{ form_errors(form.tipoPasaporte) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroPasaporte) }}
+                    {{ form_widget(form.numeroPasaporte) }}
+                    {{ form_errors(form.numeroPasaporte) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 2%">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaEmisionPasaporte) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaEmisionPasaporte) }}
+                        {{ form_errors(form.fechaEmisionPasaporte) }}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaCaducidadPasaporte) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaCaducidadPasaporte) }}
+                        {{ form_errors(form.fechaCaducidadPasaporte) }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_pasaporte_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#pasaporte_fechaEmisionPasaporte, #pasaporte_fechaCaducidadPasaporte').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#btn_aceptar').on('click', function (e) {
+            e.preventDefault();
+            $('form[name="pasaporte"]').attr('action', 'registrar-v2');
+            $('form[name="pasaporte"]').submit();
+        });
+    </script>
+{% endblock %}
