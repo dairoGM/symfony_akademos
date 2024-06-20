@@ -217,20 +217,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                 {% endif %}
 
-                {#MODULOS DE RI#}
-{#                {% if hasRoles('ROLE_HOME_PREGR') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_cooperacion_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'cooperacion' %} active {% endif %}">Cooperación</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {# MODULOS DE RI #}
+                {#                {% if hasRoles('ROLE_HOME_PREGR') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_cooperacion_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'cooperacion' %} active {% endif %}">Cooperación</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
 
-{#                {% if hasRoles('ROLE_HOME_PREGR') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_visita_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'visita' %} active {% endif %}">Visitas</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_PREGR') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_visita_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'visita' %} active {% endif %}">Visitas</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
 
                 {% if hasRoles('ROLE_HOME_TRAMITES') %}
                     <li class=" d-none d-sm-inline-block">
@@ -388,7 +388,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Brand Logo -->
         <a href="{{ path('app_admin_home') }}" class="brand-link">
             {#            <img  src="{{ asset('images/logo_principal.png') }}" > #}
-            <span class="brand-text font-weight-light" style="font-weight: bold !important; margin-left: 27%">AKADEMOS</span>
+            <span class="brand-text font-weight-light"
+                  style="font-weight: bold !important; margin-left: 27%">AKADEMOS</span>
         </a>
 
         <!-- Sidebar -->
@@ -407,8 +408,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="margin-top: -6% !important">
                 <div class="card-widget widget-user">
                     <div class="widget-user-header" style="background-color: #0e375f; height: 118px">
-                        <h3 class="widget-user-username" style="color:#D6D6D6;font-size: 20px;font-weight: bold !important; margin-left: -6%">{{ app.session.get('nombre_usuario_autenticado') | slice(0, 23) }}</h3>
-                        <h5 class="widget-user-desc" style="color:#D6D6D6; margin-left: -6%;font-size: 14px">{{ app.user.email }}</h5>
+                        <h3 class="widget-user-username"
+                            style="color:#D6D6D6;font-size: 20px;font-weight: bold !important; margin-left: -6%">{{ app.session.get('nombre_usuario_autenticado') | slice(0, 23) }}</h3>
+                        <h5 class="widget-user-desc"
+                            style="color:#D6D6D6; margin-left: -6%;font-size: 14px">{{ app.user.email }}</h5>
                     </div>
                     <div class="widget-user-image" style="top: 59px">
                         <img class="img-circle elevation-2" style="width: 73px"
@@ -625,6 +628,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         })
 
         $(".dataTable").DataTable({
+            "dom": '<"row"<"col-sm-6 text-left"f ><"col-sm-6 text-right"l>>rt<"row"<"col-sm-12"p>>',
+            "pagingType": "full_numbers",
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "responsive": true, "lengthChange": true, "autoWidth": false, "scrollX": true,
             language: {
@@ -656,7 +661,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
             }
         });
-
+        $('#DataTables_Table_0_filter').css('text-align', 'left');
+        $('#DataTables_Table_0_filter').children().children().css('width', 500);
 
         $('.btn-cancel').click(function () {
 

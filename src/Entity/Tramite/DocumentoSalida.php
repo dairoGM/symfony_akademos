@@ -134,6 +134,11 @@ class DocumentoSalida extends BaseEntity
     private ?string $cartaInvitacion = null;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaFinalizado;
+
+    /**
      * @return Persona|null
      */
     public function getPersona(): ?Persona
@@ -467,6 +472,22 @@ class DocumentoSalida extends BaseEntity
     public function setFichaSalida(?FichaSalida $fichaSalida): void
     {
         $this->fichaSalida = $fichaSalida;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaFinalizado()
+    {
+        return $this->fechaFinalizado;
+    }
+
+    /**
+     * @param mixed $fechaFinalizado
+     */
+    public function setFechaFinalizado($fechaFinalizado): void
+    {
+        $this->fechaFinalizado = $fechaFinalizado;
     }
 
 

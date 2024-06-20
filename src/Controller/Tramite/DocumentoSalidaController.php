@@ -200,6 +200,7 @@ class DocumentoSalidaController extends AbstractController
         try {
             if ($documentoSalidaRepository->find($documentoSalida) instanceof DocumentoSalida) {
                 $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_finalizada')));
+                $documentoSalida->setFechaFinalizado(new \DateTime());
                 $documentoSalidaRepository->edit($documentoSalida, true);
                 $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
                 return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);

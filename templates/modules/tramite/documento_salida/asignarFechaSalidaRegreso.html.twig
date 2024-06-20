@@ -52,8 +52,8 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('#asignar_fecha_salida_fechaSalidaReal').val('{{ documentoSalida.fechaSalidaReal | date('d-m-Y') }}');
-        $('#asignar_fecha_salida_fechaRegresoReal').val('{{ documentoSalida.fechaRegresoReal | date('d-m-Y') }}');
+        $('#asignar_fecha_salida_fechaSalidaReal').val({% if documentoSalida.fechaSalidaReal is not null %} {{ documentoSalida.fechaSalidaReal | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
+        $('#asignar_fecha_salida_fechaRegresoReal').val({% if documentoSalida.fechaRegresoReal is not null %} {{ documentoSalida.fechaRegresoReal | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
 
         $('#asignar_fecha_salida_fechaSalidaReal, #asignar_fecha_salida_fechaRegresoReal').datetimepicker({
             format: 'DD/MM/YYYY'

@@ -69,8 +69,8 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('#pasaporte_fechaEmisionPasaporte').val('{{ pasaporte.fechaEmisionPasaporte | date('d-m-Y') }}');
-        $('#pasaporte_fechaCaducidadPasaporte').val('{{ pasaporte.fechaCaducidadPasaporte | date('d-m-Y') }}');
+        $('#pasaporte_fechaEmisionPasaporte').val({% if pasaporte.fechaEmisionPasaporte is not null %} {{ pasaporte.fechaEmisionPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
+        $('#pasaporte_fechaCaducidadPasaporte').val({% if pasaporte.fechaCaducidadPasaporte is not null %} {{ pasaporte.fechaCaducidadPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
 
         $('#pasaporte_fechaEmisionPasaporte, #pasaporte_fechaCaducidadPasaporte').datetimepicker({
             format: 'DD/MM/YYYY'

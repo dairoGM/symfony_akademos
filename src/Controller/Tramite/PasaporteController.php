@@ -14,6 +14,7 @@ use App\Form\Tramite\TramiteType;
 use App\Repository\Economia\ConceptoGastoRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\ResponsableRepository;
+use App\Repository\Tramite\DocumentoSalidaRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaConceptoGastoRepository;
 use App\Repository\Tramite\FichaSalidaEstadoRepository;
@@ -133,7 +134,7 @@ class PasaporteController extends AbstractController
      * @param pasaporteRepository $pasaporteRepository
      * @return Response
      */
-    public function modificar(Request $request, Pasaporte $pasaporte, PasaporteRepository $pasaporteRepository, FichaSalidaRepository $fichaSalidaRepository)
+    public function modificar(Request $request, Pasaporte $pasaporte, PasaporteRepository $pasaporteRepository, DocumentoSalidaRepository $documentoSalidaRepository)
     {
         try {
             $form = $this->createForm(PasaporteType::class, $pasaporte, ['action' => 'modificar']);
@@ -149,14 +150,15 @@ class PasaporteController extends AbstractController
 
                 $pasaporteRepository->edit($pasaporte);
                 /*Actualizo todas las fichas que esten a la espera del pasaporte*/
-                $fichasDependientes = $fichaSalidaRepository->findBy(['persona' => $pasaporte->getPersona()->getId(), 'estadoFichaSalida' => $this->getParameter('estado_salida_tramite')]);
+                $fichasDependientes = $documentoSalidaRepository->findBy(['persona' => $pasaporte->getPersona()->getId(), 'estadoDocumentoSalida' => $this->getParameter('estado_salida_tramite')]);
+
                 if (is_array($fichasDependientes)) {
                     foreach ($fichasDependientes as $fichasDependiente) {
-                        $fichasDependiente->setNumeroPasaporte($pasaporte->setNumeroPasaporte());
+                        $fichasDependiente->setNumeroPasaporte($pasaporte->getNumeroPasaporte());
                         $fichasDependiente->setTipoPasaporte($pasaporte->getTipoPasaporte());
                         $fichasDependiente->setFechaEmisionPasaporte($pasaporte->getFechaEmisionPasaporte());
                         $fichasDependiente->setFechaCaducidadPasaporte($pasaporte->getFechaCaducidadPasaporte());
-                        $fichaSalidaRepository->edit($fichasDependiente, true);
+                        $documentoSalidaRepository->edit($fichasDependiente, true);
                     }
                 }
 
