@@ -63,7 +63,7 @@
             </div>
         {% endif %}
 
-        {% if hasRoles('ROLE_HOME_CONVENIO') or hasRoles('ROLE_HOME_TRAMITES') or  hasRoles('ROLE_HOME_COOPERACION') or hasRoles('ROLE_HOME_VISITA') or hasRoles('ROLE_HOME_ECONOMIA')  %}
+        {% if hasRoles('ROLE_HOME_CONVENIO') or hasRoles('ROLE_HOME_TRAMITES') or  hasRoles('ROLE_HOME_COOPERACION') or hasRoles('ROLE_HOME_VISITA') or hasRoles('ROLE_HOME_ECONOMIA') %}
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-blue">
                     <div class="inner">
@@ -79,7 +79,21 @@
             </div>
         {% endif %}
 
-
+        {% if hasRoles('ROLE_GEST_CONVOCATORIA') %}
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Evaluación</h3>
+                        <p><br><br></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <a href="{{ path('app_tramite_portada') }}" class="small-box-footer">Entrar <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
 
     </div>
 

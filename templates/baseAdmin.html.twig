@@ -203,12 +203,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                 {% endif %}
 
-                {% if hasRoles('ROLE_HOME_INSTIT') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_institucion_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a>
-                    </li>
-                {% endif %}
+{#                {% if hasRoles('ROLE_HOME_INSTIT') %}#}
+{#                    <li class=" d-none d-sm-inline-block">#}
+{#                        <a href="{{ path('app_institucion_portada') }}"#}
+{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
 
                 {% if hasRoles('ROLE_HOME_TRAZAS') %}
                     <li class=" d-none d-sm-inline-block">
@@ -250,6 +250,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_convenio_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a>
+                    </li>
+                {% endif %}
+                {% if hasRoles('ROLE_HOME_EVALUACION') %}
+                    <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_evaluacion_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'evaluacion' %} active {% endif %}">Evaluaciones</a>
                     </li>
                 {% endif %}
             </ul>
@@ -473,7 +479,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% if app.request.pathinfo|split('/')[1] == 'cooperacion' %}
                     {% include 'pages/sidevar/cooperacion.html.twig' %}
                 {% endif %}
-
+                {% if app.request.pathinfo|split('/')[1] == 'evaluacion' %}
+                    {% include 'pages/sidevar/evaluacion.html.twig' %}
+                {% endif %}
             {% endif %}
             <!-- /.sidebar-menu -->
         </div>

@@ -1,0 +1,60 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+
+        {% if hasRoles('ROLE_GEST_CONVOCATORIA') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fa fa-pen"></i>
+                    <p>
+                        Convocatorias
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ path('app_convocatoria_index') }}"
+                           class="nav-link nav-link-menu">
+                            <p>Solicitudes</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_GEST_CONVOCATORIA') or hasRoles('ROLE_GEST_MODALIDAD') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CONVOCATORIA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_convocatoria_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Convocatorias</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ESTADO_SOLICITUD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estado_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Estados de solicitud</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
