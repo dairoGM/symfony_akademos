@@ -210,12 +210,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 {#                    </li>#}
 {#                {% endif %}#}
 
-                {% if hasRoles('ROLE_HOME_TRAZAS') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_traza_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'traza' %} active {% endif %}">Trazas</a>
-                    </li>
-                {% endif %}
+{#                {% if hasRoles('ROLE_HOME_TRAZAS') %}#}
+{#                    <li class=" d-none d-sm-inline-block">#}
+{#                        <a href="{{ path('app_traza_portada') }}"#}
+{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'traza' %} active {% endif %}">Trazas</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
 
                 {# MODULOS DE RI #}
                 {#                {% if hasRoles('ROLE_HOME_PREGR') %} #}
