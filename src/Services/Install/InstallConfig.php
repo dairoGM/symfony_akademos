@@ -37,6 +37,9 @@ class InstallConfig
         $modules[] = Module::createModule("MODULE_VISITA", "Módulo de Visitas", "Módulo de Visitas");
         $modules[] = Module::createModule("MODULE_ECONOMIA", "Módulo de Economía", "Módulo de Economía");
 
+        /***********************************JAN*************************************/
+        $modules[] = Module::createModule("MODULE_EVALUACION", "Módulo de Evaluación", "Módulo de Evaluación");
+
         return $modules;
     }
 
@@ -279,6 +282,25 @@ class InstallConfig
         return $functionalities;
     }
 
+    /**
+     * Define una Lista de Funcionalidades para Evaluacion
+     *
+     * For create one -> Functionality::createFunctionality("ROLE_MODULO_ESTRUCTURA", "Módulo de Evaluacion")
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForEvaluacion(): array
+    {
+        $functionalities = array();
+
+        //Economia
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_HOME_EVALUACION", "Portada de Evaluación", "Portada de Evaluación");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ESTADO_SOLICITUD", "Gestión de estados de solicitud", "Gestión de estados de solicitud");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_CONVOCATORIA", "Gestión de convocatorias", "Gestión de convocatorias");
+
+        return $functionalities;
+    }
+
 
     /**
      * Define una Lista de Funcionalidades para Reporte
@@ -452,6 +474,12 @@ class InstallConfig
         $roles[] = Role::createRole('ROL_ECONOMIA', "Administrador de Economía", "Rol con permiso a la gestion de Economía", "")
             ->addFunctionality("ROLE_HOME_ECONOMIA")
             ->addFunctionality("ROLE_GEST_CONCEPTO_GASTO");
+
+
+        $roles[] = Role::createRole('ROL_EVALUACION', "Administrador de Evaluación", "Rol con permiso a la gestion de Evaluación", "")
+            ->addFunctionality("ROL_EVALUACION")
+            ->addFunctionality("ROLE_GEST_CONVOCATORIA")
+            ->addFunctionality("ROLE_GEST_ESTADO_SOLICITUD");
 
         return $roles;
     }

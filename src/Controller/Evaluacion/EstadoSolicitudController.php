@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/evaluacion/estado_solicitud")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_TIPPROGRAM")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTADO_SOLICITUD")
  */
 class EstadoSolicitudController extends AbstractController
 {
