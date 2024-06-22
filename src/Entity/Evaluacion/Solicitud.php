@@ -2,6 +2,7 @@
 
 namespace App\Entity\Evaluacion;
 
+use App\Entity\BaseEntity;
 use App\Entity\BaseNomenclator;
 use App\Entity\Evaluacion\EstadoSolicitud;
 use App\Entity\Institucion\CategoriaAcreditacion;
@@ -15,19 +16,18 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @ORM\Table(name="evaluacion.tbd_solicitud")
  */
-class Solicitud extends BaseNomenclator
+class Solicitud extends BaseEntity
 {
     /**
      * @ORM\Column(type="string", nullable=false, length="255")
      */
     private ?string $tipoSolicitud = null;
 
-
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\ManyToOne(targetEntity="Convocatoria")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Institucion $institucionSolicita;
+    private ?Convocatoria $convocatoria;
 
 
     /**
@@ -54,22 +54,24 @@ class Solicitud extends BaseNomenclator
      */
     private ?EstadoSolicitud $estadoSolicitud;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\CategoriaAcreditacion")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?CategoriaAcreditacion $categoriaAcreditacionActual;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $fechaPropuesta;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaAprobada;
 
     /**
      * @ORM\Column(type="string", nullable=false, length="255")
      */
     private ?string $cartaSolicitud = null;
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $categoriaAcreditacionActual = null;
 
     /**
      * @return string|null
@@ -85,22 +87,6 @@ class Solicitud extends BaseNomenclator
     public function setTipoSolicitud(?string $tipoSolicitud): void
     {
         $this->tipoSolicitud = $tipoSolicitud;
-    }
-
-    /**
-     * @return Institucion|null
-     */
-    public function getInstitucionSolicita(): ?Institucion
-    {
-        return $this->institucionSolicita;
-    }
-
-    /**
-     * @param Institucion|null $institucionSolicita
-     */
-    public function setInstitucionSolicita(?Institucion $institucionSolicita): void
-    {
-        $this->institucionSolicita = $institucionSolicita;
     }
 
     /**
@@ -167,21 +153,6 @@ class Solicitud extends BaseNomenclator
         $this->estadoSolicitud = $estadoSolicitud;
     }
 
-    /**
-     * @return CategoriaAcreditacion|null
-     */
-    public function getCategoriaAcreditacionActual(): ?CategoriaAcreditacion
-    {
-        return $this->categoriaAcreditacionActual;
-    }
-
-    /**
-     * @param CategoriaAcreditacion|null $categoriaAcreditacionActual
-     */
-    public function setCategoriaAcreditacionActual(?CategoriaAcreditacion $categoriaAcreditacionActual): void
-    {
-        $this->categoriaAcreditacionActual = $categoriaAcreditacionActual;
-    }
 
     /**
      * @return mixed
@@ -213,6 +184,54 @@ class Solicitud extends BaseNomenclator
     public function setCartaSolicitud(?string $cartaSolicitud): void
     {
         $this->cartaSolicitud = $cartaSolicitud;
+    }
+
+    /**
+     * @return Convocatoria|null
+     */
+    public function getConvocatoria(): ?Convocatoria
+    {
+        return $this->convocatoria;
+    }
+
+    /**
+     * @param Convocatoria|null $convocatoria
+     */
+    public function setConvocatoria(?Convocatoria $convocatoria): void
+    {
+        $this->convocatoria = $convocatoria;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaAprobada()
+    {
+        return $this->fechaAprobada;
+    }
+
+    /**
+     * @param mixed $fechaAprobada
+     */
+    public function setFechaAprobada($fechaAprobada): void
+    {
+        $this->fechaAprobada = $fechaAprobada;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCategoriaAcreditacionActual(): ?string
+    {
+        return $this->categoriaAcreditacionActual;
+    }
+
+    /**
+     * @param string|null $categoriaAcreditacionActual
+     */
+    public function setCategoriaAcreditacionActual(?string $categoriaAcreditacionActual): void
+    {
+        $this->categoriaAcreditacionActual = $categoriaAcreditacionActual;
     }
 
 

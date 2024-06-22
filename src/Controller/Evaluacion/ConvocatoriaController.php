@@ -95,6 +95,19 @@ class ConvocatoriaController extends AbstractController
                 $temp = explode('/', $request->request->all()['convocatoria']['fechaFin']);
                 $convocatoria->setFechaFin(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
+
+                if (!empty($form['carta']->getData())) {
+                    if ($convocatoria->getCarta() != null) {
+                        if (file_exists('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta())) {
+                            unlink('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta());
+                        }
+                    }
+                    $file = $form['carta']->getData();
+                    $file_name = $_FILES['solicitud']['name']['carta'];
+                    $convocatoria->setCarta($file_name);
+                    $file->move("uploads/evaluacion/convocatoria/carta", $file_name);
+                }
+
                 $convocatoriaRepository->edit($convocatoria);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_convocatoria_index', [], Response::HTTP_SEE_OTHER);

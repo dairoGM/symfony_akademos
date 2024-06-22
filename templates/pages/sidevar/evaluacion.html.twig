@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_CONVOCATORIA') %}
+        {% if hasRoles('ROLE_GEST_SOLICITUD') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -17,12 +17,14 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ path('app_convocatoria_index') }}"
-                           class="nav-link nav-link-menu">
-                            <p>Solicitudes</p>
-                        </a>
-                    </li>
+                    {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}
@@ -37,6 +39,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+
                     {% if hasRoles('ROLE_GEST_CONVOCATORIA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_convocatoria_index') }}"
