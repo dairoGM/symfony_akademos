@@ -8,6 +8,7 @@ use App\Entity\Institucion\Institucion;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
+use App\Form\Evaluacion\AprobarSolicitudType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\EstadoSolicitudRepository;
 use App\Repository\Evaluacion\SolicitudRepository;
@@ -52,50 +53,49 @@ class SolicitudController extends AbstractController
      */
     public function registrar(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository, InstitucionRepository $institucionRepository, SolicitudRepository $solicitudRepository, PersonaRepository $personaRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
     {
-//        try {
-        $solicitud = new Solicitud();
-        $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-        $dataInst = $institucionRepository->findBy(['estructura' => $personaAutenticada->getEstructura()->getId()]);
-        $idInstitucion = isset($dataInst[0]) ? $dataInst[0]->getId() : null;
+        try {
+            $solicitud = new Solicitud();
+            $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+            $dataInst = $institucionRepository->findBy(['estructura' => $personaAutenticada->getEstructura()->getId()]);
+            $idInstitucion = isset($dataInst[0]) ? $dataInst[0]->getId() : null;
 
-        $form = $this->createForm(SolicitudType::class, $solicitud, ['action' => 'registrar', 'idEstructuraPersonaAutenticada' => $personaAutenticada->getEstructura()->getId()]);
-        $form->handleRequest($request);
-//            pr($form->isSubmitted() && $form->isValid());
-        if ($form->isSubmitted()) {
-            if (!empty($request->request->all()['solicitud']['fechaPropuesta'])) {
-                $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
+            $form = $this->createForm(SolicitudType::class, $solicitud, ['action' => 'registrar', 'idEstructuraPersonaAutenticada' => $personaAutenticada->getEstructura()->getId()]);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
+                if (!empty($request->request->all()['solicitud']['fechaPropuesta'])) {
+                    $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
+                }
+
+                if ('institucion' == $request->request->all()['solicitud']['tipoSolicitud']) {
+                    $solicitud->setInstitucion($dataInst[0]);
+                }
+                if ('programa_pregrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
+                    $solicitud->setProgramaPregrado($solicitudProgramaAcademicoRepository->find($request->request->all()['solicitud']['programaPregrado']));
+                }
+                if ('programa_posgrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
+                    $solicitud->setProgramaPosgrado($solicitudProgramaRepository->find($request->request->all()['solicitud']['programaPosgrado']));
+                }
+                if (!empty($_FILES['solicitud']['name']['cartaSolicitud'])) {
+                    $file = $form['cartaSolicitud']->getData();
+                    $file_name = $_FILES['solicitud']['name']['cartaSolicitud'];
+                    $solicitud->setCartaSolicitud($file_name);
+                    $file->move("uploads/evaluacion/solicitud/cartaSolicitud", $file_name);
+                }
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(1));
+                $solicitudRepository->add($solicitud, true);
+                $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            if ('institucion' == $request->request->all()['solicitud']['tipoSolicitud']) {
-                $solicitud->setInstitucion($dataInst[0]);
-            }
-            if ('programa_pregrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
-                $solicitud->setProgramaPregrado($solicitudProgramaAcademicoRepository->find($request->request->all()['solicitud']['programaPregrado']));
-            }
-            if ('programa_posgrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
-                $solicitud->setProgramaPosgrado($solicitudProgramaRepository->find($request->request->all()['solicitud']['programaPosgrado']));
-            }
-            if (!empty($_FILES['solicitud']['name']['cartaSolicitud'])) {
-                $file = $form['cartaSolicitud']->getData();
-                $file_name = $_FILES['solicitud']['name']['cartaSolicitud'];
-                $solicitud->setCartaSolicitud($file_name);
-                $file->move("uploads/evaluacion/solicitud/cartaSolicitud", $file_name);
-            }
-            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(1));
-            $solicitudRepository->add($solicitud, true);
-            $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+
+            return $this->render('modules/evaluacion/solicitud/new.html.twig', [
+                'form' => $form->createView(),
+                'idInstitucion' => $idInstitucion
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
         }
-
-
-        return $this->render('modules/evaluacion/solicitud/new.html.twig', [
-            'form' => $form->createView(),
-            'idInstitucion' => $idInstitucion
-        ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
-//        }
     }
 
 
@@ -135,6 +135,39 @@ class SolicitudController extends AbstractController
             }
 
             return $this->render('modules/evaluacion/solicitud/edit.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/aprobar", name="app_solicitud_aprobar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function aprobar(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
+    {
+        try {
+            $form = $this->createForm(AprobarSolicitudType::class, $solicitud);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $temp = explode('/', $request->request->all()['aprobar_solicitud']['fechaAprobada']);
+                $solicitud->setFechaAprobada(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(3));
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/solicitud/aprobar.html.twig', [
                 'form' => $form->createView(),
                 'solicitud' => $solicitud
             ]);
@@ -226,12 +259,13 @@ class SolicitudController extends AbstractController
     {
         try {
             $postgrado = $solicitudProgramaRepository->find($request->request->get('posgrado'));
-            $categoriaAcreditacion =is_object($postgrado->getCategoriaAcreditacion())? $postgrado->getCategoriaAcreditacion()->getNombre():null;
+            $categoriaAcreditacion = is_object($postgrado->getCategoriaAcreditacion()) ? $postgrado->getCategoriaAcreditacion()->getNombre() : null;
             return $this->json(['categoriaAcreditacion' => $categoriaAcreditacion]);
         } catch (\Exception $exception) {
             return $this->json(false);
         }
     }
+
     /**
      * Add package entity.
      *

@@ -119,7 +119,6 @@
                 $('#solicitud_institucion').attr('required', true)
 
 
-
                 HoldOn.close()
             } else {
                 $('#solicitud_programaPregrado').val(null);
@@ -159,11 +158,19 @@
                 $('#solicitud_institucion').val(null);
                 $('#solicitud_programaPregrado').val(null);
             }
-            HoldOn.close()
+            if ($(this).val() == "") {
+                HoldOn.close()
+            }
+
         })
 
 
         $('#solicitud_programaPregrado').change(function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
             $.post("{{ path('app_solicitud_get_categoria_acreditacion_pregrado') }}",
                 {
                     pregrado: $('#solicitud_programaPregrado').val()
@@ -172,9 +179,15 @@
                     $('#solicitud_categoriaAcreditacionActual').val(data.categoriaAcreditacion)
                 });
             $('#solicitud_institucion').attr('required', true)
+            HoldOn.close()
         })
 
         $('#solicitud_programaPosgrado').change(function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
             $.post("{{ path('app_solicitud_get_categoria_acreditacion_posgrado') }}",
                 {
                     posgrado: $('#solicitud_programaPosgrado').val()
@@ -183,6 +196,7 @@
                     $('#solicitud_categoriaAcreditacionActual').val(data.categoriaAcreditacion)
                 });
             $('#solicitud_institucion').attr('required', true)
+            HoldOn.close()
         })
 
 
