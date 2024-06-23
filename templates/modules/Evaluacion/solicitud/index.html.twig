@@ -56,7 +56,7 @@
                         <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
                         <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
                         <td>{{ item.estadoSolicitud.nombre | default('') }}</td>
-                        <td width="15%" class="text-center">
+                        <td width="20%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la solicitud">
@@ -67,10 +67,23 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <a title="Aprobar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-calendar-check"></i>
-                            </a>
+                            {% if item.estadoSolicitud.id == 2 %}
+                                <a title="Aceptar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-calendar-check"></i>
+                                </a>
+                                <a title="Rechazar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-calendar-times"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoSolicitud.id == 1 %}
+                                <button title="Cambiar estado" class="btn btn-outline-primary elementRemove"
+                                        data-url="{{ path('app_solicitud_cambiar_estado', {'id': item.id}) }}">
+                                    <i class="fa fa-address-book"></i>
+                                </button>
+
+                            {% endif %}
                             <a title="Descargar carta" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/cartaSolicitud/{{ item.cartaSolicitud }}">
                                 <i
@@ -80,6 +93,7 @@
                                     data-url="{{ path('app_solicitud_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
+
                         </td>
                     </tr>
                 {% endfor %}
