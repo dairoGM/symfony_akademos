@@ -60,7 +60,7 @@ class SolicitudController extends AbstractController
             $dataInst = $institucionRepository->findBy(['estructura' => $personaAutenticada->getEstructura()->getId()]);
             $idInstitucion = isset($dataInst[0]) ? $dataInst[0]->getId() : null;
 
-            $form = $this->createForm(SolicitudType::class, $solicitud, ['action' => 'registrar', 'idEstructuraPersonaAutenticada' => $personaAutenticada->getEstructura()->getId()]);
+            $form = $this->createForm(SolicitudType::class, $solicitud, ['cartaSolicitud' => 'registrar', 'idEstructuraPersonaAutenticada' => $personaAutenticada->getEstructura()->getId()]);
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 if (!empty($request->request->all()['solicitud']['fechaPropuesta'])) {

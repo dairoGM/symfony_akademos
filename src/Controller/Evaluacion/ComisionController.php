@@ -2,10 +2,12 @@
 
 namespace App\Controller\Evaluacion;
 
+use App\Entity\Evaluacion\Solicitud;
 use App\Entity\Personal\Persona;
 use App\Entity\Evaluacion\Comision;
 use App\Entity\Evaluacion\MiembrosComision;
 use App\Form\Evaluacion\ComisionType;
+use App\Repository\Evaluacion\SolicitudRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Evaluacion\ComisionRepository;
 use App\Repository\Evaluacion\MiembrosComisionRepository;
@@ -54,10 +56,27 @@ class ComisionController extends AbstractController
      * @param PersonaRepository $personaRepository
      * @return Response
      */
-    public function registrar(Request $request, EntityManagerInterface $em, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
+    public function registrar(Request $request, EntityManagerInterface $em, SolicitudRepository $solicitudRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
     {
         try {
+            $idSolicitud = $request->query->get('id');
             $comisionEntity = new Comision();
+            if (!empty($idSolicitud)) {
+                $nombre = null;
+                $solicitud = $solicitudRepository->find($idSolicitud);
+                if ($solicitud->getTipoSolicitud() == 'institucion') {
+                    $nombre = $solicitud->getInstitucion()->getEstructura()->getSiglas();
+                } else if ($solicitud->getTipoSolicitud() == 'programa_pregrado') {
+                    $prog = $solicitud->getProgramaPregrado()->getNombre();
+                    $nombre = $prog . ", " . $solicitud->getProgramaPregrado()->getCentroRector()->getSiglas();
+                } else if ($solicitud->getTipoSolicitud() == 'programa_posgrado') {
+                    $prog = $solicitud->getProgramaPosgrado()->getNombre();
+                    $nombre = $prog . ", " . $solicitud->getProgramaPosgrado()->getUniversidad()->getSiglas();
+                }
+                $comisionEntity->setNombre('Comisión evaluadora de: ' . $nombre);
+            }
+
+
             $form = $this->createForm(ComisionType::class, $comisionEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -85,7 +104,12 @@ class ComisionController extends AbstractController
 
                 $request->getSession()->remove('array_personas_asignadas');
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-                return $this->redirectToRoute('app_comision_evaluadora_index', [], Response::HTTP_SEE_OTHER);
+                if (empty($idSolicitud)) {
+                    $route = 'app_comision_evaluadora_index';
+                } else {
+                    $route = 'app_plan_anual_evaluacion_index';
+                }
+                return $this->redirectToRoute($route, [], Response::HTTP_SEE_OTHER);
             }
 
             $personasSeleccionadas = $request->getSession()->has('array_personas_asignadas') ? $request->getSession()->get('array_personas_asignadas') : [];
@@ -104,7 +128,8 @@ class ComisionController extends AbstractController
                 'form' => $form->createView(),
                 'personas' => $personaRepository->getPersonasNoAsignadasDadoArrayIdPersonas($arrayIdAsignados),
                 'asignadas' => $asignadas,
-                'rolComision' => $rolComisionRepository->findBy(['activo' => true], ['nombre' => 'asc'])
+                'rolComision' => $rolComisionRepository->findBy(['activo' => true], ['nombre' => 'asc']),
+                'idSolicitud' => $idSolicitud
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -118,7 +143,8 @@ class ComisionController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function asociarPersona(Request $request)
+    public
+    function asociarPersona(Request $request)
     {
         try {
             $arrayIds = $request->request->get('arrayId');
@@ -144,7 +170,8 @@ class ComisionController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function eliminarPersonaAsociada(Request $request, Persona $persona)
+    public
+    function eliminarPersonaAsociada(Request $request, Persona $persona)
     {
         try {
             $nuevoArray = [];
@@ -170,7 +197,8 @@ class ComisionController extends AbstractController
      * @param PersonaRepository $personaRepository
      * @return Response
      */
-    public function modificar(Request $request, MiembrosComisionRepository $miembrosComisionRepository, Comision $comision, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
+    public
+    function modificar(Request $request, MiembrosComisionRepository $miembrosComisionRepository, Comision $comision, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
     {
         try {
             $form = $this->createForm(ComisionType::class, $comision, ['action' => 'modificar']);
@@ -216,7 +244,8 @@ class ComisionController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function asociarPersonaModificar(Request $request, PersonaRepository $personaRepository, RolComisionRepository $rolComisionRepository, ComisionRepository $comisionRepository, EntityManagerInterface $em)
+    public
+    function asociarPersonaModificar(Request $request, PersonaRepository $personaRepository, RolComisionRepository $rolComisionRepository, ComisionRepository $comisionRepository, EntityManagerInterface $em)
     {
         try {
             $arrayIds = $request->request->get('arrayId');
@@ -244,7 +273,8 @@ class ComisionController extends AbstractController
      * @param MiembrosComisionRepository $miembrosComisionRepository
      * @return Response
      */
-    public function eliminarPersonaAsignadaModificar(Request $request, Persona $persona, PersonaRepository $personaRepository, MiembrosComisionRepository $miembrosComisionRepository)
+    public
+    function eliminarPersonaAsignadaModificar(Request $request, Persona $persona, PersonaRepository $personaRepository, MiembrosComisionRepository $miembrosComisionRepository)
     {
         try {
             $comision = $request->getSession()->get('idComision');
@@ -268,7 +298,8 @@ class ComisionController extends AbstractController
      * @param MiembrosComisionRepository $miembrosComisionRepository
      * @return Response
      */
-    public function detail(Comision $comision, MiembrosComisionRepository $miembrosComisionRepository)
+    public
+    function detail(Comision $comision, MiembrosComisionRepository $miembrosComisionRepository)
     {
         return $this->render('modules/evaluacion/comision/detail.html.twig', [
             'item' => $comision,
@@ -283,7 +314,8 @@ class ComisionController extends AbstractController
      * @param ComisionRepository $comisionRepository
      * @return Response
      */
-    public function eliminar(Request $request, Comision $comision, ComisionRepository $comisionRepository)
+    public
+    function eliminar(Request $request, Comision $comision, ComisionRepository $comisionRepository)
     {
         try {
             if ($comisionRepository->find($comision) instanceof Comision) {
