@@ -215,6 +215,30 @@ class SolicitudController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/cambiar_estado", name="app_solicitud_cambiar_estado", methods={"GET"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function cambiarEstado(Request $request, Solicitud $solicitud, EstadoSolicitudRepository $estadoSolicitudRepository, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            if ($solicitudRepository->find($solicitud) instanceof Solicitud) {
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(2));
+                $solicitudRepository->edit($solicitud, true);
+                $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
      * @Route("/get_categoria_acreditacion_institucion", name="app_solicitud_get_categoria_acreditacion_institucion", methods={"GET", "POST"})
      * @param Request $request
      * @param PersonaRepository $institucionRepository
