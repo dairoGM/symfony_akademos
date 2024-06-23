@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+        {% if hasRoles('ROLE_GEST_SOLICITUD') or  hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION')  %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -17,6 +17,14 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_plan_anual_evaluacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Plan anual de evaluación</p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if hasRoles('ROLE_GEST_SOLICITUD') %}
                         <li class="nav-item">
                             <a href="{{ path('app_solicitud_index') }}"

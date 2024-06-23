@@ -297,6 +297,8 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_HOME_EVALUACION", "Portada de Evaluación", "Portada de Evaluación");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ESTADO_SOLICITUD", "Gestión de estados de solicitud", "Gestión de estados de solicitud");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_CONVOCATORIA", "Gestión de convocatorias", "Gestión de convocatorias");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_SOLICITUD", "Gestión de solicitudes", "Gestión de solicitudes");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_PLAN_ANUAL_EVALUACION", "Gestión de planes anuales de evaluación", "Gestión de planes anuales de evaluación");
 
         return $functionalities;
     }
@@ -479,6 +481,8 @@ class InstallConfig
         $roles[] = Role::createRole('ROL_EVALUACION', "Administrador de Evaluación", "Rol con permiso a la gestion de Evaluación", "")
             ->addFunctionality("ROL_EVALUACION")
             ->addFunctionality("ROLE_GEST_CONVOCATORIA")
+            ->addFunctionality("ROLE_GEST_SOLICITUD")
+            ->addFunctionality("ROLE_GEST_PLAN_ANUAL_EVALUACION")
             ->addFunctionality("ROLE_GEST_ESTADO_SOLICITUD");
 
         return $roles;
