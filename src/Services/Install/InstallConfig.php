@@ -299,6 +299,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_CONVOCATORIA", "Gestión de convocatorias", "Gestión de convocatorias");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_SOLICITUD", "Gestión de solicitudes", "Gestión de solicitudes");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_PLAN_ANUAL_EVALUACION", "Gestión de planes anuales de evaluación", "Gestión de planes anuales de evaluación");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ROL_COMISION", "Gestión de roles para comisión de evaluación", "Gestión de roles para comisión de evaluación");
 
         return $functionalities;
     }
@@ -483,7 +484,8 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_CONVOCATORIA")
             ->addFunctionality("ROLE_GEST_SOLICITUD")
             ->addFunctionality("ROLE_GEST_PLAN_ANUAL_EVALUACION")
-            ->addFunctionality("ROLE_GEST_ESTADO_SOLICITUD");
+            ->addFunctionality("ROLE_GEST_ESTADO_SOLICITUD")
+            ->addFunctionality("ROLE_GEST_ROL_COMISION");
 
         return $roles;
     }

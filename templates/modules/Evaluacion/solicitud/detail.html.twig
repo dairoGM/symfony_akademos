@@ -1,20 +1,6 @@
 <div class="row">
     <div class="col-6">
-        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
-    </div>
-    <div class="col-6">
-        <h5 class="mb-0"><b>Fecha de
-                inicio:</b> {% if item.fechaInicio is not null %} {{ item.fechaInicio | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
-        </h5>
-        <h5 class="mb-0"><b>Fecha de
-                fin:</b>{% if item.fechaFin is not null %} {{ item.fechaFin | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
-        </h5>
-    </div>
-
-</div>
-<div class="row">
-    <div class="col-6">
-        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
+        <h5 class="mb-0"><b>Motivos del rechazo:</b> {{ item.motivoRechazo | default('')  }}</h5>
     </div>
 </div>
 

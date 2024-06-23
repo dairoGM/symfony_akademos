@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLICITUD') or  hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION')  %}
+        {% if hasRoles('ROLE_GEST_SOLICITUD') or  hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -36,7 +36,7 @@
                 </ul>
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_GEST_CONVOCATORIA') or hasRoles('ROLE_GEST_MODALIDAD') %}
+        {% if hasRoles('ROLE_GEST_CONVOCATORIA') or hasRoles('ROLE_GEST_ESTADO_SOLICITUD') or hasRoles('ROLE_GEST_ROL_COMISION') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -61,6 +61,14 @@
                             <a href="{{ path('app_estado_solicitud_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Estados de solicitud</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_ROL_COMISION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_rol_comision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Roles</p>
                             </a>
                         </li>
                     {% endif %}
