@@ -255,7 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% if hasRoles('ROLE_HOME_EVALUACION') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_evaluacion_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'evaluacion' %} active {% endif %}">Evaluaciones</a>
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'evaluacion' %} active {% endif %}">Evaluación</a>
                     </li>
                 {% endif %}
             </ul>
