@@ -134,7 +134,9 @@
 
 
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_comision_evaluadora_index') }}" data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel"
+               data-url="{% if idSolicitud is null %}  {{ path('app_comision_evaluadora_index') }}  {% else %}  {{ path('app_plan_anual_evaluacion_index') }} {% endif %}"
+               data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>
         </div>
@@ -148,7 +150,8 @@
         $('#copep_nombre').val(localStorage.getItem('nombre'));
         $('#copep_descripcion').val(localStorage.getItem('descripcion'));
         $('#copep_activo').val(localStorage.getItem('activo'));
-
+        var idSolicitud = '{{ idSolicitud }}';
+        console.log(idSolicitud);
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
 
@@ -189,7 +192,12 @@
                         },
                         function (data) {
                             HoldOn.close()
-                            $(window).attr('location', "{{ path('app_comision_evaluadora_registrar') }}")
+                            if (idSolicitud != null) {
+                                $(window).attr('location', "{{ path('app_comision_evaluadora_registrar', {'id': idSolicitud}) }}")
+                            } else {
+                                $(window).attr('location', "{{ path('app_comision_evaluadora_registrar') }}")
+                            }
+
                         });
                 } else {
                     HoldOn.close()

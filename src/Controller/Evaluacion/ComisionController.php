@@ -74,12 +74,13 @@ class ComisionController extends AbstractController
                     $nombre = $prog . ", " . $solicitud->getProgramaPosgrado()->getUniversidad()->getSiglas();
                 }
                 $comisionEntity->setNombre('Comisión evaluadora de: ' . $nombre);
+                $comisionEntity->setSolicitud($solicitud);
             }
 
 
             $form = $this->createForm(ComisionType::class, $comisionEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() /*&& $form->isValid()*/) {
 
                 $all = $comisionRepository->findAll();
                 foreach ($all as $value) {

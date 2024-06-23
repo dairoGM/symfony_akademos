@@ -54,11 +54,10 @@
                         <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
                         <td>{{ item.estadoSolicitud.nombre | default('') }}</td>
                         <td width="20%" class="text-center">
-                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_solicitud_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la solicitud">
-                                <i class="fa fa-eye "></i>
-                            </button>
+                            <a title="Asignar comisión" href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-user-friends"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

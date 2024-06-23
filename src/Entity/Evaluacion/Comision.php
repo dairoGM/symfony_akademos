@@ -11,5 +11,27 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comision extends BaseNomenclator
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="Solicitud")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Solicitud $solicitud;
+
+    /**
+     * @return Solicitud|null
+     */
+    public function getSolicitud(): ?Solicitud
+    {
+        return $this->solicitud;
+    }
+
+    /**
+     * @param Solicitud|null $solicitud
+     */
+    public function setSolicitud(?Solicitud $solicitud): void
+    {
+        $this->solicitud = $solicitud;
+    }
+
 
 }
