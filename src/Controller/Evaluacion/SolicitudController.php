@@ -9,6 +9,7 @@ use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
 use App\Form\Evaluacion\AprobarSolicitudType;
+use App\Form\Evaluacion\RechazarSolicitudType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\EstadoSolicitudRepository;
 use App\Repository\Evaluacion\SolicitudRepository;
@@ -168,6 +169,36 @@ class SolicitudController extends AbstractController
             }
 
             return $this->render('modules/evaluacion/solicitud/aprobar.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/rechazar", name="app_solicitud_rechazar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function rechazar(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
+    {
+        try {
+            $form = $this->createForm(RechazarSolicitudType::class, $solicitud);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(4));
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/solicitud/rechazar.html.twig', [
                 'form' => $form->createView(),
                 'solicitud' => $solicitud
             ]);

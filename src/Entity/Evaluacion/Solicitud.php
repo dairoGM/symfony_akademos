@@ -72,6 +72,10 @@ class Solicitud extends BaseEntity
      * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $categoriaAcreditacionActual = null;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $motivoRechazo = null;
 
     /**
      * @return string|null
@@ -232,6 +236,22 @@ class Solicitud extends BaseEntity
     public function setCategoriaAcreditacionActual(?string $categoriaAcreditacionActual): void
     {
         $this->categoriaAcreditacionActual = $categoriaAcreditacionActual;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMotivoRechazo(): ?string
+    {
+        return $this->motivoRechazo;
+    }
+
+    /**
+     * @param string|null $motivoRechazo
+     */
+    public function setMotivoRechazo(?string $motivoRechazo): void
+    {
+        $this->motivoRechazo = $motivoRechazo;
     }
 
 
