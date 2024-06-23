@@ -72,6 +72,15 @@
                             </a>
                         </li>
                     {% endif %}
+
+                    {% if hasRoles('ROLE_GEST_COMISION_EVALUADORA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_comision_evaluadora_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Comisión evaluadora</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}
