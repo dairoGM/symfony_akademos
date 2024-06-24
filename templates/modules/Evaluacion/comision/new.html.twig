@@ -147,17 +147,17 @@
 
 {% block javascripts %}
     <script>
-        $('#copep_nombre').val(localStorage.getItem('nombre'));
-        $('#copep_descripcion').val(localStorage.getItem('descripcion'));
-        $('#copep_activo').val(localStorage.getItem('activo'));
+        $('#evaluacion_nombre').val(localStorage.getItem('nombre'));
+        $('#evaluacion_descripcion').val(localStorage.getItem('descripcion'));
+        $('#evaluacion_activo').val(localStorage.getItem('activo'));
         var idSolicitud = '{{ idSolicitud }}';
         console.log(idSolicitud);
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
 
-            localStorage.setItem('nombre', $('#copep_nombre').val());
-            localStorage.setItem('descripcion', $('#copep_descripcion').val());
-            localStorage.setItem('activo', $('#copep_activo').val());
+            localStorage.setItem('nombre', $('#evaluacion_nombre').val());
+            localStorage.setItem('descripcion', $('#evaluacion_descripcion').val());
+            localStorage.setItem('activo', $('#evaluacion_activo').val());
             var flag = true;
             if ($('input[id*=asignados_]').length > 0) {
                 var arrayId = [];
@@ -173,7 +173,7 @@
 
                         } else {
                             flag = false;
-                            toastr.warning("El rol es obligatorio por cada miembro de la copep.");
+                            toastr.warning("El rol es obligatorio por cada miembro de la evaluacion.");
                             return;
                         }
                     }

@@ -34,6 +34,7 @@ class ComisionController extends AbstractController
     public function index(Request $request, ComisionRepository $comisionRepository, MiembrosComisionRepository $miembrosComisionRepository)
     {
         $request->getSession()->remove('array_personas_asignadas');
+        $request->getSession()->remove('idSolicitud');
         $registros = $comisionRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
         $response = [];
         if (is_array($registros) && count($registros) > 0) {
@@ -59,7 +60,13 @@ class ComisionController extends AbstractController
     public function registrar(Request $request, EntityManagerInterface $em, SolicitudRepository $solicitudRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, PersonaRepository $personaRepository)
     {
         try {
-            $idSolicitud = $request->query->get('id');
+            $idSolicitudParam = $request->query->get('id');
+            if (!empty($idSolicitudParam)) {
+                $request->getSession()->set('idSolicitud', $idSolicitudParam);
+            }
+            $idSolicitud = $request->getSession()->get('idSolicitud');
+
+
             $comisionEntity = new Comision();
             if (!empty($idSolicitud)) {
                 $nombre = null;
@@ -74,20 +81,16 @@ class ComisionController extends AbstractController
                     $nombre = $prog . ", " . $solicitud->getProgramaPosgrado()->getUniversidad()->getSiglas();
                 }
                 $comisionEntity->setNombre('Comisión evaluadora de: ' . $nombre);
-                $comisionEntity->setSolicitud($solicitud);
             }
-
 
             $form = $this->createForm(ComisionType::class, $comisionEntity, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() /*&& $form->isValid()*/) {
 
-                $all = $comisionRepository->findAll();
-                foreach ($all as $value) {
-                    $value->setActivo(false);
-                    $comisionRepository->edit($value, true);
+                if ($request->getSession()->has('idSolicitud')) {
+                    $solicitud = $solicitudRepository->find($request->getSession()->get('idSolicitud'));
+                    $comisionEntity->setSolicitud($solicitud);
                 }
-
 
                 $comisionRepository->add($comisionEntity, true);
 
@@ -103,6 +106,7 @@ class ComisionController extends AbstractController
                 }
 
 
+                $request->getSession()->remove('idSolicitud');
                 $request->getSession()->remove('array_personas_asignadas');
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 if (empty($idSolicitud)) {
@@ -182,7 +186,11 @@ class ComisionController extends AbstractController
                 }
             }
             $request->getSession()->set('array_personas_asignadas', $nuevoArray);
-            return $this->redirectToRoute('app_comision_evaluadora_registrar', [], Response::HTTP_SEE_OTHER);
+            $params = [];
+            if ($request->getSession()->has('idSolicitud')) {
+                $params = ['id' => $request->getSession()->get('idSolicitud')];
+            }
+            return $this->redirectToRoute('app_comision_evaluadora_registrar', $params, Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             return $this->json(true);
         }

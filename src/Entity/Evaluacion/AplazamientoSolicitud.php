@@ -33,9 +33,10 @@ class AplazamientoSolicitud extends BaseEntity
     private $fechaPropuestaAplazamiento;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false)
+     * @ORM\ManyToOne(targetEntity="EstadoAplazamiento")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?bool $aprobado = true;
+    private ?EstadoAplazamiento $estadoAplazamiento;
 
     /**
      * @return \App\Entity\Evaluacion\Solicitud|null
@@ -70,19 +71,19 @@ class AplazamientoSolicitud extends BaseEntity
     }
 
     /**
-     * @return bool|null
+     * @return EstadoAplazamiento|null
      */
-    public function getAprobado(): ?bool
+    public function getEstadoAplazamiento(): ?EstadoAplazamiento
     {
-        return $this->aprobado;
+        return $this->estadoAplazamiento;
     }
 
     /**
-     * @param bool|null $aprobado
+     * @param EstadoAplazamiento|null $estadoAplazamiento
      */
-    public function setAprobado(?bool $aprobado): void
+    public function setEstadoAplazamiento(?EstadoAplazamiento $estadoAplazamiento): void
     {
-        $this->aprobado = $aprobado;
+        $this->estadoAplazamiento = $estadoAplazamiento;
     }
 
 

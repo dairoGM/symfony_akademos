@@ -27,7 +27,9 @@
                     <th>Evaluación actual</th>
                     <th>Fecha propuesta</th>
                     <th>Fecha aprobada</th>
-                    <th>Estado</th>
+                    <th>Comisión evaluadora</th>
+                    <th>Aplazamiento</th>
+                    {#                    <th>Estado</th> #}
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -52,12 +54,30 @@
                         <td>{{ item.categoriaAcreditacionActual | default('') }}</td>
                         <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
                         <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
-                        <td>{{ item.estadoSolicitud.nombre | default('') }}</td>
-                        <td width="20%" class="text-center">
-                            <a title="Asignar comisión" href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-user-friends"></i>
-                            </a>
+                        <td>{{ item.comision | default('') }}</td>
+                        {% if item.aplazamiento is not null %}
+                            <td>
+                                <span class="{{ item.aplazamientoClass }}">{{ item.aplazamiento | default('') }}</span>
+                            </td>
+                        {% else %}
+                            <td>{{ item.aplazamiento | default('') }}</td>
+                        {% endif %}
+                        {#                        <td>{{ item.estadoSolicitud.nombre | default('') }}</td> #}
+                        <td width="10%" class="text-center">
+                            {% if item.comision is null %}
+                                <a title="Asignar comisión"
+                                   href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-user-friends"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.aplazamiento is null %}
+                                <a title="Aplazar"
+                                   href="{{ path('app_comision_evaluadora_aplazar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-calendar-plus"></i>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
