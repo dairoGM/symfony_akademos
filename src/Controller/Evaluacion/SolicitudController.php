@@ -281,7 +281,7 @@ class SolicitudController extends AbstractController
     public function obtenerCategoriaAcreditacion(Request $request, InstitucionRepository $institucionRepository)
     {
         try {
-            $isAdmin =false;// in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
             $arrayInstituciones = [];
             if ($isAdmin) {
                 $arrayInstituciones = $institucionRepository->getInstituciones();
