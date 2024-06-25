@@ -29,6 +29,16 @@
                     {{ form_widget(form.institucion) }}
                     {{ form_errors(form.institucion) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="comp_institucion_admin">
+                    <label class="" for="solicitud_institucionesAdmin">Institución</label>
+                    <select id="solicitud_institucionesAdmin" name="solicitud[institucionesAdmin]"
+                            class="form-control select2-hidden-accessible"
+                            data-select2-id="solicitud_institucionesAdmin" tabindex="-1" aria-hidden="true"
+                            required="required">
+                        <option value="">Seleccione</option>
+                    </select>
+
+                </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" id="comp_pregrado">
                     {{ form_label(form.programaPregrado) }}
                     {{ form_widget(form.programaPregrado) }}
@@ -80,6 +90,10 @@
 
 {% block javascripts %}
     <script>
+        $('#comp_institucion_admin').hide();
+        $('#comp_institucion').hide();
+
+        $('#comp_institucion_admin').hide();
         $('#solicitud_cartaSolicitud').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
@@ -107,19 +121,35 @@
             });
             $('div[id*="comp_"]').hide();
             if ($(this).val() == 'institucion') {
-                $('div[id*="comp_institucion"]').show();
+                $('#comp_institucion_admin').hide();
+                $('#comp_institucion').hide();
+
+                // $('div[id*="comp_institucion"]').show();
                 $.post("{{ path('app_solicitud_get_categoria_acreditacion_institucion') }}",
                     {
                         institucion: $('#solicitud_institucion').val()
                     },
                     function (data) {
-                        $('#solicitud_categoriaAcreditacionActual').val(data.categoriaAcreditacion)
-                        $('#solicitud_institucion').val(data.nombreInstitucion)
+                        if (data.isAdmin) {
+                            $('#solicitud_institucionesAdmin option').remove();
+                            $('#solicitud_institucionesAdmin').append(new Option('Seleccione', ""));
+                            for (var i = 0; i < data.instituciones.length; i++) {
+                                $('#solicitud_institucionesAdmin').append(new Option(data.instituciones[i].nombre, data.instituciones[i].id));
+                            }
+                            $('#solicitud_institucionesAdmin').attr('required', true)
+                            $('#comp_institucion_admin').show();
+                            $('#comp_institucion').hide();
+                        } else {
+                            $('#solicitud_categoriaAcreditacionActual').val(data.categoriaAcreditacion)
+                            $('#solicitud_institucion').val(data.nombreInstitucion)
+                            $('#comp_institucion_admin').hide();
+                            $('#comp_institucion').show();
+                            $('#solicitud_institucionesAdmin').attr('required', false)
+                        }
+                        HoldOn.close()
                     });
                 $('#solicitud_institucion').attr('required', true)
 
-
-                HoldOn.close()
             } else {
                 $('#solicitud_programaPregrado').val(null);
                 $('#solicitud_programaPosgrado').val(null);

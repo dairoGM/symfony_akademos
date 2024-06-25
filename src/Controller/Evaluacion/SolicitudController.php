@@ -67,9 +67,11 @@ class SolicitudController extends AbstractController
                 if (!empty($request->request->all()['solicitud']['fechaPropuesta'])) {
                     $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
                 }
-
                 if ('institucion' == $request->request->all()['solicitud']['tipoSolicitud']) {
                     $solicitud->setInstitucion($dataInst[0]);
+                    if (!empty($request->request->all()['solicitud']['institucionesAdmin'])) {
+                        $solicitud->setInstitucion($institucionRepository->find($request->request->all()['solicitud']['institucionesAdmin']));
+                    }
                 }
                 if ('programa_pregrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
                     $solicitud->setProgramaPregrado($solicitudProgramaAcademicoRepository->find($request->request->all()['solicitud']['programaPregrado']));
@@ -279,7 +281,7 @@ class SolicitudController extends AbstractController
     public function obtenerCategoriaAcreditacion(Request $request, InstitucionRepository $institucionRepository)
     {
         try {
-            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $isAdmin =false;// in_array('ROLE_ADMIN', $this->getUser()->getRoles());
             $arrayInstituciones = [];
             if ($isAdmin) {
                 $arrayInstituciones = $institucionRepository->getInstituciones();
