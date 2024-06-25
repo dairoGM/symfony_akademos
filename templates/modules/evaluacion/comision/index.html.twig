@@ -1,0 +1,95 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Comisiones evaluadoras{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de comisiones evaluadoras</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2"
+                   href="{{ path('app_comision_evaluadora_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Miembros</th>
+                    <th>Estado</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="20%">{{ item.nombre }}</td>
+                        <td>
+                            <ul class="list-inline">
+                                {% if item.miembros | length > 0 %}
+                                    {% for item1 in item.miembros %}
+                                        <li class="list-inline-item">
+                                            <img title="{{ item1.miembro.primerNombre ~ ' ' ~ item1.miembro.segundoNombre ~' '~ item1.miembro.primerApellido ~ ' ' ~ item1.miembro.segundoApellido }}"
+                                                 src="{% if item1.miembro.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item1.miembro.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                                 class="img-circle" alt="{{ item1.miembro.primerNombre }}"
+                                                 style="width: 40px;height: 40px; object-fit: cover; cursor: pointer">
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </td>
+                        <td width="3%" class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
+                        <td width="15%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_comision_evaluadora_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la COPEP">
+                                <i class="fa fa-eye "></i>
+                            </button>
+
+                            <a title="Modificar" href="{{ path('app_comision_evaluadora_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_comision_evaluadora_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('descripcion');
+        localStorage.removeItem('activo');
+    </script>
+{% endblock %}

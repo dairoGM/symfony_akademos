@@ -1,0 +1,74 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Convocatorias{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de convocatorias</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_convocatoria_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de fin</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{% if item.fechaInicio is not null %} {{ item.fechaInicio | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
+                        <td>{% if item.fechaFin is not null %} {{ item.fechaFin | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
+                        <td width="15%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_convocatoria_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la convocatoria">
+                                <i class="fa fa-eye "></i>
+                            </button>
+
+                            <a title="Modificar" href="{{ path('app_convocatoria_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+
+                            <a title="Descargar carta" target="_blank" class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/convocatoria/carta/{{ item.carta }}">
+                                <i
+                                        class="fa fa-download"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_convocatoria_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

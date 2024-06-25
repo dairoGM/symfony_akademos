@@ -1,0 +1,94 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Plan anual de evaluación{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de planes anuales de evaluación</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Organismo</th>
+                    <th>Institución</th>
+                    <th>Programa de pregrado</th>
+                    <th>Programa de posgrado</th>
+                    <th>Evaluación actual</th>
+                    <th>Fecha propuesta</th>
+                    <th>Fecha aprobada</th>
+                    <th>Comisión evaluadora</th>
+                    <th>Aplazamiento</th>
+                    {#                    <th>Estado</th> #}
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+
+                        {% if item.tipoSolicitud == 'institucion' %}
+                            <td>{{ item.institucion.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.institucion.nombre | default('') }}</td>
+                        {% elseif  item.tipoSolicitud == 'programa_pregrado' %}
+                            <td>{{ item.programaPregrado.centroRector.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.programaPregrado.centroRector.nombre | default('') }}</td>
+                        {% elseif  item.tipoSolicitud == 'programa_posgrado' %}
+                            <td>{{ item.programaPosgrado.universidad.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.programaPosgrado.universidad.nombre | default('') }}</td>
+                        {% endif %}
+
+                        <td>{{ item.programaPregrado.nombre | default('') }}</td>
+                        <td>{{ item.programaPosgrado.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacionActual | default('') }}</td>
+                        <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
+                        <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
+                        <td>{{ item.comision | default('') }}</td>
+                        {% if item.aplazamiento is not null %}
+                            <td>
+                                <span class="{{ item.aplazamientoClass }}">{{ item.aplazamiento | default('') }}</span>
+                            </td>
+                        {% else %}
+                            <td>{{ item.aplazamiento | default('') }}</td>
+                        {% endif %}
+                        {#                        <td>{{ item.estadoSolicitud.nombre | default('') }}</td> #}
+                        <td width="10%" class="text-center">
+                            {% if item.comision is null %}
+                                <a title="Asignar comisión"
+                                   href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-user-friends"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.aplazamiento is null %}
+                                <a title="Aplazar"
+                                   href="{{ path('app_comision_evaluadora_aplazar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-calendar-plus"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
