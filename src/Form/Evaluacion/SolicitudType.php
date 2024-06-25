@@ -49,7 +49,7 @@ class SolicitudType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $currentDate = date("Y-m-d");
-                    return $er->createQueryBuilder('u')->where("u.creado >= '$currentDate'")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.fechaFin >= '$currentDate'")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,

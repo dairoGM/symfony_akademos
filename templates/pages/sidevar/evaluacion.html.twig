@@ -17,6 +17,14 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes</p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') %}
                         <li class="nav-item">
                             <a href="{{ path('app_plan_anual_evaluacion_index') }}"
@@ -25,14 +33,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_SOLICITUD') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_solicitud_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Solicitudes</p>
-                            </a>
-                        </li>
-                    {% endif %}{% if hasRoles('ROLE_GEST_APLAZAMIENTO') %}
+                    {% if hasRoles('ROLE_GEST_APLAZAMIENTO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_aplazamiento_index') }}"
                                class="nav-link nav-link-menu">

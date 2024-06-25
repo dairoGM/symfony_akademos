@@ -273,16 +273,21 @@ class SolicitudController extends AbstractController
     /**
      * @Route("/get_categoria_acreditacion_institucion", name="app_solicitud_get_categoria_acreditacion_institucion", methods={"GET", "POST"})
      * @param Request $request
-     * @param PersonaRepository $institucionRepository
+     * @param InstitucionRepository $institucionRepository
      * @return Response
      */
     public function obtenerCategoriaAcreditacion(Request $request, InstitucionRepository $institucionRepository)
     {
         try {
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $arrayInstituciones = [];
+            if ($isAdmin) {
+                $arrayInstituciones = $institucionRepository->getInstituciones();
+            }
             $institucion = $institucionRepository->find($request->request->get('institucion'));
             $categoriaAcreditacion = $institucion->getCategoriaAcreditacion()->getNombre();
             $institucionNombre = $institucion->getNombre();
-            return $this->json(['categoriaAcreditacion' => $categoriaAcreditacion, 'nombreInstitucion' => $institucionNombre]);
+            return $this->json(['isAdmin' => $isAdmin, 'instituciones' => $arrayInstituciones, 'categoriaAcreditacion' => $categoriaAcreditacion, 'nombreInstitucion' => $institucionNombre]);
         } catch (\Exception $exception) {
             return $this->json(false);
         }
