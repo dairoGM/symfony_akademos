@@ -291,7 +291,7 @@ class SolicitudController extends AbstractController
             $institucionNombre = $institucion->getNombre();
             return $this->json(['isAdmin' => $isAdmin, 'instituciones' => $arrayInstituciones, 'categoriaAcreditacion' => $categoriaAcreditacion, 'nombreInstitucion' => $institucionNombre]);
         } catch (\Exception $exception) {
-            return $this->json(false);
+            return $this->json($exception->getMessage());
         }
     }
 
