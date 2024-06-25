@@ -211,6 +211,22 @@
             $('#solicitud_institucion').attr('required', true)
             HoldOn.close()
         })
+        $('#solicitud_institucionesAdmin').change(function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_solicitud_get_categoria_acreditacion_institucion') }}",
+                {
+                    institucion: $('#solicitud_institucionesAdmin').val()
+                },
+                function (data) {
+                    $('#solicitud_categoriaAcreditacionActual').val(data.categoriaAcreditacion)
+                });
+            $('#solicitud_institucion').attr('required', true)
+            HoldOn.close()
+        })
 
         $('#solicitud_programaPosgrado').change(function () {
             HoldOn.open({

@@ -287,7 +287,7 @@ class SolicitudController extends AbstractController
                 $arrayInstituciones = $institucionRepository->getInstituciones();
             }
             $institucion = $institucionRepository->find($request->request->get('institucion'));
-            $categoriaAcreditacion = $institucion->getCategoriaAcreditacion()->getNombre();
+            $categoriaAcreditacion = is_object($institucion->getCategoriaAcreditacion()) ? $institucion->getCategoriaAcreditacion()->getNombre() : null;
             $institucionNombre = $institucion->getNombre();
             return $this->json(['isAdmin' => $isAdmin, 'instituciones' => $arrayInstituciones, 'categoriaAcreditacion' => $categoriaAcreditacion, 'nombreInstitucion' => $institucionNombre]);
         } catch (\Exception $exception) {
@@ -344,16 +344,24 @@ class SolicitudController extends AbstractController
             $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
             $institucion = $institucionRepository->findBy(['estructura' => $personaAutenticada->getEstructura()->getId()]);
             $programasPregrado = [];
-            if (isset($institucion[0])) {
-                $data = $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $institucion[0]->getId()]);
-                if (is_array($data)) {
-                    foreach ($data as $value) {
-                        $item['id'] = $value->getSolicitudProgramaAcademico()->getId();
-                        $item['nombre'] = $value->getSolicitudProgramaAcademico()->getNombre();
-                        $programasPregrado[] = $item;
-                    }
+
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $data = [];
+            if ($isAdmin) {
+                $data = $solicitudProgramaAcademicoInstitucionRepository->findAll();
+            } else {
+                if (isset($institucion[0])) {
+                    $data = $solicitudProgramaAcademicoInstitucionRepository->findBy(['institucion' => $institucion[0]->getId()]);
                 }
             }
+            if (is_array($data)) {
+                foreach ($data as $value) {
+                    $item['id'] = $value->getSolicitudProgramaAcademico()->getId();
+                    $item['nombre'] = $value->getSolicitudProgramaAcademico()->getNombre();
+                    $programasPregrado[] = $item;
+                }
+            }
+
             return $this->json($programasPregrado);
         } catch (\Exception $exception) {
             return new JsonResponse([]);
@@ -375,14 +383,20 @@ class SolicitudController extends AbstractController
             $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
             $institucion = $institucionRepository->findBy(['estructura' => $personaAutenticada->getEstructura()->getId()]);
             $programasPosgrado = [];
-            if (isset($institucion[0])) {
-                $data = $solicitudProgramaRepository->findBy(['universidad' => $institucion[0]->getId(), 'estadoPrograma' => 7]);
-                if (is_array($data)) {
-                    foreach ($data as $value) {
-                        $item['id'] = $value->getId();
-                        $item['nombre'] = $value->getNombre();
-                        $programasPosgrado[] = $item;
-                    }
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $data = [];
+            if ($isAdmin) {
+                $data = $solicitudProgramaRepository->findBy(['estadoPrograma' => 7]);
+            } else {
+                if (isset($institucion[0])) {
+                    $data = $solicitudProgramaRepository->findBy(['universidad' => $institucion[0]->getId(), 'estadoPrograma' => 7]);
+                }
+            }
+            if (is_array($data)) {
+                foreach ($data as $value) {
+                    $item['id'] = $value->getId();
+                    $item['nombre'] = $value->getNombre();
+                    $programasPosgrado[] = $item;
                 }
             }
             return $this->json($programasPosgrado);
