@@ -286,9 +286,13 @@ class SolicitudController extends AbstractController
             if ($isAdmin) {
                 $arrayInstituciones = $institucionRepository->getInstituciones();
             }
-            $institucion = $institucionRepository->find($request->request->get('institucion'));
-            $categoriaAcreditacion = is_object($institucion->getCategoriaAcreditacion()) ? $institucion->getCategoriaAcreditacion()->getNombre() : null;
-            $institucionNombre = $institucion->getNombre();
+            $institucionNombre = $categoriaAcreditacion = null;
+            if (!empty($request->request->get('institucion'))) {
+                $institucion = $institucionRepository->find($request->request->get('institucion'));
+                $categoriaAcreditacion = is_object($institucion->getCategoriaAcreditacion()) ? $institucion->getCategoriaAcreditacion()->getNombre() : null;
+                $institucionNombre = $institucion->getNombre();
+            }
+
             return $this->json(['isAdmin' => $isAdmin, 'instituciones' => $arrayInstituciones, 'categoriaAcreditacion' => $categoriaAcreditacion, 'nombreInstitucion' => $institucionNombre]);
         } catch (\Exception $exception) {
             return $this->json($exception->getMessage());
