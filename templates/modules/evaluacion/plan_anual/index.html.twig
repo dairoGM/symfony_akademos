@@ -78,6 +78,21 @@
                                             class="fa fa-calendar-plus"></i>
                                 </a>
                             {% endif %}
+                            <a title="Asignar dictámen de comisión"
+                               href="{{ path('app_plan_anual_evaluacion_dictamen_comision', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-file"></i>
+                            </a>
+                            <a title="Asignar dictámen del Comité Técnico Evaluador"
+                               href="{{ path('app_plan_anual_evaluacion_dictamen_cte', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-file-archive"></i>
+                            </a>
+                            <a title="Asignar dictámen de la JAN"
+                               href="{{ path('app_plan_anual_evaluacion_dictamen_jan', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-file-contract"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

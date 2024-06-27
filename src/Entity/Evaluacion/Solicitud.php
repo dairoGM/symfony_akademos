@@ -78,6 +78,48 @@ class Solicitud extends BaseEntity
     private ?string $motivoRechazo = null;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $dictamenComision = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $dictamenCTE = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $dictamenJAN = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\CategoriaAcreditacion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?CategoriaAcreditacion $categoriaAcreditacionAlcanzada;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaEmision;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $numeroPleno = null;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $numeroAcuerdoPleno = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $annosVigenciaCategoriaAcreditacion = null;
+
+    /**
      * @return string|null
      */
     public function getTipoSolicitud(): ?string
@@ -252,6 +294,134 @@ class Solicitud extends BaseEntity
     public function setMotivoRechazo(?string $motivoRechazo): void
     {
         $this->motivoRechazo = $motivoRechazo;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDictamenComision(): ?string
+    {
+        return $this->dictamenComision;
+    }
+
+    /**
+     * @param string|null $dictamenComision
+     */
+    public function setDictamenComision(?string $dictamenComision): void
+    {
+        $this->dictamenComision = $dictamenComision;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDictamenCTE(): ?string
+    {
+        return $this->dictamenCTE;
+    }
+
+    /**
+     * @param string|null $dictamenCTE
+     */
+    public function setDictamenCTE(?string $dictamenCTE): void
+    {
+        $this->dictamenCTE = $dictamenCTE;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDictamenJAN(): ?string
+    {
+        return $this->dictamenJAN;
+    }
+
+    /**
+     * @param string|null $dictamenJAN
+     */
+    public function setDictamenJAN(?string $dictamenJAN): void
+    {
+        $this->dictamenJAN = $dictamenJAN;
+    }
+
+    /**
+     * @return CategoriaAcreditacion|null
+     */
+    public function getCategoriaAcreditacionAlcanzada(): ?CategoriaAcreditacion
+    {
+        return $this->categoriaAcreditacionAlcanzada;
+    }
+
+    /**
+     * @param CategoriaAcreditacion|null $categoriaAcreditacionAlcanzada
+     */
+    public function setCategoriaAcreditacionAlcanzada(?CategoriaAcreditacion $categoriaAcreditacionAlcanzada): void
+    {
+        $this->categoriaAcreditacionAlcanzada = $categoriaAcreditacionAlcanzada;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * @param mixed $fechaEmision
+     */
+    public function setFechaEmision($fechaEmision): void
+    {
+        $this->fechaEmision = $fechaEmision;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNumeroPleno(): ?string
+    {
+        return $this->numeroPleno;
+    }
+
+    /**
+     * @param string|null $numeroPleno
+     */
+    public function setNumeroPleno(?string $numeroPleno): void
+    {
+        $this->numeroPleno = $numeroPleno;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNumeroAcuerdoPleno(): ?string
+    {
+        return $this->numeroAcuerdoPleno;
+    }
+
+    /**
+     * @param string|null $numeroAcuerdoPleno
+     */
+    public function setNumeroAcuerdoPleno(?string $numeroAcuerdoPleno): void
+    {
+        $this->numeroAcuerdoPleno = $numeroAcuerdoPleno;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAnnosVigenciaCategoriaAcreditacion(): ?string
+    {
+        return $this->annosVigenciaCategoriaAcreditacion;
+    }
+
+    /**
+     * @param string|null $annosVigenciaCategoriaAcreditacion
+     */
+    public function setAnnosVigenciaCategoriaAcreditacion(?string $annosVigenciaCategoriaAcreditacion): void
+    {
+        $this->annosVigenciaCategoriaAcreditacion = $annosVigenciaCategoriaAcreditacion;
     }
 
 

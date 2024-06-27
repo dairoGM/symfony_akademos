@@ -10,6 +10,8 @@ use App\Entity\Pregrado\SolicitudProgramaAcademico;
 use App\Entity\Security\User;
 use App\Form\Evaluacion\AprobarSolicitudType;
 use App\Form\Evaluacion\RechazarSolicitudType;
+use App\Form\Evaluacion\SolicitudComisionType;
+use App\Form\Evaluacion\SolicitudSimplificadaType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\ComisionRepository;
 use App\Repository\Evaluacion\EstadoSolicitudRepository;
@@ -68,9 +70,11 @@ class SolicitudController extends AbstractController
                     $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
                 }
                 if ('institucion' == $request->request->all()['solicitud']['tipoSolicitud']) {
-                    $solicitud->setInstitucion($dataInst[0]);
+
                     if (!empty($request->request->all()['solicitud']['institucionesAdmin'])) {
                         $solicitud->setInstitucion($institucionRepository->find($request->request->all()['solicitud']['institucionesAdmin']));
+                    } else {
+                        $solicitud->setInstitucion($dataInst[0]);
                     }
                 }
                 if ('programa_pregrado' == $request->request->all()['solicitud']['tipoSolicitud']) {
@@ -113,12 +117,12 @@ class SolicitudController extends AbstractController
     public function modificar(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
     {
         try {
-            $form = $this->createForm(SolicitudType::class, $solicitud, ['action' => 'modificar']);
+            $form = $this->createForm(SolicitudSimplificadaType::class, $solicitud, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $temp = explode('/', $request->request->all()['solicitud']['fechaPropuesta']);
+                $temp = explode('/', $request->request->all()['solicitud_simplificada']['fechaPropuesta']);
                 $solicitud->setFechaPropuesta(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
                 if (!empty($form['cartaSolicitud']->getData())) {
@@ -128,7 +132,7 @@ class SolicitudController extends AbstractController
                         }
                     }
                     $file = $form['cartaSolicitud']->getData();
-                    $file_name = $_FILES['solicitud']['name']['cartaSolicitud'];
+                    $file_name = $_FILES['solicitud_simplificada']['name']['cartaSolicitud'];
                     $solicitud->setCartaSolicitud($file_name);
                     $file->move("uploads/evaluacion/solicitud/cartaSolicitud", $file_name);
                 }

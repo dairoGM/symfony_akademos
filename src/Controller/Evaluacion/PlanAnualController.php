@@ -12,6 +12,9 @@ use App\Entity\Security\User;
 use App\Form\Evaluacion\AplazarSolicitudType;
 use App\Form\Evaluacion\AprobarSolicitudType;
 use App\Form\Evaluacion\RechazarSolicitudType;
+use App\Form\Evaluacion\SolicitudComisionType;
+use App\Form\Evaluacion\SolicitudCTEType;
+use App\Form\Evaluacion\SolicitudJANType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\AplazamientoSolicitudRepository;
 use App\Repository\Evaluacion\ComisionRepository;
@@ -111,4 +114,130 @@ class PlanAnualController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/{id}/dictamen_comision", name="app_plan_anual_evaluacion_dictamen_comision", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function dictamenComision(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudComisionType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['dictamenComision']->getData())) {
+                    if ($solicitud->getDictamenComision() != null) {
+                        if (file_exists('uploads/evaluacion/plan_anual/comision/dictamen/' . $solicitud->getDictamenComision())) {
+                            unlink('uploads/evaluacion/plan_anual/comision/dictamen/' . $solicitud->getDictamenComision());
+                        }
+                    }
+                    $file = $form['dictamenComision']->getData();
+                    $file_name = $_FILES['solicitud_comision']['name']['dictamenComision'];
+                    $solicitud->setDictamenComision($file_name);
+                    $file->move("uploads/evaluacion/plan_anual/comision/dictamen/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/plan_anual/dictamenComision.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+
+    /**
+     * @Route("/{id}/dictamen_cte", name="app_plan_anual_evaluacion_dictamen_cte", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function dictamenCTE(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudCTEType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['dictamenCTE']->getData())) {
+                    if ($solicitud->getDictamenCTE()!= null) {
+                        if (file_exists('uploads/evaluacion/plan_anual/cte/dictamen/' . $solicitud->getDictamenCTE())) {
+                            unlink('uploads/evaluacion/plan_anual/cte/dictamen/' . $solicitud->getDictamenCTE());
+                        }
+                    }
+                    $file = $form['dictamenCTE']->getData();
+                    $file_name = $_FILES['solicitud_cte']['name']['dictamenCTE'];
+                    $solicitud->setDictamenCTE($file_name);
+                    $file->move("uploads/evaluacion/plan_anual/cte/dictamen/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/plan_anual/dictamenCTE.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/dictamen_jan", name="app_plan_anual_evaluacion_dictamen_jan", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function dictamenJAN(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudJANType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['dictamenJAN']->getData())) {
+                    if ($solicitud->getDictamenJAN()!= null) {
+                        if (file_exists('uploads/evaluacion/plan_anual/jan/dictamen/' . $solicitud->getDictamenJAN())) {
+                            unlink('uploads/evaluacion/plan_anual/jan/dictamen/' . $solicitud->getDictamenJAN());
+                        }
+                    }
+                    $file = $form['dictamenJAN']->getData();
+                    $file_name = $_FILES['solicitud_jan']['name']['dictamenJAN'];
+                    $solicitud->setDictamenJAN($file_name);
+                    $file->move("uploads/evaluacion/plan_anual/jan/dictamen/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/plan_anual/dictamenJAN.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 }

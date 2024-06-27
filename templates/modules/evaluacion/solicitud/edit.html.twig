@@ -17,48 +17,33 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.nombre) }}
-                    {{ form_widget(form.nombre) }}
-                    {{ form_errors(form.nombre) }}
+                    {{ form_label(form.convocatoria) }}
+                    {{ form_widget(form.convocatoria) }}
+                    {{ form_errors(form.convocatoria) }}
                 </div>
                 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.fechaInicio) }}
+                    {{ form_label(form.fechaPropuesta) }}
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        {{ form_widget(form.fechaInicio) }}
-                        {{ form_errors(form.fechaInicio) }}
+                        {{ form_widget(form.fechaPropuesta) }}
+                        {{ form_errors(form.fechaPropuesta) }}
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.fechaFin) }}
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        {{ form_widget(form.fechaFin) }}
-                        {{ form_errors(form.fechaFin) }}
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.carta) }}
-                    {{ form_widget(form.carta) }}
+                    {{ form_label(form.cartaSolicitud) }}
+                    {{ form_widget(form.cartaSolicitud) }}
                     <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo"> </span>
-                    {{ form_errors(form.carta) }}
+                    {{ form_errors(form.cartaSolicitud) }}
                     <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/carta/{{ solicitud.carta }}">{{ solicitud.carta }}</a>
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/cartaSolicitud/{{ solicitud.cartaSolicitud }}">{{ solicitud.cartaSolicitud }}</a>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-                    {{ form_label(form.descripcion) }}
-                    {{ form_widget(form.descripcion) }}
-                    {{ form_errors(form.descripcion) }}
-                </div>
-            </div>
+
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_index') }}" data-title=""
@@ -72,18 +57,14 @@
 {% block javascripts %}
     <script>
 
-        var fecha = "{% if solicitud.fechaInicio is empty %}  {{ solicitud.fechaInicio | default('') }} {% else %}  {{ solicitud.fechaInicio|date('d/m/Y') }} {% endif %}".replace(' ', '');
-        $('#solicitud_fechaInicio').val(fecha.replace(' ', ''));
+        var fecha = "{% if solicitud.fechaPropuesta is empty %}  {{ solicitud.fechaPropuesta | default('') }} {% else %}  {{ solicitud.fechaPropuesta|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#solicitud_simplificada_fechaPropuesta').val(fecha.replace(' ', ''));
 
-        var fecha = "{% if solicitud.fechaFin is empty %}  {{ solicitud.fechaFin | default('') }} {% else %}  {{ solicitud.fechaFin|date('d/m/Y') }} {% endif %}".replace(' ', '');
-        $('#solicitud_fechaFin').val(fecha.replace(' ', ''));
-
-
-        $('#solicitud_carta').change(function () {
+        $('#solicitud_simplificada_cartaSolicitud').change(function () {
             var filename = jQuery(this).val().split('\\').pop();
             $('.cargar-archivo').html(filename);
         })
-        $('#solicitud_fechaInicio, #solicitud_fechaFin').datetimepicker({
+        $('#solicitud_simplificada_fechaPropuesta').datetimepicker({
             format: 'DD/MM/YYYY'
         });
     </script>
