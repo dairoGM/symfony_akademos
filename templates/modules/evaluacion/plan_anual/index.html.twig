@@ -93,6 +93,10 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-file-contract"></i>
                             </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_plan_anual_evaluacion_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}

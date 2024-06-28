@@ -90,6 +90,11 @@
 
 {% block javascripts %}
     <script>
+        $('#solicitud_fechaPropuesta').datetimepicker({
+            format: 'DD/MM/YYYY',
+            // enabledDates: ["2024-07-01", "2024-07-02", "2024-07-03", "2024-07-04", "2024-07-05", "2024-07-06", "2024-07-07", "2024-07-08", "2024-07-09", "2024-07-10"]
+        });
+
         $('#comp_institucion_admin').hide();
         $('#comp_institucion').hide();
 
@@ -99,9 +104,27 @@
             $('.cargar-archivo').html(filename);
         })
 
-        $('#solicitud_fechaPropuesta').datetimepicker({
-            format: 'DD/MM/YYYY'
-        });
+        $('#solicitud_convocatoria').change(function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_solicitud_get_convocatoria') }}",
+                {
+                    convocatoria: $('#solicitud_convocatoria').val()
+                },
+                function (data) {
+
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        arr.push(moment(data[i], 'YYYY-MM-DD').toDate());
+                    }
+                    console.log(arr);
+                    $('#solicitud_fechaPropuesta').datetimepicker('enabledDates', arr);
+                    HoldOn.close()
+                });
+        })
 
 
         $('div[id*="comp_"]').hide();
@@ -149,6 +172,9 @@
                         HoldOn.close()
                     });
                 $('#solicitud_institucion').attr('required', true)
+                $('#solicitud_programaPregrado').attr('required', false)
+                $('#solicitud_programaPosgrado').attr('required', false)
+                $('#solicitud_institucionesAdmin').attr('required', false)
 
             } else {
                 $('#solicitud_programaPregrado').val(null);
@@ -165,6 +191,9 @@
                         $('#solicitud_programaPregrado').append(new Option(data[i].nombre, data[i].id));
                     }
                     $('#solicitud_programaPregrado').attr('required', true)
+                    $('#solicitud_institucion').attr('required', false)
+                    $('#solicitud_programaPosgrado').attr('required', false)
+                    $('#solicitud_institucionesAdmin').attr('required', false)
                     HoldOn.close()
                 });
             } else {
@@ -182,6 +211,10 @@
                         $('#solicitud_programaPosgrado').append(new Option(data[i].nombre, data[i].id));
                     }
                     $('#solicitud_programaPosgrado').attr('required', true)
+
+                    $('#solicitud_institucion').attr('required', false)
+                    $('#solicitud_programaPregrado').attr('required', false)
+                    $('#solicitud_institucionesAdmin').attr('required', false)
                     HoldOn.close()
                 });
             } else {

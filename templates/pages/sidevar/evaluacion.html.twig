@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLICITUD') or  hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') or hasRoles('ROLE_GEST_APLAZAMIENTO') %}
+        {% if hasRoles('ROLE_GEST_SOLICITUD') or hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') or hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') or hasRoles('ROLE_GEST_APLAZAMIENTO') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -37,7 +37,15 @@
                         <li class="nav-item">
                             <a href="{{ path('app_aplazamiento_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Aplazamientos</p>
+                                <p>Solicitudes aplazadas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_informe_autoevaluacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes de informes de autoevaluación</p>
                             </a>
                         </li>
                     {% endif %}

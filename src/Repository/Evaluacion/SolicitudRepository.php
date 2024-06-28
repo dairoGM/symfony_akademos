@@ -48,4 +48,12 @@ class SolicitudRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getInformeAutoevaluacion()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.informeAutoevaluacion IS NOT NULL");
+        $qb->orderBy('qb.id', 'desc');
+        return $qb->getQuery()->getResult();
+    }
 }

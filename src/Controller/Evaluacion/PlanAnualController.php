@@ -157,7 +157,6 @@ class PlanAnualController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}/dictamen_cte", name="app_plan_anual_evaluacion_dictamen_cte", methods={"GET", "POST"})
      * @param Request $request
@@ -173,7 +172,7 @@ class PlanAnualController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!empty($form['dictamenCTE']->getData())) {
-                    if ($solicitud->getDictamenCTE()!= null) {
+                    if ($solicitud->getDictamenCTE() != null) {
                         if (file_exists('uploads/evaluacion/plan_anual/cte/dictamen/' . $solicitud->getDictamenCTE())) {
                             unlink('uploads/evaluacion/plan_anual/cte/dictamen/' . $solicitud->getDictamenCTE());
                         }
@@ -215,7 +214,7 @@ class PlanAnualController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!empty($form['dictamenJAN']->getData())) {
-                    if ($solicitud->getDictamenJAN()!= null) {
+                    if ($solicitud->getDictamenJAN() != null) {
                         if (file_exists('uploads/evaluacion/plan_anual/jan/dictamen/' . $solicitud->getDictamenJAN())) {
                             unlink('uploads/evaluacion/plan_anual/jan/dictamen/' . $solicitud->getDictamenJAN());
                         }
@@ -235,6 +234,30 @@ class PlanAnualController extends AbstractController
                 'form' => $form->createView(),
                 'solicitud' => $solicitud
             ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/eliminar", name="app_plan_anual_evaluacion_eliminar", methods={"GET"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function eliminar(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            if ($solicitudRepository->find($solicitud) instanceof Solicitud) {
+                $solicitudRepository->remove($solicitud, true);
+                $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);

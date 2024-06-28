@@ -867,4 +867,23 @@ class Utils
             return $exception->getMessage();
         }
     }
+
+    public function getFechasEntre($fechaInicio, $fechaFin)
+    {
+        $fechas = array();
+        $fechaInicio = strtotime($fechaInicio);
+        $fechaFin = strtotime($fechaFin);
+
+        if ($fechaInicio === false || $fechaFin === false || $fechaInicio > $fechaFin) {
+            return $fechas; // Si las fechas son inválidas o están en orden incorrecto, retornar array vacío
+        }
+
+        // Recorrer cada día entre las fechas y formatearlo como Y-m-d
+        while ($fechaInicio <= $fechaFin) {
+            $fechas[] = date('Y-m-d', $fechaInicio);
+            $fechaInicio = strtotime('+1 day', $fechaInicio);
+        }
+
+        return $fechas;
+    }
 }

@@ -13,7 +13,7 @@ class Comision extends BaseNomenclator
 {
     /**
      * @ORM\ManyToOne(targetEntity="Solicitud")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE"))
      */
     private ?Solicitud $solicitud;
 

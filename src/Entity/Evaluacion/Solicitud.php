@@ -71,6 +71,15 @@ class Solicitud extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
+    private ?string $informeAutoevaluacion = null;
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $estadoInformeAutoevaluacion = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
     private ?string $categoriaAcreditacionActual = null;
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -422,6 +431,38 @@ class Solicitud extends BaseEntity
     public function setAnnosVigenciaCategoriaAcreditacion(?string $annosVigenciaCategoriaAcreditacion): void
     {
         $this->annosVigenciaCategoriaAcreditacion = $annosVigenciaCategoriaAcreditacion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInformeAutoevaluacion(): ?string
+    {
+        return $this->informeAutoevaluacion;
+    }
+
+    /**
+     * @param string|null $informeAutoevaluacion
+     */
+    public function setInformeAutoevaluacion(?string $informeAutoevaluacion): void
+    {
+        $this->informeAutoevaluacion = $informeAutoevaluacion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEstadoInformeAutoevaluacion(): ?string
+    {
+        return $this->estadoInformeAutoevaluacion;
+    }
+
+    /**
+     * @param string|null $estadoInformeAutoevaluacion
+     */
+    public function setEstadoInformeAutoevaluacion(?string $estadoInformeAutoevaluacion): void
+    {
+        $this->estadoInformeAutoevaluacion = $estadoInformeAutoevaluacion;
     }
 
 

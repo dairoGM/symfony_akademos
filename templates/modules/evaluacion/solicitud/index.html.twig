@@ -72,14 +72,24 @@
                                 </a>
                             {% endif %}
                             {% if item.estadoSolicitud.id == 2 %}
-                                <a title="Aceptar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-calendar-check"></i>
-                                </a>
-                                <a title="Rechazar" href="{{ path('app_solicitud_rechazar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-calendar-times"></i>
-                                </a>
+                                {% if item.estadoInformeAutoevaluacion =='Aprobado' %}
+                                    <a title="Aceptar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-calendar-check"></i>
+                                    </a>
+                                    <a title="Rechazar" href="{{ path('app_solicitud_rechazar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-calendar-times"></i>
+                                    </a>
+                                {% else %}
+                                    <a title="Subir informe de autoevaluación"
+                                       href="{{ path('app_solicitud_informe_autoevaluacion', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-upload"></i>
+                                    </a>
+
+                                {% endif %}
+
                             {% endif %}
                             {% if item.estadoSolicitud.id == 1 %}
                                 <button title="Cambiar estado" class="btn btn-outline-primary elementRemove"
@@ -93,6 +103,14 @@
                                 <i
                                         class="fa fa-download"></i>
                             </a>
+                            {% if item.estadoInformeAutoevaluacion == 'Aprobado' %}
+                                <a title="Descargar informe de autoevaluación" target="_blank"
+                                   class="btn btn-outline-primary"
+                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/informe/autoevaluacion/{{ item.informeAutoevaluacion }}">
+                                    <i
+                                            class="fa fa-file-download"></i>
+                                </a>
+                            {% endif %}
                             {% if item.estadoSolicitud.id != 4 and item.estadoSolicitud.id != 3 %}
                                 <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                         data-url="{{ path('app_solicitud_eliminar', {'id': item.id}) }}">

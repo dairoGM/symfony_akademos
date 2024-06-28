@@ -11,9 +11,12 @@ use App\Entity\Security\User;
 use App\Form\Evaluacion\AprobarSolicitudType;
 use App\Form\Evaluacion\RechazarSolicitudType;
 use App\Form\Evaluacion\SolicitudComisionType;
+use App\Form\Evaluacion\SolicitudInformeAutoevaluacionType;
+use App\Form\Evaluacion\SolicitudJANType;
 use App\Form\Evaluacion\SolicitudSimplificadaType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\ComisionRepository;
+use App\Repository\Evaluacion\ConvocatoriaRepository;
 use App\Repository\Evaluacion\EstadoSolicitudRepository;
 use App\Repository\Evaluacion\SolicitudRepository;
 use App\Repository\Institucion\InstitucionRepository;
@@ -23,6 +26,7 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoInstitucionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Repository\Security\UserRepository;
 use App\Repository\Tramite\InstitucionExtranjeraRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +49,7 @@ class SolicitudController extends AbstractController
     public function index(SolicitudRepository $solicitudRepository)
     {
         return $this->render('modules/evaluacion/solicitud/index.html.twig', [
-            'registros' => $solicitudRepository->findBy([], ['id' => 'desc']),
+            'registros' => $solicitudRepository->findBy(['estadoSolicitud' => [1, 2]], ['id' => 'desc']),
         ]);
     }
 
@@ -70,7 +74,6 @@ class SolicitudController extends AbstractController
                     $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
                 }
                 if ('institucion' == $request->request->all()['solicitud']['tipoSolicitud']) {
-
                     if (!empty($request->request->all()['solicitud']['institucionesAdmin'])) {
                         $solicitud->setInstitucion($institucionRepository->find($request->request->all()['solicitud']['institucionesAdmin']));
                     } else {
@@ -410,6 +413,72 @@ class SolicitudController extends AbstractController
             return $this->json($programasPosgrado);
         } catch (\Exception $exception) {
             return new JsonResponse([]);
+        }
+    }
+
+    /**
+     * Add package entity.
+     *
+     * @Route("/get_convocatoria", name="app_solicitud_get_convocatoria", methods={"POST"})
+     * @param Request $request
+     * @param ConvocatoriaRepository $convocatoriaRepository
+     * @param Utils $utils
+     * @return JsonResponse
+     */
+    public function getConvocatoria(Request $request, ConvocatoriaRepository $convocatoriaRepository, Utils $utils): JsonResponse
+    {
+        try {
+            $response = [];
+            $convocatoria = $convocatoriaRepository->find($request->request->get('convocatoria'));
+            $fechaInicio = $convocatoria->getFechaInicio()->format('Y-m-d');
+            $fechaFin = $convocatoria->getFechaFin()->format('Y-m-d');
+            $response = $utils->getFechasEntre($fechaInicio, $fechaFin);
+            return $this->json($response);
+        } catch (\Exception $exception) {
+            return new JsonResponse([]);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}/informe_autoevaluacion", name="app_solicitud_informe_autoevaluacion", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function informeAutoevaluacion(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudInformeAutoevaluacionType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['informeAutoevaluacion']->getData())) {
+                    if ($solicitud->getInformeAutoevaluacion() != null) {
+                        if (file_exists('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion())) {
+                            unlink('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion());
+                        }
+                    }
+                    $file = $form['informeAutoevaluacion']->getData();
+                    $file_name = $_FILES['solicitud_informe_autoevaluacion']['name']['informeAutoevaluacion'];
+                    $solicitud->setInformeAutoevaluacion($file_name);
+                    $solicitud->setEstadoInformeAutoevaluacion(null);
+                    $file->move("uploads/evaluacion/solicitud/informe/autoevaluacion/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/solicitud/informeAutoevaluacion.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 }

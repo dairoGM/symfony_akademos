@@ -21,7 +21,7 @@ class AplazamientoSolicitud extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Solicitud")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?Solicitud $solicitud;
 
