@@ -55,7 +55,25 @@
                         <td>{{ item.categoriaAcreditacionActual | default('') }}</td>
                         <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
                         <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
-                        <td>{{ item.estadoSolicitud.nombre | default('') }}</td>
+                        <td>
+                            {{ item.estadoSolicitud.nombre | default('') }}
+                            {% if item.informeAutoevaluacion is not null %}
+                                {% set classCss = 'bg-yellow' %}
+                                {% set title = 'Informe de autoevaluación enviado' %}
+                                {% if item.estadoInformeAutoevaluacion == 'Aprobado' %}
+                                    {% set classCss = 'bg-green' %}
+                                    {% set title = 'Informe de autoevaluación Aprobado' %}
+                                {% endif %}
+                                {% if item.estadoInformeAutoevaluacion == 'Rechazado' %}
+                                    {% set classCss = 'bg-red' %}
+                                    {% set title = 'Informe de autoevaluación Rechazado' %}
+                                {% endif %}
+                                <div class="progress progress-xs">
+                                    <div title="{{ title }}" class="progress-bar {{ classCss }}"
+                                         style="width: 100%"></div>
+                                </div>
+                            {% endif %}
+                        </td>
 
                         <td width="20%" class="text-center">
                             {% if item.estadoSolicitud.id ==4 %}

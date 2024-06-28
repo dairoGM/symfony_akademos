@@ -29,7 +29,8 @@
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_anual_evaluacion_index') }}" data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_anual_evaluacion_index') }}"
+               data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button id="btn_submit" class="btn btn-primary">Aceptar</button>
         </div>
@@ -44,7 +45,8 @@
 
 
             $('#aplazar_solicitud_fechaPropuestaAplazamiento').datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
 
         </script>

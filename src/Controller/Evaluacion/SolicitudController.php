@@ -70,6 +70,29 @@ class SolicitudController extends AbstractController
             $form = $this->createForm(SolicitudType::class, $solicitud, ['cartaSolicitud' => 'registrar', 'idEstructuraPersonaAutenticada' => $personaAutenticada->getEstructura()->getId()]);
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
+
+                $params = $request->request->all()['solicitud'];
+
+                $filtros['tipoSolicitud'] = $params['tipoSolicitud'];
+                $filtros['convocatoria'] = $params['convocatoria'];
+                if ('institucion' == $params['tipoSolicitud']) {
+                    $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+                    if ($isAdmin) {
+                        $filtros['institucion'] = $params['institucionesAdmin'];
+                    } else {
+                        $filtros['institucion'] = $params['institucion'];
+                    }
+                } elseif ('programa_pregrado' == $params['tipoSolicitud']) {
+                    $filtros['programaPregrado'] = $params['programaPregrado'];
+                } elseif ('programa_posgrado' == $params['tipoSolicitud']) {
+                    $filtros['programaPosgrado'] = $params['programaPosgrado'];
+                }
+
+                $exist = $solicitudRepository->findBy($filtros);
+                if (isset($exist[0])) {
+                    $this->addFlash('error', 'Ya existe una solicitud registrada de ese tipo en la convocatoria seleccionada.');
+                    return $this->redirectToRoute('app_solicitud_registrar', [], Response::HTTP_SEE_OTHER);
+                }
                 if (!empty($request->request->all()['solicitud']['fechaPropuesta'])) {
                     $solicitud->setFechaPropuesta(\DateTime::createFromFormat('d/m/Y', $request->request->all()['solicitud']['fechaPropuesta']));
                 }

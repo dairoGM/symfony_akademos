@@ -25,6 +25,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_informe_autoevaluacion_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Solicitudes de informes de autoevaluación</p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') %}
                         <li class="nav-item">
                             <a href="{{ path('app_plan_anual_evaluacion_index') }}"
@@ -41,14 +49,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_informe_autoevaluacion_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Solicitudes de informes de autoevaluación</p>
-                            </a>
-                        </li>
-                    {% endif %}
+
                 </ul>
             </li>
         {% endif %}
