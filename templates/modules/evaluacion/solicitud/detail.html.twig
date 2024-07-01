@@ -1,6 +1,43 @@
-<div class="row">
-    <div class="col-6">
-        <h5 class="mb-0"><b>Motivos del rechazo:</b> {{ item.motivoRechazo | default('')  }}</h5>
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            </h5>
+            <h5 class="mb-0"><b>Organismo:</b>
+                {% if solicitud.tipoSolicitud == 'institucion' %}
+                    {{ solicitud.institucion.estructura.estructura.siglas | default('') }}
+                {% elseif  solicitud.tipoSolicitud == 'programa_pregrado' %}
+                    {{ solicitud.programaPregrado.centroRector.estructura.estructura.siglas | default('') }}
+                {% elseif  solicitud.tipoSolicitud == 'programa_posgrado' %}
+                    {{ solicitud.programaPosgrado.universidad.estructura.estructura.siglas | default('') }}
+                {% endif %}
+            </h5>
+            <h5 class="mb-0"><b>Evaluación actual:</b> {{ solicitud.categoriaAcreditacionActual | default('') }}
+            </h5>
+            <h5 class="mb-0"><b>Fecha
+                    propuesta:</b> {% if solicitud.fechaPropuesta is not null %} {{ solicitud.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
+            </h5>
+            <h5 class="mb-0"><b>Fecha
+                    aprobada:</b> {% if solicitud.fechaAprobada is not null %} {{ solicitud.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
+            </h5>
+        </div>
+        <div class="col-6">
+            <h5 class="mb-0"><b>Institución:</b>
+                {% if solicitud.tipoSolicitud == 'institucion' %}
+                    {{ solicitud.institucion.nombre | default('') }}
+                {% elseif  solicitud.tipoSolicitud == 'programa_pregrado' %}
+                    {{ solicitud.programaPregrado.centroRector.nombre | default('') }}
+                {% elseif  solicitud.tipoSolicitud == 'programa_posgrado' %}
+                    {{ solicitud.programaPosgrado.universidad.nombre | default('') }}
+                {% endif %}
+            </h5>
+            {% if solicitud.tipoSolicitud == 'programa_pregrado' %}
+                <h5 class="mb-0"><b>Programa de pregrado:</b> {{ solicitud.programaPregrado.nombre | default('') }}</h5>
+            {% elseif solicitud.tipoSolicitud == 'programa_posgrado' %}
+                <h5 class="mb-0"><b>Programa de posgrado:</b> {{ solicitud.programaPosgrado.nombre | default('') }}</h5>
+            {% endif %}
+            <h5 class="mb-0"><b>Estado:</b> {{ solicitud.estadoSolicitud.nombre | default('') }}</h5>
+
+        </div>
     </div>
 </div>
-
+<hr>

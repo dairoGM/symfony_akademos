@@ -7,11 +7,10 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
                 <h3 class="card-title text-bold text-gray">Subir informe de autoevaluación</h3>
-
             </div>
         </div>
+        {{ include('modules/evaluacion/solicitud/detail.html.twig', { 'solicitud': solicitud }) }}
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">

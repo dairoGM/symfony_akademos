@@ -12,6 +12,8 @@
 
             </div>
         </div>
+        {{ include('modules/evaluacion/solicitud/detail.html.twig', { 'solicitud': solicitud }) }}
+
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
