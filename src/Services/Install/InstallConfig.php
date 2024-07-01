@@ -304,6 +304,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ROL_COMISION", "Gestión de roles para comisión de evaluación", "Gestión de roles para comisión de evaluación");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_COMISION_EVALUADORA", "Gestión de comisiones evaluadoras", "Gestión de comisiones evaluadoras");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_APLAZAMIENTO", "Gestión solicitudes de aplazamiento", "Gestión solicitudes de aplazamiento");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION", "Gestión categorías de acreditación", "Gestión solicitudes de aplazamiento");
 
         return $functionalities;
     }
@@ -493,7 +494,8 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_ESTADO_APLAZAMIENTO")
             ->addFunctionality("ROLE_GEST_COMISION_EVALUADORA")
             ->addFunctionality("ROLE_GEST_APLAZAMIENTO")
-            ->addFunctionality("ROLE_GEST_ROL_COMISION");
+            ->addFunctionality("ROLE_GEST_ROL_COMISION")
+            ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION");
 
         return $roles;
     }

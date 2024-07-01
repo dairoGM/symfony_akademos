@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLICITUD') or hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') or hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') or hasRoles('ROLE_GEST_APLAZAMIENTO') %}
+        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') or hasRoles('ROLE_GEST_SOLICITUD') or hasRoles('ROLE_GEST_INFORME_AUTOEVALUACION') or hasRoles('ROLE_GEST_PLAN_ANUAL_EVALUACION') or hasRoles('ROLE_GEST_APLAZAMIENTO') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -46,6 +46,14 @@
                             <a href="{{ path('app_aplazamiento_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Solicitudes aplazadas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías de acreditación</p>
                             </a>
                         </li>
                     {% endif %}

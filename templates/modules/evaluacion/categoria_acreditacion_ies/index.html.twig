@@ -1,0 +1,62 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}IES{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Listado de Instituciones de Educación Superior</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Categoría de acreditación</th>
+                    <th>Fecha de emisión</th>
+                    <th>Número del pleno</th>
+                    <th>Número de acuerdo del pleno</th>
+                    <th>Años de vigencia</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre_siglas }}</td>
+                        <td>{{ item.categoriaAcreditacion | default('') }}</td>
+                        <td>{{ item.fechaEmision | default('') }}</td>
+                        <td>{{ item.numeroPleno | default('') }}</td>
+                        <td>{{ item.numeroAcuerdoPleno | default('') }}</td>
+                        <td>{{ item.annosVigenciaCategoriaAcreditacion | default('') }}</td>
+
+
+                        <td width="5%" class="text-center">
+                            <a title="Modificar"
+                               href="{{ path('app_evaluacion_categoria_acreditacion_ies_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
