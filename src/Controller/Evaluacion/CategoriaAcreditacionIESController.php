@@ -70,13 +70,12 @@ class CategoriaAcreditacionIESController extends AbstractController
 
     /**
      * @Route("/", name="app_evaluacion_categoria_acreditacion_ies_index", methods={"GET"})
-     * @param InstitucionRepository $institucionRepository
      * @return Response
      */
     public function index(InstitucionRepository $institucionRepository)
     {
         return $this->render('modules/evaluacion/categoria_acreditacion_ies/index.html.twig', [
-            'registros' => $institucionRepository->getInstituciones(),
+            'registros' => $institucionRepository->getInstitucionesV2(),
         ]);
     }
 
@@ -86,12 +85,9 @@ class CategoriaAcreditacionIESController extends AbstractController
      * @param Request $request
      * @param Institucion $institucion
      * @param CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository
-     * @param SerializerInterface $serializer
-     * @param EntityManagerInterface $entityManager
-     * @param RequestStack $requestStack
      * @return Response
      */
-    public function modificar(Request $request, Institucion $institucion, CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, RequestStack $requestStack)
+    public function modificar(Request $request, Institucion $institucion, CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository, InstitucionRepository $institucionRepository)
     {
         try {
             $new = new CategoriaAcreditacionIES();
@@ -109,13 +105,18 @@ class CategoriaAcreditacionIESController extends AbstractController
 
                 $categoriaAcreditacionIESRepository->edit($new, true);
 
+
+                $new->getInstitucion()->setCategoriaAcreditacion($new->getCategoriaAcreditacion());
+                $institucionRepository->edit($new->getInstitucion(), true);
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_evaluacion_categoria_acreditacion_ies_index', [], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('modules/evaluacion/categoria_acreditacion_ies/edit.html.twig', [
                 'form' => $form->createView(),
-                'institucion' => $institucion
+                'institucion' => $institucion,
+                'new' => $new
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());

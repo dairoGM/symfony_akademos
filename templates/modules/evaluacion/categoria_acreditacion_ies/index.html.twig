@@ -32,13 +32,11 @@
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre_siglas }}</td>
-                        <td>{{ item.categoriaAcreditacion | default('') }}</td>
+                        <td>{{ item.catAcreditacion | default('') }}</td>
                         <td>{{ item.fechaEmision | default('') }}</td>
                         <td>{{ item.numeroPleno | default('') }}</td>
                         <td>{{ item.numeroAcuerdoPleno | default('') }}</td>
                         <td>{{ item.annosVigenciaCategoriaAcreditacion | default('') }}</td>
-
-
                         <td width="5%" class="text-center">
                             <a title="Modificar"
                                href="{{ path('app_evaluacion_categoria_acreditacion_ies_modificar', {'id': item.id}) }}"

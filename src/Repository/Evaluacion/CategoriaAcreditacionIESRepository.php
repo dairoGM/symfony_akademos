@@ -48,4 +48,24 @@ class CategoriaAcreditacionIESRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getInstitucionesCategoriaAcreditacion()
+    {
+        $qb = $this->createQueryBuilder('qb1')
+            ->select(
+                "qb.id, 
+                        concat('(',qb.siglas,') ', qb.nombre) as nombre_siglas, 
+                        ca.nombre as catAcreditacion,
+                          DateFormat(qb1.fechaEmision, 'DD/MM/YYYY') as fechaEmision,
+                         qb1.numeroPleno,
+                         qb1.numeroAcuerdoPleno,
+                         qb1.annosVigenciaCategoriaAcreditacion");
+
+        $qb->leftJoin('qb1.institucion', 'qb');
+        $qb->leftJoin('qb.gradoAcademicoRector', 'gradoAcademicoR');
+        $qb->leftJoin('qb1.categoriaAcreditacion', 'ca');
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }
