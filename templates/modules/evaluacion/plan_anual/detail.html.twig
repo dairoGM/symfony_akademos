@@ -1,0 +1,67 @@
+{{ include('modules/evaluacion/solicitud/detail.html.twig', { 'solicitud': solicitud }) }}
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            <h5 class="mb-0"><b>Informe de autoevalaución:</b> {{ solicitud.estadoInformeAutoevaluacion | default('') }}
+            </h5>
+        </div>
+        <div class="col-6">
+            <h5 class="mb-0"><b>Motivo del Rechazo del Informe de
+                    autoevalaución:</b> {{ solicitud.motivoRechazo | default('') }}
+            </h5>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            <h5 class="mb-0"><b>Categoría de
+                    acreditación alcanzada:</b> {{ solicitud.categoriaAcreditacionAlcanzada.nombre | default('') }}
+            </h5>
+            <h5 class="mb-0"><b>Número del
+                    pleno:</b> {{ solicitud.numeroPleno | default('') }}
+            </h5><h5 class="mb-0"><b>Años de vigencia de la categoría de
+                    acreditación:</b> {{ solicitud.annosVigenciaCategoriaAcreditacion | default('') }}
+            </h5>
+        </div>
+        <div class="col-6">
+            <h5 class="mb-0"><b>Fecha de
+                    emisión:</b>{% if solicitud.fechaEmision is not null %} {{ solicitud.fechaEmision | date('d/m/Y') }} {% else %} {% endif %}
+            </h5>  <h5 class="mb-0"><b>Número de acuerdo del pleno:</b> {{ solicitud.numeroAcuerdoPleno | default('') }}
+            </h5>
+        </div>
+    </div>
+</div>
+<hr>
+<h5 class="mb-0"><b>Dictámenes:</b>
+</h5>
+<div class="card-body">
+    <table class="table table-bordered table-striped dataTable">
+        <thead class="table-custom-header">
+        <tr>
+            <th>No.</th>
+            <th></th>
+            <th>Nombre del dictámen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in dictamentes %}
+            <tr>
+                <td width="1%">{{ loop.index }}</td>
+                <td width="3%">
+                    <a title="Descargar " target="_blank"
+                       class="btn btn-outline-primary"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/plan_anual/comision/dictamen/{{ item.dictamenComision }}">
+                        <i
+                                class="fa fa-file-download"></i>
+                    </a>
+                </td>
+                <td>{{ item.dictamenComision }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>

@@ -343,4 +343,19 @@ class PlanAnualController extends AbstractController
             return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
         }
     }
+
+    /**
+     * @Route("/{id}/detail", name="app_plan_anual_evaluacion_detail", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @return Response
+     */
+    public function detail(Request $request, Solicitud $solicitud, SolicitudDictamenComisionRepository $solicitudDictamenComisionRepository)
+    {
+        $dictamentes = $solicitudDictamenComisionRepository->findBy(['solicitud' => $solicitud->getId()], ['id' => 'desc']);
+        return $this->render('modules/evaluacion/plan_anual/detail.html.twig', [
+            'solicitud' => $solicitud,
+            'dictamentes' => $dictamentes
+        ]);
+    }
 }

@@ -250,8 +250,8 @@ class SolicitudController extends AbstractController
      */
     public function detail(Request $request, Solicitud $solicitud)
     {
-        return $this->render('modules/evaluacion/solicitud/detail.html.twig', [
-            'item' => $solicitud,
+        return $this->render('modules/evaluacion/solicitud/detail2.html.twig', [
+            'solicitud' => $solicitud,
         ]);
     }
 

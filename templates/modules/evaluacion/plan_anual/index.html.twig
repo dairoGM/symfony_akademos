@@ -77,6 +77,12 @@
 
                         </td>
                         <td width="10%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_plan_anual_evaluacion_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la solicitud">
+                                <i class="fa fa-eye "></i>
+                            </button>
+
                             {% if item.estadoSolicitud.id in [3,5] %}
                                 {% if item.comision is null %}
                                     <a title="Asignar comisión"

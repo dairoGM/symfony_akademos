@@ -76,13 +76,11 @@
                         </td>
 
                         <td width="20%" class="text-center">
-                            {% if item.estadoSolicitud.id ==4 %}
-                                <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                        data-url="{{ path('app_solicitud_detail', {'id' : item.id}) }}"
-                                        data-title="Detalles de la solicitud">
-                                    <i class="fa fa-eye "></i>
-                                </button>
-                            {% endif %}
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_solicitud_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la solicitud">
+                                <i class="fa fa-eye "></i>
+                            </button>
                             {% if item.estadoSolicitud.id != 4 and item.estadoSolicitud.id != 3 %}
                                 <a title="Modificar" href="{{ path('app_solicitud_modificar', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -116,7 +114,7 @@
                                 </button>
 
                             {% endif %}
-                            <a title="Descargar carta" target="_blank" class="btn btn-outline-primary"
+                            <a title="Descargar Carta de solicitud" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/cartaSolicitud/{{ item.cartaSolicitud }}">
                                 <i
                                         class="fa fa-download"></i>
