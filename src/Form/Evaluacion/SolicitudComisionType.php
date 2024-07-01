@@ -4,6 +4,7 @@ namespace App\Form\Evaluacion;
 
 use App\Entity\Evaluacion\Convocatoria;
 use App\Entity\Evaluacion\Solicitud;
+use App\Entity\Evaluacion\SolicitudDictamenComision;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Postgrado\SolicitudPrograma;
@@ -36,10 +37,6 @@ class SolicitudComisionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Solicitud::class,
-        ]);
-
 
     }
 }

@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,6 +31,42 @@ class SolicitudJANType extends AbstractType
                 'label' => 'Dictámen de la JAN',
                 'mapped' => false,
                 'required' => true
+            ])
+            ->add('categoriaAcreditacionAlcanzada', EntityType::class, [
+                'label' => 'Categoría de acreditación',
+                'class' => CategoriaAcreditacion::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('fechaEmision', TextType::class, [
+                'label' => 'Fecha de emisión',
+                'required' => true,
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'date-time-picker'
+                ]
+            ])
+            ->add('numeroPleno', TextType::class, [
+                'label' => 'Número del pleno',
+                'constraints' => [
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ]
+            ])
+            ->add('numeroAcuerdoPleno', TextType::class, [
+                'label' => 'Número de acuerdo del pleno',
+                'constraints' => [
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ]
+            ])
+            ->add('annosVigenciaCategoriaAcreditacion', IntegerType::class, [
+                'label' => 'Años de vigencia de la categoría de acreditación',
+                'attr' => [
+                    'min' => 1
+                ]
             ]);
 
     }

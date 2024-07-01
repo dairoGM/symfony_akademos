@@ -75,10 +75,14 @@ class AplazamientoController extends AbstractController
      * @param AplazamientoSolicitudRepository $aplazamientoSolicitudRepository
      * @return Response
      */
-    public function aprobar(Request $request, AplazamientoSolicitud $aplazamientoSolicitud, SolicitudRepository $solicitudRepository, AplazamientoSolicitudRepository $aplazamientoSolicitudRepository, EstadoAplazamientoRepository $estadoAplazamientoRepository)
+    public function aprobar(Request $request, EstadoSolicitudRepository $estadoSolicitudRepository, SolicitudRepository $solicitudRepository, AplazamientoSolicitud $aplazamientoSolicitud, AplazamientoSolicitudRepository $aplazamientoSolicitudRepository, EstadoAplazamientoRepository $estadoAplazamientoRepository)
     {
         try {
             $aplazamientoSolicitud->setEstadoAplazamiento($estadoAplazamientoRepository->find(2));
+
+            $aplazamientoSolicitud->getSolicitud()->setEstadoSolicitud($estadoSolicitudRepository->find(5));
+            $solicitudRepository->edit($aplazamientoSolicitud->getSolicitud(), true);
+
             $aplazamientoSolicitudRepository->edit($aplazamientoSolicitud, true);
             $solicitud = $aplazamientoSolicitud->getSolicitud();
             $solicitud->setFechaAprobada($aplazamientoSolicitud->getFechaPropuestaAplazamiento());

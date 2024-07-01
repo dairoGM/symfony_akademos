@@ -86,10 +86,6 @@ class Solicitud extends BaseEntity
      */
     private ?string $motivoRechazo = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length="255")
-     */
-    private ?string $dictamenComision = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -305,21 +301,6 @@ class Solicitud extends BaseEntity
         $this->motivoRechazo = $motivoRechazo;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDictamenComision(): ?string
-    {
-        return $this->dictamenComision;
-    }
-
-    /**
-     * @param string|null $dictamenComision
-     */
-    public function setDictamenComision(?string $dictamenComision): void
-    {
-        $this->dictamenComision = $dictamenComision;
-    }
 
     /**
      * @return string|null

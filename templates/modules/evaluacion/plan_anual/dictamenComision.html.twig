@@ -16,21 +16,59 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.dictamenComision) }}
                     {{ form_widget(form.dictamenComision) }}
                     <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
                           class="cargar-archivo"> </span>
                     {{ form_errors(form.dictamenComision) }}
-                    <a id="doc_container" target="_blank"
-                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/plan_anual/comision/dictamen/{{ solicitud.dictamenComision }}">{{ solicitud.dictamenComision }}</a>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    <button style="margin-top: 5%" id="btn_submit_doc" class="btn btn-primary">Aceptar</button>
                 </div>
             </div>
+        </div>
+        <hr>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th></th>
+                    <th>Nombre del dictámen</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in dictamentes %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td width="3%">
+                            <a title="Descargar " target="_blank"
+                               class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/plan_anual/comision/dictamen/{{ item.dictamenComision }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                        </td>
+                        <td>{{ item.dictamenComision }}</td>
 
+                        <td width="15%" class="text-center">
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_plan_anual_evaluacion_eliminar_dictamen', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_index') }}" data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_anual_evaluacion_index') }}"
+               data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button id="btn_submit" class="btn btn-primary">Aceptar</button>
         </div>
@@ -40,16 +78,27 @@
 
 {% block javascripts %}
     <script>
-        $('#solicitud_comision_dictamenComision').change(function () {
-            var filename = jQuery(this).val().split('\\').pop();
-            $('.cargar-archivo').html(filename);
-        })
-        $('#btn_submit').click(function (e) {
+        var cantidadDocs = {{ dictamentes | length }}
+            $('#solicitud_comision_dictamenComision').change(function () {
+                var filename = jQuery(this).val().split('\\').pop();
+                $('.cargar-archivo').html(filename);
+            })
+        $('#btn_submit_doc').click(function (e) {
             e.preventDefault();
             $('form[name="solicitud_comision"]').attr('action', 'dictamen_comision');
             if ($('#solicitud_comision_dictamenComision')[0].reportValidity()) {
                 $('form[name="solicitud_comision"]').submit();
             }
+        })
+        $('#btn_submit').click(function (e) {
+            e.preventDefault();
+            $('form[name="solicitud_comision"]').attr('action', 'en_evaluacion');
+            if (cantidadDocs > 0) {
+                $('form[name="solicitud_comision"]').submit();
+            } else {
+                toastr.error("La cantidad de documentos debe ser mayor que 0");
+            }
+
         })
     </script>
 {% endblock %}

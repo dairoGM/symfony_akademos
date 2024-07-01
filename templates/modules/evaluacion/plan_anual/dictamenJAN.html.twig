@@ -16,7 +16,6 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
-
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.dictamenJAN) }}
                     {{ form_widget(form.dictamenJAN) }}
@@ -26,11 +25,37 @@
                     <a id="doc_container" target="_blank"
                        href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/plan_anual/jan/dictamen/{{ solicitud.dictamenJAN }}">{{ solicitud.dictamenJAN }}</a>
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.categoriaAcreditacionAlcanzada) }}
+                    {{ form_widget(form.categoriaAcreditacionAlcanzada) }}
+                    {{ form_errors(form.categoriaAcreditacionAlcanzada) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaEmision) }}
+                    {{ form_widget(form.fechaEmision) }}
+                    {{ form_errors(form.fechaEmision) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroPleno) }}
+                    {{ form_widget(form.numeroPleno) }}
+                    {{ form_errors(form.numeroPleno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroAcuerdoPleno) }}
+                    {{ form_widget(form.numeroAcuerdoPleno) }}
+                    {{ form_errors(form.numeroAcuerdoPleno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.annosVigenciaCategoriaAcreditacion) }}
+                    {{ form_widget(form.annosVigenciaCategoriaAcreditacion) }}
+                    {{ form_errors(form.annosVigenciaCategoriaAcreditacion) }}
+                </div>
             </div>
 
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_index') }}" data-title=""
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_plan_anual_evaluacion_index') }}"
+               data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button id="btn_submit" class="btn btn-primary">Aceptar</button>
         </div>
@@ -51,5 +76,17 @@
                 $('form[name="solicitud_jan"]').submit();
             }
         })
+        $('#solicitud_jan_fechaEmision').datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
+        });
+        $('#solicitud_jan_annosVigenciaCategoriaAcreditacion').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 2 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
     </script>
 {% endblock %}
