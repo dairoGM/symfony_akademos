@@ -27,7 +27,7 @@ class SolicitudInformeAutoevaluacionType extends AbstractType
     {
         $builder
             ->add('informeAutoevaluacion', FileType::class, [
-                'label' => 'Informde de autoevaluación',
+                'label' => 'Informe de autoevaluación',
                 'mapped' => false,
                 'required' => true
             ]);

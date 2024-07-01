@@ -225,7 +225,10 @@ class PlanAnualController extends AbstractController
      * @param SolicitudRepository $solicitudRepository
      * @return Response
      */
-    public function dictamenJAN(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
+    public function dictamenJAN(Request                              $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository,
+                                EstadoSolicitudRepository            $estadoSolicitudRepository, InstitucionRepository $institucionRepository,
+                                SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository,
+                                SolicitudProgramaRepository          $solicitudProgramaRepository)
     {
         try {
             $form = $this->createForm(SolicitudJANType::class, $solicitud, ['action' => 'modificar']);
@@ -248,6 +251,20 @@ class PlanAnualController extends AbstractController
 
                 $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(9));
                 $solicitudRepository->edit($solicitud);
+
+                if ('institucion' == $solicitud->getTipoSolicitud()) {
+                    $solicitud->getInstitucion()->setCategoriaAcreditacion($solicitud->getCategoriaAcreditacionAlcanzada());
+                    $institucionRepository->edit($solicitud->getInstitucion(), true);
+                }
+                if ('programa_pregrado' == $solicitud->getTipoSolicitud()) {
+                    $solicitud->getProgramaPregrado()->setCategoriaAcreditacion($solicitud->getCategoriaAcreditacionAlcanzada());
+                    $solicitudProgramaAcademicoRepository->edit($solicitud->getProgramaPregrado(), true);
+                }
+                if ('programa_posgrado' == $solicitud->getTipoSolicitud()) {
+                    $solicitud->getProgramaPosgrado()->setCategoriaAcreditacion($solicitud->getCategoriaAcreditacionAlcanzada());
+                    $solicitudProgramaRepository->edit($solicitud->getProgramaPosgrado(), true);
+                }
+
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
             }

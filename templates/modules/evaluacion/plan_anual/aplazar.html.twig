@@ -40,10 +40,8 @@
 
     {% block javascripts %}
         <script>
-            var fecha = "{% if solicitud.fechaAprobada is empty %}  {{ solicitud.fechaAprobada | default('') }} {% else %}  {{ solicitud.fechaAprobada|date('d/m/Y') }} {% endif %}".replace(' ', '');
-            $('#aplazar_solicitud_fechaPropuestaAplazamiento').val(fecha.replace(' ', ''));
-
-
+            {#var fecha = "{% if solicitud.fechaAprobada is empty %}  {{ solicitud.fechaAprobada | default('') }} {% else %}  {{ solicitud.fechaAprobada|date('d/m/Y') }} {% endif %}".replace(' ', '');#}
+            {#$('#aplazar_solicitud_fechaPropuestaAplazamiento').val(fecha.replace(' ', ''));#}
             $('#aplazar_solicitud_fechaPropuestaAplazamiento').datetimepicker({
                 format: 'DD/MM/YYYY',
                 useCurrent: false

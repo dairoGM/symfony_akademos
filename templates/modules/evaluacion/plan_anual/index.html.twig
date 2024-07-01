@@ -92,10 +92,12 @@
                                                 class="fa fa-calendar-plus"></i>
                                     </a>
                                 {% endif %}
-                                <button title="Iniciar proceso" class="btn btn-outline-primary elementRemove"
-                                        data-url="{{ path('app_plan_anual_evaluacion_iniciar_proceso', {'id': item.id}) }}">
-                                    <i class="fa fa-info"></i>
-                                </button>
+                                {% if item.comision is not null %}
+                                    <button title="Iniciar proceso" class="btn btn-outline-primary elementRemove"
+                                            data-url="{{ path('app_plan_anual_evaluacion_iniciar_proceso', {'id': item.id}) }}">
+                                        <i class="fa fa-info"></i>
+                                    </button>
+                                {% endif %}
                             {% endif %}
                             {% if item.estadoSolicitud.id in [6] %}
                                 <a title="Asignar dictámen de comisión"
