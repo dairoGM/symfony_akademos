@@ -25,6 +25,7 @@ use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Repository\Security\UserRepository;
 use App\Repository\Tramite\InstitucionExtranjeraRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,7 +86,7 @@ class InformeAutoevaluacionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/rechazar", name="app_informe_autoevaluacion_rechazar", methods={"GET"})
+     * @Route("/{id}/rechazar", name="app_informe_autoevaluacion_rechazar", methods={"POST"})
      * @param Request $request
      * @param Solicitud $solicitud
      * @param SolicitudRepository $solicitudRepository
@@ -94,13 +95,22 @@ class InformeAutoevaluacionController extends AbstractController
     public function rechazar(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
     {
         try {
+            $file = $request->files->get('additionalFile');
+            $imagePath = $file->getClientOriginalName();
+
+            if (file_exists('uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos/' . $imagePath)) {
+                unlink('uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos/' . $imagePath);
+            }
+            $file->move("uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos", $imagePath);
+
             $solicitud->setEstadoInformeAutoevaluacion('Rechazado');
+            $solicitud->setMotivoRechazo($imagePath);
+
             $solicitudRepository->edit($solicitud, true);
             $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->json('OK');
         } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->json($exception->getMessage());
         }
     }
 

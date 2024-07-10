@@ -25,7 +25,7 @@
                     <th>Programa de posgrado</th>
                     <th>Evaluación actual</th>
                     <th>Fecha propuesta</th>
-{#                    <th>Fecha aprobada</th>#}
+                    {#                    <th>Fecha aprobada</th> #}
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -49,21 +49,39 @@
                         <td>{{ item.programaPosgrado.nombre | default('') }}</td>
                         <td>{{ item.categoriaAcreditacionActual | default('') }}</td>
                         <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
-{#                        <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>#}
+                        {#                        <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td> #}
                         <td>
                             <span class="{{ item.classParams }}">{{ item.estadoInformeAutoevaluacion | default('') }}</span>
                         </td>
                         <td width="15%" class="text-center">
+                            <a title="Descargar informe de autoevaluación" target="_blank"
+                               class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/informe/autoevaluacion/{{ item.informeAutoevaluacion }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                            {% if item.estadoInformeAutoevaluacion == 'Rechazado' %}
+                                <a title="Descargar motivos de rechazo" target="_blank"
+                                   class="btn btn-outline-primary"
+                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos/{{ item.motivoRechazo }}">
+                                    <i
+                                            class="fa fa-file-archive"></i>
+                                </a>
+                            {% endif %}
                             {% if item.estadoInformeAutoevaluacion is null %}
                                 <button title="Aceptar" class="btn btn-outline-primary elementRemove"
                                         data-url="{{ path('app_informe_autoevaluacion_aprobar', {'id': item.id}) }}">
                                     <i class="fa fa-calendar-check"></i>
 
                                 </button>
-                                <button title="Rechazar" class="btn btn-outline-primary elementRemove"
-                                        data-url="{{ path('app_informe_autoevaluacion_rechazar', {'id': item.id}) }}">
+                                <button title="Rechazar" class="btn btn-outline-primary elementRemoveTexarea"
+                                        data-url="{{ path('app_informe_autoevaluacion_rechazar', {'id': item.id}) }}"
+                                        data-title="Motivos"
+                                        data-url_redirect="{{ path('app_informe_autoevaluacion_index') }}"
+                                >
                                     <i class="fa fa-calendar-times"></i>
                                 </button>
+
                                 <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                         data-url="{{ path('app_informe_autoevaluacion_eliminar', {'id': item.id}) }}">
                                     <i class="fa fa-trash"></i>

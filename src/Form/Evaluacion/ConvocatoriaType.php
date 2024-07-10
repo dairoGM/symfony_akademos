@@ -25,11 +25,11 @@ class ConvocatoriaType extends AbstractType
                 'label' => 'Descripción',
                 'required' => true,
             ])
-            ->add('carta', FileType::class, [
-                'label' => 'Carta',
-                'mapped' => false,
-                'required' => $options['carta'] == 'registrar',
-            ])
+//            ->add('carta', FileType::class, [
+//                'label' => 'Carta',
+//                'mapped' => false,
+//                'required' => $options['carta'] == 'registrar',
+//            ])
             ->add('fechaInicio', TextType::class, [
                 'label' => 'Fecha de inicio',
                 'required' => true,

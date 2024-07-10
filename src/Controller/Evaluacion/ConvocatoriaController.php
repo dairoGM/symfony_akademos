@@ -52,12 +52,12 @@ class ConvocatoriaController extends AbstractController
                     $convocatoria->setFechaFin(\DateTime::createFromFormat('d/m/Y', $request->request->all()['convocatoria']['fechaFin']));
                 }
 
-                if (!empty($_FILES['convocatoria']['name']['carta'])) {
-                    $file = $form['carta']->getData();
-                    $file_name = $_FILES['convocatoria']['name']['carta'];
-                    $convocatoria->setCarta($file_name);
-                    $file->move("uploads/evaluacion/convocatoria/carta", $file_name);
-                }
+//                if (!empty($_FILES['convocatoria']['name']['carta'])) {
+//                    $file = $form['carta']->getData();
+//                    $file_name = $_FILES['convocatoria']['name']['carta'];
+//                    $convocatoria->setCarta($file_name);
+//                    $file->move("uploads/evaluacion/convocatoria/carta", $file_name);
+//                }
 
                 $convocatoriaRepository->add($convocatoria, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -96,17 +96,17 @@ class ConvocatoriaController extends AbstractController
                 $convocatoria->setFechaFin(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
 
-                if (!empty($form['carta']->getData())) {
-                    if ($convocatoria->getCarta() != null) {
-                        if (file_exists('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta())) {
-                            unlink('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta());
-                        }
-                    }
-                    $file = $form['carta']->getData();
-                    $file_name = $_FILES['solicitud']['name']['carta'];
-                    $convocatoria->setCarta($file_name);
-                    $file->move("uploads/evaluacion/convocatoria/carta", $file_name);
-                }
+//                if (!empty($form['carta']->getData())) {
+//                    if ($convocatoria->getCarta() != null) {
+//                        if (file_exists('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta())) {
+//                            unlink('uploads/evaluacion/convocatoria/carta/' . $convocatoria->getCarta());
+//                        }
+//                    }
+//                    $file = $form['carta']->getData();
+//                    $file_name = $_FILES['solicitud']['name']['carta'];
+//                    $convocatoria->setCarta($file_name);
+//                    $file->move("uploads/evaluacion/convocatoria/carta", $file_name);
+//                }
 
                 $convocatoriaRepository->edit($convocatoria);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');

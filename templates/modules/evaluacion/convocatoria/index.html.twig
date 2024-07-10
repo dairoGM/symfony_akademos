@@ -48,11 +48,11 @@
                                         class="fa fa-edit"></i>
                             </a>
 
-                            <a title="Descargar carta" target="_blank" class="btn btn-outline-primary"
-                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/convocatoria/carta/{{ item.carta }}">
-                                <i
-                                        class="fa fa-download"></i>
-                            </a>
+{#                            <a title="Descargar carta" target="_blank" class="btn btn-outline-primary"#}
+{#                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/convocatoria/carta/{{ item.carta }}">#}
+{#                                <i#}
+{#                                        class="fa fa-download"></i>#}
+{#                            </a>#}
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_convocatoria_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>

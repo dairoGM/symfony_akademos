@@ -203,19 +203,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                 {% endif %}
 
-{#                {% if hasRoles('ROLE_HOME_INSTIT') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_institucion_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_INSTIT') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_institucion_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'institucion' %} active {% endif %}">Instituciones</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
 
-{#                {% if hasRoles('ROLE_HOME_TRAZAS') %}#}
-{#                    <li class=" d-none d-sm-inline-block">#}
-{#                        <a href="{{ path('app_traza_portada') }}"#}
-{#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'traza' %} active {% endif %}">Trazas</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {#                {% if hasRoles('ROLE_HOME_TRAZAS') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_traza_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'traza' %} active {% endif %}">Trazas</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
 
                 {# MODULOS DE RI #}
                 {#                {% if hasRoles('ROLE_HOME_PREGR') %} #}
@@ -696,6 +696,62 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
             });
         })
+        $(document).on('click', '.elementRemoveTexarea', function () {
+            let url = $(this).data('url');
+            let urlRedirect = $(this).data('url_redirect');
+            let title = $(this).data('title');
+            console.log(urlRedirect);
+            bootbox.confirm({
+                message: `<p>¿Está seguro que desea realizar la acción?</p>
+                  <div class="form-group">
+                      <label for="additionalFile">${title ? title : ''}:</label>
+                      <input type="file" class="form-control" id="additionalFile" name="additionalFile">
+                  </div>`,
+                buttons: {
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirmar',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        let fileInput = $('#additionalFile')[0];
+                        let file = fileInput.files[0]; // Obtener el archivo seleccionado
+
+                        if (!file) {
+                            bootbox.alert("Seleccionar un archivo es obligatorio.");
+                            return false;
+                        }
+
+                        // Debido a las limitaciones de GET, no podemos enviar el archivo de esta manera.
+                        // Lo que sigue es un ejemplo de cómo enviar el archivo por POST utilizando FormData.
+
+                        let formData = new FormData();
+                        formData.append('additionalFile', file);
+
+                        $.ajax({
+                            type: 'POST', // Cambiado a POST ya que GET no es adecuado para archivos
+                            url: url,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                console.log(urlRedirect);
+                                window.location.href = urlRedirect; // Redirigir si es necesario
+                            },
+                            error: function (error) {
+                                console.log('Error:', error);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
 
         $(document).on('click', '.elementRemove', function () {
 
