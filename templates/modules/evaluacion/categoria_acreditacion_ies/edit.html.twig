@@ -12,7 +12,7 @@
 
             </div>
         </div>
-
+        {{ include('modules/institucion/institucion/short_details.html.twig', { 'item': institucion }) }}
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">
@@ -64,6 +64,7 @@
 
 {% block javascripts %}
     <script>
+        $('#categoria_acreditacion_ies_fechaEmision').attr('required', 'required');
         var fecha = "{% if new.fechaEmision is empty %}  {{ new.fechaEmision | default('') }} {% else %}  {{ new.fechaEmision|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#categoria_acreditacion_ies_fechaEmision').val(fecha.replace(' ', ''));
 
@@ -78,6 +79,20 @@
                     $(this).val($(this).val() + e.key);
                 }
                 return false;
+            }
+        });
+
+        $('#categoria_acreditacion_ies_categoriaAcreditacion').on('change', function () {
+            if ($(this).val() == 4) {
+                $('#categoria_acreditacion_ies_fechaEmision').removeAttr('required');
+                $('#categoria_acreditacion_ies_numeroPleno').removeAttr('required');
+                $('#categoria_acreditacion_ies_numeroAcuerdoPleno').removeAttr('required');
+                $('#categoria_acreditacion_ies_annosVigenciaCategoriaAcreditacion').removeAttr('required');
+            } else {
+                $('#categoria_acreditacion_ies_fechaEmision').attr('required', 'required');
+                $('#categoria_acreditacion_ies_numeroPleno').attr('required', 'required');
+                $('#categoria_acreditacion_ies_numeroAcuerdoPleno').attr('required', 'required');
+                $('#categoria_acreditacion_ies_annosVigenciaCategoriaAcreditacion').attr('required', 'required');
             }
         });
     </script>

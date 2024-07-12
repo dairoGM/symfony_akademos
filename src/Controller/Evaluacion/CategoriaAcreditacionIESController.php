@@ -99,6 +99,7 @@ class CategoriaAcreditacionIESController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
                 $temp = explode('/', $request->request->all()['categoria_acreditacion_ies']['fechaEmision']);
                 $new->setFechaEmision(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
                 $new->setInstitucion($institucion);

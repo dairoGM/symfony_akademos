@@ -41,6 +41,9 @@ class CategoriaAcreditacionIESType extends AbstractType
             ->add('fechaEmision', TextType::class, [
                 'label' => 'Fecha de emisión',
                 'required' => true,
+                'constraints' => [
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
                 'mapped' => false,
                 'attr' => [
                     'class' => 'date-time-picker'
@@ -48,21 +51,18 @@ class CategoriaAcreditacionIESType extends AbstractType
             ])
             ->add('numeroPleno', TextType::class, [
                 'label' => 'Número del pleno',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
             ])
             ->add('numeroAcuerdoPleno', TextType::class, [
                 'label' => 'Número de acuerdo del pleno',
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
+                'required' => false,
             ])
             ->add('annosVigenciaCategoriaAcreditacion', IntegerType::class, [
                 'label' => 'Años de vigencia de la categoría de acreditación',
                 'attr' => [
                     'min' => 1
-                ]
+                ],
+                'required' => false,
             ]);
 
     }
