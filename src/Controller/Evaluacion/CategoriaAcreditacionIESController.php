@@ -33,6 +33,7 @@ use App\Form\Institucion\InstitucionType;
 use App\Form\Institucion\NombreDescripcionType;
 use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Evaluacion\CategoriaAcreditacionIESRepository;
+use App\Repository\Institucion\CategoriaAcreditacionRepository;
 use App\Repository\Institucion\InstitucionCentrosEstudiosRepository;
 use App\Repository\Institucion\InstitucionCumRepository;
 use App\Repository\Institucion\InstitucionEditorialRepository;
@@ -87,7 +88,7 @@ class CategoriaAcreditacionIESController extends AbstractController
      * @param CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository
      * @return Response
      */
-    public function modificar(Request $request, Institucion $institucion, CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository, InstitucionRepository $institucionRepository)
+    public function modificar(Request $request, Institucion $institucion, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, CategoriaAcreditacionIESRepository $categoriaAcreditacionIESRepository, InstitucionRepository $institucionRepository)
     {
         try {
             $new = new CategoriaAcreditacionIES();
@@ -99,13 +100,14 @@ class CategoriaAcreditacionIESController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-
-                $temp = explode('/', $request->request->all()['categoria_acreditacion_ies']['fechaEmision']);
-                $new->setFechaEmision(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
+                if (!empty($request->request->all()['categoria_acreditacion_ies']['fechaEmision'])) {
+                    $temp = explode('/', $request->request->all()['categoria_acreditacion_ies']['fechaEmision']);
+                    if (isset($temp[0]) && isset($temp[1]) && isset($temp[2]))
+                        $new->setFechaEmision(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
+                }
+                $new->setCategoriaAcreditacion($categoriaAcreditacionRepository->find($request->request->all()['categoria_acreditacion_ies']['categoriaAcreditacion']));
                 $new->setInstitucion($institucion);
-
                 $categoriaAcreditacionIESRepository->edit($new, true);
-
 
                 $new->getInstitucion()->setCategoriaAcreditacion($new->getCategoriaAcreditacion());
                 $institucionRepository->edit($new->getInstitucion(), true);

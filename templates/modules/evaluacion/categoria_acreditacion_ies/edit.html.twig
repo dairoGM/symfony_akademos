@@ -64,14 +64,13 @@
 
 {% block javascripts %}
     <script>
-        $('#categoria_acreditacion_ies_fechaEmision').attr('required', 'required');
+
         var fecha = "{% if new.fechaEmision is empty %}  {{ new.fechaEmision | default('') }} {% else %}  {{ new.fechaEmision|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#categoria_acreditacion_ies_fechaEmision').val(fecha.replace(' ', ''));
 
 
         $('#categoria_acreditacion_ies_fechaEmision').datetimepicker({
-            format: 'DD/MM/YYYY',
-            useCurrent: false
+            format: 'DD/MM/YYYY'
         });
         $('#categoria_acreditacion_ies_annosVigenciaCategoriaAcreditacion').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
@@ -84,11 +83,35 @@
 
         $('#categoria_acreditacion_ies_categoriaAcreditacion').on('change', function () {
             if ($(this).val() == 4) {
+                $('#categoria_acreditacion_ies_fechaEmision').val(null);
                 $('#categoria_acreditacion_ies_fechaEmision').removeAttr('required');
                 $('#categoria_acreditacion_ies_numeroPleno').removeAttr('required');
                 $('#categoria_acreditacion_ies_numeroAcuerdoPleno').removeAttr('required');
                 $('#categoria_acreditacion_ies_annosVigenciaCategoriaAcreditacion').removeAttr('required');
             } else {
+                // Obtener la fecha actual
+                var today = new Date();
+
+                // Obtener el día, mes y año
+                var day = today.getDate();
+                var month = today.getMonth() + 1; // Enero es 0
+                var year = today.getFullYear();
+
+                // Asegurarse de que el día y el mes tengan dos dígitos
+                if (day < 10) {
+                    day = '0' + day;
+                }
+                if (month < 10) {
+                    month = '0' + month;
+                }
+
+                // Formatear la fecha como dd/mm/yyyy
+                var formattedDate = day + '/' + month + '/' + year;
+
+                // Mostrar la fecha en un elemento HTML (por ejemplo, un div con id="fecha")
+
+
+                $('#categoria_acreditacion_ies_fechaEmision').val(formattedDate);
                 $('#categoria_acreditacion_ies_fechaEmision').attr('required', 'required');
                 $('#categoria_acreditacion_ies_numeroPleno').attr('required', 'required');
                 $('#categoria_acreditacion_ies_numeroAcuerdoPleno').attr('required', 'required');

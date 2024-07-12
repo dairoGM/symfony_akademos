@@ -40,10 +40,7 @@ class CategoriaAcreditacionIESType extends AbstractType
             ])
             ->add('fechaEmision', TextType::class, [
                 'label' => 'Fecha de emisión',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ],
+                'required' => false,
                 'mapped' => false,
                 'attr' => [
                     'class' => 'date-time-picker'
