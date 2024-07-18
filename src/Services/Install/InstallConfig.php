@@ -304,7 +304,9 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ROL_COMISION", "Gestión de roles para comisión de evaluación", "Gestión de roles para comisión de evaluación");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_COMISION_EVALUADORA", "Gestión de comisiones evaluadoras", "Gestión de comisiones evaluadoras");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_APLAZAMIENTO", "Gestión solicitudes de aplazamiento", "Gestión solicitudes de aplazamiento");
-        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION", "Gestión categorías de acreditación", "Gestión solicitudes de aplazamiento");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION", "Gestión categorías de acreditación ies", "Gestión solicitudes de aplazamiento ies");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_PREGRADO", "Gestión categorías de acreditación pregrado", "Gestión solicitudes de aplazamiento pregrado");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_POSGRADO", "Gestión categorías de acreditación posgrado", "Gestión solicitudes de aplazamiento posgrado");
 
         return $functionalities;
     }
@@ -495,7 +497,9 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_COMISION_EVALUADORA")
             ->addFunctionality("ROLE_GEST_APLAZAMIENTO")
             ->addFunctionality("ROLE_GEST_ROL_COMISION")
-            ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION");
+            ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION")
+            ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_PREGRADO")
+            ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_POSGRADO");
 
         return $roles;
     }

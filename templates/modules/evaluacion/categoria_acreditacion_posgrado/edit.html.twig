@@ -1,0 +1,123 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar categoría de acreditación{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar categoría de acreditación</h3>
+
+            </div>
+        </div>
+        {{ include('modules/postgrado/solicitud_programa/info_comun.html.twig', { 'solicitudPrograma': solicitudPrograma }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.categoriaAcreditacion) }}
+                    {{ form_widget(form.categoriaAcreditacion) }}
+                    {{ form_errors(form.categoriaAcreditacion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.fechaEmision) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        {{ form_widget(form.fechaEmision ) }}
+                        {{ form_errors(form.fechaEmision) }}
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroPleno) }}
+                    {{ form_widget(form.numeroPleno) }}
+                    {{ form_errors(form.numeroPleno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroAcuerdoPleno) }}
+                    {{ form_widget(form.numeroAcuerdoPleno) }}
+                    {{ form_errors(form.numeroAcuerdoPleno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.annosVigenciaCategoriaAcreditacion) }}
+                    {{ form_widget(form.annosVigenciaCategoriaAcreditacion) }}
+                    {{ form_errors(form.annosVigenciaCategoriaAcreditacion) }}
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel"
+               data-url="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_submit" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        var fecha = "{% if new.fechaEmision is empty %}  {{ new.fechaEmision | default('') }} {% else %}  {{ new.fechaEmision|date('d/m/Y') }} {% endif %}".replace(' ', '');
+        $('#categoria_acreditacion_posgrado_fechaEmision').val(fecha.replace(' ', ''));
+
+        $('#categoria_acreditacion_posgrado_categoriaAcreditacion').val({{ solicitudPrograma.categoriaAcreditacion.id }});
+
+        $('#categoria_acreditacion_posgrado_fechaEmision').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $('#categoria_acreditacion_posgrado_annosVigenciaCategoriaAcreditacion').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 2 /*&& !isNaN(parseFloat(e.key))*/) {
+                    $(this).val($(this).val() + e.key);
+                }
+                return false;
+            }
+        });
+
+        $('#categoria_acreditacion_posgrado_categoriaAcreditacion').on('change', function () {
+            if ($(this).val() == 4) {
+                $('#categoria_acreditacion_posgrado_fechaEmision').val(null);
+                $('#categoria_acreditacion_posgrado_fechaEmision').removeAttr('required');
+                $('#categoria_acreditacion_posgrado_numeroPleno').removeAttr('required');
+                $('#categoria_acreditacion_posgrado_numeroAcuerdoPleno').removeAttr('required');
+                $('#categoria_acreditacion_posgrado_annosVigenciaCategoriaAcreditacion').removeAttr('required');
+            } else {
+                // Obtener la fecha actual
+                var today = new Date();
+
+                // Obtener el día, mes y año
+                var day = today.getDate();
+                var month = today.getMonth() + 1; // Enero es 0
+                var year = today.getFullYear();
+
+                // Asegurarse de que el día y el mes tengan dos dígitos
+                if (day < 10) {
+                    day = '0' + day;
+                }
+                if (month < 10) {
+                    month = '0' + month;
+                }
+
+                // Formatear la fecha como dd/mm/yyyy
+                var formattedDate = day + '/' + month + '/' + year;
+
+                // Mostrar la fecha en un elemento HTML (por ejemplo, un div con id="fecha")
+
+
+                $('#categoria_acreditacion_posgrado_fechaEmision').val(formattedDate);
+                $('#categoria_acreditacion_posgrado_fechaEmision').attr('required', 'required');
+                $('#categoria_acreditacion_posgrado_numeroPleno').attr('required', 'required');
+                $('#categoria_acreditacion_posgrado_numeroAcuerdoPleno').attr('required', 'required');
+                $('#categoria_acreditacion_posgrado_annosVigenciaCategoriaAcreditacion').attr('required', 'required');
+            }
+        });
+    </script>
+{% endblock %}

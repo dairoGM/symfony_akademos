@@ -4,6 +4,7 @@ namespace App\Repository\Postgrado;
 
 use App\Entity\Postgrado\SolicitudPrograma;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -56,6 +57,34 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
             ->where("ep.id NOT IN(:valuesItems)")->setParameter('valuesItems', array_values([7]))
             ->orderBy('qb.id', 'desc');
 
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
+
+
+
+    public function getProgramasV2()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select(
+                "qb.id, 
+                        concat('(',e1.siglas,') ', e1.nombre) as nombre_siglas_organismo, 
+                        concat('(',c.siglas,') ', c.nombre) as nombre_siglas, 
+                        qb.nombre,
+                        tp.nombre as nombreTipoPrograma,
+                        ca.nombre as catAcreditacion,
+                         DateFormat(b.fechaEmision, 'DD/MM/YYYY') as fechaEmision,
+                         b.numeroPleno,
+                         b.numeroAcuerdoPleno,
+                         b.annosVigenciaCategoriaAcreditacion")
+            ->join('qb.universidad', 'c')
+            ->join('qb.tipoSolicitud', 'tp')
+            ->join('qb.categoriaAcreditacion', 'ca')
+            ->join('c.estructura', 'e')
+            ->join('e.estructura', 'e1')
+            ->leftJoin('App\Entity\Evaluacion\CategoriaAcreditacionPosgrado', 'b', Join::WITH, 'qb.id = b.solicitudPrograma');
+
+        $qb->orderBy('qb.nombre');
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
