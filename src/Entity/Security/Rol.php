@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Rol extends BaseEntity implements AuthorityInterface
 {
     /**
-     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @ORM\Column(type="text", unique=true, nullable=false)
      * @Assert\Regex(
      *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,
@@ -28,7 +28,7 @@ class Rol extends BaseEntity implements AuthorityInterface
     private $nombre;
 
     /**
-     * @ORM\Column(type="text", length=180, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\Regex(
      *           pattern= "/^[0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
      *           match=   true,

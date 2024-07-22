@@ -48,7 +48,7 @@ class Funcionalidad extends BaseEntity implements AuthorityInterface
      * Deben emepzar simpre con ROLE_
      * No debe ser editado
      *
-     * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @ORM\Column(type="string", length=250, unique=true, nullable=false)
      */
     private $roleKey;
 
