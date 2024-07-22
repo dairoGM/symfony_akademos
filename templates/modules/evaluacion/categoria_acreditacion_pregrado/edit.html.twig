@@ -68,7 +68,7 @@
         var fecha = "{% if new.fechaEmision is empty %}  {{ new.fechaEmision | default('') }} {% else %}  {{ new.fechaEmision|date('d/m/Y') }} {% endif %}".replace(' ', '');
         $('#categoria_acreditacion_pregrado_fechaEmision').val(fecha.replace(' ', ''));
 
-        $('#categoria_acreditacion_pregrado_categoriaAcreditacion').val({{ solicitudPrograma.categoriaAcreditacion.id }});
+        $('#categoria_acreditacion_pregrado_categoriaAcreditacion').val({{ progInst.categoriaAcreditacion.id }});
 
         $('#categoria_acreditacion_pregrado_fechaEmision').datetimepicker({
             format: 'DD/MM/YYYY'

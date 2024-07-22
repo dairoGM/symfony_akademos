@@ -26,6 +26,12 @@ class CategoriaAcreditacionPregrado extends BaseEntity
     private ?SolicitudProgramaAcademico $solicitudProgramaAcademico;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    private ?Institucion $institucion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\CategoriaAcreditacion")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -148,6 +154,21 @@ class CategoriaAcreditacionPregrado extends BaseEntity
         $this->annosVigenciaCategoriaAcreditacion = $annosVigenciaCategoriaAcreditacion;
     }
 
+    /**
+     * @return Institucion|null
+     */
+    public function getInstitucion(): ?Institucion
+    {
+        return $this->institucion;
+    }
+
+    /**
+     * @param Institucion|null $institucion
+     */
+    public function setInstitucion(?Institucion $institucion): void
+    {
+        $this->institucion = $institucion;
+    }
 
 
 }

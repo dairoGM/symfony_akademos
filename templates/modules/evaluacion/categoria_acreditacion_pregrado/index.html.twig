@@ -37,15 +37,15 @@
                         <td>{{ item.nombre_siglas_organismo | default('') }}</td>
                         <td>{{ item.nombre_siglas | default('') }}</td>
                         <td>{{ item.nombre | default('') }}</td>
-                        <td>{{ item.nombreTipoPrograma | default('') }}</td>
-                        <td>{{ item.catAcreditacion | default('') }}</td>
-                        <td>{{ item.fechaEmision | default('') }}</td>
-                        <td>{{ item.numeroPleno | default('') }}</td>
-                        <td>{{ item.numeroAcuerdoPleno | default('') }}</td>
-                        <td>{{ item.annosVigenciaCategoriaAcreditacion | default('') }}</td>
+                        <td>{{ item.nombre_tipo_programa | default('') }}</td>
+                        <td>{{ item.cat_acreditacion | default('') }}</td>
+                        <td>{{ item.fecha_emision | default('') }}</td>
+                        <td>{{ item.numero_pleno | default('') }}</td>
+                        <td>{{ item.numero_acuerdo_pleno | default('') }}</td>
+                        <td>{{ item.annos_vigencia_categoria_acreditacion | default('') }}</td>
                         <td width="5%" class="text-center">
                             <a title="Modificar"
-                               href="{{ path('app_evaluacion_categoria_acreditacion_pregrado_modificar', {'id': item.id}) }}"
+                               href="{{ path('app_evaluacion_categoria_acreditacion_pregrado_modificar', {'id': item.id, 'idProgrInst':item.id_progr_inst}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>

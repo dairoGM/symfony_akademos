@@ -76,29 +76,36 @@ class CategoriaAcreditacionPregradoController extends AbstractController
      * @Route("/", name="app_evaluacion_categoria_acreditacion_pregrado_index", methods={"GET"})
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function index(SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository)
     {
         return $this->render('modules/evaluacion/categoria_acreditacion_pregrado/index.html.twig', [
-            'registros' => $solicitudProgramaAcademicoRepository->getProgramasV2(),
+            'registros' => $solicitudProgramaAcademicoInstitucionRepository->getProgramasV2(),
         ]);
     }
 
 
     /**
-     * @Route("/{id}/modificar", name="app_evaluacion_categoria_acreditacion_pregrado_modificar", methods={"GET", "POST"})
+     * @Route("/{id}/{idProgrInst}/modificar", name="app_evaluacion_categoria_acreditacion_pregrado_modificar", methods={"GET", "POST"})
      * @param Request $request
-     * @param Institucion $solicitudProgramaAcademico
-     * @param CategoriaAcreditacionIESRepository $categoriaAcreditacionPregradoRepository
+     * @param SolicitudProgramaAcademico $solicitudProgramaAcademico
+     * @param CategoriaAcreditacionRepository $categoriaAcreditacionRepository
+     * @param CategoriaAcreditacionPregradoRepository $categoriaAcreditacionPregradoRepository
+     * @param SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository
      * @return Response
      */
-    public function modificar(Request $request, SolicitudProgramaAcademico $solicitudProgramaAcademico, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, CategoriaAcreditacionPregradoRepository $categoriaAcreditacionPregradoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function modificar(Request $request, $idProgrInst, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, CategoriaAcreditacionPregradoRepository $categoriaAcreditacionPregradoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             $new = new CategoriaAcreditacionPregrado();
+            $progInst = $solicitudProgramaAcademicoInstitucionRepository->find($idProgrInst);
+
+
             $exist = $categoriaAcreditacionPregradoRepository->findBy(['solicitudProgramaAcademico' => $solicitudProgramaAcademico->getId()]);
             if (isset($exist[0])) {
                 $new = $exist[0];
             }
+
+
             $form = $this->createForm(CategoriaAcreditacionPregradoType::class, $new, ['action' => 'modificar']);
             $form->handleRequest($request);
 
@@ -108,11 +115,16 @@ class CategoriaAcreditacionPregradoController extends AbstractController
                     if (isset($temp[0]) && isset($temp[1]) && isset($temp[2]))
                         $new->setFechaEmision(new \DateTime($temp[1] . '/' . $temp[0] . '/' . $temp[2]));
                 }
-                $new->setCategoriaAcreditacion($categoriaAcreditacionRepository->find($request->request->all()['categoria_acreditacion_pregrado']['categoriaAcreditacion']));
+                $catAcred = $categoriaAcreditacionRepository->find($request->request->all()['categoria_acreditacion_pregrado']['categoriaAcreditacion']);
+                $new->setCategoriaAcreditacion($catAcred);
+                $new->setInstitucion($progInst->getInstitucion());
                 $new->setSolicitudProgramaAcademico($solicitudProgramaAcademico);
                 $categoriaAcreditacionPregradoRepository->edit($new, true);
 
-                $new->getSolicitudProgramaAcademico()->setCategoriaAcreditacion($new->getCategoriaAcreditacion());
+                $progInst->setCategoriaAcreditacion($catAcred);
+                $solicitudProgramaAcademicoInstitucionRepository->edit($progInst, true);
+
+                $new->getSolicitudProgramaAcademico()->setCategoriaAcreditacion($catAcred);
                 $solicitudProgramaAcademicoRepository->edit($new->getSolicitudProgramaAcademico(), true);
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
@@ -122,6 +134,7 @@ class CategoriaAcreditacionPregradoController extends AbstractController
             return $this->render('modules/evaluacion/categoria_acreditacion_pregrado/edit.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudProgramaAcademico,
+                'progInst' => $progInst,
                 'new' => $new
             ]);
         } catch (\Exception $exception) {
