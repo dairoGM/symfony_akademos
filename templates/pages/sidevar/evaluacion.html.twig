@@ -54,6 +54,45 @@
             </ul>
         </li>
         {% endif %}
+        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Acreditación
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Instituciones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_PREGRADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_pregrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Programas de pregrado</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_POSGRADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_posgrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Programas de posgrado</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
         {% if hasRoles('ROLE_GEST_CONVOCATORIA') or hasRoles('ROLE_GEST_ESTADO_SOLICITUD') or hasRoles('ROLE_GEST_ROL_COMISION') or hasRoles('ROLE_GEST_ESTADO_APLAZAMIENTO') %}
             <li class="nav-item">
                 <a href="#"
@@ -110,44 +149,6 @@
                 </ul>
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link nav-link-menu">
-                    <i class="nav-icon fas fa-cog"></i>
-                    <p>
-                        Acreditación
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
 
-                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Instituciones</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_PREGRADO') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_evaluacion_categoria_acreditacion_pregrado_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Programas de pregrado</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_POSGRADO') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_evaluacion_categoria_acreditacion_posgrado_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Programas de posgrado</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </li>
-        {% endif %}
     </ul>
 </nav>
