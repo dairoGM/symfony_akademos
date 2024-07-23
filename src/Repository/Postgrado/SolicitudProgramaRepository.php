@@ -62,7 +62,6 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
     }
 
 
-
     public function getProgramasV2()
     {
         $qb = $this->createQueryBuilder('qb')
@@ -78,7 +77,7 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
                          b.numeroAcuerdoPleno,
                          b.annosVigenciaCategoriaAcreditacion")
             ->join('qb.universidad', 'c')
-            ->join('qb.tipoSolicitud', 'tp')
+            ->join('qb.tipoPrograma', 'tp')
             ->join('qb.categoriaAcreditacion', 'ca')
             ->join('c.estructura', 'e')
             ->join('e.estructura', 'e1')
