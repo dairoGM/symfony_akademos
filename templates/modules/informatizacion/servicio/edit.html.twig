@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar enlace de conectividad{% endblock %}
+{% block title %}Modificar servicio{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar enlace de conectividad</h3>
+                <h3 class="card-title text-bold text-gray">Modificar servicio</h3>
 
             </div>
         </div>
@@ -17,27 +17,32 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.ed) }}
-                    {{ form_widget(form.ed) }}
-                    {{ form_errors(form.ed) }}
+                    {{ form_label(form.nombre) }}
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.anchoBanda) }}
-                    {{ form_widget(form.anchoBanda) }}
-                    {{ form_errors(form.anchoBanda) }}
+                    {{ form_label(form.visibilidad) }}
+                    {{ form_widget(form.visibilidad) }}
+                    {{ form_errors(form.visibilidad) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.tipoConectividad) }}
-                    {{ form_widget(form.tipoConectividad) }}
-                    {{ form_errors(form.tipoConectividad) }}
+                    {{ form_label(form.publicoObjetivo) }}
+                    {{ form_widget(form.publicoObjetivo) }}
+                    {{ form_errors(form.publicoObjetivo) }}
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.precio) }}
-                    {{ form_widget(form.precio) }}
-                    {{ form_errors(form.precio) }}
+                    {{ form_label(form.direccionWeb) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fas fa-link"></i></span>
+                        </div>
+                        {{ form_widget(form.direccionWeb) }}
+                        {{ form_errors(form.direccionWeb) }}
+                    </div>
                 </div>
                 <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 form-group">
                     {{ form_label(form.descripcion) }}
@@ -47,26 +52,14 @@
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_enlace_conectividad_index') }}"
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_servicio_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
     </div>
-
 {% endblock %}
 {% block javascripts %}
-    <script>
-        $('#enlace_conectividad_precio').on("keypress", function (event) {
-            // Solo permitir números y comas
-            var regex = /^[0-9,]+$/;
-            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 
-            if (!regex.test(key)) {
-                event.preventDefault();
-                return false;
-            }
-        });
-    </script>
 {% endblock %}

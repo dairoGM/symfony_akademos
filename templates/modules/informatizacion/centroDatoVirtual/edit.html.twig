@@ -68,5 +68,16 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    <script>
+        $('#centro_dato_virtual_precio').on("keypress", function (event) {
+            // Solo permitir números y comas
+            var regex = /^[0-9,]+$/;
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    </script>
 {% endblock %}
