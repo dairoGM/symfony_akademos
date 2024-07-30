@@ -1,0 +1,61 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar enlace de conectividad{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Adicionar enlace de conectividad</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.ed) }}
+                    {{ form_widget(form.ed) }}
+                    {{ form_errors(form.ed) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.anchoBanda) }}
+                    {{ form_widget(form.anchoBanda) }}
+                    {{ form_errors(form.anchoBanda) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoConectividad) }}
+                    {{ form_widget(form.tipoConectividad) }}
+                    {{ form_errors(form.tipoConectividad) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.precio) }}
+                    {{ form_widget(form.precio) }}
+                    {{ form_errors(form.precio) }}
+                </div>
+                <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 form-group">
+                    {{ form_label(form.descripcion) }}
+                    {{ form_widget(form.descripcion) }}
+                    {{ form_errors(form.descripcion) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_enlace_conectividad_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

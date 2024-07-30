@@ -1,0 +1,219 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview"
+        role="menu"
+        data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+
+
+        {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fa fa-phone"></i>
+                    <p>
+                        Telefonía móvil
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Línea celular</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_SOLICITUD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_solicitud_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Teléfono celular</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-route"></i>
+                    <p>
+                        Nauta Hogar
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Nauta Hogar</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_GEST_ENLACE_CONECTIVIDAD') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-network-wired"></i>
+                    <p>
+                        Conectividad
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_GEST_ENLACE_CONECTIVIDAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_enlace_conectividad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Conectividad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-database"></i>
+                    <p>
+                        Centro de Datos Virtual
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_GEST_CENTRO_DATO_VIRTUAL') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_centro_dato_virtual_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Centro de Datos Virtual</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-person-booth"></i>
+                    <p>
+                        Trámites y servicios
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Trámites</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_evaluacion_categoria_acreditacion_ies_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Servicios</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+        {% if hasRoles('ROLE_GEST_MARCA') or hasRoles('ROLE_GEST_MODELO')
+            or hasRoles('ROLE_GEST_PUBLICO_OBJETIVO')
+            or hasRoles('ROLE_GEST_SISTEMA_OPERATIVO')
+            or hasRoles('ROLE_GEST_TIPO_CONECTIVIDAD')
+            or hasRoles('ROLE_GEST_TIPO_SISTEMA')
+            or hasRoles('ROLE_GEST_VISIBILIDAD') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_GEST_MARCA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_marca_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Marcas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_MODELO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_modelo_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Modelos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_PUBLICO_OBJETIVO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_publico_objetivo_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Público objetivo</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_SISTEMA_OPERATIVO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_sistema_operativo_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Sistemas operativos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TIPO_CONECTIVIDAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_conectividad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de conectividad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_TIPO_SISTEMA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_tipo_sistema_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Tipos de sistemas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_VISIBILIDAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_visibilidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Visibilidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
