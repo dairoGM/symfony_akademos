@@ -17,6 +17,10 @@ class Servicio extends BaseNomenclator
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    private ?string $clasificacion;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     private ?string $direccionWeb;
     /**
      * @ORM\ManyToOne(targetEntity="Visibilidad")
@@ -37,6 +41,16 @@ class Servicio extends BaseNomenclator
     {
         return $this->direccionWeb;
     }
+
+    /**
+     * @ORM\Column(type="boolean" , nullable=true)
+     */
+    private ?bool $integracionPasarelaPago = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $integracionFirmaDigital = false;
 
     /**
      * @param string|null $direccionWeb
@@ -76,6 +90,54 @@ class Servicio extends BaseNomenclator
     public function setPublicoObjetivo(?\App\Entity\Informatizacion\PublicoObjetivo $publicoObjetivo): void
     {
         $this->publicoObjetivo = $publicoObjetivo;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIntegracionPasarelaPago(): ?bool
+    {
+        return $this->integracionPasarelaPago;
+    }
+
+    /**
+     * @param bool|null $integracionPasarelaPago
+     */
+    public function setIntegracionPasarelaPago(?bool $integracionPasarelaPago): void
+    {
+        $this->integracionPasarelaPago = $integracionPasarelaPago;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIntegracionFirmaDigital(): ?bool
+    {
+        return $this->integracionFirmaDigital;
+    }
+
+    /**
+     * @param bool|null $integracionFirmaDigital
+     */
+    public function setIntegracionFirmaDigital(?bool $integracionFirmaDigital): void
+    {
+        $this->integracionFirmaDigital = $integracionFirmaDigital;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getClasificacion(): ?string
+    {
+        return $this->clasificacion;
+    }
+
+    /**
+     * @param string|null $clasificacion
+     */
+    public function setClasificacion(?string $clasificacion): void
+    {
+        $this->clasificacion = $clasificacion;
     }
 
 }

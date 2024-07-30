@@ -1,11 +1,22 @@
 <div class="row">
     <div class="col-6">
+        <h5 class="mb-0"><b>Tipo:</b> {{ item.clasificacion }}</h5>
         <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre }}</h5>
         <h5 class="mb-0"><b>Visibilidad:</b> {{ item.visibilidad.nombre }}</h5>
+        {% if '1' == item.integracionFirmaDigital %}
+            <h5 class="mb-0"><b>Integración con firma digital:</b> Habilitado</h5>
+        {% else %}
+            <h5 class="mb-0"><b>Integración con firma digital:</b> Deshabilitado</h5>
+        {% endif %}
     </div>
     <div class="col-6">
         <h5 class="mb-0"><b>Dirección web:</b> {{ item.direccionWeb | default('') }}</h5>
         <h5 class="mb-0"><b>Público objetivo:</b> {{ item.publicoObjetivo.nombre }}</h5>
+        {% if '1' == item.integracionPasarelaPago %}
+            <h5 class="mb-0"><b>Integración con pasarelas de pago:</b> Habilitado</h5>
+        {% else %}
+            <h5 class="mb-0"><b>Integración con pasarelas de pago:</b> Deshabilitado</h5>
+        {% endif %}
     </div>
 </div>
 <div class="row">

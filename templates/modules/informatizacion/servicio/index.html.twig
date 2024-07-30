@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Servicios {% endblock %}
+{% block title %}Trámites o Servicios {% endblock %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de servicios</h3>
+                <h3 class="card-title text-bold text-gray">Listado de trámites o servicios</h3>
                 <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_servicio_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
@@ -26,7 +26,7 @@
                     <th>Nombre del trámite</th>
                     <th>Visibilidad</th>
                     <th>Público objetivo</th>
-                    <th>Tipo (Trámite o Servicio)</th>
+                    <th>Tipo </th>
                     <th>Descripción</th>
                     <th>Dirección web</th>
                     <th class="text-center">Opciones</th>
@@ -39,14 +39,14 @@
                         <td>{{ item.nombre | default('') }}</td>
                         <td>{{ item.visibilidad.nombre | default('') }}</td>
                         <td>{{ item.publicoObjetivo.nombre | default('') }}</td>
-                        <td>{{ item.tipo | default('Servicio') }}</td>
+                        <td>{{ item.clasificacion | default('') }}</td>
                         <td>{{ item.descripcion | default('') }}</td>
                         <td>{{ item.direccionWeb | default('') }}</td>
 
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_servicio_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la servicio">
+                                    data-title="Detalles de {{ item.clasificacion }}">
                                 <i class="fa fa-eye "></i>
                             </button>
 

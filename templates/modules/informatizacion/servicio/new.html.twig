@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar servicio{% endblock %}
+{% block title %}Adicionar trámite o servicio{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar servicio</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar trámite o servicio</h3>
 
             </div>
         </div>
@@ -17,10 +17,18 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.clasificacion) }}
+                    {{ form_widget(form.clasificacion) }}
+                    {{ form_errors(form.clasificacion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-8 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
                 </div>
+
+            </div>
+            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.visibilidad) }}
                     {{ form_widget(form.visibilidad) }}
@@ -31,9 +39,6 @@
                     {{ form_widget(form.publicoObjetivo) }}
                     {{ form_errors(form.publicoObjetivo) }}
                 </div>
-
-            </div>
-            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.direccionWeb) }}
                     <div class="input-group">
@@ -44,7 +49,21 @@
                         {{ form_errors(form.direccionWeb) }}
                     </div>
                 </div>
-                <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 form-group">
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.integracionPasarelaPago) }}
+                    {{ form_widget(form.integracionPasarelaPago) }}
+                    {{ form_errors(form.integracionPasarelaPago) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.integracionFirmaDigital) }}
+                    {{ form_widget(form.integracionFirmaDigital) }}
+                    {{ form_errors(form.integracionFirmaDigital) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.descripcion) }}
                     {{ form_widget(form.descripcion) }}
                     {{ form_errors(form.descripcion) }}
