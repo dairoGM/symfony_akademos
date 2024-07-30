@@ -1,0 +1,74 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar nauta hogar{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Adicionar nauta hogar</h3>
+
+            </div>
+        </div>
+        {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        <input type="hidden" name="idPersona" value="{{ persona.id }}" id="idPersona">
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.numeroTelefono) }}
+                    {{ form_widget(form.numeroTelefono) }}
+                    {{ form_errors(form.numeroTelefono) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.servicioContratado) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa fa-dollar-sign"></i></span>
+                        </div>
+                        {{ form_widget(form.servicioContratado) }}
+                        {{ form_errors(form.servicioContratado) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                    {{ form_label(form.direccionInstalacion) }}
+                    {{ form_widget(form.direccionInstalacion) }}
+                    {{ form_errors(form.direccionInstalacion) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_ficha_salida_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#nauta_hogar_servicioContratado').on("keypress", function (event) {
+            // Solo permitir números y comas
+            var regex = /^[0-9,]+$/;
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        $('#btn_aceptar').on('click', function (e) {
+            e.preventDefault();
+            $('form[name="nauta_hogar"]').attr('action', 'registrar-v2');
+            $('form[name="nauta_hogar"]').submit();
+        });
+
+
+    </script>
+{% endblock %}
