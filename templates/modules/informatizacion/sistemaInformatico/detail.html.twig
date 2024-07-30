@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Nombre:</b> {{ item.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Tipo de sistema:</b> {{ item.tipoSistema.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Desarrollador:</b> {{ item.desarrollador | default('') }}</h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Dirección web:</b> {{ item.direccionWeb | default('') }}</h5>
+        <h5 class="mb-0"><b>Visibilidad:</b> {{ item.visibilidad.nombre | default('') }}</h5>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Proceso que impacta:</b> {{ item.procesoImpacta | default('') }}</h5>
+        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion | default('') }}</h5>
+    </div>
+</div>
+

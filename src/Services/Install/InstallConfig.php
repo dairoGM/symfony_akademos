@@ -337,6 +337,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_TIPO_SISTEMA", "Gestión de tipos de sistemas", "Gestión de tipos de sistemas");
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_VISIBILIDAD", "Gestión de visibilidad", "Gestión de visibilidad");
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_NAUTA_HOGAR", "Gestión de nauta hogar", "Gestión de nauta hogar");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_SISTEMA_INFORMATICO", "Gestión de sistemas informáticos", "Gestión de sistemas informáticos");
         return $functionalities;
     }
 
@@ -544,6 +545,7 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_TIPO_CONECTIVIDAD")
             ->addFunctionality("ROLE_GEST_TIPO_SISTEMA")
             ->addFunctionality("ROLE_GEST_NAUTA_HOGAR")
+            ->addFunctionality("ROLE_GEST_SISTEMA_INFORMATICO")
             ->addFunctionality("ROLE_GEST_VISIBILIDAD");
 
 

@@ -130,6 +130,29 @@
                 </ul>
             </li>
         {% endif %}
+        {% if hasRoles('ROLE_GEST_SISTEMA_INFORMATICO') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-laptop"></i>
+                    <p>
+                        Sistemas informáticos
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_GEST_SISTEMA_INFORMATICO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_sistema_informatico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Sistemas informáticos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
         {% if hasRoles('ROLE_GEST_MARCA') or hasRoles('ROLE_GEST_MODELO')
             or hasRoles('ROLE_GEST_PUBLICO_OBJETIVO')
             or hasRoles('ROLE_GEST_SISTEMA_OPERATIVO')
