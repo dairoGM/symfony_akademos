@@ -40,6 +40,9 @@ class InstallConfig
         /***********************************JAN*************************************/
         $modules[] = Module::createModule("MODULE_EVALUACION", "Módulo de Evaluación", "Módulo de Evaluación");
 
+        /***********************************DENYS*************************************/
+        $modules[] = Module::createModule("MODULE_INFORMATIZACION", "Módulo de Informatización", "Módulo de Informatización");
+
         return $modules;
     }
 
@@ -310,6 +313,30 @@ class InstallConfig
 
         return $functionalities;
     }
+    /**
+     * Define una Lista de Funcionalidades para Informatización
+     *
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForInformatizacion(): array
+    {
+        $functionalities = array();
+
+        //Informatización
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_HOME_INFORMATIZACION", "Portada de Indormatización", "Portada de Informatización");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_CENTRO_DATO_VIRTUAL", "Gestión de centros de datos virtuales", "Gestión de centros de datos virtuales");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_ENLACE_CONECTIVIDAD", "Gestión de enlaces de conectividad", "Gestión de enlaces de conectividad");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_MARCA", "Gestión de marcas", "Gestión de marcas");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_MODELO", "Gestión de modelos", "Gestión de modelos");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_PUBLICO_OBJETIVO", "Gestión de público objetivo", "Gestión de público objetivo");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_SERVICIO", "Gestión de servicios", "Gestión de servicios");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_SISTEMA_OPERATIVO", "Gestión de sistemas operativos", "Gestión de sistemas operativos");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_TIPO_CONECTIVIDAD", "Gestión de tipos de conectividad", "Gestión de tipos de conectividad");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_TIPO_SISTEMA", "Gestión de tipos de sistemas", "Gestión de tipos de sistemas");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_VISIBILIDAD", "Gestión de visibilidad", "Gestión de visibilidad");
+        return $functionalities;
+    }
 
 
     /**
@@ -500,6 +527,22 @@ class InstallConfig
             ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION")
             ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_PREGRADO")
             ->addFunctionality("ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION_POSGRADO");
+
+
+        $roles[] = Role::createRole('ROL_INFORMATIZACION', "Administrador de Informatización", "Rol con permiso a la gestion de Informatización", "")
+            ->addFunctionality("ROL_INFORMATIZACION")
+            ->addFunctionality("ROLE_HOME_INFORMATIZACION")
+            ->addFunctionality("ROLE_GEST_CENTRO_DATO_VIRTUAL")
+            ->addFunctionality("ROLE_GEST_ENLACE_CONECTIVIDAD")
+            ->addFunctionality("ROLE_GEST_MARCA")
+            ->addFunctionality("ROLE_GEST_MODELO")
+            ->addFunctionality("ROLE_GEST_PUBLICO_OBJETIVO")
+            ->addFunctionality("ROLE_GEST_SERVICIO")
+            ->addFunctionality("ROLE_GEST_SISTEMA_OPERATIVO")
+            ->addFunctionality("ROLE_GEST_TIPO_CONECTIVIDAD")
+            ->addFunctionality("ROLE_GEST_TIPO_SISTEMA")
+            ->addFunctionality("ROLE_GEST_VISIBILIDAD") ;
+
 
         return $roles;
     }
