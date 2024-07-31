@@ -6,38 +6,38 @@
              with font-awesome or any other icon font library -->
 
 
-        {#        {% if hasRoles('ROLE_GEST_SOLICITUD') %} #}
-        {#            <li class="nav-item"> #}
-        {#                <a href="#" #}
-        {#                   class="nav-link nav-link-menu"> #}
-        {#                    <i class="nav-icon fa fa-phone"></i> #}
-        {#                    <p> #}
-        {#                        Telefonía móvil #}
-        {#                        <i class="right fas fa-angle-left"></i> #}
-        {#                    </p> #}
-        {#                </a> #}
-        {#                <ul class="nav nav-treeview"> #}
-        {#                    {% if hasRoles('ROLE_GEST_SOLICITUD') %} #}
-        {#                        <li class="nav-item"> #}
-        {#                            <a href="{{ path('app_solicitud_index') }}" #}
-        {#                               class="nav-link nav-link-menu"> #}
-        {#                                <p>Línea celular</p> #}
-        {#                            </a> #}
-        {#                        </li> #}
-        {#                    {% endif %} #}
-        {#                    {% if hasRoles('ROLE_GEST_SOLICITUD') %} #}
-        {#                        <li class="nav-item"> #}
-        {#                            <a href="{{ path('app_solicitud_index') }}" #}
-        {#                               class="nav-link nav-link-menu"> #}
-        {#                                <p>Teléfono celular</p> #}
-        {#                            </a> #}
-        {#                        </li> #}
-        {#                    {% endif %} #}
+        {% if hasRoles('ROLE_GEST_LINEA_CELULAR') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fa fa-phone"></i>
+                    <p>
+                        Telefonía móvil
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_LINEA_CELULAR') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_linea_celular_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Línea celular</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {#                    {% if hasRoles('ROLE_GEST_SOLICITUD') %} #}
+                    {#                        <li class="nav-item"> #}
+                    {#                            <a href="{{ path('app_solicitud_index') }}" #}
+                    {#                               class="nav-link nav-link-menu"> #}
+                    {#                                <p>Teléfono celular</p> #}
+                    {#                            </a> #}
+                    {#                        </li> #}
+                    {#                    {% endif %} #}
 
 
-        {#                </ul> #}
-        {#            </li> #}
-        {#        {% endif %} #}
+                </ul>
+            </li>
+        {% endif %}
         {% if hasRoles('ROLE_EVALAUCION_GEST_CATEGORIA_ACREDITACION') %}
             <li class="nav-item">
                 <a href="#"

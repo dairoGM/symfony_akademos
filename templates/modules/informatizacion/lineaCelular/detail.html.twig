@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>ED:</b> {{ item.ed | default('') }}</h5>
+        <h5 class="mb-0"><b>Tipo:</b> {{ item.tipoConectividad.nombre | default('') }}</h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Ancho de banda:</b> {{ item.anchoBanda | default('') }}</h5>
+        <h5 class="mb-0"><b>Precio:</b> {{ item.precio | default('') }}</h5>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
+    </div>
+</div>
+
