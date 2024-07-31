@@ -76,7 +76,7 @@
                 {% for item in recargas %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.creado | date('d/m/Y') }}</td>
+                        <td>{{ item.creado | date('d/m/Y h:i a') }}</td>
                         <td>{{ item.planVoz | default('') }}</td>
                         <td>{{ item.planSms | default('') }}</td>
                         <td>{{ item.planDatos | default('') }}</td>
