@@ -24,7 +24,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
-                    <th>Número</th>
+                    <th>Número de teléfono</th>
                     <th>Plan voz</th>
                     <th>Plan SMS</th>
                     <th>Plan Datos</th>
@@ -39,7 +39,7 @@
                         <td>{{ item.planVoz | default('') }}</td>
                         <td>{{ item.planSms | default('') }}</td>
                         <td>{{ item.planDatos | default('') }}</td>
-                        <td width="15%" class="text-center">
+                        <td width="20%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_linea_celular_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la línea celular">
@@ -49,6 +49,14 @@
                             <a title="Modificar" href="{{ path('app_linea_celular_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
+                            </a>
+                            <a title="Recargar" href="{{ path('app_linea_celular_recargar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-dollar-sign"></i>
+                            </a>
+                            <a title="Responsable" href="{{ path('app_linea_celular_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fas fa-user"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_linea_celular_eliminar', {'id': item.id}) }}">

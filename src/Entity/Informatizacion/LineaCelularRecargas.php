@@ -3,91 +3,57 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseEntity;
-use App\Entity\Personal\Persona;
+use App\Entity\Informatizacion\LineaCelular;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="informatizacion.tbd_linea_celular")
+ * @ORM\Table(name="informatizacion.tbr_linea_celular_recargas")
  */
-class LineaCelular extends BaseEntity
+class LineaCelularRecargas extends BaseEntity
 {
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Informatizacion\LineaCelular")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?string $numeroTelefono;
+    private ?LineaCelular $lineaCelular;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $pin;
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $puk;
+    private ?string $planVoz = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $planVoz;
+    private ?string $planSms = null;
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $planSms;
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $planDatos;
+    private ?string $planDatos = null;
 
-    /**
-     * @return string|null
-     */
-    public function getNumeroTelefono(): ?string
+    public function __construct()
     {
-        return $this->numeroTelefono;
+        $this->planDatos = null; // Inicializar la propiedad
     }
 
     /**
-     * @param string|null $numeroTelefono
+     * @return  LineaCelular|null
      */
-    public function setNumeroTelefono(?string $numeroTelefono): void
+    public function getLineaCelular(): ?LineaCelular
     {
-        $this->numeroTelefono = $numeroTelefono;
+        return $this->lineaCelular;
     }
 
     /**
-     * @return string|null
+     * @param LineaCelular|null $lineaCelular
      */
-    public function getPin(): ?string
+    public function setLineaCelular(?LineaCelular $lineaCelular): void
     {
-        return $this->pin;
-    }
-
-    /**
-     * @param string|null $pin
-     */
-    public function setPin(?string $pin): void
-    {
-        $this->pin = $pin;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPuk(): ?string
-    {
-        return $this->puk;
-    }
-
-    /**
-     * @param string|null $puk
-     */
-    public function setPuk(?string $puk): void
-    {
-        $this->puk = $puk;
+        $this->lineaCelular = $lineaCelular;
     }
 
     /**

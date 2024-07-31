@@ -3,7 +3,10 @@
 namespace App\Controller\Informatizacion;
 
 use App\Entity\Informatizacion\LineaCelular;
+use App\Entity\Informatizacion\LineaCelularRecargas;
+use App\Form\Informatizacion\LineaCelularRecargarType;
 use App\Form\Informatizacion\LineaCelularType;
+use App\Repository\Informatizacion\LineaCelularRecargasRepository;
 use App\Repository\Informatizacion\LineaCelularRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,10 +96,12 @@ class LineaCelularController extends AbstractController
      * @param lineaCelular $lineaCelular
      * @return Response
      */
-    public function detail(LineaCelular $lineaCelular)
+    public function detail(LineaCelular $lineaCelular, LineaCelularRecargasRepository $lineaCelularRecargasRepository)
     {
+        $recargas = $lineaCelularRecargasRepository->findBy(['lineaCelular' => $lineaCelular->getId()], ['id' => 'desc']);
         return $this->render('modules/informatizacion/lineaCelular/detail.html.twig', [
             'item' => $lineaCelular,
+            'recargas' => $recargas
         ]);
     }
 
@@ -122,4 +127,47 @@ class LineaCelularController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{id}/recargar", name="app_linea_celular_recargar", methods={"GET", "POST"})
+     * @param Request $request
+     * @param LineaCelular $lineaCelular
+     * @param LineaCelularRepository $lineaCelularRepository
+     * @return Response
+     */
+    public function recargar(Request $request, LineaCelular $lineaCelular, LineaCelularRepository $lineaCelularRepository, LineaCelularRecargasRepository $lineaCelularRecargasRepository)
+    {
+        try {
+            $recarga = new LineaCelularRecargas();
+            $form = $this->createForm(LineaCelularRecargarType::class, $recarga, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $recarga->setLineaCelular($lineaCelular);
+                $lineaCelularRecargasRepository->edit($recarga);
+
+
+                if (!empty($recarga->getPlanDatos())) {
+                    $lineaCelular->setPlanDatos($recarga->getPlanDatos());
+                }
+                if (!empty($recarga->getPlanSms())) {
+                    $lineaCelular->setPlanSms($recarga->getPlanSms());
+                }
+                if (!empty($recarga->getPlanVoz())) {
+                    $lineaCelular->setPlanVoz($recarga->getPlanVoz());
+                }
+                $lineaCelularRepository->edit($lineaCelular, true);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_linea_celular_recargar', ['id' => $lineaCelular->getId()], Response::HTTP_SEE_OTHER);
+            }
+            $recargas = $lineaCelularRecargasRepository->findBy(['lineaCelular' => $lineaCelular->getId()], ['id' => 'desc']);
+            return $this->render('modules/informatizacion/lineaCelular/recargar.html.twig', [
+                'form' => $form->createView(),
+                'lineaCelular' => $lineaCelular,
+                'recargas' => $recargas
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_linea_celular_index', ['id' => $lineaCelular->getId()], Response::HTTP_SEE_OTHER);
+        }
+    }
 }
