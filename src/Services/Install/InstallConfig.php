@@ -339,6 +339,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_NAUTA_HOGAR", "Gestión de nauta hogar", "Gestión de nauta hogar");
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_SISTEMA_INFORMATICO", "Gestión de sistemas informáticos", "Gestión de sistemas informáticos");
         $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_LINEA_CELULAR", "Gestión de líneas celulares", "Gestión de líneas celulares");
+        $functionalities[] = Functionality::createFunctionality("MODULE_INFORMATIZACION", "ROLE_GEST_TELEFONO_CELULAR", "Gestión de teléfonos celulares", "Gestión de teléfonos celulares");
         return $functionalities;
     }
 
@@ -548,6 +549,7 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_NAUTA_HOGAR")
             ->addFunctionality("ROLE_GEST_SISTEMA_INFORMATICO")
             ->addFunctionality("ROLE_GEST_LINEA_CELULAR")
+            ->addFunctionality("ROLE_GEST_TELEFONO_CELULAR")
             ->addFunctionality("ROLE_GEST_VISIBILIDAD");
 
 

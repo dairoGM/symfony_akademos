@@ -1,0 +1,149 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Asignar responsable de teléfono celular{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Asignar responsable de teléfono celular</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Marca:</b> {{ telefonoCelular.marca.nombre | default('') }}</h5>
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Modelo:</b> {{ telefonoCelular.modelo.nombre | default('') }}</h5>
+                </div>
+                <div class="col-4">
+                    <h5 class="mb-0"><b>Marca:</b> {{ telefonoCelular.sistemaOperativo.nombre | default('') }}</h5>
+                </div>
+            </div>
+            <hr>
+
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th></th>
+                    <th>Foto</th>
+                    <th>Nombre y apellidos</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in personas %}
+                    <tr id="tr_{{ item.id }}">
+                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                        <td width="1%" style="width: 4%"><input type="checkbox" name="asignados_{{ item.id }}"
+                                                                id="asignados_{{ item.id }}"
+                                                                value="{{ item.id }}"></td>
+                        <td style="width: 3%"><a
+                                    href="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                    target="_blank">
+                                <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle" alt="{{ item.primerNombre }}"
+                                     style="width: 40px;height: 40px; object-fit: cover">
+                            </a></td>
+                        <td>{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <button class="btn btn-primary" id="btn-asociar">Asociar</button>
+        </div>
+        <div class="card-body">
+            <table id="tbl-asociados" class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Foto</th>
+                    <th>Nombre y apellidos</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in asignadas %}
+                    <tr>
+                        <td width="1%" style="width: 2%">{{ loop.index }}</td>
+                        <td width="5%" style="width: 3%"><a
+                                    href="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                    target="_blank">
+                                <img src="{% if item.foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ item.foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                     class="img-circle" alt="{{ item.primerNombre }}"
+                                     style="width: 40px;height: 40px; object-fit: cover">
+                            </a></td>
+                        <td>{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+
+
+                        <td style="width: 3%" class="text-center">
+                            <a title="Eliminar" class="btn btn-outline-danger elementRemove"
+                               data-url="{{ path('app_telefono_celular_eliminar_responsable', {'id': item.id}) }}"
+                               data-title=""
+                               data-content="¿Está seguro que desea realizar la acción?" type="button"><i
+                                        class="fa fa-trash"></i></a>
+                        </td>
+
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#btn-asociar').click(function (e) {
+            e.preventDefault();
+
+            if ($('input[id*=asignados_]').length > 0) {
+                var arrayId = [];
+                $('input[id*=asignados_]').each(function (item, element) {
+                    if (element.checked) {
+                        var obj = new Object();
+                        obj.id_persona = element.value;
+
+                        if (element.value != "") {
+                            arrayId.push(obj);
+                        }
+                    }
+                });
+                if (arrayId.length > 0) {
+                    HoldOn.open({
+                        theme: "sk-cube-grid",
+                        message: 'Por favor espere...',
+                        textColor: "white"
+                    });
+                    $.post("{{ path('app_telefono_celular_asociar_responsable') }}",
+                        {
+                            arrayId: arrayId
+                        },
+                        function (data) {
+                            HoldOn.close()
+                            $(window).attr('location', "{{ path('app_telefono_celular_responsable', {'id': telefonoCelular.id}) }}")
+                        });
+                } else {
+                    HoldOn.close()
+                    toastr.warning("Debe de seleccionar al menos un responsable.");
+                }
+            }
+        });
+    </script>
+{% endblock %}

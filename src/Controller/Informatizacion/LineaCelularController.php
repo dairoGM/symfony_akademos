@@ -108,12 +108,19 @@ class LineaCelularController extends AbstractController
      * @param lineaCelular $lineaCelular
      * @return Response
      */
-    public function detail(LineaCelular $lineaCelular, LineaCelularRecargasRepository $lineaCelularRecargasRepository)
+    public function detail(LineaCelular $lineaCelular, LineaCelularRecargasRepository $lineaCelularRecargasRepository, LineaCelularResponsableRepository $lineaCelularResponsableRepository)
     {
+        $asignadas = [];
+        $temp = $lineaCelularResponsableRepository->findBy(['lineaCelular' => $lineaCelular->getId()], ['id' => 'desc']);
+        foreach ($temp as $value) {
+            $asignadas[] = $value->getResponsable();
+        }
+
         $recargas = $lineaCelularRecargasRepository->findBy(['lineaCelular' => $lineaCelular->getId()], ['id' => 'desc']);
         return $this->render('modules/informatizacion/lineaCelular/detail.html.twig', [
             'item' => $lineaCelular,
-            'recargas' => $recargas
+            'recargas' => $recargas,
+            'asignadas' => $asignadas
         ]);
     }
 
@@ -195,7 +202,7 @@ class LineaCelularController extends AbstractController
         try {
             $arrayIdAsignados = [];
             $asignadas = [];
-            $temp = $lineaCelularResopnsableRepository->findBy(['lineaCelular' => $lineaCelular->getId()]);
+            $temp = $lineaCelularResopnsableRepository->findBy(['lineaCelular' => $lineaCelular->getId()], ['id' => 'desc']);
             foreach ($temp as $value) {
                 $arrayIdAsignados[] = $value->getResponsable()->getId();
                 $asignadas[] = $value->getResponsable();

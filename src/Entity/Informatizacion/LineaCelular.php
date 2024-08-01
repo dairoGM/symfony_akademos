@@ -6,11 +6,13 @@ use App\Entity\BaseEntity;
 use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="informatizacion.tbd_linea_celular")
+ * @UniqueEntity(fields="numeroTelefono", message="EL valor {{ value }} ya existe. Por favor inserte otro valor.")
+ * @UniqueEntity(fields="puk", message="EL valor {{ value }} ya existe. Por favor inserte otro valor.")
  */
 class LineaCelular extends BaseEntity
 {

@@ -1,23 +1,19 @@
 <div class="card-body">
     <div class="row">
         <div class="col-4">
-            <h5 class="mb-0"><b>Número de teléfono:</b> {{ item.numeroTelefono | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan voz:</b> {{ item.planVoz | default('') }}</h5>
+            <h5 class="mb-0"><b>Marca:</b> {{ item.marca.nombre | default('') }}</h5>
         </div>
         <div class="col-4">
-            <h5 class="mb-0"><b>Pin:</b> {{ item.pin | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan sms:</b> {{ item.planSms | default('') }}</h5>
+            <h5 class="mb-0"><b>Modelo:</b> {{ item.modelo.nombre | default('') }}</h5>
         </div>
         <div class="col-4">
-            <h5 class="mb-0"><b>Puk:</b> {{ item.puk | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan datos:</b> {{ item.planDatos | default('') }}</h5>
+            <h5 class="mb-0"><b>Marca:</b> {{ item.sistemaOperativo.nombre | default('') }}</h5>
         </div>
     </div>
 </div>
 
 <div class="card-body">
     <h5 class="mb-0"><b>Responsables</b></h5>
-
     <table id="tbl-asociados" class="table table-bordered table-striped dataTable">
         <thead class="table-custom-header">
         <tr>
@@ -38,37 +34,9 @@
                              style="width: 40px;height: 40px; object-fit: cover">
                     </a></td>
                 <td>{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
-
-
             </tr>
         {% endfor %}
         </tbody>
-    </table>
-
-    <hr>
-    <h5 class="mb-0"><b>Recargas</b></h5>
-    <table class="table table-bordered table-striped dataTable">
-        <thead class="table-custom-header">
-        <tr>
-            <th>No.</th>
-            <th>Fecha</th>
-            <th>Plan voz</th>
-            <th>Plan SMS</th>
-            <th>Plan Datos</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in recargas %}
-            <tr>
-                <td width="1%">{{ loop.index }}</td>
-                <td>{{ item.creado | date('d/m/Y  h:i a') }}</td>
-                <td>{{ item.planVoz | default('') }}</td>
-                <td>{{ item.planSms | default('') }}</td>
-                <td>{{ item.planDatos | default('') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-
     </table>
 </div>
 
