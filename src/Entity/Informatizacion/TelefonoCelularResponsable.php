@@ -18,7 +18,7 @@ class TelefonoCelularResponsable extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="TelefonoCelular")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?TelefonoCelular $telefonoCelular;
 
