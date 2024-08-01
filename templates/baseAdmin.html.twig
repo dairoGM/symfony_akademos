@@ -680,6 +680,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $('#DataTables_Table_0_filter').css('text-align', 'left');
         $('#DataTables_Table_0_filter').children().children().css('width', 500);
 
+        $('div.dataTables_wrapper div.dataTables_filter').css('text-align', 'left');
+        $('input[type="search"]').css('width', 500);
+
         $('.btn-cancel').click(function () {
 
             let url = $(this).data('url')
