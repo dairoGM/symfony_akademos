@@ -33,31 +33,32 @@ class CentroDatoVirtualType extends AbstractType
                 ]
             ])
             ->add('ram', TextType::class, [
+                'label' => 'RAM (Gb)',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('cpu', TextType::class, [
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.')
-                ]
-            ])
-            ->add('cpu', TextType::class, [
+                'label' => 'CPU',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('hdd', TextType::class, [
+                'label' => 'HDD (Gb) ',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('hddSalva', TextType::class, [
+                'label' => 'HDD Salva (Gb) ',
+                'required' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('cantidadIpReales', TextType::class, [
+                'required' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]

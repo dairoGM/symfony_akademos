@@ -24,12 +24,17 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.servicioContratado) }}
+                    {{ form_widget(form.servicioContratado) }}
+                    {{ form_errors(form.servicioContratado) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.precio) }}
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa fa-dollar-sign"></i></span>
                         </div>
-                        {{ form_widget(form.servicioContratado) }}
-                        {{ form_errors(form.servicioContratado) }}
+                        {{ form_widget(form.precio) }}
+                        {{ form_errors(form.precio) }}
                     </div>
                 </div>
             </div>

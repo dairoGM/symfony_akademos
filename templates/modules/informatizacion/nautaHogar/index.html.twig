@@ -23,9 +23,11 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Estructura</th>
                     <th>Responsable</th>
                     <th>Número de teléfono</th>
                     <th>Servicio contratado</th>
+                    <th>Precio</th>
                     <th>Dirección de instalación del servicio</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -35,12 +37,14 @@
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
 
+                        <td>({{ item.responsable.estructura.estructura.siglas }}) {{ item.responsable.estructura.nombre | default('') }}</td>
                         <td>{{ item.responsable.primerNombre ~ ' ' ~ item.responsable.segundoNombre ~' '~ item.responsable.primerApellido ~ ' ' ~ item.responsable.segundoApellido }}</td>
                         <td>{{ item.numeroTelefono | default('') }}</td>
-                        <td>{{ item.servicioContratado | default('') }}</td>
+                        <td>{{ item.servicioContratado.nombre | default('') }}</td>
+                        <td>{{ item.precio | default('') }}</td>
                         <td>{{ item.direccionInstalacion | default('') }}</td>
 
-                        <td width="15%" class="text-center">
+                        <td width="10%" class="text-center">
 {#                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"#}
 {#                                    data-url="{{ path('app_nauta_hogar_detail', {'id' : item.id}) }}"#}
 {#                                    data-title="Detalles de nauta hogar">#}

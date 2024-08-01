@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar alcance{% endblock %}
+{% block title %}Adicionar servicio contratado{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar alcance</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar servicio contratado</h3>
 
             </div>
         </div>
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_tipo_conectividad_index') }}"
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_servicio_contratado_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>

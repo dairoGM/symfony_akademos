@@ -22,6 +22,11 @@ class NautaHogar extends BaseEntity
      */
     private ?Persona $responsable;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Informatizacion\ServicioContratado")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?ServicioContratado $servicioContratado;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -36,7 +41,7 @@ class NautaHogar extends BaseEntity
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $servicioContratado;
+    private ?string $precio;
 
     /**
      * @return Persona|null
@@ -52,6 +57,22 @@ class NautaHogar extends BaseEntity
     public function setResponsable(?Persona $responsable): void
     {
         $this->responsable = $responsable;
+    }
+
+    /**
+     * @return ServicioContratado|null
+     */
+    public function getServicioContratado(): ?ServicioContratado
+    {
+        return $this->servicioContratado;
+    }
+
+    /**
+     * @param ServicioContratado|null $servicioContratado
+     */
+    public function setServicioContratado(?ServicioContratado $servicioContratado): void
+    {
+        $this->servicioContratado = $servicioContratado;
     }
 
     /**
@@ -89,17 +110,18 @@ class NautaHogar extends BaseEntity
     /**
      * @return string|null
      */
-    public function getServicioContratado(): ?string
+    public function getPrecio(): ?string
     {
-        return $this->servicioContratado;
+        return $this->precio;
     }
 
     /**
-     * @param string|null $servicioContratado
+     * @param string|null $precio
      */
-    public function setServicioContratado(?string $servicioContratado): void
+    public function setPrecio(?string $precio): void
     {
-        $this->servicioContratado = $servicioContratado;
+        $this->precio = $precio;
     }
+
 
 }

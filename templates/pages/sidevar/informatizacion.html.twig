@@ -77,7 +77,7 @@
                         <li class="nav-item">
                             <a href="{{ path('app_enlace_conectividad_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Conectividad</p>
+                                <p>Enlaces</p>
                             </a>
                         </li>
                     {% endif %}
@@ -90,7 +90,7 @@
                    class="nav-link nav-link-menu">
                     <i class="nav-icon fas fa-database"></i>
                     <p>
-                        Centro de Datos Virtual
+                        Centro de Datos
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -206,7 +206,7 @@
                         <li class="nav-item">
                             <a href="{{ path('app_tipo_conectividad_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Tipos de conectividad</p>
+                                <p>Alcances</p>
                             </a>
                         </li>
                     {% endif %}
@@ -223,6 +223,14 @@
                             <a href="{{ path('app_visibilidad_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Visibilidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_VISIBILIDAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_servicio_contratado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Servicios contratados</p>
                             </a>
                         </li>
                     {% endif %}

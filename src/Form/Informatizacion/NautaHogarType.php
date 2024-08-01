@@ -3,6 +3,10 @@
 namespace App\Form\Informatizacion;
 
 use App\Entity\Informatizacion\NautaHogar;
+use App\Entity\Informatizacion\PublicoObjetivo;
+use App\Entity\Informatizacion\ServicioContratado;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,8 +26,18 @@ class NautaHogarType extends AbstractType
             ->add('direccionInstalacion', TextareaType::class, [
                 'label' => 'Dirección de instalación del servicio'
             ])
-            ->add('servicioContratado', TextType::class, [
-                'label' => 'Servicio contratado'
+            ->add('servicioContratado', EntityType::class, [
+                'label' => 'Servicio contratado',
+                'class' => ServicioContratado::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('precio', TextType::class, [
+
             ]);
 
     }

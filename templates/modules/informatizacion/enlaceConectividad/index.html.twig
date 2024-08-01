@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Enlaces de conectividad {% endblock %}
+{% block title %}Enlaces {% endblock %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de enlaces de conectividad</h3>
+                <h3 class="card-title text-bold text-gray">Listado de enlaces</h3>
                 <a title="Adicionar" class="btn btn-primary mr-2"
                    href="{{ path('app_enlace_conectividad_registrar') }}"><i
                             class="fa fa-plus"></i>
@@ -26,8 +26,10 @@
                     <th>No.</th>
                     <th>ED</th>
                     <th>Ancho de banda</th>
+
+                    <th>Tipo de conexión</th>
                     <th>Descripción del enlace</th>
-                    <th>Tipo</th>
+                    <th>Alcance</th>
                     <th>Precio</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -37,7 +39,9 @@
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.ed | default('') }}</td>
-                        <td>{{ item.anchoBanda | default('') }}</td>
+                        <td>{{ item.anchoBanda | default('') }} {{ item.unidadMedida | default('') }}</td>
+
+                        <td>{{ item.tipoConexion | default('') }}</td>
                         <td>{{ item.descripcion | default('') }}</td>
                         <td>{{ item.tipoConectividad.nombre | default('') }}</td>
                         <td>{{ item.precio | default('') }}</td>

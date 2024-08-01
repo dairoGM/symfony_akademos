@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modificar enlace de conectividad{% endblock %}
+{% block title %}Modificar enlace{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Modificar enlace de conectividad</h3>
+                <h3 class="card-title text-bold text-gray">Modificar enlace</h3>
 
             </div>
         </div>
@@ -27,13 +27,23 @@
                     {{ form_errors(form.anchoBanda) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.unidadMedida) }}
+                    {{ form_widget(form.unidadMedida) }}
+                    {{ form_errors(form.unidadMedida) }}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.tipoConexion) }}
+                    {{ form_widget(form.tipoConexion) }}
+                    {{ form_errors(form.tipoConexion) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tipoConectividad) }}
                     {{ form_widget(form.tipoConectividad) }}
                     {{ form_errors(form.tipoConectividad) }}
                 </div>
-
-            </div>
-            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.precio) }}
                     <div class="input-group">
@@ -44,7 +54,9 @@
                         {{ form_errors(form.precio) }}
                     </div>
                 </div>
-                <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 form-group">
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.descripcion) }}
                     {{ form_widget(form.descripcion) }}
                     {{ form_errors(form.descripcion) }}

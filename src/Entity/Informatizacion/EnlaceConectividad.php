@@ -27,6 +27,15 @@ class EnlaceConectividad extends BaseNomenclator
     private ?string $precio;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $unidadMedida;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $tipoConexion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="TipoConectividad")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -94,6 +103,38 @@ class EnlaceConectividad extends BaseNomenclator
     public function setTipoConectividad(?TipoConectividad $tipoConectividad): void
     {
         $this->tipoConectividad = $tipoConectividad;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUnidadMedida(): ?string
+    {
+        return $this->unidadMedida;
+    }
+
+    /**
+     * @param string|null $unidadMedida
+     */
+    public function setUnidadMedida(?string $unidadMedida): void
+    {
+        $this->unidadMedida = $unidadMedida;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTipoConexion(): ?string
+    {
+        return $this->tipoConexion;
+    }
+
+    /**
+     * @param string|null $tipoConexion
+     */
+    public function setTipoConexion(?string $tipoConexion): void
+    {
+        $this->tipoConexion = $tipoConexion;
     }
 
 
