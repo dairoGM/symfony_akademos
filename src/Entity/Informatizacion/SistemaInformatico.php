@@ -3,9 +3,10 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Informatizacion\TipoSistema;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Informatizacion\Visibilidad;
-use App\Entity\Informatizacion\TipoSistema;
+use App\Entity\Estructura\Estructura;
 
 /**
  * @ORM\Entity
@@ -38,6 +39,12 @@ class SistemaInformatico extends BaseNomenclator
      * @ORM\JoinColumn(nullable=true)
      */
     private ?TipoSistema $tipoSistema;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @return string|null
@@ -117,6 +124,22 @@ class SistemaInformatico extends BaseNomenclator
     public function setTipoSistema(?\App\Entity\Informatizacion\TipoSistema $tipoSistema): void
     {
         $this->tipoSistema = $tipoSistema;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

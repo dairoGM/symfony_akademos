@@ -3,6 +3,7 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseEntity;
+use App\Entity\Estructura\Estructura;
 use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -42,6 +43,11 @@ class NautaHogar extends BaseEntity
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $precio;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @return Persona|null
@@ -121,6 +127,22 @@ class NautaHogar extends BaseEntity
     public function setPrecio(?string $precio): void
     {
         $this->precio = $precio;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

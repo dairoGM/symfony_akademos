@@ -3,6 +3,7 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Informatizacion\TipoConectividad;
 
@@ -39,7 +40,11 @@ class CentroDatoVirtual extends BaseNomenclator
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $precio;
-
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
     /**
      * @return string|null
      */
@@ -134,6 +139,22 @@ class CentroDatoVirtual extends BaseNomenclator
     public function setPrecio(?string $precio): void
     {
         $this->precio = $precio;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

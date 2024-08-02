@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de Centros de Datos  </h3>
+                <h3 class="card-title text-bold text-gray">Listado de Centros de Datos </h3>
                 <a title="Adicionar" class="btn btn-primary mr-2"
                    href="{{ path('app_centro_dato_virtual_registrar') }}"><i
                             class="fa fa-plus"></i>
@@ -24,6 +24,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Institución</th>
                     <th>CVD</th>
                     <th>RAM (Gb)</th>
                     <th>CPU</th>
@@ -37,6 +38,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.nombre | default('') }}</td>
                         <td>{{ item.ram | default('') }}</td>
                         <td>{{ item.cpu | default('') }}</td>

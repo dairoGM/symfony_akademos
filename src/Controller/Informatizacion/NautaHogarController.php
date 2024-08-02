@@ -64,7 +64,7 @@ class NautaHogarController extends AbstractController
      * @param Persona $persona
      * @return Response
      */
-    public function registrarV2(Request $request, Persona $persona, NautaHogarRepository $nautaHogarRepository)
+    public function registrarV2(Request $request, PersonaRepository $personaRepository, Persona $persona, NautaHogarRepository $nautaHogarRepository)
     {
         try {
             $entidad = new NautaHogar();
@@ -72,6 +72,8 @@ class NautaHogarController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $entidad->setResponsable($persona);
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $nautaHogarRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_nauta_hogar_index', [], Response::HTTP_SEE_OTHER);
@@ -95,12 +97,16 @@ class NautaHogarController extends AbstractController
      * @param nautaHogarRepository $nautaHogarRepository
      * @return Response
      */
-    public function modificar(Request $request, NautaHogar $nautaHogar, NautaHogarRepository $nautaHogarRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, NautaHogar $nautaHogar, NautaHogarRepository $nautaHogarRepository)
     {
         try {
             $form = $this->createForm(NautaHogarType::class, $nautaHogar, ['action' => 'modificar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($nautaHogar->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $nautaHogar->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $nautaHogarRepository->edit($nautaHogar);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_nauta_hogar_index', [], Response::HTTP_SEE_OTHER);

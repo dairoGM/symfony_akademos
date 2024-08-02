@@ -5,6 +5,7 @@ namespace App\Controller\Informatizacion;
 use App\Entity\Informatizacion\CentroDatoVirtual;
 use App\Form\Informatizacion\CentroDatoVirtualType;
 use App\Repository\Informatizacion\CentroDatoVirtualRepository;
+use App\Repository\Personal\PersonaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,13 +37,15 @@ class CentroDatoVirtualController extends AbstractController
      * @param CentroDatoVirtualRepository $centroDatoVirtualRepository
      * @return Response
      */
-    public function registrar(Request $request, CentroDatoVirtualRepository $centroDatoVirtualRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, CentroDatoVirtualRepository $centroDatoVirtualRepository)
     {
         try {
             $entidad = new CentroDatoVirtual();
             $form = $this->createForm(CentroDatoVirtualType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $centroDatoVirtualRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_centro_dato_virtual_index', [], Response::HTTP_SEE_OTHER);
@@ -65,13 +68,17 @@ class CentroDatoVirtualController extends AbstractController
      * @param CentroDatoVirtualRepository $centroDatoVirtualRepository
      * @return Response
      */
-    public function modificar(Request $request, CentroDatoVirtual $centroDatoVirtual, CentroDatoVirtualRepository $centroDatoVirtualRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, CentroDatoVirtual $centroDatoVirtual, CentroDatoVirtualRepository $centroDatoVirtualRepository)
     {
         try {
             $form = $this->createForm(CentroDatoVirtualType::class, $centroDatoVirtual, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($centroDatoVirtual->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $centroDatoVirtual->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $centroDatoVirtualRepository->edit($centroDatoVirtual);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_centro_dato_virtual_index', [], Response::HTTP_SEE_OTHER);

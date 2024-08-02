@@ -24,6 +24,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Institución</th>
                     <th>Nombre del sistema</th>
                     <th>Descripción</th>
                     <th>Dirección web</th>
@@ -35,6 +36,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.nombre | default('') }}</td>
                         <td>{{ item.descripcion | default('') }}</td>
                         <td>{{ item.direccionWeb | default('') }}</td>

@@ -24,6 +24,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Institución</th>
                     <th>Número de teléfono</th>
                     <th>Plan voz</th>
                     <th>Plan SMS</th>
@@ -35,6 +36,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.numeroTelefono  | default('') }}</td>
                         <td>{{ item.planVoz | default('') }}</td>
                         <td>{{ item.planSms | default('') }}</td>

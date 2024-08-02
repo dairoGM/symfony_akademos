@@ -5,6 +5,7 @@ namespace App\Controller\Informatizacion;
 use App\Entity\Informatizacion\Servicio;
 use App\Form\Informatizacion\ServicioType;
 use App\Repository\Informatizacion\ServicioRepository;
+use App\Repository\Personal\PersonaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,13 +37,15 @@ class ServicioController extends AbstractController
      * @param ServicioRepository $servicioRepository
      * @return Response
      */
-    public function registrar(Request $request, ServicioRepository $servicioRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, ServicioRepository $servicioRepository)
     {
         try {
             $entidad = new Servicio();
             $form = $this->createForm(ServicioType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $servicioRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_servicio_index', [], Response::HTTP_SEE_OTHER);
@@ -65,13 +68,17 @@ class ServicioController extends AbstractController
      * @param ServicioRepository $servicioRepository
      * @return Response
      */
-    public function modificar(Request $request, Servicio $servicio, ServicioRepository $servicioRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, Servicio $servicio, ServicioRepository $servicioRepository)
     {
         try {
             $form = $this->createForm(ServicioType::class, $servicio, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($servicio->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $servicio->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $servicioRepository->edit($servicio);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_servicio_index', [], Response::HTTP_SEE_OTHER);

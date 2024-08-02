@@ -4,6 +4,7 @@ namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseEntity;
 
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Informatizacion\Marca;
 use App\Entity\Informatizacion\Modelo;
@@ -36,6 +37,11 @@ class TelefonoCelular extends BaseEntity
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?SistemaOperativo $sistemaOperativo;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @return \App\Entity\Informatizacion\Marca|null
@@ -83,6 +89,22 @@ class TelefonoCelular extends BaseEntity
     public function setSistemaOperativo(?\App\Entity\Informatizacion\SistemaOperativo $sistemaOperativo): void
     {
         $this->sistemaOperativo = $sistemaOperativo;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

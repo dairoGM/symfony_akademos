@@ -3,6 +3,7 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Informatizacion\TipoConectividad;
 
@@ -41,6 +42,11 @@ class EnlaceConectividad extends BaseNomenclator
      */
     private ?TipoConectividad $tipoConectividad;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
     /**
      * @return string|null
      */
@@ -135,6 +141,22 @@ class EnlaceConectividad extends BaseNomenclator
     public function setTipoConexion(?string $tipoConexion): void
     {
         $this->tipoConexion = $tipoConexion;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

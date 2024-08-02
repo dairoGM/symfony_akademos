@@ -24,9 +24,9 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Institución</th>
                     <th>ED</th>
                     <th>Ancho de banda</th>
-
                     <th>Tipo de conexión</th>
                     <th>Descripción del enlace</th>
                     <th>Alcance</th>
@@ -38,6 +38,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.ed | default('') }}</td>
                         <td>{{ item.anchoBanda | default('') }} {{ item.unidadMedida | default('') }}</td>
 

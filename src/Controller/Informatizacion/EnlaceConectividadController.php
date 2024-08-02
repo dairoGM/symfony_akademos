@@ -5,6 +5,7 @@ namespace App\Controller\Informatizacion;
 use App\Entity\Informatizacion\EnlaceConectividad;
 use App\Form\Informatizacion\EnlaceConectividadType;
 use App\Repository\Informatizacion\EnlaceConectividadRepository;
+use App\Repository\Personal\PersonaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,13 +37,16 @@ class EnlaceConectividadController extends AbstractController
      * @param EnlaceConectividadRepository $enlaceConectividadRepository
      * @return Response
      */
-    public function registrar(Request $request, EnlaceConectividadRepository $enlaceConectividadRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, EnlaceConectividadRepository $enlaceConectividadRepository)
     {
         try {
             $entidad = new EnlaceConectividad();
             $form = $this->createForm(EnlaceConectividadType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+
                 $entidad->setNombre($entidad->getEd());
                 $enlaceConectividadRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -66,13 +70,17 @@ class EnlaceConectividadController extends AbstractController
      * @param EnlaceConectividadRepository $enlaceConectividadRepository
      * @return Response
      */
-    public function modificar(Request $request, EnlaceConectividad $enlaceConectividad, EnlaceConectividadRepository $enlaceConectividadRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, EnlaceConectividad $enlaceConectividad, EnlaceConectividadRepository $enlaceConectividadRepository)
     {
         try {
             $form = $this->createForm(EnlaceConectividadType::class, $enlaceConectividad, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($enlaceConectividad->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $enlaceConectividad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $enlaceConectividadRepository->edit($enlaceConectividad);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_enlace_conectividad_index', [], Response::HTTP_SEE_OTHER);

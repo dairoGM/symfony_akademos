@@ -3,6 +3,7 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseNomenclator;
+use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\TipoConectividad;
 use App\Entity\Informatizacion\PublicoObjetivo;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +34,11 @@ class Servicio extends BaseNomenclator
      * @ORM\JoinColumn(nullable=true)
      */
     private ?PublicoObjetivo $publicoObjetivo;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @return string|null
@@ -138,6 +144,22 @@ class Servicio extends BaseNomenclator
     public function setClasificacion(?string $clasificacion): void
     {
         $this->clasificacion = $clasificacion;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 }

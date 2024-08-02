@@ -24,6 +24,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Institución</th>
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Sistema Operativo</th>
@@ -35,6 +36,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.marca.nombre  | default('') }}</td>
                         <td>{{ item.modelo.nombre | default('') }}</td>
                         <td>{{ item.sistemaOperativo.nombre | default('') }}</td>
@@ -50,7 +53,8 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <a title="Responsable" href="{{ path('app_telefono_celular_responsable', {'id': item.id}) }}"
+                            <a title="Responsable"
+                               href="{{ path('app_telefono_celular_responsable', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fas fa-user"></i>
                             </a>

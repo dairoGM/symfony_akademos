@@ -51,13 +51,15 @@ class LineaCelularController extends AbstractController
      * @param LineaCelularRepository $lineaCelularRepository
      * @return Response
      */
-    public function registrar(Request $request, LineaCelularRepository $lineaCelularRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, LineaCelularRepository $lineaCelularRepository)
     {
         try {
             $entidad = new LineaCelular();
             $form = $this->createForm(LineaCelularType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $lineaCelularRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_linea_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -80,13 +82,17 @@ class LineaCelularController extends AbstractController
      * @param LineaCelularRepository $lineaCelularRepository
      * @return Response
      */
-    public function modificar(Request $request, LineaCelular $lineaCelular, LineaCelularRepository $lineaCelularRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, LineaCelular $lineaCelular, LineaCelularRepository $lineaCelularRepository)
     {
         try {
             $form = $this->createForm(LineaCelularType::class, $lineaCelular, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($lineaCelular->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $lineaCelular->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $lineaCelularRepository->edit($lineaCelular);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_linea_celular_index', [], Response::HTTP_SEE_OTHER);

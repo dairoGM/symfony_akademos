@@ -63,13 +63,15 @@ class TelefonoCelularController extends AbstractController
      * @param TelefonoCelularRepository $telefonoCelularRepository
      * @return Response
      */
-    public function registrar(Request $request, TelefonoCelularRepository $telefonoCelularRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, TelefonoCelularRepository $telefonoCelularRepository)
     {
         try {
             $entidad = new TelefonoCelular();
             $form = $this->createForm(TelefonoCelularType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $telefonoCelularRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_telefono_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -92,13 +94,17 @@ class TelefonoCelularController extends AbstractController
      * @param TelefonoCelularRepository $telefonoCelularRepository
      * @return Response
      */
-    public function modificar(Request $request, TelefonoCelular $telefonoCelular, TelefonoCelularRepository $telefonoCelularRepository)
+    public function modificar(Request $request, PersonaRepository $personaRepository, TelefonoCelular $telefonoCelular, TelefonoCelularRepository $telefonoCelularRepository)
     {
         try {
             $form = $this->createForm(TelefonoCelularType::class, $telefonoCelular, ['action' => 'modificar']);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!method_exists($telefonoCelular->getEstructura(), 'getId')) {
+                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                    $telefonoCelular->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                }
                 $telefonoCelularRepository->edit($telefonoCelular);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_telefono_celular_index', [], Response::HTTP_SEE_OTHER);

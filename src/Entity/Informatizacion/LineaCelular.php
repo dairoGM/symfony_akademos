@@ -3,6 +3,7 @@
 namespace App\Entity\Informatizacion;
 
 use App\Entity\BaseEntity;
+use App\Entity\Estructura\Estructura;
 use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -43,6 +44,11 @@ class LineaCelular extends BaseEntity
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $planDatos;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Estructura $estructura;
 
     /**
      * @return string|null
@@ -138,6 +144,22 @@ class LineaCelular extends BaseEntity
     public function setPlanDatos($planDatos): void
     {
         $this->planDatos = $planDatos;
+    }
+
+    /**
+     * @return Estructura|null
+     */
+    public function getEstructura(): ?Estructura
+    {
+        return $this->estructura;
+    }
+
+    /**
+     * @param Estructura|null $estructura
+     */
+    public function setEstructura(?Estructura $estructura): void
+    {
+        $this->estructura = $estructura;
     }
 
 

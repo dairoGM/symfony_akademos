@@ -23,7 +23,8 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
-                    <th>Estructura</th>
+                    <th>Institución</th>
+
                     <th>Responsable</th>
                     <th>Número de teléfono</th>
                     <th>Servicio contratado</th>
@@ -36,8 +37,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-
-                        <td>({{ item.responsable.estructura.estructura.siglas }}) {{ item.responsable.estructura.nombre | default('') }}</td>
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.responsable.primerNombre ~ ' ' ~ item.responsable.segundoNombre ~' '~ item.responsable.primerApellido ~ ' ' ~ item.responsable.segundoApellido }}</td>
                         <td>{{ item.numeroTelefono | default('') }}</td>
                         <td>{{ item.servicioContratado.nombre | default('') }}</td>
@@ -45,11 +46,11 @@
                         <td>{{ item.direccionInstalacion | default('') }}</td>
 
                         <td width="10%" class="text-center">
-{#                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"#}
-{#                                    data-url="{{ path('app_nauta_hogar_detail', {'id' : item.id}) }}"#}
-{#                                    data-title="Detalles de nauta hogar">#}
-{#                                <i class="fa fa-eye "></i>#}
-{#                            </button>#}
+                            {#                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction" #}
+                            {#                                    data-url="{{ path('app_nauta_hogar_detail', {'id' : item.id}) }}" #}
+                            {#                                    data-title="Detalles de nauta hogar"> #}
+                            {#                                <i class="fa fa-eye "></i> #}
+                            {#                            </button> #}
 
                             <a title="Modificar" href="{{ path('app_nauta_hogar_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
