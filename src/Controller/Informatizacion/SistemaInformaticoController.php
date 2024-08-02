@@ -3,7 +3,10 @@
 namespace App\Controller\Informatizacion;
 
 use App\Entity\Informatizacion\SistemaInformatico;
+use App\Entity\Informatizacion\SistemaInformaticoProceso;
 use App\Form\Informatizacion\SistemaInformaticoType;
+use App\Repository\Informatizacion\ProcesoRepository;
+use App\Repository\Informatizacion\SistemaInformaticoProcesoRepository;
 use App\Repository\Informatizacion\SistemaInformaticoRepository;
 use App\Repository\Personal\PersonaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,13 +24,24 @@ class SistemaInformaticoController extends AbstractController
 
     /**
      * @Route("/", name="app_sistema_informatico_index", methods={"GET"})
-     * @param SistemaInformaticoRepository $SistemaInformaticoRepository
+     * @param SistemaInformaticoRepository $sistemaInformaticoRepository
      * @return Response
      */
-    public function index(SistemaInformaticoRepository $SistemaInformaticoRepository)
+    public function index(SistemaInformaticoRepository $sistemaInformaticoRepository, SistemaInformaticoProcesoRepository $sistemaInformaticoProcesoRepository)
     {
+        $response = [];
+        $regisros = $sistemaInformaticoRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        foreach ($regisros as $value) {
+            $sistemaProceso = $sistemaInformaticoProcesoRepository->findBy(['sistemaInformatico' => $value->getId()]);
+            $asociados = [];
+            foreach ($sistemaProceso as $value2) {
+                $asociados[] = $value2->getProceso()->getNombre();
+            }
+            $value->procesos = implode(', ', $asociados);
+            $response[] = $value;
+        }
         return $this->render('modules/informatizacion/sistemaInformatico/index.html.twig', [
-            'registros' => $SistemaInformaticoRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $response,
         ]);
     }
 
@@ -37,16 +51,26 @@ class SistemaInformaticoController extends AbstractController
      * @param SistemaInformaticoRepository $sistemaInformaticoRepository
      * @return Response
      */
-    public function registrar(Request $request, PersonaRepository $personaRepository, SistemaInformaticoRepository $sistemaInformaticoRepository)
+    public function registrar(Request $request, SistemaInformaticoProcesoRepository $sistemaInformaticoProcesoRepository, ProcesoRepository $procesoRepository, PersonaRepository $personaRepository, SistemaInformaticoRepository $sistemaInformaticoRepository)
     {
         try {
             $entidad = new SistemaInformatico();
             $form = $this->createForm(SistemaInformaticoType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $allPost = $request->request->all();
                 $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
                 $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $sistemaInformaticoRepository->add($entidad, true);
+
+                if (isset($allPost['sistema_informatico']['proceso']) && is_array($allPost['sistema_informatico']['proceso'])) {
+                    foreach ($allPost['sistema_informatico']['proceso'] as $value) {
+                        $sistemaProceso = new SistemaInformaticoProceso();
+                        $sistemaProceso->setSistemaInformatico($entidad);
+                        $sistemaProceso->setProceso($procesoRepository->find($value));
+                        $sistemaInformaticoProcesoRepository->add($sistemaProceso, true);
+                    }
+                }
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_sistema_informatico_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -68,17 +92,33 @@ class SistemaInformaticoController extends AbstractController
      * @param SistemaInformaticoRepository $sistemaInformaticoRepository
      * @return Response
      */
-    public function modificar(Request $request, PersonaRepository $personaRepository, SistemaInformatico $sistemaInformatico, SistemaInformaticoRepository $sistemaInformaticoRepository)
+    public function modificar(Request $request, ProcesoRepository $procesoRepository, SistemaInformaticoProcesoRepository $sistemaInformaticoProcesoRepository, PersonaRepository $personaRepository, SistemaInformatico $sistemaInformatico, SistemaInformaticoRepository $sistemaInformaticoRepository)
     {
         try {
             $form = $this->createForm(SistemaInformaticoType::class, $sistemaInformatico, ['action' => 'modificar']);
             $form->handleRequest($request);
+            $sistemaProceso = $sistemaInformaticoProcesoRepository->findBy(['sistemaInformatico' => $sistemaInformatico->getId()]);
+            $asociados = [];
 
+            foreach ($sistemaProceso as $value) {
+                $asociados[] = $value->getProceso()->getId();
+                $sistemaInformaticoProcesoRepository->remove($value);
+            }
             if ($form->isSubmitted() && $form->isValid()) {
+                $allPost = $request->request->all();
                 if (!method_exists($sistemaInformatico->getEstructura(), 'getId')) {
                     $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
                     $sistemaInformatico->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 }
+                if (isset($allPost['sistema_informatico']['proceso']) && is_array($allPost['sistema_informatico']['proceso'])) {
+                    foreach ($allPost['sistema_informatico']['proceso'] as $value) {
+                        $sistemaProceso = new SistemaInformaticoProceso();
+                        $sistemaProceso->setSistemaInformatico($sistemaInformatico);
+                        $sistemaProceso->setProceso($procesoRepository->find($value));
+                        $sistemaInformaticoProcesoRepository->add($sistemaProceso, true);
+                    }
+                }
+
                 $sistemaInformaticoRepository->edit($sistemaInformatico);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_sistema_informatico_index', [], Response::HTTP_SEE_OTHER);
@@ -86,7 +126,8 @@ class SistemaInformaticoController extends AbstractController
 
             return $this->render('modules/informatizacion/sistemaInformatico/edit.html.twig', [
                 'form' => $form->createView(),
-                'sistemaInformatico' => $sistemaInformatico
+                'sistemaInformatico' => $sistemaInformatico,
+                'asociados' => json_encode($asociados)
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -100,10 +141,17 @@ class SistemaInformaticoController extends AbstractController
      * @param sistemaInformatico $sistemaInformatico
      * @return Response
      */
-    public function detail(SistemaInformatico $sistemaInformatico)
+    public function detail(SistemaInformatico $sistemaInformatico, SistemaInformaticoProcesoRepository $sistemaInformaticoProcesoRepository)
     {
+        $sistemaProceso = $sistemaInformaticoProcesoRepository->findBy(['sistemaInformatico' => $sistemaInformatico->getId()]);
+        $asociados = [];
+        foreach ($sistemaProceso as $value) {
+            $asociados[] = $value->getProceso()->getNombre();
+        }
+
         return $this->render('modules/informatizacion/sistemaInformatico/detail.html.twig', [
             'item' => $sistemaInformatico,
+            'procesos' => implode(', ', $asociados),
         ]);
     }
 

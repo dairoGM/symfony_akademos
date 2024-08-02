@@ -50,9 +50,9 @@
                     {{ form_errors(form.desarrollador) }}
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-                    {{ form_label(form.procesoImpacta) }}
-                    {{ form_widget(form.procesoImpacta) }}
-                    {{ form_errors(form.procesoImpacta) }}
+                    {{ form_label(form.proceso) }}
+                    {{ form_widget(form.proceso) }}
+                    {{ form_errors(form.proceso) }}
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.descripcion) }}
@@ -72,6 +72,6 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-
+        $('#sistema_informatico_proceso').val( {{ asociados |raw }} )
     </script>
 {% endblock %}

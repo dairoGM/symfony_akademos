@@ -234,6 +234,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if hasRoles('ROLE_GEST_VISIBILIDAD') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_proceso_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Procesos</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}

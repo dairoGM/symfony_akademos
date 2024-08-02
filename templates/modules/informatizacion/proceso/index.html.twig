@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Sistemas informáticos {% endblock %}
+{% block title %}Procesos {% endblock %}
 
 {% block body %}
 
@@ -10,9 +10,8 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de sistemas informáticos</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2"
-                   href="{{ path('app_sistema_informatico_registrar') }}"><i
+                <h3 class="card-title text-bold text-gray">Listado de procesos</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_proceso_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
 
@@ -24,11 +23,8 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
-                    <th>Institución</th>
-                    <th>Nombre del sistema</th>
-                    <th>Descripción</th>
-                    <th>Dirección web</th>
-                    <th>Procesos que impacta</th>
+                    <th>Nombre</th> 
+                    <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -36,26 +32,27 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>({{ item.estructura.estructura.siglas | default('') }}
-                            ) {{ item.estructura.nombre | default('') }}</td>
-                        <td>{{ item.nombre | default('') }}</td>
-                        <td>{{ item.descripcion | default('') }}</td>
-                        <td>{{ item.direccionWeb | default('') }}</td>
-                        <td>{{ item.procesos | default('') }}</td>
-
+                        <td>{{ item.nombre }}</td> 
+                        <td width="3%" class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_sistema_informatico_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles del sistema informático">
+                                    data-url="{{ path('app_proceso_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles del proceso">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar" href="{{ path('app_sistema_informatico_modificar', {'id': item.id}) }}"
+                            <a title="Modificar" href="{{ path('app_proceso_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_sistema_informatico_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_proceso_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>

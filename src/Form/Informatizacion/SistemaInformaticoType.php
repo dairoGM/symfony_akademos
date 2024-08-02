@@ -8,6 +8,7 @@ use App\Entity\Convenio\Tipo;
 
 use App\Entity\Informatizacion\EnlaceConectividad;
 use App\Entity\Informatizacion\Marca;
+use App\Entity\Informatizacion\Proceso;
 use App\Entity\Informatizacion\SistemaInformatico;
 use App\Entity\Informatizacion\TipoConectividad;
 use App\Entity\Informatizacion\TipoSistema;
@@ -39,9 +40,17 @@ class SistemaInformaticoType extends AbstractType
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
-            ->add('procesoImpacta', TextareaType::class, [
-                'label' => 'Proceso que impacta',
-                'required' => false,
+            ->add('proceso', EntityType::class, [
+                'label' => 'Procesos que impacta',
+                'class' => Proceso::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null,
+                'multiple' => true,
+                'mapped' => false,
             ])
             ->add('desarrollador', TextType::class, [
                 'required' => true,

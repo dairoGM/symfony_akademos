@@ -18,10 +18,7 @@ class SistemaInformatico extends BaseNomenclator
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $direccionWeb;
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private ?string $procesoImpacta;
+
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -62,21 +59,6 @@ class SistemaInformatico extends BaseNomenclator
         $this->direccionWeb = $direccionWeb;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProcesoImpacta(): ?string
-    {
-        return $this->procesoImpacta;
-    }
-
-    /**
-     * @param string|null $procesoImpacta
-     */
-    public function setProcesoImpacta(?string $procesoImpacta): void
-    {
-        $this->procesoImpacta = $procesoImpacta;
-    }
 
     /**
      * @return string|null
