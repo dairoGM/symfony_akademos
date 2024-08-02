@@ -60,7 +60,7 @@ class SistemaInformaticoController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $allPost = $request->request->all();
                 $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                $entidad->setEstructura($personaAutenticada->getEstructura() );
                 $sistemaInformaticoRepository->add($entidad, true);
 
                 if (isset($allPost['sistema_informatico']['proceso']) && is_array($allPost['sistema_informatico']['proceso'])) {
@@ -106,10 +106,10 @@ class SistemaInformaticoController extends AbstractController
             }
             if ($form->isSubmitted() && $form->isValid()) {
                 $allPost = $request->request->all();
-                if (!method_exists($sistemaInformatico->getEstructura(), 'getId')) {
+//                if (!method_exists($sistemaInformatico->getEstructura(), 'getId')) {
                     $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $sistemaInformatico->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
+                    $sistemaInformatico->setEstructura($personaAutenticada->getEstructura() );
+//                }
                 if (isset($allPost['sistema_informatico']['proceso']) && is_array($allPost['sistema_informatico']['proceso'])) {
                     foreach ($allPost['sistema_informatico']['proceso'] as $value) {
                         $sistemaProceso = new SistemaInformaticoProceso();

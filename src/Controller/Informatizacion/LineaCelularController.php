@@ -59,7 +59,7 @@ class LineaCelularController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                $entidad->setEstructura($personaAutenticada->getEstructura());
                 $lineaCelularRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_linea_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -89,10 +89,10 @@ class LineaCelularController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!method_exists($lineaCelular->getEstructura(), 'getId')) {
+//                if (!method_exists($lineaCelular->getEstructura(), 'getId')) {
                     $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $lineaCelular->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
+                    $lineaCelular->setEstructura($personaAutenticada->getEstructura());
+//                }
                 $lineaCelularRepository->edit($lineaCelular);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_linea_celular_index', [], Response::HTTP_SEE_OTHER);

@@ -18,7 +18,7 @@ class LineaCelularResponsable extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="LineaCelular")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?LineaCelular $lineaCelular;
 

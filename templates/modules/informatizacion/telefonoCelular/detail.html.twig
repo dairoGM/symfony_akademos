@@ -33,7 +33,7 @@
                              class="img-circle" alt="{{ item.primerNombre }}"
                              style="width: 40px;height: 40px; object-fit: cover">
                     </a></td>
-                <td>{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
+                <td style="{% if loop.index == 1 %} color: red;font-weight: bold {% endif %}">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
             </tr>
         {% endfor %}
         </tbody>

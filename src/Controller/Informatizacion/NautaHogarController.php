@@ -73,7 +73,7 @@ class NautaHogarController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entidad->setResponsable($persona);
                 $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                $entidad->setEstructura($personaAutenticada->getEstructura());
                 $nautaHogarRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_nauta_hogar_index', [], Response::HTTP_SEE_OTHER);
@@ -103,10 +103,10 @@ class NautaHogarController extends AbstractController
             $form = $this->createForm(NautaHogarType::class, $nautaHogar, ['action' => 'modificar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!method_exists($nautaHogar->getEstructura(), 'getId')) {
+//                if (!method_exists($nautaHogar->getEstructura(), 'getId')) {
                     $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $nautaHogar->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
+                    $nautaHogar->setEstructura($personaAutenticada->getEstructura());
+//                }
                 $nautaHogarRepository->edit($nautaHogar);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_nauta_hogar_index', [], Response::HTTP_SEE_OTHER);

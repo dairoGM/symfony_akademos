@@ -71,7 +71,7 @@ class TelefonoCelularController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
+                $entidad->setEstructura($personaAutenticada->getEstructura());
                 $telefonoCelularRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_telefono_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -101,10 +101,10 @@ class TelefonoCelularController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!method_exists($telefonoCelular->getEstructura(), 'getId')) {
-                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $telefonoCelular->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
+//                if (!method_exists($telefonoCelular->getEstructura(), 'getId')) {
+                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+                $telefonoCelular->setEstructura($personaAutenticada->getEstructura());
+//                }
                 $telefonoCelularRepository->edit($telefonoCelular);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_telefono_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -129,7 +129,7 @@ class TelefonoCelularController extends AbstractController
     public function detail(TelefonoCelular $telefonoCelular, TelefonoCelularResponsableRepository $telefonoCelularResponsableRepository)
     {
         $asignadas = [];
-        $temp = $telefonoCelularResponsableRepository->findBy(['telefonoCelular' => $telefonoCelular->getId()]);
+        $temp = $telefonoCelularResponsableRepository->findBy(['telefonoCelular' => $telefonoCelular->getId()],['id'=>'desc']);
         foreach ($temp as $value) {
             $asignadas[] = $value->getResponsable();
         }
