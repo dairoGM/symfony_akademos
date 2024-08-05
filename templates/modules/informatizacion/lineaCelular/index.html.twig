@@ -39,9 +39,9 @@
                         <td>({{ item.estructura.estructura.siglas | default('') }}
                             ) {{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.numeroTelefono  | default('') }}</td>
-                        <td>{{ item.planVoz | default('') }}</td>
-                        <td>{{ item.planSms | default('') }}</td>
-                        <td>{{ item.planDatos | default('') }}</td>
+                        <td>{{ item.planVoz | default('') }}min</td>
+                        <td>{% if item.planSms is not null %} S {% endif %} {{ item.planSms | default('') }}</td>
+                        <td>{{ item.planDatos | default('') }}{% if item.planDatos is not null %} Gb {% endif %}</td>
                         <td width="20%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_linea_celular_detail', {'id' : item.id}) }}"

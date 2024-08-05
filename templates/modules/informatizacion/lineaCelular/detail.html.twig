@@ -2,15 +2,15 @@
     <div class="row">
         <div class="col-4">
             <h5 class="mb-0"><b>Número de teléfono:</b> {{ item.numeroTelefono | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan voz:</b> {{ item.planVoz | default('') }}</h5>
+            <h5 class="mb-0"><b>Plan voz:</b> {{ item.planVoz | default('')  }}min</h5>
         </div>
         <div class="col-4">
             <h5 class="mb-0"><b>Pin:</b> {{ item.pin | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan sms:</b> {{ item.planSms | default('') }}</h5>
+            <h5 class="mb-0"><b>Plan sms:</b>$ {{ item.planSms | default('') }}</h5>
         </div>
         <div class="col-4">
             <h5 class="mb-0"><b>Puk:</b> {{ item.puk | default('') }}</h5>
-            <h5 class="mb-0"><b>Plan datos:</b> {{ item.planDatos | default('') }}</h5>
+            <h5 class="mb-0"><b>Plan datos:</b> {{ item.planDatos | default('') }}{% if item.planDatos is not null %} Gb {% endif %}</h5>
         </div>
     </div>
 </div>
