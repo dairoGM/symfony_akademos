@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/symfony_akademos.iml" filepath="$PROJECT_DIR$/.idea/symfony_akademos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/akademos_mes.iml" filepath="$PROJECT_DIR$/.idea/akademos_mes.iml" />
     </modules>
   </component>
 </project>

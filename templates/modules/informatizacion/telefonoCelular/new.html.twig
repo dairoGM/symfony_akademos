@@ -17,22 +17,26 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.marca) }}
                     {{ form_widget(form.marca) }}
                     {{ form_errors(form.marca) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2 form-group">
                     {{ form_label(form.modelo) }}
                     {{ form_widget(form.modelo) }}
                     {{ form_errors(form.modelo) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-12 col-sm-6 col-md-2 col-lg-2 col-xl-2 form-group">
                     {{ form_label(form.sistemaOperativo) }}
                     {{ form_widget(form.sistemaOperativo) }}
                     {{ form_errors(form.sistemaOperativo) }}
                 </div>
             </div>
-
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_telefono_celular_index') }}"
@@ -46,6 +50,6 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        
+
     </script>
 {% endblock %}

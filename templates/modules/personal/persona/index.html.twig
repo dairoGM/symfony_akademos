@@ -46,7 +46,13 @@
                                      class="img-circle" style="width: 40px;height: 40px; object-fit: cover">
                             </a></td>
                         <td width="20%">{{ item.primerNombre ~ ' ' ~ item.segundoNombre ~' '~ item.primerApellido ~ ' ' ~ item.segundoApellido }}</td>
-                        <td width="30%">{{ item.estructura.estructura.nombre | default('') }}</td>
+                        <td width="30%">
+                            {% if item.estructura.estructura.estructura.nombre is defined %}
+                                {{ item.estructura.estructura.estructura.nombre | default('') }}
+                            {% else %}
+                                {{ item.estructura.estructura.nombre | default('') }}
+                            {% endif %}
+                        </td>
                         <td width="30%">{{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.responsabilidad.nombre | default('') }}</td>
 

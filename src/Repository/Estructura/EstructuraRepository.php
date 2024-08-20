@@ -139,4 +139,15 @@ class EstructuraRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
+
+    public function getEstructurasDadoIdsCategoria()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select('qb.id, qb.nombre, qb.siglas, ep.siglas as siglasPadre')
+            ->leftJoin('qb.estructura', 'ep')
+            ->where("qb.categoriaEstructura in (5,6) and qb.activo = true");
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
 }

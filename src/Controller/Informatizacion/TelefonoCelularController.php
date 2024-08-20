@@ -65,13 +65,13 @@ class TelefonoCelularController extends AbstractController
      */
     public function registrar(Request $request, PersonaRepository $personaRepository, TelefonoCelularRepository $telefonoCelularRepository)
     {
-        try {
+//        try {
             $entidad = new TelefonoCelular();
             $form = $this->createForm(TelefonoCelularType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura());
+//                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+//                $entidad->setEstructura($personaAutenticada->getEstructura());
                 $telefonoCelularRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_telefono_celular_index', [], Response::HTTP_SEE_OTHER);
@@ -80,10 +80,10 @@ class TelefonoCelularController extends AbstractController
             return $this->render('modules/informatizacion/telefonoCelular/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_telefono_celular_registrar', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_telefono_celular_registrar', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 
