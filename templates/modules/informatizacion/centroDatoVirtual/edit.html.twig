@@ -17,14 +17,24 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.ram) }}
-                    {{ form_widget(form.ram) }}
-                    {{ form_errors(form.ram) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa fa-gigas" style="font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;font-weight: bold">Gb</i></span>
+                        </div>
+                        {{ form_widget(form.ram) }}
+                        {{ form_errors(form.ram) }}
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.cpu) }}
@@ -32,25 +42,33 @@
                     {{ form_errors(form.cpu) }}
                 </div>
 
-            </div>
-            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.hdd) }}
-                    {{ form_widget(form.hdd) }}
-                    {{ form_errors(form.hdd) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa fa-gigas" style="font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;font-weight: bold">Gb</i></span>
+                        </div>
+                        {{ form_widget(form.hdd) }}
+                        {{ form_errors(form.hdd) }}
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.hddSalva) }}
-                    {{ form_widget(form.hddSalva) }}
-                    {{ form_errors(form.hddSalva) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa fa-gigas" style="font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;font-weight: bold">Gb</i></span>
+                        </div>
+                        {{ form_widget(form.hddSalva) }}
+                        {{ form_errors(form.hddSalva) }}
+                    </div>
                 </div>
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.cantidadIpReales) }}
                     {{ form_widget(form.cantidadIpReales) }}
                     {{ form_errors(form.cantidadIpReales) }}
                 </div>
-            </div>
-            <div class="row">
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.precio) }}
                     <div class="input-group">

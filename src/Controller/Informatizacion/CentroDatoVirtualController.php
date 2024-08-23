@@ -44,8 +44,6 @@ class CentroDatoVirtualController extends AbstractController
             $form = $this->createForm(CentroDatoVirtualType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
                 $centroDatoVirtualRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_centro_dato_virtual_index', [], Response::HTTP_SEE_OTHER);
@@ -75,10 +73,6 @@ class CentroDatoVirtualController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!method_exists($centroDatoVirtual->getEstructura(), 'getId')) {
-                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $centroDatoVirtual->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
                 $centroDatoVirtualRepository->edit($centroDatoVirtual);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_centro_dato_virtual_index', [], Response::HTTP_SEE_OTHER);

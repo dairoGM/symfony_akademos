@@ -2,7 +2,10 @@
 
 namespace App\Form\Informatizacion;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\LineaCelular;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,6 +38,16 @@ class LineaCelularType extends AbstractType
             ])
             ->add('planDatos', TextType::class, [
                 'required' => false,
+            ])
+            ->add('estructura', EntityType::class, [
+                'class' => Estructura::class,
+                'label' => 'Institución',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where("u.categoriaEstructura in (5,6,8) and u.activo = true and u.tipoEstructura in (15,25,33,30)")->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
             ]);
 
     }

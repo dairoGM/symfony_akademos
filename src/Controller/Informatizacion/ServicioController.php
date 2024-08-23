@@ -44,8 +44,6 @@ class ServicioController extends AbstractController
             $form = $this->createForm(ServicioType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura());
                 $servicioRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_servicio_index', [], Response::HTTP_SEE_OTHER);
@@ -75,10 +73,6 @@ class ServicioController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-//                if (!method_exists($servicio->getEstructura(), 'getId')) {
-                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $servicio->setEstructura($personaAutenticada->getEstructura());
-//                }
                 $servicioRepository->edit($servicio);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_servicio_index', [], Response::HTTP_SEE_OTHER);

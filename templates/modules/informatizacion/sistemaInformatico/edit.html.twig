@@ -17,6 +17,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}
@@ -32,8 +37,6 @@
                     {{ form_errors(form.visibilidad) }}
                 </div>
 
-            </div>
-            <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.direccionWeb) }}
                     <div class="input-group">

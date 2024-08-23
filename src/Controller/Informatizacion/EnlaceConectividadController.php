@@ -44,9 +44,6 @@ class EnlaceConectividadController extends AbstractController
             $form = $this->createForm(EnlaceConectividadType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                $entidad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-
                 $entidad->setNombre($entidad->getEd());
                 $enlaceConectividadRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -77,10 +74,6 @@ class EnlaceConectividadController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!method_exists($enlaceConectividad->getEstructura(), 'getId')) {
-                    $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
-                    $enlaceConectividad->setEstructura($personaAutenticada->getEstructura()->getEstructura());
-                }
                 $enlaceConectividadRepository->edit($enlaceConectividad);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_enlace_conectividad_index', [], Response::HTTP_SEE_OTHER);

@@ -17,11 +17,16 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.estructura) }}
+                    {{ form_widget(form.estructura) }}
+                    {{ form_errors(form.estructura) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.clasificacion) }}
                     {{ form_widget(form.clasificacion) }}
                     {{ form_errors(form.clasificacion) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-8 form-group">
+                <div class="col-12 col-sm-6 col-md-8 col-lg-12 col-xl-12 form-group">
                     {{ form_label(form.nombre) }}
                     {{ form_widget(form.nombre) }}
                     {{ form_errors(form.nombre) }}

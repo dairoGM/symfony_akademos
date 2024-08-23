@@ -2,6 +2,7 @@
 
 namespace App\Form\Informatizacion;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\NautaHogar;
 use App\Entity\Informatizacion\PublicoObjetivo;
 use App\Entity\Informatizacion\ServicioContratado;
@@ -38,6 +39,15 @@ class NautaHogarType extends AbstractType
             ])
             ->add('precio', TextType::class, [
 
+            ])->add('estructura', EntityType::class, [
+                'class' => Estructura::class,
+                'label' => 'Institución',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where("u.categoriaEstructura in (5,6,8) and u.activo = true and u.tipoEstructura in (15,25,33,30)")->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
             ]);
 
     }

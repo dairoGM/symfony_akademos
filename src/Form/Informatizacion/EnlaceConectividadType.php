@@ -6,6 +6,7 @@ use App\Entity\Convenio\Tipo;
 
 ;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\EnlaceConectividad;
 use App\Entity\Informatizacion\Marca;
 use App\Entity\Informatizacion\TipoConectividad;
@@ -77,6 +78,16 @@ class EnlaceConectividadType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('estructura', EntityType::class, [
+                'label' => 'Institución',
+                'class' => Estructura::class,
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where("u.categoriaEstructura in (5,6,8) and u.activo = true and u.tipoEstructura in (15,25,33,30)")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

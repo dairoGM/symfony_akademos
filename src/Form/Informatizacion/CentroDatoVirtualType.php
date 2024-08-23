@@ -6,6 +6,7 @@ use App\Entity\Convenio\Tipo;
 
 ;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\CentroDatoVirtual;
 use App\Entity\Informatizacion\EnlaceConectividad;
 use App\Entity\Informatizacion\Marca;
@@ -33,7 +34,7 @@ class CentroDatoVirtualType extends AbstractType
                 ]
             ])
             ->add('ram', TextType::class, [
-                'label' => 'RAM (Gb)',
+                'label' => 'RAM ',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
@@ -45,13 +46,13 @@ class CentroDatoVirtualType extends AbstractType
                 ]
             ])
             ->add('hdd', TextType::class, [
-                'label' => 'HDD (Gb) ',
+                'label' => 'HDD ',
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
             ])
             ->add('hddSalva', TextType::class, [
-                'label' => 'HDD Salva (Gb) ',
+                'label' => 'HDD Salva ',
                 'required' => false,
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
@@ -67,6 +68,15 @@ class CentroDatoVirtualType extends AbstractType
                 'constraints' => [
                     new NotBlank([], 'Este valor no debe estar en blanco.')
                 ]
+            ])->add('estructura', EntityType::class, [
+                'class' => Estructura::class,
+                'label' => 'Institución',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where("u.categoriaEstructura in (5,6,8) and u.activo = true and u.tipoEstructura in (15,25,33,30)")->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
             ]);
     }
 
