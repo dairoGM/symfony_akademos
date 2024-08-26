@@ -36,38 +36,8 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.estructura.nombre  | default('') }}</td>
-{#                            {% set var = true %}#}
-{#                            {% set nombreEstructura = item.estructura.estructura.estructura.nombre|default('') %}#}
-
-{#                            {% if 'Órgano Central' in nombreEstructura %}#}
-{#                                {% set var = false %}#}
-{#                            {% endif %}#}
-
-
-
-{#                            {% if var %}#}
-{#                                (#}
-{#                            {% endif %}#}
-{#                            {% if item.estructura.estructura.estructura.nombre is defined %}#}
-{#                                {% if var %}#}
-{#                                    {{ item.estructura.estructura.estructura.siglas | default('') }}#}
-{#                                {% else %}#}
-{#                                    {{ item.estructura.estructura.estructura.nombre | default('') }}#}
-{#                                {% endif %}#}
-{#                            {% else %}#}
-{#                                {% if var %}#}
-{#                                    {{ item.estructura.estructura.siglas | default('') }}#}
-{#                                {% else %}#}
-{#                                    {{ item.estructura.estructura.nombre | default('') }}#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                            {% if var %}#}
-{#                                )#}
-{#                            {% endif %}#}
-{#                            {% if var %}#}
-{#                                {{ item.estructura.nombre | default('') }}#}
-{#                            {% endif %}#}
+                        <td>({{ item.estructura.estructura.siglas | default('') }}
+                            ) {{ item.estructura.nombre | default('') }}</td>
 
                         <td>{{ item.marca.nombre  | default('') }}</td>
                         <td>{{ item.modelo.nombre | default('') }}</td>
