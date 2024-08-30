@@ -232,32 +232,94 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {#                    </li> #}
                 {#                {% endif %} #}
 
-                {% if hasRoles('ROLE_HOME_TRAMITES') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_tramite_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' %} active {% endif %}">Trámites</a>
-                    </li>
-                {% endif %}
 
-                {% if hasRoles('ROLE_HOME_ECONOMIA') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_economia_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'economia' %} active {% endif %}">Economía</a>
-                    </li>
-                {% endif %}
 
-                {% if hasRoles('ROLE_HOME_CONVENIO') %}
-                    <li class=" d-none d-sm-inline-block">
-                        <a href="{{ path('app_convenio_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a>
-                    </li>
-                {% endif %}
+
+                {#                {% if hasRoles('ROLE_HOME_TRAMITES') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_tramite_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' %} active {% endif %}">Trámites</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+
+                {#                {% if hasRoles('ROLE_HOME_ECONOMIA') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_economia_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'economia' %} active {% endif %}">Economía</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+
+                {#                {% if hasRoles('ROLE_HOME_CONVENIO') %} #}
+                {#                    <li class=" d-none d-sm-inline-block"> #}
+                {#                        <a href="{{ path('app_convenio_portada') }}" #}
+                {#                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+
+
                 {% if hasRoles('ROLE_HOME_EVALUACION') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_evaluacion_portada') }}"
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'evaluacion' %} active {% endif %}">Evaluación</a>
                     </li>
                 {% endif %}
+                {% if hasRoles('ROLE_HOME_TRAMITES') or  hasRoles('ROLE_HOME_ECONOMIA') or hasRoles('ROLE_HOME_CONVENIO') %}
+                    <li class="nav-item dropdown">
+                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' or app.request.pathinfo|split('/')[1] == 'economia' or app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %} dropdown-toggle">Internacionalización</a>
+                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
+                            style="left: 0px; right: inherit;">
+
+                            {% if hasRoles('ROLE_HOME_TRAMITES') %}
+                                <li><a href="{{ path('app_tramite_portada') }}"
+                                       class="nav-link {% if app.request.pathinfo|split('/')[1] == 'tramite' %} active {% endif %}">Trámites </a>
+                                </li>
+                            {% endif %}
+                            {% if hasRoles('ROLE_HOME_ECONOMIA') %}
+                                <li class=" d-none d-sm-inline-block">
+                                    <a href="{{ path('app_economia_portada') }}"
+                                       class="nav-link {% if app.request.pathinfo|split('/')[1] == 'economia' %} active {% endif %}">Economía</a>
+                                </li>
+                            {% endif %}
+                            {% if hasRoles('ROLE_HOME_CONVENIO') %}
+                                <li class=" d-none d-sm-inline-block">
+                                    <a href="{{ path('app_convenio_portada') }}"
+                                       class="nav-link {% if app.request.pathinfo|split('/')[1] == 'convenio' %} active {% endif %}">Convenios</a>
+                                </li>
+                            {% endif %}
+
+
+                            {#                            <li class="dropdown-divider"></li> #}
+
+                            {#                            <li class="dropdown-submenu dropdown-hover"> #}
+                            {#                                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" #}
+                            {#                                   aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover #}
+                            {#                                    for action</a> #}
+                            {#                                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow"> #}
+                            {#                                    <li> #}
+                            {#                                        <a tabindex="-1" href="#" class="dropdown-item">level 2</a> #}
+                            {#                                    </li> #}
+
+                            {#                                    <li class="dropdown-submenu"> #}
+                            {#                                        <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" #}
+                            {#                                           aria-haspopup="true" aria-expanded="false" #}
+                            {#                                           class="dropdown-item dropdown-toggle">level 2</a> #}
+                            {#                                        <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow"> #}
+                            {#                                            <li><a href="#" class="dropdown-item">3rd level</a></li> #}
+                            {#                                            <li><a href="#" class="dropdown-item">3rd level</a></li> #}
+                            {#                                        </ul> #}
+                            {#                                    </li> #}
+
+                            {#                                    <li><a href="#" class="dropdown-item">level 2</a></li> #}
+                            {#                                    <li><a href="#" class="dropdown-item">level 2</a></li> #}
+                            {#                                </ul> #}
+                            {#                            </li> #}
+
+                        </ul>
+                    </li>
+                {% endif %}
+
                 {% if hasRoles('ROLE_HOME_INFORMATIZACION') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_informatizacion_portada') }}"
