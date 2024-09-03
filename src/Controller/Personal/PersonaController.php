@@ -3,6 +3,8 @@
 namespace App\Controller\Personal;
 
 
+use App\Entity\Informatizacion\TelefonoCelular;
+use App\Entity\Informatizacion\TelefonoCelularResponsable;
 use App\Entity\Personal\Persona;
 use App\Entity\Personal\PersonaOrganizacion;
 use App\Entity\Personal\Plantilla;
@@ -155,6 +157,14 @@ class PersonaController extends AbstractController
 
             $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
 
+            if ('responsable_telefono_celular' == $origin) {
+                $new = new TelefonoCelularResponsable();
+                $new->setResponsable($persona);
+                $new->setTelefonoCelular($em->getRepository(TelefonoCelular::class)->find($request->getSession()->get('idTelefonoCelular')));
+                $em->persist($new);
+                $em->flush();
+                return $this->redirectToRoute('app_telefono_celular_responsable', ['id' => $request->getSession()->get('idTelefonoCelular')], Response::HTTP_SEE_OTHER);
+            }
             if ('ficha_salida' == $origin) {
                 return $this->redirectToRoute('app_ficha_salida_registrar_v2', ['id' => $persona->getId()], Response::HTTP_SEE_OTHER);
             } else {

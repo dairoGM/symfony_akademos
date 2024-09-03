@@ -65,7 +65,7 @@ class TelefonoCelularController extends AbstractController
      */
     public function registrar(Request $request, PersonaRepository $personaRepository, TelefonoCelularRepository $telefonoCelularRepository)
     {
-//        try {
+        try {
             $entidad = new TelefonoCelular();
             $form = $this->createForm(TelefonoCelularType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -80,10 +80,10 @@ class TelefonoCelularController extends AbstractController
             return $this->render('modules/informatizacion/telefonoCelular/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_telefono_celular_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_telefono_celular_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -129,7 +129,7 @@ class TelefonoCelularController extends AbstractController
     public function detail(TelefonoCelular $telefonoCelular, TelefonoCelularResponsableRepository $telefonoCelularResponsableRepository)
     {
         $asignadas = [];
-        $temp = $telefonoCelularResponsableRepository->findBy(['telefonoCelular' => $telefonoCelular->getId()],['id'=>'desc']);
+        $temp = $telefonoCelularResponsableRepository->findBy(['telefonoCelular' => $telefonoCelular->getId()], ['id' => 'desc']);
         foreach ($temp as $value) {
             $asignadas[] = $value->getResponsable();
         }
