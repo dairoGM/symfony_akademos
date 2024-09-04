@@ -3,6 +3,8 @@
 namespace App\Controller\Personal;
 
 
+use App\Entity\Informatizacion\LineaCelular;
+use App\Entity\Informatizacion\LineaCelularResponsable;
 use App\Entity\Informatizacion\TelefonoCelular;
 use App\Entity\Informatizacion\TelefonoCelularResponsable;
 use App\Entity\Personal\Persona;
@@ -164,6 +166,14 @@ class PersonaController extends AbstractController
                 $em->persist($new);
                 $em->flush();
                 return $this->redirectToRoute('app_telefono_celular_responsable', ['id' => $request->getSession()->get('idTelefonoCelular')], Response::HTTP_SEE_OTHER);
+            }
+            if ('responsable_linea_celular' == $origin) {
+                $new = new LineaCelularResponsable();
+                $new->setResponsable($persona);
+                $new->setLineaCelular($em->getRepository(LineaCelular::class)->find($request->getSession()->get('idLineaCelular')));
+                $em->persist($new);
+                $em->flush();
+                return $this->redirectToRoute('app_linea_celular_responsable', ['id' => $request->getSession()->get('idLineaCelular')], Response::HTTP_SEE_OTHER);
             }
             if ('ficha_salida' == $origin) {
                 return $this->redirectToRoute('app_ficha_salida_registrar_v2', ['id' => $persona->getId()], Response::HTTP_SEE_OTHER);

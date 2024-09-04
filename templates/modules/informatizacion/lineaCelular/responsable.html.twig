@@ -25,6 +25,19 @@
 
         </div>
         <div class="card-body">
+            <div class="row" style="margin-left: 89%;  margin-top: -8%;  padding-top: 4%;width: 35%;">
+                <div class="col-md-4">
+                    <label for="nuevaPersona">Nueva persona</label>
+                    <input type="checkbox"
+                           name="check_nuevaPersona"
+                           data-bootstrap-switch=""
+                           data-off-color="danger"
+                           data-on-color="success">
+
+
+                </div>
+            </div>
+            <br>
             <table class="table table-bordered table-striped dataTable">
                 <thead class="table-custom-header">
                 <tr>
@@ -105,6 +118,31 @@
 {% block javascripts %}
     <script>
 
+        $("[name*='check_']").bootstrapSwitch({
+            onText: 'SÍ',
+            offText: 'NO'
+        });
+        $("[name*='check_']").on('switchChange.bootstrapSwitch', function (event, state) {
+            console.log(state);
+            // var campo = event.currentTarget.attributes.name.nodeValue.split('_');
+            // console.log(campo);
+            if (state == true) {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+
+                // toastr.success("Filtro aplicado correctamente.");
+                setTimeout(function () {
+                    window.location = '{{ path('app_persona_registrar', {'origin': 'responsable_linea_celular'}) }}'
+                }, 500);
+                HoldOn.close()
+
+            }
+
+
+        });
 
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
