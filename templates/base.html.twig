@@ -443,70 +443,77 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_personal_portada') }}">
-                    <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom"
-                       title="Personal"></i>
-                </a>
-            </li>
-            {% endif %}
-            {% if hasRoles('ROLE_HOME_INSTIT') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_institucion_portada') }}">
-                        <i class="fa fa-university" data-toggle="tooltip" data-placement="bottom"
-                           title="Instituciones"></i>
-                    </a>
-                </li>
-            {% endif %}
-            {% if hasRoles('ROLE_HOME_STRUCT') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_estructura_portada') }}">
-                        <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom"
-                           title="Estructura"></i>
-                    </a>
-                </li>
-            {% endif %}
-            {% if hasRoles('ROLE_HOME_ADMIN') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_administracion_portada') }}">
-                        <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom"
-                           title="Administración"></i>
-                    </a>
-                </li>
-            {% endif %}
-            {% if hasRoles('ROLE_HOME_TRAZAS') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_traza_portada') }}">
-                        <i class="fa fa-clone" data-toggle="tooltip" data-placement="bottom"
-                           title="Trazas"></i>
-                    </a>
-                </li>
-            {% endif %}
+                {#                {% if hasRoles('ROLE_HOME_PERSONAL') %} #}
+                {#            <li class="nav-item"> #}
+                {#                <a class="nav-link" href="{{ path('app_personal_portada') }}"> #}
+                {#                    <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom" #}
+                {#                       title="Personal"></i> #}
+                {#                </a> #}
+                {#            </li> #}
+                {#            {% endif %} #}
+                {#            {% if hasRoles('ROLE_HOME_INSTIT') %} #}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ path('app_institucion_portada') }}"> #}
+                {#                        <i class="fa fa-university" data-toggle="tooltip" data-placement="bottom" #}
+                {#                           title="Instituciones"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
+                {#            {% endif %} #}
+                {#            {% if hasRoles('ROLE_HOME_STRUCT') %} #}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ path('app_estructura_portada') }}"> #}
+                {#                        <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom" #}
+                {#                           title="Estructura"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
+                {#            {% endif %} #}
+                {#            {% if hasRoles('ROLE_HOME_ADMIN') %} #}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ path('app_administracion_portada') }}"> #}
+                {#                        <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom" #}
+                {#                           title="Administración"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
+                {#            {% endif %} #}
+                {#            {% if hasRoles('ROLE_HOME_TRAZAS') %} #}
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ path('app_traza_portada') }}"> #}
+                {#                        <i class="fa fa-clone" data-toggle="tooltip" data-placement="bottom" #}
+                {#                           title="Trazas"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
+                {#            {% endif %} #}
 
-            {#            <a class="nav-link nbtn" data-toggle="dropdown" href="#"> #}
-            {#                <i class="far fa-bell"></i> #}
-            {#                <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span> #}
-            {#            </a> #}
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer">
+                {#            <a class="nav-link nbtn" data-toggle="dropdown" href="#"> #}
+                {#                <i class="far fa-bell"></i> #}
+                {#                <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span> #}
+                {#            </a> #}
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer">
 
-            </div>
+                </div>
             </li>
             {# <li class="nav-item"> #}
             {# <a class="nav-link" data-widget="fullscreen" href="#" role="button"> #}
             {# <i class="fas fa-expand-arrows-alt"></i> #}
             {# </a> #}
             {# </li> #}
+            <li class="nav-item dropdown">
+                <a class="nav-link nbtn" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge cantidadNotificacionesBadge">0</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notificacionesContainer"></div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link sid" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                     <i class="fas fa-ellipsis-v"></i>
                 </a>
             </li>
-            {# <li class="nav-item"> #}
-            {# <a class="nav-link" href="{{ path('app_logout') }}" role="button"> #}
-            {# <i class="fas fa-sign-out-alt"></i> #}
-            {# </a> #}
-            {# </li> #}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{{ path('app_logout') }}" role="button">#}
+{#                    <i class="fas fa-sign-out-alt"></i>#}
+{#                </a>#}
+{#            </li>#}
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -612,80 +619,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 style="color: #b7b8ba; font-size: 13px">{{ app.session.get('responsabilidad_usuario_autenticado') | upper }}</h6>
         </div>
         <ul class="nav nav-pills nav-sidebar flex-column p-2" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                 with font-awesome or any other icon font library -->
-
-            {#            <li class="nav-item"> #}
-            {#                <a href="{{ path('app_calendario') }}" class="nav-link nav-link-menu" #}
-            {#                   style="padding-left: 4px; padding-right: 4px"> #}
-            {#                    <i class="nav-icon fas fa-calendar"></i> #}
-            {#                    <p> #}
-            {#                        Planificación #}
-            {#                    </p> #}
-            {#                </a> #}
-
-            {#            </li> #}
-            {#            <li class="nav-item"> #}
-            {#                <a href="{{ path('app_todo_lista_cliente') }}" class="nav-link nav-link-menu" #}
-            {#                   style="padding-left: 4px; padding-right: 4px"> #}
-            {#                    <i class="nav-icon fas fa-tasks"></i> #}
-            {#                    <p> #}
-            {#                        Lista de chequeo #}
-            {#                    </p> #}
-            {#                </a> #}
-
-            {#            </li> #}
-            {#            <li class="nav-item"> #}
-            {#                <a href="{{ path('app_analisis_comparativo') }}" class="nav-link nav-link-menu" #}
-            {#                   style="padding-left: 4px; padding-right: 4px"> #}
-            {#                    <i class="nav-icon fas fa-check-square"></i> #}
-            {#                    <p> #}
-            {#                        Análisis comparativo #}
-            {#                    </p> #}
-            {#                </a> #}
-
-            {#            </li> #}
-            {# <li class="nav-item"> #}
-            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
-            {# <i class="nav-icon fas fa-check-square"></i> #}
-            {# <p> #}
-            {# Alerta de situaciones #}
-            {# </p> #}
-            {# </a> #}
-            {# </li> #}
-            {#            <li class="nav-item"> #}
-            {#                <a href="https://channels.epe.rimed.cu/" target="_blank" class="nav-link" #}
-            {#                   style="padding-left: 4px; padding-right: 4px"> #}
-            {#                    <i class="nav-icon fas fa-check-square"></i> #}
-            {#                    <p> #}
-            {#                        Comunicaciones #}
-            {#                    </p> #}
-            {#                </a> #}
-            {#            </li> #}
-            {# <li class="nav-item"> #}
-            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
-            {# <i class="nav-icon fas fa-check-square"></i> #}
-            {# <p> #}
-            {# Crear cuadro de mando #}
-            {# </p> #}
-            {# </a> #}
-            {# </li> #}
-            {# <li class="nav-item"> #}
-            {# <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
-            {# <i class="nav-icon fas fa-check-square"></i> #}
-            {# <p> #}
-            {# Modo oscuro #}
-            {# </p> #}
-            {# </a> #}
-            {# </li> #}
             <li class="nav-item">
                 <a href="{{ path('app_admin_home') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>
-                        Configuración
+                        Sistema
                     </p>
                 </a>
             </li>
+{#            <li class="nav-item">#}
+{#                <a href="{{ path('app_admin_perfil') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">#}
+{#                    <i class="nav-icon fas fa-id-badge"></i>#}
+{#                    <p>#}
+{#                        Mi perfil#}
+{#                    </p>#}
+{#                </a>#}
+{#            </li>#}
+            {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_personal_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-user"
+                           title="Personal"></i>
+                        <p>
+                            Personal
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_INSTIT') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_institucion_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fa fa-university"
+                           title="Instituciones"></i>
+                        <p>
+                            Instituciones
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_STRUCT') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_estructura_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-network-wired"
+                           title="Estructura"></i>
+                        <p>
+                            Estructura
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_administracion_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-cog"
+                           title="Administración"></i>
+                        <p>
+                            Administración
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_TRAZAS') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_traza_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fa fa-clone"
+                           title="Trazas"></i>
+                        <p>
+                            Trazas
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+
 
             <li class="nav-item">
                 <a href="{{ path('app_logout') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">

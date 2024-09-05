@@ -28,6 +28,15 @@ class AdminHomeController extends AbstractController
         return $this->render('modules/admin/akademos.html.twig');
     }
 
+
+    /**
+     * @Route("/akademos/perfil", name="app_admin_perfil")
+     */
+    public function perfil(): Response
+    {
+        return $this->render('modules/admin/perfil/index.html.twig');
+    }
+
     /**
      * @Route("/eliminar/{id}", name="eliminar_todo_admin_dash")
      * @param EntityManagerInterface $entityManager

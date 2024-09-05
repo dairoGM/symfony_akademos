@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Personal\Persona;
+use App\Entity\Personal\PersonaOrganizacion;
 use App\Entity\Security\User;
 use App\Services\TraceService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +43,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $container;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, SerializerInterface $serializer,
-                                RequestStack $requestStack, ContainerInterface $container)
+                                RequestStack           $requestStack, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
@@ -88,6 +89,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $session = new Session();
         if ($persona instanceof Persona) {
+            $afilicacion = $this->entityManager->getRepository(PersonaOrganizacion::class)->findBy(['persona' => $persona->getId()]);
+            $personsAfiliacion = [];
+            if (is_array($afilicacion)) {
+                foreach ($afilicacion as $value) {
+                    $personsAfiliacion[] = $value->getOrganizacion()->getSiglas();
+                }
+            }
             $session->set('id_usuario_autenticado', $user->getId());
             $session->set('usuario_autenticado_role_admin', in_array('ROLE_ADMIN', $user->getRoles()));
 
@@ -96,11 +104,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 //            $session->set('responsabilidad_usuario_autenticado', $persona->getResponsabilidad()->getNombre());
             $session->set('responsabilidad_usuario_autenticado', method_exists($persona->getResponsabilidad(), 'getNombre') ? $persona->getResponsabilidad()->getNombre() : null);
             $session->set('estructura_usuario_autenticado', $persona->getEstructura()->getId());
+            $session->set('nombre_estructura_usuario_autenticado', $persona->getEstructura()->getNombre());
+            $session->set('estructura_padre_usuario_autenticado', $persona->getEstructura()->getEstructura()->getNombre());
             $session->set('id_persona_usuario_autenticado', $persona->getId());
+            $session->set('provincia_usuario_autenticado', $persona->getProvincia()->getNombre());
+            $session->set('municipio_usuario_autenticado', $persona->getMunicipio()->getNombre());
+            $session->set('grado_cientifico_usuario_autenticado', $persona->getGradoAcademico()->getNombre());
+            $session->set('afiliaciones_usuario_autenticado', implode(", ", $personsAfiliacion));
             $session->set('password_change_first_time', $user->getPasswordChangeFirstTime());
 
             $traceService = new TraceService($this->requestStack, $this->entityManager, $this->serializer);
-            $traceService->registrar($this->container->getParameter('accion_inicio_sesion'), $this->container->getParameter('objeto_autenticacion'),null, null, $this->container->getParameter('tipo_traza_sesion'));
+            $traceService->registrar($this->container->getParameter('accion_inicio_sesion'), $this->container->getParameter('objeto_autenticacion'), null, null, $this->container->getParameter('tipo_traza_sesion'));
 
         } else {
             $session->set('nombre_usuario_autenticado', (method_exists($user, 'getUsername') ? $user->getUsername() : null));
@@ -122,7 +136,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
-    {      
+    {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             if (!$request->getSession()->get(('password_change_first_time')) && !$request->getSession()->get(('usuario_autenticado_role_admin'))) {
                 $idUser = $request->getSession()->get(('id_usuario_autenticado'));

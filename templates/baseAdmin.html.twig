@@ -148,6 +148,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             background-color: #4fd17d
         }
 
+        .control-sidebar {
+            /*bottom: calc(3.5rem + 1px);*/
+            position: absolute;
+            /*top: calc(3.5rem + 1px);*/
+            bottom: 0;
+            top: 0;
+            z-index: 1035;
+            background-color: #eceaf8;
+        }
+
+        .control-sidebar, .control-sidebar::before {
+            width: 280px !important;
+        }
+
         .ms-status.-warning {
             background-color: #f6ad55
         }
@@ -169,6 +183,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
             padding: 10px;
         }
 
+        .aside-header {
+            background-color: #0E375F;
+        }
+
+        .aside-header > img {
+            width: 20%;
+            margin-bottom: 3%;
+        }
+
+        .aside-header > i {
+            color: white;
+            position: absolute;
+            right: 16px;
+            top: 12px;
+        }
 
     </style>
 
@@ -330,52 +359,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                {% if hasRoles('ROLE_HOME_PERSONAL') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_personal_portada') }}">
-                            <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom"
-                               title="Personal"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_INSTIT') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_institucion_portada') }}">
-                            <i class="fa fa-university" data-toggle="tooltip" data-placement="bottom"
-                               title="Instituciones"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_STRUCT') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_estructura_portada') }}">
-                            <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom"
-                               title="Estructura"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_administracion_portada') }}">
-                            <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom"
-                               title="Administración"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if hasRoles('ROLE_HOME_TRAZAS') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_traza_portada') }}">
-                            <i class="fa fa-clone" data-toggle="tooltip" data-placement="bottom"
-                               title="Trazas"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_dash_board') }}">
-                        <i class="fas fa-home" data-toggle="tooltip" data-placement="bottom"
-                           title="Dashboard"></i>
-                    </a>
-                </li>
+                {#                {% if hasRoles('ROLE_HOME_PERSONAL') %} #}
+                {#                    <li class="nav-item"> #}
+                {#                        <a class="nav-link" href="{{ path('app_personal_portada') }}"> #}
+                {#                            <i class="fas fa-user" data-toggle="tooltip" data-placement="bottom" #}
+                {#                               title="Personal"></i> #}
+                {#                        </a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+                {#                {% if hasRoles('ROLE_HOME_INSTIT') %} #}
+                {#                    <li class="nav-item"> #}
+                {#                        <a class="nav-link" href="{{ path('app_institucion_portada') }}"> #}
+                {#                            <i class="fa fa-university" data-toggle="tooltip" data-placement="bottom" #}
+                {#                               title="Instituciones"></i> #}
+                {#                        </a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+                {#                {% if hasRoles('ROLE_HOME_STRUCT') %} #}
+                {#                    <li class="nav-item"> #}
+                {#                        <a class="nav-link" href="{{ path('app_estructura_portada') }}"> #}
+                {#                            <i class="fas fa-network-wired" data-toggle="tooltip" data-placement="bottom" #}
+                {#                               title="Estructura"></i> #}
+                {#                        </a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+                {#                {% if hasRoles('ROLE_HOME_ADMIN') %} #}
+                {#                    <li class="nav-item"> #}
+                {#                        <a class="nav-link" href="{{ path('app_administracion_portada') }}"> #}
+                {#                            <i class="fas fa-cog" data-toggle="tooltip" data-placement="bottom" #}
+                {#                               title="Administración"></i> #}
+                {#                        </a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+                {#                {% if hasRoles('ROLE_HOME_TRAZAS') %} #}
+                {#                    <li class="nav-item"> #}
+                {#                        <a class="nav-link" href="{{ path('app_traza_portada') }}"> #}
+                {#                            <i class="fa fa-clone" data-toggle="tooltip" data-placement="bottom" #}
+                {#                               title="Trazas"></i> #}
+                {#                        </a> #}
+                {#                    </li> #}
+                {#                {% endif %} #}
+
                 <!-- Navbar Search -->
                 {#                <li class="nav-item"> #}
                 {#                    <a class="nav-link" data-widget="navbar-search" href="#" role="button"> #}
@@ -448,10 +472,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {#                    </a> #}
                 {#                </li> #}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}" role="button">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <a title="Opciones" class="nav-link sid" data-widget="control-sidebar" role="button"
+                       data-slide="true" href="#"
+                       role="button">
+                        <i class="fas fa-ellipsis-v"></i>
                     </a>
                 </li>
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ path('app_logout') }}" role="button"> #}
+                {#                        <i class="fas fa-sign-out-alt"></i> #}
+                {#                    </a> #}
+                {#                </li> #}
             </ul>
         </nav>
     {% endif %}
@@ -593,10 +624,108 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
-        <div class="p-3">
-            <h5>Title</h5>
-            <p>Sidebar content</p>
+        <div class="p-3 aside-header">
+            <i class="fas fa-times" data-widget="control-sidebar" data-slide="true" href="#" role="button"></i>
+
+            {# <img src="{{ asset('assets/images/usuario.png') }}" alt="AdminLTE Logo" class="brand-image img-circle" #}
+            {# style="opacity: .8"> #}
+            <img src="{% if  app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}"
+                 class="img-circle"
+                 style="width: 40px;height: 40px; object-fit: cover">
+            <h5 class="mb-0" style="font-size: 16px">{{ app.session.get('nombre_usuario_autenticado') }}</h5>
+            <h6 class="mb-0"
+                style="color: #b7b8ba; font-size: 13px">{{ app.session.get('responsabilidad_usuario_autenticado') | upper }}</h6>
         </div>
+        <ul class="nav nav-pills nav-sidebar flex-column p-2" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a href="{{ path('app_dash_board') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        Portada
+                    </p>
+                </a>
+            </li>
+{#            <li class="nav-item">#}
+                        {#                <a href="{{ path('app_admin_perfil') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">#}
+                        {#                    <i class="nav-icon fas fa-id-badge"></i>#}
+                        {#                    <p>#}
+                        {#                        Mi perfil#}
+                        {#                    </p>#}
+                        {#                </a>#}
+                        {#            </li>#}
+                        {% if hasRoles('ROLE_HOME_PERSONAL') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_personal_portada') }}"
+                   style="padding-left: 12px; padding-right: 4px">
+                    <i class="fas fa-user"
+                       title="Personal"></i>
+                        <p>
+                            Personal
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_INSTIT') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_institucion_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fa fa-university"
+                           title="Instituciones"></i>
+                        <p>
+                            Instituciones
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_STRUCT') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_estructura_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-network-wired"
+                           title="Estructura"></i>
+                        <p>
+                            Estructura
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_administracion_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-cog"
+                           title="Administración"></i>
+                        <p>
+                            Administración
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if hasRoles('ROLE_HOME_TRAZAS') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_traza_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fa fa-clone"
+                           title="Trazas"></i>
+                        <p>
+                            Trazas
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+
+
+            <li class="nav-item">
+                <a href="{{ path('app_logout') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                        Salir
+                    </p>
+                </a>
+            </li>
+
+
+        </ul>
     </aside>
     <!-- /.control-sidebar -->
 
@@ -672,7 +801,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script>
 
     $(document).ready(function () {
+        $('.content-wrapper,.main-sidebar').on('click', function () {
+            if ($('.control-sidebar').css('display') == 'block') {
+                $('.sid').click();
+            }
 
+        })
         // $.datepicker.regional['es'] = {
         //     closeText: 'Cerrar',
         //     prevText: '< Ant',
