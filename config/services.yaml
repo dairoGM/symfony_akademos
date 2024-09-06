@@ -47,6 +47,7 @@ parameters:
     id_tipo_solicitud_clasificacion_exitente: '%env(id_tipo_solicitud_clasificacion_exitente)%'
 
     IB_API_RI_URL: '%env(IB_API_RI_URL)%'
+    API_FUC: '%env(API_FUC)%'
 
     estado_salida_creada: '%env(estado_salida_creada)%'
     estado_salida_firmada: '%env(estado_salida_firmada)%'

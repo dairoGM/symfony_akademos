@@ -27,6 +27,7 @@ class Utils
     private $base_url;
     private $em;
     private $ib_api_ri_url;
+    private $api_fuc_url;
     private $dbname;
     private $user;
     private $password;
@@ -41,6 +42,7 @@ class Utils
         $this->base_url = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
         $this->em = $em;
         $this->ib_api_ri_url = $container->get('IB_API_RI_URL');
+        $this->api_fuc_url = $container->get('API_FUC');
 
         $this->dbname = $dbname;
         $this->user = $user;
@@ -901,8 +903,8 @@ class Utils
             "username" => "dirinfo@mes.gob.cu",
             "password" => "*&*info_mes_&2024&user^",
             "grant_type" => "password");
-
-        $curl = curl_init('https://api.mes.gob.cu/api/identity/oauth/token');
+        $apiFuc = $this->api_fuc_url;
+        $curl = curl_init("$apiFuc/identity/oauth/token");
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -934,9 +936,9 @@ class Utils
     {
         $token = $this->autenticarFUC();
         $curl = curl_init();
-
+        $apiFuc = $this->api_fuc_url;
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.mes.gob.cu/api/fuc/person/$ci",
+            CURLOPT_URL => "$apiFuc/fuc/person/$ci",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -963,7 +965,7 @@ class Utils
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.mes.gob.cu/api/fuc/person/$idPersonaFuc/photo",
+            CURLOPT_URL => "$apiFuc/fuc/person/$idPersonaFuc/photo",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
