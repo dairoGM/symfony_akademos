@@ -17,29 +17,49 @@
             </h5>
             <hr style="margin-bottom: 20px">
             <div class="row">
+                <div class="col-4">
+                    <h5 class="mb-0" style="margin-top: -3%"><a
+                                href="{% if foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                target="_blank">
+                            <img src="{% if foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                 class="img-circle" style="width: 120px;height: 120px; object-fit: cover">
+                        </a>
+                    </h5>
+                </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.carnetIdentidad) }}
                     {{ form_widget(form.carnetIdentidad) }}
                     {{ form_errors(form.carnetIdentidad) }}
                 </div>
-{#                <div class="col-4 form-group">#}
-{#                    {{ form_label(form.numeroSerieCarnetIdentidad) }}#}
-{#                    {{ form_widget(form.numeroSerieCarnetIdentidad) }}#}
-{#                    {{ form_errors(form.numeroSerieCarnetIdentidad) }}#}
-{#                </div>#}
                 <div class="col-4 form-group">
-                    <div class="row">
-                        <div class="col-10">
-                            {{ form_label(form.foto) }}
-                            {{ form_widget(form.foto) }}
-                            {{ form_errors(form.foto) }}
+                    {{ form_label(form.fechaNacimiento) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <div class="col-2">
-                            <div id="image-holder"></div>
-                        </div>
+                        {{ form_widget(form.fechaNacimiento) }}
+                        {{ form_errors(form.fechaNacimiento) }}
                     </div>
-
                 </div>
+
+                {#                <div class="col-4 form-group"> #}
+                {#                    {{ form_label(form.numeroSerieCarnetIdentidad) }} #}
+                {#                    {{ form_widget(form.numeroSerieCarnetIdentidad) }} #}
+                {#                    {{ form_errors(form.numeroSerieCarnetIdentidad) }} #}
+                {#                </div> #}
+                {#                <div class="col-4 form-group"> #}
+                {#                    <div class="row"> #}
+                {#                        <div class="col-10"> #}
+                {#                            {{ form_label(form.foto) }} #}
+                {#                            {{ form_widget(form.foto) }} #}
+                {#                            {{ form_errors(form.foto) }} #}
+                {#                        </div> #}
+                {#                        <div class="col-2"> #}
+                {#                            <div id="image-holder"></div> #}
+                {#                        </div> #}
+                {#                    </div> #}
+
+                {#                </div> #}
 
             </div>
             <div class="row">
@@ -82,21 +102,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8 form-group">
+                <div class="col-12 form-group">
                     {{ form_label(form.direccion) }}
                     {{ form_widget(form.direccion) }}
                     {{ form_errors(form.direccion) }}
                 </div>
-                <div class="col-4 form-group">
-                    {{ form_label(form.fechaNacimiento) }}
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        {{ form_widget(form.fechaNacimiento) }}
-                        {{ form_errors(form.fechaNacimiento) }}
-                    </div>
-                </div>
+
             </div>
 
             <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos laborales</p></b>
@@ -252,7 +263,7 @@
                                 {% if item.tipoOrganizacion.id == tipo.id %}
                                     <label> <input type="checkbox" id="{{ item.id }}"
                                                    name="persona[organizacion][{{ item.id }}]"
-                                                   value="{{ item.id }}">  {{ item.nombre }}
+                                                   value="{{ item.id }}"> {{ item.nombre }}
                                     </label>
                                 {% endif %}
                             {% endfor %}
@@ -285,6 +296,8 @@
   {% endblock %}
         {% block javascripts %}
             <script>
+                $('#persona_fechaNacimiento').val('{{ fechaNacimiento }}')
+
                 $('#persona_carnetIdentidad').on('keydown keypress', function (e) {
                     if (e.key.length === 1) {
                         if ($(this).val().length < 11 /*&& !isNaN(parseFloat(e.key))*/) {
@@ -375,6 +388,8 @@
                 })
 
                 $('[data-mask]').inputmask()
+                $('#persona_provincia').val('{{ provincia }}').change()
+                $('#persona_municipio').val('{{ municipio }}').change()
                 $('#persona_provincia').on('change', function () {
                     if ($(this).val() != "") {
                         HoldOn.open({
@@ -447,36 +462,36 @@
                     format: 'DD/MM/YYYY'
                 });
 
-                $("#persona_foto").on('change', function () {
-                    //Get count of selected files
-                    var countFiles = $(this)[0].files.length;
-                    var imgPath = $(this)[0].value;
-
-                    var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-                    var image_holder = $("#image-holder");
-                    image_holder.empty();
-                    if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-                        if (typeof (FileReader) != "undefined") {
-                            //loop for each file selected for uploaded.
-                            for (var i = 0; i < countFiles; i++) {
-                                var reader = new FileReader();
-                                reader.onload = function (e) {
-                                    $("<img />", {
-                                        "src": e.target.result,
-                                        "class": "thumb-image   img-circle",
-                                        "style": 'width: 40px; height: 40px; position: absolute; bottom: 0;'
-                                    }).appendTo(image_holder);
-                                }
-                                image_holder.show();
-                                reader.readAsDataURL($(this)[0].files[i]);
-                            }
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    } else {
-                        alert("Pls select only images");
-                    }
-                });
+                // $("#persona_foto").on('change', function () {
+                //     //Get count of selected files
+                //     var countFiles = $(this)[0].files.length;
+                //     var imgPath = $(this)[0].value;
+                //
+                //     var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                //     var image_holder = $("#image-holder");
+                //     image_holder.empty();
+                //     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                //         if (typeof (FileReader) != "undefined") {
+                //             //loop for each file selected for uploaded.
+                //             for (var i = 0; i < countFiles; i++) {
+                //                 var reader = new FileReader();
+                //                 reader.onload = function (e) {
+                //                     $("<img />", {
+                //                         "src": e.target.result,
+                //                         "class": "thumb-image   img-circle",
+                //                         "style": 'width: 40px; height: 40px; position: absolute; bottom: 0;'
+                //                     }).appendTo(image_holder);
+                //                 }
+                //                 image_holder.show();
+                //                 reader.readAsDataURL($(this)[0].files[i]);
+                //             }
+                //         } else {
+                //             alert("This browser does not support FileReader.");
+                //         }
+                //     } else {
+                //         alert("Pls select only images");
+                //     }
+                // });
 
 
                 $('#persona_usuario').focusout(function (e) {
@@ -517,7 +532,7 @@
                     var existeUsuario = false;
                     usuarioDefinido = false;
                     for (var i = 0; i < combinaciones.length; i++) {
-                        var email =removeAccents(combinaciones[i] + '' + dominio);
+                        var email = removeAccents(combinaciones[i] + '' + dominio);
                         var response = jQuery.ajax({
                             url: "{{ path('app_persona_existe_usuario') }}",
                             type: 'POST',

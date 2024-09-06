@@ -114,6 +114,40 @@
 
 
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Adicionar persona</h5>
+                    <button id="cerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Input de tipo texto -->
+                    <form id="addForm" action="{{ path('app_persona_registrar') }}" method="POST">
+                        <div class="form-group">
+                            <label for="personaNombre">Número de Identificación</label>
+                            <input type="text" class="form-control" id="personaNombre" name="personaNombre"
+                                   maxlength="11" required>
+                            <!-- Mensaje de error -->
+                            <div id="errorNombre" class="text-danger mt-2" style="display:none;">Por favor ingrese un
+                                número válido de hasta 11 dígitos.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <!-- Botón dentro del modal que envía el formulario -->
+                    <button type="button" class="btn btn-primary" id="saveBtn">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     <script>
@@ -122,22 +156,87 @@
             onText: 'SÍ',
             offText: 'NO'
         });
+        // Escuchar cuando el modal comienza a ocultarse
+        $('#addModal').on('hide.bs.modal', function (e) {
+            // console.log('El modal está comenzando a ocultarse.');
+            $("input[name='check_nuevaPersona']").bootstrapSwitch('state', false);
+        });
+
+        // Escuchar cuando el modal ha sido completamente ocultado
+        $('#addModal').on('hidden.bs.modal', function (e) {
+            // console.log('El modal ha sido completamente ocultado.');
+            $("input[name='check_nuevaPersona']").bootstrapSwitch('state', false);
+        });
+        $('#cerrar, #cerrarModal').click(function (e) {
+            $("input[name='check_nuevaPersona']").bootstrapSwitch('state', false);
+        })
         $("[name*='check_']").on('switchChange.bootstrapSwitch', function (event, state) {
             console.log(state);
             // var campo = event.currentTarget.attributes.name.nodeValue.split('_');
             // console.log(campo);
             if (state == true) {
-                HoldOn.open({
-                    theme: "sk-cube-grid",
-                    message: 'Por favor espere...',
-                    textColor: "white"
+                $('#addModal').modal('show'); // Mostrar el modal
+
+                $('#cerrar').click(function (e) {
+                    document.getElementById('errorNombre').style.display = 'none';
+                })
+                // Validar el formulario y enviar si es válido
+                document.getElementById('saveBtn').addEventListener('click', function () {
+                    // Obtener el valor del campo de texto
+                    const nombreInput = document.getElementById('personaNombre').value.trim();
+
+                    // Expresión regular para validar que solo sean números
+                    const regex = /^[0-9]+$/;
+
+                    // Validar que el campo contenga solo números y tenga máximo 11 dígitos
+                    if (nombreInput === '' || !regex.test(nombreInput) || nombreInput.length > 11) {
+                        // Mostrar mensaje de error si la validación falla
+                        document.getElementById('errorNombre').style.display = 'block';
+                    } else {
+                        // Ocultar mensaje de error si el campo es válido
+                        document.getElementById('errorNombre').style.display = 'none';
+
+
+                        HoldOn.open({
+                            theme: "sk-cube-grid",
+                            message: 'Por favor espere...',
+                            textColor: "white"
+                        });
+                        $.post("{{ path('app_persona_validar_fuc') }}",
+                            {
+                                ci: nombreInput
+                            },
+                            function (data) {
+
+                                if (data.status == 1) {
+                                    window.location = '{{ path('app_persona_registrar', {'origin': 'responsable_linea_celular'}) }}'
+                                    $('#addModal').modal('hide');
+                                } else {
+                                    toastr.error(data.msg);
+                                }
+                                HoldOn.close()
+                            });
+                    }
                 });
 
-                // toastr.success("Filtro aplicado correctamente.");
-                setTimeout(function () {
-                    window.location = '{{ path('app_persona_registrar', {'origin': 'responsable_linea_celular'}) }}'
-                }, 500);
-                HoldOn.close()
+                // Opcional: Ocultar el mensaje de error cuando el usuario comience a escribir en el campo
+                document.getElementById('personaNombre').addEventListener('input', function () {
+                    document.getElementById('errorNombre').style.display = 'none';
+                });
+
+                {# HoldOn.open({ #}
+                {#    theme: "sk-cube-grid", #}
+                {#    message: 'Por favor espere...', #}
+                {#    textColor: "white" #}
+                {# }); #}
+
+                {# // toastr.success("Filtro aplicado correctamente."); #}
+                {# setTimeout(function () { #}
+                {#    window.location = '{{ path('app_persona_registrar', {'origin': 'responsable_linea_celular'}) }}' #}
+                {# }, 500); #}
+                {# HoldOn.close() #}
+
+            } else {
 
             }
 

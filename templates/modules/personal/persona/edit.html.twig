@@ -17,34 +17,29 @@
             </h5>
             <hr style="margin-bottom: 20px">
             <div class="row">
+                <div class="col-4">
+                    <h5 class="mb-0" style="margin-top: -3%"><a
+                                href="{% if foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ foto }} {% else %} /assets/images/usuario.png {% endif %}"
+                                target="_blank">
+                            <img src="{% if foto != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ foto }}{% else %} /assets/images/usuario.png {% endif %}"
+                                 class="img-circle" style="width: 120px;height: 120px; object-fit: cover">
+                        </a>
+                    </h5>
+                </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.carnetIdentidad) }}
                     {{ form_widget(form.carnetIdentidad) }}
                     {{ form_errors(form.carnetIdentidad) }}
                 </div>
-{#                <div class="col-4 form-group">#}
-{#                    {{ form_label(form.numeroSerieCarnetIdentidad) }}#}
-{#                    {{ form_widget(form.numeroSerieCarnetIdentidad) }}#}
-{#                    {{ form_errors(form.numeroSerieCarnetIdentidad) }}#}
-{#                </div>#}
                 <div class="col-4 form-group">
-                    <div class="row">
-                        <div class="col-10">
-                            {{ form_label(form.foto) }}
-                            {{ form_widget(form.foto) }}
-                            {{ form_errors(form.foto) }}
+                    {{ form_label(form.fechaNacimiento) }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <div class="col-2">
-                            <div id="image-holder"></div>
-
-                            {% if persona.foto != null %}
-                                <img src="{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ persona.foto }}"
-                                     class="img-circle imgp" alt="{{ persona.primerNombre }}"
-                                     style="width: 40px; height: 40px; position: absolute; bottom: 0;">
-                            {% endif %}
-                        </div>
+                        {{ form_widget(form.fechaNacimiento) }}
+                        {{ form_errors(form.fechaNacimiento) }}
                     </div>
-
                 </div>
             </div>
             <div class="row">
@@ -87,21 +82,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8 form-group">
+                <div class="col-12 form-group">
                     {{ form_label(form.direccion) }}
                     {{ form_widget(form.direccion) }}
                     {{ form_errors(form.direccion) }}
                 </div>
-                <div class="col-4 form-group">
-                    {{ form_label(form.fechaNacimiento) }}
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                        </div>
-                        {{ form_widget(form.fechaNacimiento) }}
-                        {{ form_errors(form.fechaNacimiento) }}
-                    </div>
-                </div>
+
             </div>
 
             <h5 class="mb-0"><b><p style="font-size: 25px; font-weight: bold; margin-top: 5px;">Datos laborales</p></b>
@@ -255,7 +241,7 @@
                                     <label> <input {% if item.id in organizacionesAsociadas %} checked {% endif %}
                                                 type="checkbox" id="{{ item.id }}"
                                                 name="persona[organizacion][{{ item.id }}]"
-                                                value="{{ item.id }}">  {{ item.nombre }}
+                                                value="{{ item.id }}"> {{ item.nombre }}
                                     </label>
                                 {% endif %}
                             {% endfor %}
@@ -272,7 +258,7 @@
                 <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_persona_index') }}"
                    data-title=""
                    data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-                <button class="btn btn-primary">Aceptar</button>
+                <button id="aceptar" class="btn btn-primary">Aceptar</button>
             </div>
             {{ form_end(form) }}
         </div>
@@ -291,6 +277,13 @@
  {% endblock %}
 {% block javascripts %}
     <script>
+        $('#aceptar').click(function (e) {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+        })
         $('#persona_carnetIdentidad').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
                 if ($(this).val().length < 11 /*&& !isNaN(parseFloat(e.key))*/) {

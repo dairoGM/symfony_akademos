@@ -58,29 +58,44 @@ class PersonaType extends AbstractType
             ->add('carnetIdentidad', TextType::class, [
                 'label' => 'Carné de identidad',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.'),
+                ],
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('primerNombre', TextType::class, [
                 'label' => 'Primer nombre',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('segundoNombre', TextType::class, [
                 'label' => 'Segundo nombre',
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'readonly' => true
+                ]
             ])
             ->add('primerApellido', TextType::class, [
                 'label' => 'Primer apellido',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('segundoApellido', TextType::class, [
                 'label' => 'Segundo apellido',
                 'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
+                    new NotBlank([], 'Este valor no debe estar en blanco.')
+                ],
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('fechaNacimiento', TextType::class, [
@@ -89,6 +104,9 @@ class PersonaType extends AbstractType
                 'attr' => [
                     'class' => 'date-time-picker'
                 ],
+                'attr' => [
+                    'readonly' => true
+                ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo',
@@ -117,7 +135,11 @@ class PersonaType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'attr' => [
+                    'readonly' => ($options['accion'] == 'registrar')
+                ],
+                'disabled' => true
             ])
             ->add('provincia', EntityType::class, [
                 'class' => Provincia::class,
@@ -126,22 +148,27 @@ class PersonaType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.codigo', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'disabled' => true
             ])
             ->add('municipio', EntityType::class, [
                 'class' => Municipio::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $pro = $this->idProvincia;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.provincia = '$pro' ")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.activo = true  ")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
-                'mapped' => false
+                'mapped' => false,
+                'disabled' => true
             ])
             ->add('direccion', TextType::class, [
                 'label' => 'Dirección particular',
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'readonly' => ($options['accion'] == 'registrar')
+                ]
             ])
             ->add('clasificacionPersona', EntityType::class, [
                 'class' => ClasificacionPersona::class,
@@ -272,12 +299,13 @@ class PersonaType extends AbstractType
                 'mapped' => false,
                 'required' => ($options['accion'] == 'registrar')
             ])
-            ->add('foto', FileType::class, array(
-                "attr" => array("type" => "file"),
-                "required" => false,
-                "mapped" => false,
-
-            ));
+//            ->add('foto', FileType::class, array(
+//                "attr" => array("type" => "file"),
+//                "required" => false,
+//                "mapped" => false,
+//
+//            ))
+        ;
     }
 
 

@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Entity\Estructura\Municipio;
+use App\Entity\Estructura\Provincia;
 use App\Entity\Personal\Persona;
+use App\Entity\Personal\Sexo;
 use App\Entity\Planificacion\PlanIndicador;
 use App\Entity\Pregrado\EstadoProgramaAcademico;
 use App\Entity\Pregrado\HistoricoEstadoProgramaAcademico;
@@ -885,5 +888,131 @@ class Utils
         }
 
         return $fechas;
+    }
+
+    public function autenticarFUC()
+    {
+        $clientId = "infomesclientid";
+        $clientSecrect = "*&*info_mes_&2024&client_secrect^";
+
+        $authcode = $clientId . ':' . $clientSecrect;
+
+        $params = array(
+            "username" => "dirinfo@mes.gob.cu",
+            "password" => "*&*info_mes_&2024&user^",
+            "grant_type" => "password");
+
+        $curl = curl_init('https://api.mes.gob.cu/api/identity/oauth/token');
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_HEADER, 'Content-Type: application/x-www-form-urlencoded');
+        curl_setopt($curl, CURLOPT_USERPWD, $authcode);
+
+
+// Remove comment if you have a setup that causes ssl validation to fail
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $postData = "";
+
+//This is needed to properly form post the credentials object
+        foreach ($params as $k => $v) {
+            $postData .= $k . '=' . urlencode($v) . '&';
+        }
+
+        $postData = rtrim($postData, '&');
+
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
+
+        $json_response = curl_exec($curl);
+        $data = json_decode($json_response, true);
+        return $data['access_token'] ?? null;
+    }
+
+
+    public function getPersonaFuc($ci)
+    {
+        $token = $this->autenticarFUC();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.mes.gob.cu/api/fuc/person/$ci",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $data = json_decode($response, true);
+        return $data[0] ?? false;
+
+    }
+
+    public function getPersonaFotoFuc($idPersonaFuc)
+    {
+        $token = $this->autenticarFUC();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.mes.gob.cu/api/fuc/person/$idPersonaFuc/photo",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+
+
+    }
+
+    public function asignarDatosFuc($persona, $datosFuc)
+    {
+        try {
+            $persona->setPrimerNombre($datosFuc['primer_nombre']);
+            $persona->setSegundoNombre($datosFuc['segundo_nombre']);
+            $persona->setPrimerApellido($datosFuc['primer_apellido']);
+            $persona->setSegundoApellido($datosFuc['segundo_apellido']);
+            $persona->setCarnetIdentidad($datosFuc['identidad_numero']);
+            $persona->setDireccion($datosFuc['direccion']);
+            if ($datosFuc['sexo'] == 'M') {
+                $persona->setSexo($this->em->getRepository(Sexo::class)->find(3));
+            }
+            if ($datosFuc['sexo'] == 'F') {
+                $persona->setSexo($this->em->getRepository(Sexo::class)->find(4));
+            }
+            $temp = explode('-', $datosFuc['nacimiento_fecha']);
+
+            $datosFuc['nacimiento_fecha'] = $temp[2] . "/" . $temp[1] . "/" . $temp[0];
+
+            $fechaNacimiento = \DateTime::createFromFormat('d/m/Y', $datosFuc['nacimiento_fecha']);
+
+            $persona->setFechaNacimiento($fechaNacimiento);
+            $provincia = $this->em->getRepository(Provincia::class)->findOneBy(['nombre' => $datosFuc['provincia_residencia'], 'activo' => 1]);
+            $persona->setProvincia($provincia);
+
+            $municipio = $this->em->getRepository(Municipio::class)->findOneBy(['nombre' => $datosFuc['municipio_residencia'], 'activo' => 1, 'provincia' => $provincia->getId()]);
+            $persona->setMunicipio($municipio);
+        } catch (\Exception $exception) {
+
+        }
     }
 }

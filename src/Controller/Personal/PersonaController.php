@@ -3,6 +3,7 @@
 namespace App\Controller\Personal;
 
 
+use App\Entity\Estructura\Provincia;
 use App\Entity\Informatizacion\LineaCelular;
 use App\Entity\Informatizacion\LineaCelularResponsable;
 use App\Entity\Informatizacion\TelefonoCelular;
@@ -19,12 +20,14 @@ use App\Form\Personal\PlantillaType;
 use App\Repository\Estructura\CategoriaEstructuraRepository;
 use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Estructura\MunicipioRepository;
+use App\Repository\Estructura\ProvinciaRepository;
 use App\Repository\Estructura\ResponsabilidadRepository;
 use App\Repository\Personal\OrganizacionRepository;
 use App\Repository\Personal\PersonaOrganizacionRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\Personal\PlantillaRepository;
 use App\Repository\Personal\ResponsableRepository;
+use App\Repository\Personal\SexoRepository;
 use App\Repository\Personal\TipoOrganizacionRepository;
 use App\Repository\Pregrado\SolicitudProgramaAcademicoRepository;
 use App\Repository\Security\UserRepository;
@@ -32,7 +35,9 @@ use App\Services\DoctrineHelper;
 use App\Services\HandlerFop;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,7 +60,7 @@ class PersonaController extends AbstractController
     {
         try {
             $request->getSession()->remove('usuario_modificado');
-
+            $request->getSession()->remove('datos_fuc');
             $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
             $registros = $personaRepository->gePersonasDadoArrayEstructuras($estructurasNegocio);
 
@@ -74,8 +79,12 @@ class PersonaController extends AbstractController
 
     /**
      * @Route("/{origin}/registrar", name="app_persona_registrar", methods={"GET", "POST"}, defaults={"origin":"default"})
+     * @param Utils $utils
      * @param TipoOrganizacionRepository $tipoOrganizacionRepository
+     * @param $origin
+     * @param ProvinciaRepository $provinciaRepository
      * @param OrganizacionRepository $organizacionRepository
+     * @param SexoRepository $sexoRepository
      * @param EntityManagerInterface $em
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
@@ -85,9 +94,43 @@ class PersonaController extends AbstractController
      * @param ResponsabilidadRepository $responsabilidadRepository
      * @return Response
      */
-    public function registrar(TipoOrganizacionRepository $tipoOrganizacionRepository, $origin, OrganizacionRepository $organizacionRepository, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $encoder, PersonaRepository $personaRepository, MunicipioRepository $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository)
+    public function registrar(Utils $utils, TipoOrganizacionRepository $tipoOrganizacionRepository, $origin, ProvinciaRepository $provinciaRepository, OrganizacionRepository $organizacionRepository, SexoRepository $sexoRepository, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $encoder, PersonaRepository $personaRepository, MunicipioRepository $municipioRepository, EstructuraRepository $estructuraRepository, ResponsabilidadRepository $responsabilidadRepository)
     {
+        $datosFuc = $request->getSession()->get('datos_fuc');
+        if (empty($datosFuc)) {
+            $this->addFlash('error', 'Error al acceder a la FUC');
+            return $this->redirectToRoute('app_persona_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $persona = new Persona();
+        $utils->asignarDatosFuc($persona, $datosFuc);
+
+        $content = $utils->getPersonaFotoFuc($datosFuc['id']);
+        $directory = $this->getParameter('kernel.project_dir') . '/public/uploads/images/personas/';
+        $filename = $datosFuc['identidad_numero'] . ".txt";
+        $txtFilename = $filename;
+        $pngFilename = $datosFuc['identidad_numero'] . ".png";
+        // Crear el archivo con el contenido
+        $filesystem = new Filesystem();
+        $filesystem->remove($directory . $txtFilename);
+        $filesystem->remove($directory . $pngFilename);
+
+        try {
+            if (!$filesystem->exists($directory)) {
+                $filesystem->mkdir($directory, 0700);
+            }
+            $filesystem->dumpFile($directory . $filename, $content);
+            $filesystem->rename($directory . $txtFilename, $directory . $pngFilename);
+
+            $filesystem->remove($directory . $txtFilename);
+
+            $persona->setFoto($pngFilename);
+
+        } catch (IOExceptionInterface $exception) {
+
+        }
+
+
         $choices = [
             'provincia_choices' => -1,
             'estructura_choices' => -1,
@@ -98,13 +141,13 @@ class PersonaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if (!empty($form['foto']->getData())) {
-                $file = $form['foto']->getData();
-                $ext = $file->guessExtension();
-                $file_name = md5(uniqid()) . "." . $ext;
-                $persona->setFoto($file_name);
-                $file->move("uploads/images/personas", $file_name);
-            }
+//            if (!empty($form['foto']->getData())) {
+//                $file = $form['foto']->getData();
+//                $ext = $file->guessExtension();
+//                $file_name = md5(uniqid()) . "." . $ext;
+//                $persona->setFoto($file_name);
+//                $file->move("uploads/images/personas", $file_name);
+//            }
 
             if (!empty($request->request->all()['persona']['municipio'])) {
                 $persona->setMunicipio($municipioRepository->find($request->request->all()['persona']['municipio']));
@@ -158,6 +201,7 @@ class PersonaController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
+            $request->getSession()->remove('datos_fuc');
 
             if ('responsable_telefono_celular' == $origin) {
                 $new = new TelefonoCelularResponsable();
@@ -184,10 +228,17 @@ class PersonaController extends AbstractController
         }
 
 
+        $temp = explode('-', $datosFuc['nacimiento_fecha']);
+        $datosFuc['nacimiento_fecha'] = $temp[2] . "/" . $temp[1] . "/" . $temp[0];
+
         return $this->render('modules/personal/persona/new.html.twig', [
             'form' => $form->createView(),
             'organizaciones' => $organizacionRepository->findBy(['activo' => true], ['tipoOrganizacion' => 'asc', 'nombre' => 'asc']),
-            'tipoOrganizacion' => $tipoOrganizacionRepository->findBy([], ['nombre' => 'asc'])
+            'tipoOrganizacion' => $tipoOrganizacionRepository->findBy([], ['nombre' => 'asc']),
+            'provincia' => $persona->getProvincia()->getId(),
+            'municipio' => $persona->getMunicipio()->getId(),
+            'foto' => $persona->getFoto(),
+            'fechaNacimiento' => $datosFuc['nacimiento_fecha'],
         ]);
 
     }
@@ -220,6 +271,39 @@ class PersonaController extends AbstractController
             'categoria_estructura_choices' => $persona->getCategoriaEstructura()->getId(),
             'accion' => 'editar'
         ];
+
+        $datosFuc = $utils->getPersonaFuc($persona->getCarnetIdentidad());
+        if (empty($datosFuc)) {
+            $this->addFlash('error', 'Error al acceder a la FUC');
+            return $this->redirectToRoute('app_persona_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $utils->asignarDatosFuc($persona, $datosFuc);
+
+        $content = $utils->getPersonaFotoFuc($datosFuc['id']);
+        $directory = $this->getParameter('kernel.project_dir') . '/public/uploads/images/personas/';
+        $filename = $datosFuc['identidad_numero'] . ".txt";
+        $txtFilename = $filename;
+        $pngFilename = $datosFuc['identidad_numero'] . ".png";
+        // Crear el archivo con el contenido
+        $filesystem = new Filesystem();
+        $filesystem->remove($directory . $txtFilename);
+        $filesystem->remove($directory . $pngFilename);
+
+        try {
+            if (!$filesystem->exists($directory)) {
+                $filesystem->mkdir($directory, 0700);
+            }
+            $filesystem->dumpFile($directory . $filename, $content);
+            $filesystem->rename($directory . $txtFilename, $directory . $pngFilename);
+
+            $filesystem->remove($directory . $txtFilename);
+
+            $persona->setFoto($pngFilename);
+
+        } catch (IOExceptionInterface $exception) {
+
+        }
+
         $form = $this->createForm(PersonaType::class, $persona, $choices);
         $form->handleRequest($request);
         $organizacionesAsociadas = $personaOrganizacionRepository->findBy(['persona' => $persona->getId()]);
@@ -234,19 +318,19 @@ class PersonaController extends AbstractController
                 }
             }
 
-            if (!empty($form['foto']->getData())) {
-                if ($persona->getFoto() != null) {
-                    if (file_exists('uploads/images/personas/' . $persona->getFoto())) {
-                        unlink('uploads/images/personas/' . $persona->getFoto());
-                    }
-                }
-
-                $file = $form['foto']->getData();
-                $ext = $file->guessExtension();
-                $file_name = md5(uniqid()) . "." . $ext;
-                $persona->setFoto($file_name);
-                $file->move("uploads/images/personas", $file_name);
-            }
+//            if (!empty($form['foto']->getData())) {
+//                if ($persona->getFoto() != null) {
+//                    if (file_exists('uploads/images/personas/' . $persona->getFoto())) {
+//                        unlink('uploads/images/personas/' . $persona->getFoto());
+//                    }
+//                }
+//
+//                $file = $form['foto']->getData();
+//                $ext = $file->guessExtension();
+//                $file_name = md5(uniqid()) . "." . $ext;
+//                $persona->setFoto($file_name);
+//                $file->move("uploads/images/personas", $file_name);
+//            }
 
             if ($email != $request->request->all()['persona']['usuario'] && (!empty($request->request->all()['persona']['contrasena'])) && !empty($request->request->all()['persona']['contrasena2'])) {
                 $persona->getUsuario()->setEmail($request->request->all()['persona']['usuario']);
@@ -316,13 +400,16 @@ class PersonaController extends AbstractController
 
             return $this->redirectToRoute('app_persona_index', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('modules/personal/persona/edit.html.twig', [
             'form' => $form->createView(),
             'persona' => $persona,
             'usuarioPersona' => $request->getSession()->has('usuario_modificado') ? $request->getSession()->get('usuario_modificado') : $persona->getUsuario()->getEmail(),
             'organizaciones' => $organizacionRepository->findBy(['activo' => true], ['tipoOrganizacion' => 'asc', 'nombre' => 'asc']),
             'tipoOrganizacion' => $tipoOrganizacionRepository->findBy([], ['nombre' => 'asc']),
-            'organizacionesAsociadas' => $utils->procesarOrganizaciones($organizacionesAsociadas)
+            'organizacionesAsociadas' => $utils->procesarOrganizaciones($organizacionesAsociadas),
+            'foto' => $persona->getFoto(),
+            'fechaNacimiento' => $datosFuc['nacimiento_fecha'],
         ]);
     }
 
@@ -532,4 +619,34 @@ class PersonaController extends AbstractController
         return $handFop->exportToPdf(new ExportListPersonaToPdf($export));
     }
 
+
+    /**
+     * @Route("/validar_fuc", name="app_persona_validar_fuc", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function validarFUC(Request $request, Utils $utils, PersonaRepository $personaRepository)
+    {
+        try {
+            $ci = $request->request->get('ci');
+
+            $exist = $personaRepository->findBy(['carnetIdentidad' => $ci]);
+            if (isset($exist[0])) {
+                return $this->json(['msg' => 'La persona que intentan crear ya existe', 'status' => -1]);
+            }
+            $datosFuc = $utils->getPersonaFuc($ci);
+
+            $response = false;
+            $msg = "Error al acceder a la FUC.";
+            if ($datosFuc != false) {
+                $request->getSession()->set('datos_fuc', $datosFuc);
+                $response = true;
+                $msg = null;
+            }
+
+            return $this->json(['msg' => $msg, 'status' => $response]);
+        } catch (\Exception $exception) {
+            return $this->json(false);
+        }
+    }
 }
