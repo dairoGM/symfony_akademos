@@ -963,7 +963,7 @@ class Utils
     {
         $token = $this->autenticarFUC();
         $curl = curl_init();
-
+        $apiFuc = $this->api_fuc_url;
         curl_setopt_array($curl, array(
             CURLOPT_URL => "$apiFuc/fuc/person/$idPersonaFuc/photo",
             CURLOPT_RETURNTRANSFER => true,
