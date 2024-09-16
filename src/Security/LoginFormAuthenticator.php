@@ -101,15 +101,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
             $session->set('foto_usuario_autenticado', $persona->getFoto());
             $session->set('nombre_usuario_autenticado', $persona->getPrimerNombre() . ' ' . $persona->getSegundoNombre() . ' ' . $persona->getPrimerApellido() . ' ' . $persona->getSegundoApellido());
-//            $session->set('responsabilidad_usuario_autenticado', $persona->getResponsabilidad()->getNombre());
             $session->set('responsabilidad_usuario_autenticado', method_exists($persona->getResponsabilidad(), 'getNombre') ? $persona->getResponsabilidad()->getNombre() : null);
             $session->set('estructura_usuario_autenticado', $persona->getEstructura()->getId());
             $session->set('nombre_estructura_usuario_autenticado', $persona->getEstructura()->getNombre());
-            $session->set('estructura_padre_usuario_autenticado', $persona->getEstructura()->getEstructura()->getNombre());
+            $session->set('estructura_padre_usuario_autenticado', method_exists($persona->getEstructura(), 'getEstructura') ? $persona->getEstructura()->getEstructura()->getNombre() : null);
             $session->set('id_persona_usuario_autenticado', $persona->getId());
             $session->set('provincia_usuario_autenticado', $persona->getProvincia()->getNombre());
             $session->set('municipio_usuario_autenticado', $persona->getMunicipio()->getNombre());
-            $session->set('grado_cientifico_usuario_autenticado', $persona->getGradoAcademico()->getNombre());
+            $session->set('grado_cientifico_usuario_autenticado', method_exists($persona->getGradoAcademico(), 'getNombre') ? $persona->getGradoAcademico()->getNombre() : null);
             $session->set('afiliaciones_usuario_autenticado', implode(", ", $personsAfiliacion));
             $session->set('password_change_first_time', $user->getPasswordChangeFirstTime());
 
