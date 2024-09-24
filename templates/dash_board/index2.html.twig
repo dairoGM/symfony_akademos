@@ -28,68 +28,78 @@
         }
 
     </style>
+    <link rel="stylesheet" href="https://www.bootstrapget.com/demos/bluedox-admin-dashboard/assets/css/main.min.css">
+    <link rel="stylesheet" href="https://www.bootstrapget.com/demos/bluedox-admin-dashboard/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.bootstrapget.com/demos/bluedox-admin-dashboard/assets/vendor/overlay-scroll/OverlayScrollbars.min.css">
 {% endblock %}
 
 {% block body %}
-
-    <div class="row mr-1">
-        <div class="col-4 mb-4">
-            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">All</h6> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
-            {#                </div> #}
-
-            <div style="min-height: 155px;background-color: #8080801c;font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
-                <span>Personal</span>
+    <div class="">
+        <div class="hero-header shade-primary">
+            <div class="container-fluid">
+                <!-- Row start -->
+                <div class="row justify-content-center">
+                    <div class="col-xl-6 col-md-8 col-sm-9 col-10">
+                        <div class="text-center">
+                            {#                            <h2 class="text-white mb-3">What are you looking for?</h2>#}
+                            {#                            <div class="input-group">#}
+                            {#                                <input type="text" class="form-control form-control-lg" id="SearchData" placeholder="Search">#}
+                            {#                                <button class="btn btn-success btn-lg" type="button">#}
+                            {#                                    Search#}
+                            {#                                </button>#}
+                            {#                            </div>#}
+                        </div>
+                    </div>
+                </div>
+                <!-- Row end -->
             </div>
         </div>
 
-        <div class="col-4 mb-4">
-            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access</h6> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
-            {#                </div> #}
+        <div class="hero-body">
+            <!-- Row start -->
+            <div class="row ">
+                <div class="col-xxl-2 col-lg-4 col-sm-4 col-12">
+                    <a href="contacts.html" class="tile-link d-flex align-items-center flex-column text-center rounded-2">
+                        <img src="assets/images/users.svg" class="img-3x m-auto mb-4" alt="Admin Dashboards">
+                        <h5>Users</h5>
+                        <p>Manage admin people</p>
+                    </a>
+                </div>
 
-            <div style="min-height: 155px;background: linear-gradient(50deg, #244892,#DFE2E9);color: white;font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
-                <span>Estructura</span>
+                <div class="col-xxl-2 col-lg-4 col-sm-4 col-12">
+                    <a href="#" class="tile-link d-flex align-items-center flex-column text-center rounded-2">
+                        <img src="assets/images/group.svg" class="img-3x m-auto mb-4" alt="Admin Dashboards">
+                        <h5>Groups</h5>
+                        <p>Create grouping lists</p>
+                    </a>
+                </div>
+                <div class="col-xxl-2 col-lg-4 col-sm-4 col-12">
+                    <a href="dashboard5.html" class="tile-link d-flex align-items-center flex-column text-center rounded-2">
+                        <img src="assets/images/dashboard.svg" class="img-3x m-auto mb-4" alt="Admin Dashboards">
+                        <h5>Dashboard</h5>
+                        <p>Insights about company</p>
+                    </a>
+                </div>
+                <div class="col-xxl-2 col-lg-3 col-sm-4 col-12">
+                    <a href="#" class="tile-link d-flex align-items-center flex-column text-center rounded-2">
+                        <img src="assets/images/devices.svg" class="img-3x m-auto mb-4" alt="Admin Dashboards">
+                        <h5>Devices</h5>
+                        <p>Secure data devices</p>
+                    </a>
+                </div>
+                <div class="col-xxl-2 col-lg-3 col-sm-4 col-12">
+                    <a href="#" class="tile-link d-flex align-items-center flex-column text-center rounded-2">
+                        <img src="assets/images/apps.svg" class="img-3x m-auto mb-4" alt="Admin Dashboards">
+                        <h5>Apps</h5>
+                        <p>Manage app settings</p>
+                    </a>
+                </div>
+
+
             </div>
+            <!-- Row end -->
+
         </div>
-
-
-        <div class="col-4 mb-4">
-            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
-            {#                </div> #}
-
-            <div style="min-height: 155px; background: linear-gradient(90deg, #881461, #D34223); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
-                <span>Posgrado</span>
-            </div>
-        </div>
-
-        <div class="col-4 mb-4">
-            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
-            {#                </div> #}
-
-            <div style="min-height: 155px; background: linear-gradient(90deg, #881461, #f60f58); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
-                <span>Pregrado</span>
-            </div>
-        </div>
-
-        <div class="col-4 mb-4">
-            {#                <div style="display: flex;justify-content: space-between; padding: 8px 12px;    margin-bottom: -7px;"> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Access + IDX</h6> #}
-            {#                    <h6 class="mb-0 font-weight-bold text-muted">Membership / Total Paid</h6> #}
-            {#                </div> #}
-
-            <div style="min-height: 155px; background: linear-gradient(90deg, #400a6e, #680ff6); color: white; font-size: 27px;margin-top: 4px;display: flex; justify-content: center;align-items: center; font-weight: bold; border-radius: 11px;">
-                <span>Instituciones</span>
-            </div>
-        </div>
-
-
     </div>
 
 {% endblock %}
