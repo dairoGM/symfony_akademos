@@ -323,7 +323,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function aprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function aprobar(Request $request, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
             $choices = [
@@ -377,9 +377,18 @@ class SolicitudProgramaController extends AbstractController
                 return $this->redirectToRoute('app_programas_aprobados_index', [], Response::HTTP_SEE_OTHER);
             }
 
+
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
+
+
             return $this->render('modules/postgrado/solicitud_programa/aprobar.html.twig', [
                 'form' => $form->createView(),
-                'solicitudPrograma' => $solicitudPrograma
+                'solicitudPrograma' => $solicitudPrograma,
+                'presencialidades' => implode(", ", $presencialidadesArray)
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -396,7 +405,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function noAprobar(Request $request, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function noAprobar(Request $request, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
             $form = $this->createForm(NoAprobarProgramaType::class, $solicitudPrograma);
@@ -422,10 +431,15 @@ class SolicitudProgramaController extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
-
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
             return $this->render('modules/postgrado/solicitud_programa/no_aprobar.html.twig', [
                 'form' => $form->createView(),
-                'solicitudPrograma' => $solicitudPrograma
+                'solicitudPrograma' => $solicitudPrograma,
+                'presencialidades' => implode(", ", $presencialidadesArray)
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -446,7 +460,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asignarComision(Request $request, $tipo = '1', MiembrosComisionRepository $miembrosComisionRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository)
+    public function asignarComision(Request $request, $tipo = '1', MiembrosComisionRepository $miembrosComisionRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudPrograma $solicitudPrograma, ComisionRepository $comisionRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository)
     {
         try {
             $form = $this->createForm(ComisionProgramaType::class, null, ['idTipoComision' => $tipo]);
@@ -498,10 +512,17 @@ class SolicitudProgramaController extends AbstractController
             }
             $comisiones = implode(',', $comisionesAsignadas);
 
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
+
             return $this->render('modules/postgrado/solicitud_programa/asignar_comision.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma,
-                'comisiones' => $comisiones
+                'comisiones' => $comisiones,
+                'presencialidades' => implode(", ", $presencialidadesArray)
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -522,7 +543,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository
      * @return Response
      */
-    public function asociarDictamen(Request $request, MiembrosCopepRepository $miembrosCopepRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
+    public function asociarDictamen(Request $request, MiembrosCopepRepository $miembrosCopepRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaComisionRepository $solicitudProgramaComisionRepository, PersonaRepository $personaRepository, ComisionRepository $comisionRepository, RolComisionRepository $rolComisionRepository, SolicitudPrograma $solicitudPrograma, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository)
     {
         try {
             $entidad = new SolicitudProgramaDictamen();
@@ -583,12 +604,17 @@ class SolicitudProgramaController extends AbstractController
                 $this->addFlash('error', 'El elemento ya existe.');
                 return $this->redirectToRoute('app_solicitud_programa_asociar_dictamen', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
             }
-
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
             return $this->render('modules/postgrado/solicitud_programa/asociar_dictamen.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma,
                 'personaAutenticada' => $personaAutenticada,
-                'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])
+                'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]),
+                'presencialidades' => implode(", ", $presencialidadesArray)
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -635,7 +661,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudPrograma $solicitudPrograma
      * @return Response
      */
-    public function revisionDictamen(Request $request, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaRepository $solicitudProgramaRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
+    public function revisionDictamen(Request $request, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, SolicitudProgramaDictamenRepository $solicitudProgramaDictamenRepository, EstadoProgramaRepository $estadoProgramaRepository, SolicitudProgramaRepository $solicitudProgramaRepository, NotificacionesUsuarioRepository $notificacionesUsuarioRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
     {
         try {
             $form = $this->createForm(RevisionDictamenType::class, $solicitudPrograma);
@@ -667,10 +693,16 @@ class SolicitudProgramaController extends AbstractController
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
 
             }
-
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
             return $this->render('modules/postgrado/solicitud_programa/revisar_dictamen.html.twig', ['form' => $form->createView(),
                     'solicitudPrograma' => $solicitudPrograma,
-                    'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()])]
+                    'registros' => $solicitudProgramaDictamenRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]),
+                    'presencialidades' => implode(", ", $presencialidadesArray)
+                ]
             );
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -685,16 +717,24 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudPrograma $solicitudPrograma
      * @return Response
      */
-    public function votacion(SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, PersonaRepository $personaRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
+    public function votacion(SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, PersonaRepository $personaRepository, SolicitudPrograma $solicitudPrograma, MiembrosCopepRepository $miembrosCopepRepository)
     {
         try {
             $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
             $miembroCopep = $miembrosCopepRepository->getMiembroCopepDadoIdPersona($personaAutenticada->getId());
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+            }
+
             return $this->render('modules/postgrado/solicitud_programa/votacion.html.twig', [
                     'solicitudPrograma' => $solicitudPrograma,
                     'miembroCopep' => $miembroCopep,
 //                    'existeVoto' => $solicitudProgramaVotacionRepository->existeVoto($personaAutenticada->getId()),
-                    'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()], ['creado' => 'desc'])]
+                    'registros' => $solicitudProgramaVotacionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()], ['creado' => 'desc']),
+                    'presencialidades' => implode(", ", $presencialidadesArray)
+                ]
             );
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
