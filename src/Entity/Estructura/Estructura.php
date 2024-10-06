@@ -31,6 +31,12 @@ class Estructura extends BaseEntity
     private ?bool $activo = true;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $esEntidad = false;
+
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -332,5 +338,22 @@ class Estructura extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * @return bool|null
+     */
+    public function getEsEntidad(): ?bool
+    {
+        return $this->esEntidad;
+    }
+
+    /**
+     * @param bool|null $esEntidad
+     */
+    public function setEsEntidad(?bool $esEntidad): void
+    {
+        $this->esEntidad = $esEntidad;
+    }
+
 
 }

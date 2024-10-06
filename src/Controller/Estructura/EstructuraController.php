@@ -403,6 +403,27 @@ class EstructuraController extends AbstractController
     }
 
     /**
+     * Add package entity.
+     *
+     * @Route("/{id}/estructura_dado_entidad", name="app_estructura_dado_entidad", methods={"GET"})
+     * @param $id
+     * @param EstructuraRepository $estructuraRepository
+     * @param Utils $utils
+     * @return JsonResponse
+     */
+    public function getEstructuraDadoEntidad($id, EstructuraRepository $estructuraRepository, Utils $utils): JsonResponse
+    {
+        try {
+//            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
+//            return $this->json($utils->procesarNomenclador($estructuraRepository->geEstructurasDadoArrayEstructuras($id, $estructurasNegocio)));
+            return $this->json($estructuraRepository->getEstructuraDadoEntidad($id));
+
+        } catch (\Exception $exception) {
+            return new JsonResponse([]);
+        }
+    }
+
+    /**
      * @Route("/exportar_pdf", name="app_estructura_exportar_pdf", methods={"GET", "POST"})
      * @param Request $request
      * @param User $user
@@ -436,7 +457,6 @@ class EstructuraController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}/exportar-estructuras-hijas", name="app_estructura_exportar_estructuras_hijas", methods={"GET", "POST"})
      * @param EstructuraRepository $estructuraRepository
@@ -452,6 +472,26 @@ class EstructuraController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('app_estructura_registrar', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/entidad/index", name="app_estructura_entidad_index", methods={"GET"})
+     * @param EstructuraRepository $estructuraRepository
+     * @return Response
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     */
+    public function indexEstructurasEntidades(EstructuraRepository $estructuraRepository, Utils $utils)
+    {
+        try {
+            $registros = $estructuraRepository->findBy(['esEntidad' => 1], ['activo' => 'desc', 'id' => 'desc']);
+            return $this->render('modules/estructura/estructura/entidad.html.twig', [
+                'registros' => $registros
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 }

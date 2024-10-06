@@ -156,6 +156,7 @@ class PersonaController extends AbstractController
 
             $estructura = $estructuraRepository->find($request->request->all()['persona']['estructura']);
             $persona->setEstructura($estructura);
+            $persona->setCategoriaEstructura($estructura->getCategoriaEstructura());
             $responsabilidad = null;
             if (!empty($request->request->all()['persona']['responsabilidad'])) {
                 $responsabilidad = $responsabilidadRepository->find($request->request->all()['persona']['responsabilidad']);

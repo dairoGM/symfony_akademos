@@ -88,14 +88,14 @@
                         <td>{{ item.tiempoEstancia | default('') }}</td>
                         <td>{{ item.estadoDocumentoSalida.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
-                            {% if item.estadoDocumentoSalida.id == 4 %}{# Revisión por el especialista DRI #}
+                            {% if item.estadoDocumentoSalida.id | default('') == 4 %}{# Revisión por el especialista DRI #}
                                 <a title="Asignar trámites"
                                    href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-address-book"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoDocumentoSalida.id == 5 %}{# Firmado por directivo DRI #}
+                            {% if item.estadoDocumentoSalida.id | default('') == 5 %}{# Firmado por directivo DRI #}
                                 <a title="Asignar trámites"
                                    href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -108,7 +108,7 @@
                                 </button>
                             {% endif %}
 
-                            {% if item.estadoDocumentoSalida.id == 6 %} {# En tramite #}
+                            {% if item.estadoDocumentoSalida.id | default('') == 6 %} {# En tramite #}
                                 <a title="Definir fechas de salida y regreso"
                                    href="{{ path('app_documento_salida_asignar_fecha_salida_regreso', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -116,7 +116,7 @@
                                 </a>
                             {% endif %}
 
-                            {% if item.estadoDocumentoSalida.id == 7 %} {# Viajando #}
+                            {% if item.estadoDocumentoSalida.id | default('') == 7 %} {# Viajando #}
                                 <button title="Finalizar salida " class="btn btn-outline-primary elementRemove"
                                         data-url="{{ path('app_documento_salida_finalizar_salida', {'id': item.id}) }}">
                                     <i class="fa fa-plane-arrival"></i>

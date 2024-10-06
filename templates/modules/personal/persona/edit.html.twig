@@ -95,9 +95,9 @@
             <hr style="margin-bottom: 20px">
             <div class="row">
                 <div class="col-4 form-group">
-                    {{ form_label(form.categoriaEstructura) }}
-                    {{ form_widget(form.categoriaEstructura) }}
-                    {{ form_errors(form.categoriaEstructura) }}
+                    {{ form_label(form.entidad) }}
+                    {{ form_widget(form.entidad) }}
+                    {{ form_errors(form.entidad) }}
                 </div>
                 <div class="col-4 form-group">
                     {{ form_label(form.estructura) }}
@@ -391,16 +391,14 @@
                 $('#persona_municipio').append(new Option('Seleccione', ""));
             }
         });
-
-
-        $('#persona_categoriaEstructura').on('change', function () {
+        $('#persona_entidad').on('change', function () {
             if ($(this).val() != "") {
                 HoldOn.open({
                     theme: "sk-cube-grid",
                     message: 'Por favor espere...',
                     textColor: "white"
                 });
-                var url = "{{ path('app_estructura_dado_categoria', {'id':'idP'}) }}";
+                var url = "{{ path('app_estructura_dado_entidad', {'id':'idP'}) }}";
                 url = url.replace('idP', $(this).val());
                 $.get(url, function (data) {
                     $('#persona_estructura option').remove();
@@ -418,6 +416,32 @@
                 $('#persona_responsabilidad').append(new Option('Seleccione', ""));
             }
         });
+
+        {#$('#persona_categoriaEstructura').on('change', function () {#}
+        {#    if ($(this).val() != "") {#}
+        {#        HoldOn.open({#}
+        {#            theme: "sk-cube-grid",#}
+        {#            message: 'Por favor espere...',#}
+        {#            textColor: "white"#}
+        {#        });#}
+        {#        var url = "{{ path('app_estructura_dado_categoria', {'id':'idP'}) }}";#}
+        {#        url = url.replace('idP', $(this).val());#}
+        {#        $.get(url, function (data) {#}
+        {#            $('#persona_estructura option').remove();#}
+        {#            $('#persona_estructura').append(new Option('Seleccione', ""));#}
+        {#            for (var i = 0; i < data.length; i++) {#}
+        {#                $('#persona_estructura').append(new Option(data[i].nombre, data[i].id));#}
+        {#            }#}
+        {#            HoldOn.close()#}
+        {#        });#}
+        {#    } else {#}
+        {#        $('#persona_estructura option').remove();#}
+        {#        $('#persona_estructura').append(new Option('Seleccione', ""));#}
+
+        {#        $('#persona_responsabilidad option').remove();#}
+        {#        $('#persona_responsabilidad').append(new Option('Seleccione', ""));#}
+        {#    }#}
+        {#});#}
 
         $('#persona_estructura').on('change', function () {
             if ($(this).val() != "") {

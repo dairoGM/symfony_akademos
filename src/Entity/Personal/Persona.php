@@ -185,6 +185,11 @@ class Persona extends BaseEntity
     private $estructura = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Estructura::class)
+     */
+    private $entidad = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Responsabilidad::class)
      * @ORM\JoinColumn(nullable=true)
      */
@@ -562,6 +567,22 @@ class Persona extends BaseEntity
     public function setSolicitudProgramaAcademico(?SolicitudProgramaAcademico $solicitudProgramaAcademico): void
     {
         $this->solicitudProgramaAcademico = $solicitudProgramaAcademico;
+    }
+
+    /**
+     * @return null
+     */
+    public function getEntidad()
+    {
+        return $this->entidad;
+    }
+
+    /**
+     * @param null $entidad
+     */
+    public function setEntidad($entidad): void
+    {
+        $this->entidad = $entidad;
     }
 
 

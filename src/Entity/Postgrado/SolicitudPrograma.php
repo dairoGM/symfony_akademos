@@ -90,7 +90,7 @@ class SolicitudPrograma extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="PresencialidadPrograma")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?PresencialidadPrograma $presencialidadPrograma;
 
@@ -214,7 +214,7 @@ class SolicitudPrograma extends BaseEntity
 
     public function getPresencialidadPrograma()
     {
-        return $this->presencialidadPrograma;
+        return $this->presencialidadPrograma??null;
     }
 
     public function setPresencialidadPrograma($presencialidadPrograma)

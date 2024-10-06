@@ -140,6 +140,9 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('#solicitud_programa_presencialidadPrograma').val({{ presencialidades | raw }}).change();
+
+
         $('#solicitud_programa_universidadesRed').val({{ institucionIntervienen | raw }}).change();
         $('#solicitud_programa_nombreExistente').val({{ solicitudPrograma.descripcion | default(-1) }}).change();
 
@@ -232,5 +235,10 @@
             }
             HoldOn.close()
         });
+
+        $(document).ready(function () {
+            $('#solicitud_programa_presencialidadPrograma').change();
+        });
+        $('#solicitud_programa_presencialidadPrograma').change();
     </script>
 {% endblock %}

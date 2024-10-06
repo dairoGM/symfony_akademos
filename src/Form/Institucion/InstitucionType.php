@@ -38,7 +38,8 @@ class InstitucionType extends AbstractType
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     $categoriaEstructura = $this->idCategoriaEstructura;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
+//                    return $er->createQueryBuilder('u')->where("u.activo = true and u.categoriaEstructura = '$categoriaEstructura' ")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.esEntidad = true ")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione'
             ])

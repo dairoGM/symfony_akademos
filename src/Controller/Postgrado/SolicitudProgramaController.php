@@ -4,10 +4,12 @@ namespace App\Controller\Postgrado;
 
 use App\Entity\NotificacionesUsuario;
 use App\Entity\Personal\Persona;
+use App\Entity\Postgrado\PresencialidadPrograma;
 use App\Entity\Postgrado\SolicitudPrograma;
 use App\Entity\Postgrado\SolicitudProgramaComision;
 use App\Entity\Postgrado\SolicitudProgramaDictamen;
 use App\Entity\Postgrado\SolicitudProgramaInstitucion;
+use App\Entity\Postgrado\SolicitudProgramaPresencialidad;
 use App\Entity\Postgrado\SolicitudProgramaVotacion;
 use App\Entity\Security\User;
 use App\Form\Postgrado\AprobarProgramaType;
@@ -25,14 +27,17 @@ use App\Repository\Postgrado\ComisionRepository;
 use App\Repository\Postgrado\EstadoProgramaRepository;
 use App\Repository\Postgrado\MiembrosComisionRepository;
 use App\Repository\Postgrado\MiembrosCopepRepository;
+use App\Repository\Postgrado\PresencialidadProgramaRepository;
 use App\Repository\Postgrado\RolComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaComisionRepository;
 use App\Repository\Postgrado\SolicitudProgramaDictamenRepository;
 use App\Repository\Postgrado\SolicitudProgramaInstitucionRepository;
+use App\Repository\Postgrado\SolicitudProgramaPresencialidadRepository;
 use App\Repository\Postgrado\SolicitudProgramaRepository;
 use App\Repository\Postgrado\SolicitudProgramaVotacionRepository;
 use App\Services\DoctrineHelper;
 use App\Services\TraceService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,7 +72,7 @@ class SolicitudProgramaController extends AbstractController
      * @param EstadoProgramaRepository $estadoProgramaRepository
      * @return Response
      */
-    public function registrar(Request $request, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
+    public function registrar(Request $request, EntityManagerInterface $entityManager, PresencialidadProgramaRepository $presencialidadProgramaRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
         try {
             $solicitudPrograma = new SolicitudPrograma();
@@ -76,7 +81,6 @@ class SolicitudProgramaController extends AbstractController
             $post = $request->request->all();
 
             if ($form->isSubmitted()) {
-
                 if ($this->getParameter('id_tipo_solicitud_red') == $post['solicitud_programa']['tipoSolicitud']) {//tipo red
                     if (isset($post['solicitud_programa']['universidadesRed']) && count($post['solicitud_programa']['universidadesRed']) > 0) {
                         foreach ($post['solicitud_programa']['universidadesRed'] as $value) {
@@ -91,6 +95,11 @@ class SolicitudProgramaController extends AbstractController
                     }
                 } else if ($this->getParameter('id_tipo_solicitud_propio') == $post['solicitud_programa']['tipoSolicitud']) {//tipo propio
                     if ($this->getParameter('id_tipo_solicitud_clasificacion_exitente') == $post['solicitud_programa']['tipoSolicitudClasificacion']) {//clasificacion es existente
+                        $existente = $solicitudProgramaRepository->find($post['solicitud_programa']['nombreExistente']);
+                        $solicitudPrograma->setTipoPrograma($existente->getTipoPrograma());
+                        $solicitudPrograma->setRamaCiencia($existente->getRamaCiencia());
+                        $solicitudPrograma->setOriginalDe($existente->getOriginalDe());
+
                         if (!empty($post['solicitud_programa']['originalDe'])) {
                             $item = new SolicitudProgramaInstitucion();
                             $item->setSolicitudPrograma($solicitudPrograma);
@@ -116,9 +125,20 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setDescripcion($post['solicitud_programa']['nombreExistente']);
                 }
 
-                $solicitudProgramaRepository->add($solicitudPrograma, true);
+                if (!empty($post['solicitud_programa']['presencialidadPrograma'])) {
+                    foreach ($post['solicitud_programa']['presencialidadPrograma'] as $value) {
+                        $presencialidad = new SolicitudProgramaPresencialidad();
+                        $presencialidad->setSolicitudPrograma($solicitudPrograma);
+                        $presencialidad->setPresencialidadPrograma($presencialidadProgramaRepository->find($value));
+                        $entityManager->persist($presencialidad);
+                    }
+                }
+
+                $solicitudProgramaRepository->add($solicitudPrograma, false);
                 $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
 
+
+                $entityManager->flush();
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
@@ -133,7 +153,7 @@ class SolicitudProgramaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -146,13 +166,19 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function modificar(Request $request, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function modificar(Request $request, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, PresencialidadProgramaRepository $presencialidadProgramaRepository, EntityManagerInterface $entityManager, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudPrograma $solicitudPrograma, SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         try {
             $dataAnterior = DoctrineHelper::toArray($solicitudPrograma);
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'modificar']);
             $form->handleRequest($request);
             $post = $request->request->all();
+            $presencialidadesArray = [];
+            $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+            foreach ($presencialidades as $v) {
+                $presencialidadesArray[] = $v->getPresencialidadPrograma()->getId();
+            }
+
             if ($form->isSubmitted()) {
                 $institucionIntervienen = $solicitudProgramaInstitucionRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
                 if (is_array($institucionIntervienen)) {
@@ -200,8 +226,23 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setDescripcion($post['solicitud_programa']['nombreExistente']);
                 }
 
+                if (!empty($post['solicitud_programa']['presencialidadPrograma'])) {
+                    foreach ($presencialidades as $value) {
+                        $solicitudProgramaPresencialidadRepository->remove($value, true);
+                    }
+                    foreach ($post['solicitud_programa']['presencialidadPrograma'] as $value) {
+                        $presencialidad = new SolicitudProgramaPresencialidad();
+                        $presencialidad->setSolicitudPrograma($solicitudPrograma);
+                        $presencialidad->setPresencialidadPrograma($presencialidadProgramaRepository->find($value));
+                        $entityManager->persist($presencialidad);
+                        $entityManager->flush();
+                    }
+                }
+
+
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
                 $traceService->registrar($this->getParameter('accion_modificar'), $this->getParameter('objeto_solicitud_programa'), $dataAnterior, DoctrineHelper::toArray($solicitudPrograma));
+
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
@@ -216,6 +257,7 @@ class SolicitudProgramaController extends AbstractController
             return $this->render('modules/postgrado/solicitud_programa/edit.html.twig', [
                 'form' => $form->createView(),
                 'solicitudPrograma' => $solicitudPrograma,
+                'presencialidades' => json_encode($presencialidadesArray),
                 'institucionIntervienen' => json_encode($arr),
                 'id_tipo_solicitud_red' => $this->getParameter('id_tipo_solicitud_red'),
                 'id_tipo_solicitud_propio' => $this->getParameter('id_tipo_solicitud_propio'),
@@ -224,7 +266,7 @@ class SolicitudProgramaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_modificar', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_index', ['id' => $solicitudPrograma->getId()], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -234,10 +276,17 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudPrograma $solicitudPrograma
      * @return Response
      */
-    public function detail(SolicitudPrograma $solicitudPrograma)
+    public function detail(SolicitudPrograma $solicitudPrograma, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository)
     {
+        $presencialidadesArray = [];
+        $presencialidades = $solicitudProgramaPresencialidadRepository->findBy(['solicitudPrograma' => $solicitudPrograma->getId()]);
+        foreach ($presencialidades as $v) {
+            $presencialidadesArray[] = $v->getPresencialidadPrograma()->getNombre();
+        }
+
         return $this->render('modules/postgrado/solicitud_programa/detail.html.twig', [
             'item' => $solicitudPrograma,
+            'presencialidades' => implode(", ", $presencialidadesArray)
         ]);
     }
 
@@ -695,6 +744,26 @@ class SolicitudProgramaController extends AbstractController
             return $this->json(true);
         } catch (\Exception $exception) {
             return $this->json($exception->getMessage());
+        }
+    }
+
+
+    /**
+     * @Route("/get-programa-detalles", name="app_solicitud_programa_get_programa", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function asociarPersona(Request $request, SolicitudProgramaRepository $solicitudProgramaRepository)
+    {
+        try {
+            $idPrograma = $request->request->get('id_programa');
+            $solicitud = $solicitudProgramaRepository->find($idPrograma);
+            $data['tipoPrograma'] = $solicitud->getTipoPrograma()->getId();
+            $data['originalDe'] = method_exists($solicitud->getOriginalDe(), 'getId') ? $solicitud->getOriginalDe()->getId() : null;
+            $data['ramaCiencia'] = $solicitud->getRamaCiencia()->getId();
+            return $this->json($data);
+        } catch (\Exception $exception) {
+            return $this->json(true);
         }
     }
 }

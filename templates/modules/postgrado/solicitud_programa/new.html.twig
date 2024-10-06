@@ -148,8 +148,32 @@
 
 
         $('#solicitud_programa_nombreExistente').change(function () {
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
             if ($(this).val() != "") {
                 $('#solicitud_programa_nombre').val($('#solicitud_programa_nombreExistente').find('option:selected').text());
+                //hacer un post para buscar esta infor
+                $.post("{{ path('app_solicitud_programa_get_programa') }}",
+                    {
+                        id_programa: $('#solicitud_programa_nombreExistente').val()
+                    },
+                    function (data) {
+                        if (data) {
+                            // if (data.originalDe == null) {
+                            //     toastr.warning("El programa seleccionado no tiene definido de quien es original de.");
+                            // } else {
+                            $('#solicitud_programa_tipoPrograma').val(data.tipoPrograma).change().attr('disabled', true);
+                            $('#solicitud_programa_originalDe').val(data.originalDe).change().attr('disabled', true);
+                            $('#solicitud_programa_ramaCiencia').val(data.ramaCiencia).change().attr('disabled', true);
+                            // }
+                            HoldOn.close()
+                        }
+                    });
+
+
             }
         })
 

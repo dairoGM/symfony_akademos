@@ -41,6 +41,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if hasRoles('ROLE_GEST_ESTRUCT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_entidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Entidades</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}

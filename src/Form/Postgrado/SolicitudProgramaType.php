@@ -63,7 +63,7 @@ class SolicitudProgramaType extends AbstractType
                 'choice_label' => 'nombre',
                 'label' => 'Institución solicitante',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.esEntidad = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
@@ -164,11 +164,14 @@ class SolicitudProgramaType extends AbstractType
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'empty_data' => null,
+                'multiple' => true,
+                'mapped' => false
             ])
             ->add('duracionPrograma', IntegerType::class, [
-                'label' => 'Duración del programa',
+                'label' => 'Duración del programa (meses)',
                 'required' => false,
+                'data' => 1,  // Valor inicial predeterminado
                 'attr' => [
                     'min' => 1
                 ]
@@ -176,6 +179,7 @@ class SolicitudProgramaType extends AbstractType
             ->add('cantidadCreditos', IntegerType::class, [
                 'label' => 'Cantidad de créditos',
                 'required' => false,
+                'data' => 1,  // Valor inicial predeterminado
                 'attr' => [
                     'min' => 1
                 ]

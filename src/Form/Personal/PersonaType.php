@@ -244,16 +244,26 @@ class PersonaType extends AbstractType
                 'empty_data' => null,
                 'required' => false,
             ])
-            ->add('categoriaEstructura', EntityType::class, [
-                'class' => CategoriaEstructura::class,
-                'label' => 'Categoría de estructura',
+//            ->add('categoriaEstructura', EntityType::class, [
+//                'class' => CategoriaEstructura::class,
+//                'label' => 'Categoría de estructura',
+//                'choice_label' => 'nombre',
+//                'query_builder' => function (EntityRepository $er) {
+//
+//                    return $er->createQueryBuilder('u')->where("u.activo = true   ")->orderBy('u.nombre', 'ASC');
+//                },
+//                'placeholder' => 'Seleccione',
+//                'empty_data' => null
+//            ])
+            ->add('entidad', EntityType::class, [
+                'class' => Estructura::class,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-
-                    return $er->createQueryBuilder('u')->where("u.activo = true   ")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where("u.activo = true and u.esEntidad = true")->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
+
             ])
             ->add('estructura', EntityType::class, [
                 'class' => Estructura::class,
