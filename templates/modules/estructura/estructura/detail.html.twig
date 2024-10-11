@@ -14,8 +14,8 @@
                 <h5 class="mb-0"><b> Subordinado a:</b> {{ item.estructura.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b> Tipo de estructura :</b> {{ item.tipoEstructura.nombre| default('') }}</h5>
                 <h5 class="mb-0"><b>Correo:</b> {{ item.email }}</h5>
-                <h5 class="mb-0"><b> Municipio:</b> {{ item.municipio.nombre | default('') }}</h5>
                 <h5 class="mb-0"><b> Teléfono:</b> {{ item.telefono | default('') }}</h5>
+                <h5 class="mb-0"><b> Municipio:</b> {{ item.municipio.nombre | default('') }}</h5>
                 {% if '1' == item.activo %}
                     <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
                 {% else %}
