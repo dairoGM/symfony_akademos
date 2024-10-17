@@ -154,15 +154,23 @@ class EstructuraRepository extends ServiceEntityRepository
     public function getEstructuraDadoEntidad($id)
     {
         $query = "WITH RECURSIVE estructura_recursiva AS (
-                    SELECT id, nombre
-                    FROM estructura.tbd_estructura
-                    WHERE id = $id  -- Punto de partida
-                    UNION
-                    SELECT e.id, e.nombre
-                    FROM estructura.tbd_estructura e
-                    INNER JOIN estructura_recursiva er ON e.estructura_id = er.id
-                )
-            SELECT * FROM estructura_recursiva;";
+    -- Punto de partida (primer registro)
+    SELECT tbd_estructura.id, concat('(', ee.siglas, ') ', tbd_estructura.nombre) as nombre
+    FROM estructura.tbd_estructura
+    LEFT JOIN estructura.tbd_estructura ee ON ee.id = tbd_estructura.estructura_id
+    WHERE tbd_estructura.id = $id  -- Punto de partida
+    UNION
+    -- Recursión: avanzar por la estructura
+    SELECT e.id, concat('(', ee.siglas, ') ', e.nombre) as nombre
+    FROM estructura.tbd_estructura e
+    LEFT JOIN estructura.tbd_estructura ee ON ee.id = e.estructura_id
+    INNER JOIN estructura_recursiva er ON e.estructura_id = er.id
+)
+-- Excluir el primer registro (punto de partida)
+SELECT * 
+FROM estructura_recursiva
+WHERE id != $id;
+;";
         $connect = $this->getEntityManager()->getConnection();
         $temp = $connect->executeQuery($query);
         return $temp->fetchAllAssociative();

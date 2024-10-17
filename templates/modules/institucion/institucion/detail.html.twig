@@ -139,7 +139,6 @@
 </table>
 
 
-
 <hr>
 <h5 class="mb-0"><b>Programas de pregrado</b></h5>
 <table class="table table-bordered table-striped dataTable">
@@ -152,15 +151,6 @@
     </tr>
     </thead>
     <tbody>
-{#    {% for item in programasPregradoCentroRector %}#}
-{#        <tr>#}
-{#            <td width="1%">{{ loop.index }}</td>#}
-{#            <td>{{ item.nombre | default('') }}</td>#}
-{#            <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>#}
-{#            <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>#}
-{#            </td>#}
-{#        </tr>#}
-{#    {% endfor %}#}
     {% for item in programasPregradoNoCentroRector %}
         <tr>
             <td width="1%">{{ loop.index }}</td>
@@ -182,8 +172,8 @@
     <tr>
         <th>No.</th>
         <th>Nombre</th>
-        <th>Código</th>
         <th>Tipo de programa</th>
+        <th>Categoría de Acreditación</th>
     </tr>
     </thead>
     <tbody>
@@ -191,8 +181,8 @@
         <tr>
             <td width="1%">{{ loop.index }}</td>
             <td>{{ item.nombre | default('') }}</td>
-            <td>{{ item.codigoPrograma | default('') }}</td>
             <td>{{ item.tipoPrograma.nombre | default('') }}</td>
+            <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
             </td>
         </tr>
     {% endfor %}

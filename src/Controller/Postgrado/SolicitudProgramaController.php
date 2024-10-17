@@ -89,6 +89,16 @@ class SolicitudProgramaController extends AbstractController
                             $item->setInstitucion($institucionRepository->find($value));
                             $solicitudProgramaInstitucionRepository->add($item);
                         }
+
+                        if (isset($post['solicitud_programa']['universidad']) && count($post['solicitud_programa']['universidad']) > 0) {
+                            foreach ($post['solicitud_programa']['universidad'] as $value) {
+                                $item = new SolicitudProgramaInstitucion();
+                                $item->setSolicitudPrograma($solicitudPrograma);
+                                $item->setInstitucion($institucionRepository->find($value));
+                                $solicitudProgramaInstitucionRepository->add($item);
+                            }
+                        }
+
                     } else {
                         $this->addFlash('error', 'El campo Instituciones que intervienen es obligatorio.');
                         return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
@@ -109,6 +119,8 @@ class SolicitudProgramaController extends AbstractController
                             $this->addFlash('error', 'El campo Programa original de es obligatorio.');
                             return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
                         }
+                    }else{//clasificacion es nuevo
+                        $solicitudPrograma->setOriginalDe($solicitudPrograma->getUniversidad());
                     }
                 }
 

@@ -164,6 +164,36 @@
             $('.cargar-archivo').html(filename);
         })
 
+
+        $('#solicitud_programa_universidadesRed').on('change', function () {
+            // Obtener las opciones seleccionadas en el primer select (multiselección)
+            var selectedValues = $(this).val() || [];
+
+            // Guardar el valor actual del segundo select (selección única)
+            var currentSelectedValue = $('#solicitud_programa_universidad').val();
+
+            // Iterar sobre las opciones del segundo select
+            $('#solicitud_programa_universidad option').each(function () {
+                var optionValue = $(this).val();
+
+                // Mostrar u ocultar la opción dependiendo si está seleccionada en el primer select
+                if (selectedValues.includes(optionValue)) {
+                    $(this).attr('disabled', true);  // Ocultar opción deshabilitándola
+                } else {
+                    $(this).attr('disabled', false);  // Mostrar opción habilitándola
+                }
+            });
+
+            // Refrescar el select de Bootstrap para que los cambios se reflejen
+            $('#solicitud_programa_universidad').change();
+
+            // Si el valor actual del segundo select está oculto/deshabilitado, lo reiniciamos a vacío
+            if (selectedValues.includes(currentSelectedValue)) {
+                $('#solicitud_programa_universidad').val('').change();
+            }
+        });
+
+
         $('[data-mask]').inputmask()
 
         if ($('#solicitud_programa_tipoSolicitud').val() == '{{ id_tipo_solicitud_red }}') {//es red

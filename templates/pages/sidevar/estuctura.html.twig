@@ -48,6 +48,13 @@
                                 <p>Entidades</p>
                             </a>
                         </li>
+                    {% endif %}{% if hasRoles('ROLE_GEST_ESTRUCT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_centro_autorizado_postgrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Centros Autorizados de Posgrado</p>
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </li>

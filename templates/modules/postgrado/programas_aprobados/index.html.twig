@@ -25,12 +25,20 @@
                     <th>No.</th>
                     <th>Nombre</th>
                     <th>Tipo de programa</th>
-                    <th>Código</th>
                     <th>Universidad</th>
-{#                    <th>Resolución</th>#}
                     <th>Coordinador</th>
                     <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
+                </tr>
+                <!-- Fila para los filtros de cada columna -->
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Nombre" /></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo" /></th>
+                    <th><input type="text" placeholder="Filtrar por Universidad" /></th>
+                    <th><input type="text" placeholder="Filtrar por Coordinador" /></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría" /></th>
+                    <th></th> <!-- No filter for actions -->
                 </tr>
                 </thead>
                 <tbody>
@@ -39,38 +47,33 @@
                         <td width="1%">{{ loop.index }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoPrograma.nombre | default('') }}</td>
-                        <td>{{ item.codigoPrograma | default('') }}</td>
+{#                        <td>{{ item.codigoPrograma | default('') }}</td>#}
                         <td>{{ item.universidad.nombre | default('') }}</td>
-{#                        <td>{{ item.resolucionPrograma | slice(0,item.resolucionPrograma|length - 5) }}</td>#}
                         <td>{{ item.nombreCoordinador | default('') }}</td>
                         <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
+                            <!-- Botones de acciones -->
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
                                     data-title="Detalles del programa">
-                                <i class="fa fa-eye "></i>
+                                <i class="fa fa-eye"></i>
                             </button>
-                            <a title="Completar información"
-                               href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
-                               class="btn btn-outline-primary"><i
-                                        class="fa fa-check"></i>
-                            </a>
+                            <a title="Completar información" href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i class="fa fa-check"></i></a>
                             <a title="Descargar resolución" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ item.resolucionPrograma }}">
-                                <i
-                                        class="fa fa-download"></i>
+                                <i class="fa fa-download"></i>
                             </a>
                             <a title="Descargar dictámen final" target="_blank" class="btn btn-outline-primary"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/dictamen_final/{{ item.dictamenFinal }}">
-                                <i
-                                        class="fa fa-file-download"></i>
+                                <i class="fa fa-file-download"></i>
                             </a>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
+
         </div>
         <!-- /.card-body -->
     </div>

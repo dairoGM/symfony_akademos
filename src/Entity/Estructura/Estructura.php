@@ -34,6 +34,10 @@ class Estructura extends BaseEntity
      * @ORM\Column(type="boolean", nullable=true)
      */
     private ?bool $esEntidad = false;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $centroAutorizadoPosgrado = false;
 
 
     /**
@@ -353,6 +357,22 @@ class Estructura extends BaseEntity
     public function setEsEntidad(?bool $esEntidad): void
     {
         $this->esEntidad = $esEntidad;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getCentroAutorizadoPosgrado(): ?bool
+    {
+        return $this->centroAutorizadoPosgrado;
+    }
+
+    /**
+     * @param bool|null $centroAutorizadoPosgrado
+     */
+    public function setCentroAutorizadoPosgrado(?bool $centroAutorizadoPosgrado): void
+    {
+        $this->centroAutorizadoPosgrado = $centroAutorizadoPosgrado;
     }
 
 

@@ -18,6 +18,7 @@
                 <h5 class="mb-0">
                     <b>Duración del programa:</b> {{ solicitudPrograma.duracionPrograma | default('') }}
                 </h5>
+
             </div>
             <div class="col-6">
                 <h5 class="mb-0"><b>Tipo de
@@ -38,6 +39,9 @@
 
                     <b>Fecha de aprobación del
                         programa:</b>{% if solicitudPrograma.fechaAprobacion is not null %} {{ solicitudPrograma.fechaAprobacion | date('d-m-Y') }} {% else %}   {% endif %}
+                </h5>
+                <h5 class="mb-0">
+                    <b>Clasificación:</b> {{ solicitudPrograma.tipoSolicitudClasificacion.clasificacion | default('') }}
                 </h5>
             </div>
         </div>

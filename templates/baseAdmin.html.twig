@@ -645,20 +645,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </p>
                 </a>
             </li>
-{#            <li class="nav-item">#}
-                        {#                <a href="{{ path('app_admin_perfil') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px">#}
-                        {#                    <i class="nav-icon fas fa-id-badge"></i>#}
-                        {#                    <p>#}
-                        {#                        Mi perfil#}
-                        {#                    </p>#}
-                        {#                </a>#}
-                        {#            </li>#}
-                        {% if hasRoles('ROLE_HOME_PERSONAL') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_personal_portada') }}"
-                   style="padding-left: 12px; padding-right: 4px">
-                    <i class="fas fa-user"
-                       title="Personal"></i>
+            {#            <li class="nav-item"> #}
+            {#                <a href="{{ path('app_admin_perfil') }}" class="nav-link" style="padding-left: 4px; padding-right: 4px"> #}
+            {#                    <i class="nav-icon fas fa-id-badge"></i> #}
+            {#                    <p> #}
+            {#                        Mi perfil #}
+            {#                    </p> #}
+            {#                </a> #}
+            {#            </li> #}
+            {% if hasRoles('ROLE_HOME_PERSONAL') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_personal_portada') }}"
+                       style="padding-left: 12px; padding-right: 4px">
+                        <i class="fas fa-user"
+                           title="Personal"></i>
                         <p>
                             Personal
                         </p>
@@ -840,12 +840,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
-
-        $(".dataTable").DataTable({
+        var hasMultipleHeaderRows = $('.dataTable thead tr').length > 1;
+        var table = $(".dataTable").DataTable({
             "dom": '<"row"<"col-sm-6 text-left"f ><"col-sm-6 text-right"l>>rt<"row"<"col-sm-12"p>>',
             "pagingType": "full_numbers",
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
-            "responsive": true, "lengthChange": true, "autoWidth": false, "scrollX": true,
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "ordering": !hasMultipleHeaderRows,
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -875,6 +879,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
             }
         });
+
+        // Filtros individuales por columna
+        $('.dataTable thead tr:eq(1) th').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                // Desactiva el ordenamiento temporalmente cuando hay filtros
+                if (table.column(i).search() !== this.value) {
+                    table.column(i).search(this.value).draw();
+                }
+            });
+        });
+
+        // Controla el ordenamiento solo cuando no hay filtros aplicados
+        table.on('draw', function() {
+            var hasFilter = false;
+
+            // Verifica si alguna columna tiene un filtro activo
+            table.columns().every(function() {
+                if (this.search()) {
+                    hasFilter = true;
+                }
+            });
+
+            // Desactiva el ordenamiento si hay filtros
+            if (hasFilter) {
+                table.order([]); // Desactiva el ordenamiento
+            }
+        });
+
         $('#DataTables_Table_0_filter').css('text-align', 'left');
         $('#DataTables_Table_0_filter').children().children().css('width', 500);
 

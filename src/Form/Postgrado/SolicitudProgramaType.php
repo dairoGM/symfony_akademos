@@ -63,7 +63,7 @@ class SolicitudProgramaType extends AbstractType
                 'choice_label' => 'nombre',
                 'label' => 'Institución solicitante',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.esEntidad = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.centroAutorizadoPosgrado=true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
@@ -73,7 +73,7 @@ class SolicitudProgramaType extends AbstractType
                 'label' => 'Instituciones que intervienen',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.centroAutorizadoPosgrado=true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
