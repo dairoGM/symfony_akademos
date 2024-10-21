@@ -519,7 +519,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             style="color:#D6D6D6; margin-left: -6%;font-size: 14px">{{ app.user.email }}</h5>
                     </div>
                     <div class="widget-user-image" style="top: 59px">
-                        <img class="img-circle elevation-2" style="width: 73px"
+                        <img class="img-circle elevation-2" style="width: 57px"
                              src="{% if app.session.get('foto_usuario_autenticado') != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/images/personas/{{ app.session.get('foto_usuario_autenticado') }}{% else %} /assets/images/usuario.png {% endif %}"
                              alt="User Avatar">
                     </div>

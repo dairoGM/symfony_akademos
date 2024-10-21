@@ -57,10 +57,22 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function index(SolicitudProgramaRepository $solicitudProgramaRepository, SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, PersonaRepository $personaRepository, MiembrosCopepRepository $miembrosCopepRepository)
     {
+        $registros = $solicitudProgramaRepository->getSolicitudes();
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+        if (!$isAdmin) {
+            $personaAutenticada = $personaRepository->findOneBy(['usuario' => $this->getUser()->getId()]);
+            $miembroCopep = $miembrosCopepRepository->getMiembroCopepDadoIdPersona($personaAutenticada->getId());
+            //si es miembro de la copep activa
+            if (!empty($miembroCopep)) {
+                //listar todas las solicitudes donde no ha votado
+                $registros = $solicitudProgramaRepository->getSolicitudesSinVotacion();
+//                pr(count($registros));
+            }
+        }
         return $this->render('modules/postgrado/solicitud_programa/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->getSolicitudes(),
+            'registros' => $registros,
         ]);
     }
 
@@ -119,7 +131,7 @@ class SolicitudProgramaController extends AbstractController
                             $this->addFlash('error', 'El campo Programa original de es obligatorio.');
                             return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
                         }
-                    }else{//clasificacion es nuevo
+                    } else {//clasificacion es nuevo
                         $solicitudPrograma->setOriginalDe($solicitudPrograma->getUniversidad());
                     }
                 }

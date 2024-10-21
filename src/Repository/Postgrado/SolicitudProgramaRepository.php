@@ -61,6 +61,25 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
         return $resul;
     }
 
+    public function getSolicitudesSinVotacion()
+    {
+        // DQL para la subconsulta
+        $subQueryDQL = 'SELECT solicitudPrograma.id 
+                    FROM App\Entity\Postgrado\SolicitudProgramaVotacion spv
+                    JOIN spv.solicitudPrograma solicitudPrograma';
+
+        // Consulta principal
+        $qb = $this->createQueryBuilder('solicitud');
+        $qb->innerJoin('solicitud.estadoPrograma', 'estadoPrograma')
+            ->where('estadoPrograma.id NOT IN(:excludedIds)')
+            ->setParameter('excludedIds', [7])
+            ->andWhere($qb->expr()->notIn('solicitud.id', "($subQueryDQL)")) // Uso de la subconsulta DQL
+            ->orderBy('solicitud.id', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 
     public function getProgramasV2()
     {

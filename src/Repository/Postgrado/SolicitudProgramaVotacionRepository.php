@@ -58,6 +58,6 @@ class SolicitudProgramaVotacionRepository extends ServiceEntityRepository
             ->where("p.id = $personaId");
 
         $resul = $qb->getQuery()->getResult();
-        return isset($resul[0]) ? true : false;
+        return isset($resul[0]);
     }
 }
