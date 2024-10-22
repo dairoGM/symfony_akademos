@@ -199,6 +199,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
             top: 12px;
         }
 
+        .responsive-input {
+            width: 100%; /* Asegura que el input ocupe el 100% del espacio disponible */
+            padding: 8px; /* Ajusta el padding para una mejor usabilidad en dispositivos móviles */
+            box-sizing: border-box; /* Incluye el padding y el borde en el cálculo del ancho */
+            font-size: 14px; /* Ajusta el tamaño de la fuente */
+            border: 1px solid #ccc; /* Estilo del borde */
+            border-radius: 4px; /* Bordes redondeados */
+        }
+
+        .responsive-col {
+            width: 15%; /* Ancho fijo en pantallas grandes */
+            text-align: center; /* Alineación centrada del texto */
+        }
+
+        @media (max-width: 768px) {
+            .responsive-col {
+                width: 100%; /* En pantallas pequeñas, ocupa todo el ancho */
+            }
+        }
     </style>
 
     {% block stylesheets %}

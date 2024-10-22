@@ -33,12 +33,12 @@
                 </tr>
                 <tr>
                     <th></th> <!-- No filter for index -->
-                    <th><input type="text" placeholder="Filtrar por Nombre" /></th>
-                    <th><input type="text" placeholder="Filtrar por Tipo" /></th>
-                    <th><input type="text" placeholder="Filtrar por Rama de la ciencia" /></th>
-                    <th><input type="text" placeholder="Filtrar por Institución solicitante" /></th>
-                    <th><input type="text" placeholder="Filtrar por Coordinador" /></th>
-                    <th><input type="text" placeholder="Filtrar por Estado" /></th>
+                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input" /></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Rama de la ciencia" class="responsive-input" /></th>
+                    <th><input type="text" placeholder="Filtrar por Institución solicitante" class="responsive-input" /></th>
+                    <th><input type="text" placeholder="Filtrar por Coordinador" class="responsive-input" /></th>
+                    <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input" /></th>
                     <th></th> <!-- No filter for actions -->
                 </tr>
                 </thead>
@@ -52,7 +52,7 @@
                         <td>{{ item.universidad.nombre | default('') }}</td>
                         <td>{{ item.nombreCoordinador | default('') }}</td>
                         <td>{{ item.estadoPrograma.nombre | default('') }}</td>
-                        <td width="20%" class="text-center">
+                        <td width="20%" class="text-center responsive-col">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la solicitud del programa">
