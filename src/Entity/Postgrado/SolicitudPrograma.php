@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Institucion\CategoriaAcreditacion;
 use App\Entity\Institucion\Institucion;
+use App\Entity\Estructura\Estructura;
 
 /**
  * @ORM\Entity
@@ -57,16 +58,16 @@ class SolicitudPrograma extends BaseEntity
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?Institucion $universidad = null;
+    private ?Estructura $universidad = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
-    private ?Institucion $originalDe = null;
+    private ?Estructura $originalDe = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoPrograma")
@@ -382,36 +383,38 @@ class SolicitudPrograma extends BaseEntity
     }
 
     /**
-     * @return Institucion|null
+     * @return Estructura|null
      */
-    public function getUniversidad(): ?Institucion
+    public function getUniversidad(): ?Estructura
     {
         return $this->universidad;
     }
 
     /**
-     * @param Institucion|null $universidad
+     * @param Estructura|null $universidad
      */
-    public function setUniversidad(?Institucion $universidad): void
+    public function setUniversidad(?Estructura $universidad): void
     {
         $this->universidad = $universidad;
     }
 
     /**
-     * @return Institucion|null
+     * @return Estructura|null
      */
-    public function getOriginalDe(): ?Institucion
+    public function getOriginalDe(): ?Estructura
     {
         return $this->originalDe;
     }
 
     /**
-     * @param Institucion|null $originalDe
+     * @param Estructura|null $originalDe
      */
-    public function setOriginalDe(?Institucion $originalDe): void
+    public function setOriginalDe(?Estructura $originalDe): void
     {
         $this->originalDe = $originalDe;
     }
+
+
 
     /**
      * @return TipoSolicitud|null

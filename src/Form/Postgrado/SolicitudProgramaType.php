@@ -2,6 +2,7 @@
 
 namespace App\Form\Postgrado;
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Postgrado\ModalidadPrograma;
 use App\Entity\Postgrado\PresencialidadPrograma;
@@ -59,11 +60,11 @@ class SolicitudProgramaType extends AbstractType
                 'required' => $options['action'] == 'registrar',
             ])
             ->add('universidad', EntityType::class, [
-                'class' => Institucion::class,
+                'class' => Estructura::class,
                 'choice_label' => 'nombre',
                 'label' => 'Institución solicitante',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.centroAutorizadoPosgrado=true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->where('u.activo = true and u.centroAutorizadoPosgrado=true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
@@ -83,11 +84,11 @@ class SolicitudProgramaType extends AbstractType
             ])
             ->add('originalDe', EntityType::class, [
                 'label' => 'Programa original de',
-                'class' => Institucion::class,
+                'class' => Estructura::class,
                 'required' => false,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')->join('u.estructura', 'e')->where('u.activo = true and e.centroAutorizadoPosgrado=true')->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null
