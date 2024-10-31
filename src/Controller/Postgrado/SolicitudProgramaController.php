@@ -57,7 +57,7 @@ class SolicitudProgramaController extends AbstractController
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaRepository $solicitudProgramaRepository, SolicitudProgramaVotacionRepository $solicitudProgramaVotacionRepository, PersonaRepository $personaRepository, MiembrosCopepRepository $miembrosCopepRepository)
+    public function index(SolicitudProgramaRepository $solicitudProgramaRepository, PersonaRepository $personaRepository, MiembrosCopepRepository $miembrosCopepRepository)
     {
         $registros = $solicitudProgramaRepository->getSolicitudes();
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
@@ -102,7 +102,7 @@ class SolicitudProgramaController extends AbstractController
                             $solicitudProgramaInstitucionRepository->add($item);
                         }
 
-                        if (isset($post['solicitud_programa']['universidad']) && count($post['solicitud_programa']['universidad']) > 0) {
+                        if (isset($post['solicitud_programa']['universidad']) && is_array($post['solicitud_programa']['universidad']) && count($post['solicitud_programa']['universidad']) > 0) {
                             foreach ($post['solicitud_programa']['universidad'] as $value) {
                                 $item = new SolicitudProgramaInstitucion();
                                 $item->setSolicitudPrograma($solicitudPrograma);
@@ -128,8 +128,8 @@ class SolicitudProgramaController extends AbstractController
                             $item->setInstitucion($institucionRepository->find($post['solicitud_programa']['originalDe']));
                             $solicitudProgramaInstitucionRepository->add($item);
                         } else {
-                            $this->addFlash('error', 'El campo Programa original de es obligatorio.');
-                            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
+//                            $this->addFlash('error', 'El campo Programa original de es obligatorio.');
+//                            return $this->redirectToRoute('app_solicitud_programa_registrar', [], Response::HTTP_SEE_OTHER);
                         }
                     } else {//clasificacion es nuevo
                         $solicitudPrograma->setOriginalDe($solicitudPrograma->getUniversidad());
@@ -158,9 +158,8 @@ class SolicitudProgramaController extends AbstractController
                     }
                 }
 
-                $solicitudProgramaRepository->add($solicitudPrograma, false);
+                $solicitudProgramaRepository->add($solicitudPrograma, true);
                 $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
-
 
                 $entityManager->flush();
 
