@@ -59,6 +59,11 @@
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
+                            {% if item.asignado == false %}
+                                <a id="add" title="Asignar documento de salida" class="btn btn-outline-primary"
+                                   data="{{ item.id }}"><i class="fa fa-address-card"></i>
+                                </a>
+                            {% endif %}
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_pasaporte_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
@@ -72,9 +77,139 @@
         </div>
         <!-- /.card-body -->
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Asignar documento de salida</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Campo de selección -->
+                    <form id="addForm" action="{{ path('app_pasaporte_index') }}" method="POST">
+                        <div class="form-group">
+                            <label for="personaSeleccion">Documentos de salida</label>
+                            <select class="form-control" id="personaSeleccion" name="personaSeleccion" required>
+                                <option value="" disabled selected>Seleccione una opción</option>
+                            </select>
+                            <!-- Mensaje de error -->
+                            <div id="errorSeleccion" class="text-danger mt-2" style="display:none;">
+                                Por favor seleccione una opción válida.
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
+                <div class="modal-footer">
+                    <button id="cerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <!-- Botón dentro del modal que envía el formulario -->
+                    <button type="button" class="btn btn-primary" id="saveBtn">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var itemId = null;
+            // Mostrar el modal cuando se hace clic en el botón "add"
+            document.getElementById('add').addEventListener('click', function (e) {
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
+                itemId = $(this).attr('data');
 
+                $.post("{{ path('app_tramites_get_documentos_salida') }}",
+                    {
+                        idPasaporte: itemId
+                    },
+                    function (data) {
+                        if (data.status === 1) {
+
+                            data.data.forEach(elemento => {
+                                $('#personaSeleccion').append(new Option(elemento.nombre, elemento.id));
+                            });
+
+                            $('#addModal').modal('show'); // Mostrar el modal
+                        } else {
+                            toastr.error('Error');
+                        }
+                        HoldOn.close();
+                    }
+                );
+
+
+            });
+
+            // Ocultar el mensaje de error al cerrar el modal
+            $('#cerrar').click(function () {
+                document.getElementById('errorSeleccion').style.display = 'none';
+            });
+
+            // Validar el formulario y enviar si es válido
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                // Obtener el valor seleccionado del campo de selección
+                const personaSeleccion = document.getElementById('personaSeleccion').value.trim();
+
+                // Validar que no esté vacío
+                if (personaSeleccion === '') {
+                    // Mostrar mensaje de error si la validación falla
+                    document.getElementById('errorSeleccion').style.display = 'block';
+                } else {
+                    // Ocultar mensaje de error si el campo es válido
+                    document.getElementById('errorSeleccion').style.display = 'none';
+
+                    // Mostrar loader
+                    HoldOn.open({
+                        theme: "sk-cube-grid",
+                        message: 'Por favor espere...',
+                        textColor: "white"
+                    });
+
+                    // Realizar petición POST
+                    $.post("{{ path('app_tramites_asignar_pasaporte') }}",
+                        {
+                            idDocumento: personaSeleccion,
+                            idPasaporte: itemId
+                        },
+                        function (data) {
+                            if (data.status === 1) {
+                                // Enviar el formulario si la validación es correcta
+                                // document.getElementById('addForm').submit();
+                                $('#addModal').modal('hide');
+                                setTimeout(function () {
+                                    $(window).attr('location', window.location)
+                                }, 500);
+                            } else {
+                                // Mostrar mensaje de error si la respuesta es negativa
+                                toastr.error(data.msg);
+                            }
+                            HoldOn.close(); // Cerrar loader
+                        }
+                    );
+                }
+            });
+
+            // Ocultar el mensaje de error al cambiar la selección en el campo <select>
+            document.getElementById('personaSeleccion').addEventListener('change', function () {
+                document.getElementById('errorSeleccion').style.display = 'none';
+            });
+
+            $('#personaSeleccion').change(function (e) {
+                document.getElementById('errorSeleccion').style.display = 'none';
+            })
+        });
+
+    </script>
+{% endblock %}
 

@@ -95,20 +95,8 @@
                                             class="fa fa-address-book"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoDocumentoSalida.id | default('') == 5 %}{# Firmado por directivo DRI #}
-                                <a title="Asignar trámites"
-                                   href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-address-book"></i>
-                                </a>
 
-                                <button title="Enviar a trámites " class="btn btn-outline-primary elementRemove"
-                                        data-url="{{ path('app_documento_salida_enviarA_tramite', {'id': item.id}) }}">
-                                    <i class="fa fa-hammer"></i>
-                                </button>
-                            {% endif %}
-
-                            {% if item.estadoDocumentoSalida.id | default('') == 6 %} {# En tramite #}
+                            {% if item.estadoDocumentoSalida.id | default('') in [8 ] %} {# En listo #}
                                 <a title="Definir fechas de salida y regreso"
                                    href="{{ path('app_documento_salida_asignar_fecha_salida_regreso', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -116,7 +104,16 @@
                                 </a>
                             {% endif %}
 
-                            {% if item.estadoDocumentoSalida.id | default('') == 7 %} {# Viajando #}
+                            {% if item.estadoDocumentoSalida.id | default('') in [8, 7] %} {# En listo #}
+                                {# En tramite #}
+                                <a title="Aprobar trámites"
+                                   href="{{ path('app_documento_salida_aprobar_tramites', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-check-circle"></i>
+                                </a>
+                            {% endif %}
+
+                            {% if item.estadoDocumentoSalida.id | default('') == 5 %} {# Viajando #}
                                 <button title="Finalizar salida " class="btn btn-outline-primary elementRemove"
                                         data-url="{{ path('app_documento_salida_finalizar_salida', {'id': item.id}) }}">
                                     <i class="fa fa-plane-arrival"></i>

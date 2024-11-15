@@ -23,6 +23,7 @@ use App\Repository\Tramite\InstitucionExtranjeraRepository;
 use App\Repository\Tramite\PasaporteRepository;
 use App\Repository\Tramite\TramiteRepository;
 use App\Services\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,10 +43,20 @@ class PasaporteController extends AbstractController
      * @param pasaporteRepository $pasaporteRepository
      * @return Response
      */
-    public function index(PasaporteRepository $pasaporteRepository)
+    public function index(PasaporteRepository $pasaporteRepository, DocumentoSalidaRepository $documentoSalidaRepository)
     {
+        $pasaportes = $pasaporteRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+        $registros = [];
+
+        if (is_array($pasaportes) && count($pasaportes) > 0) {
+            foreach ($pasaportes as $value) {
+                $asignado = $documentoSalidaRepository->findBy(['numeroPasaporte' => $value->getNumeroPasaporte()]);
+                $value->asignado = isset($asignado[0]);
+                $registros[] = $value;
+            }
+        }
         return $this->render('modules/tramite/pasaporte/index.html.twig', [
-            'registros' => $pasaporteRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $registros,
         ]);
     }
 
@@ -90,6 +101,21 @@ class PasaporteController extends AbstractController
             $form = $this->createForm(PasaporteType::class, $pasaporte, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['cara1']->getData())) {
+                    $file = $form['cara1']->getData();
+                    $ext = $file->guessExtension();
+                    $file_name = md5(uniqid()) . "." . $ext;
+                    $pasaporte->setCara1($file_name);
+                    $file->move("uploads/tramites/pasaporte", $file_name);
+                }
+                if (!empty($form['cara2']->getData())) {
+                    $file = $form['cara2']->getData();
+                    $ext = $file->guessExtension();
+                    $file_name = md5(uniqid()) . "." . $ext;
+                    $pasaporte->setCara2($file_name);
+                    $file->move("uploads/tramites/pasaporte", $file_name);
+                }
+
                 $pasaporte->setPersona($persona);
                 if (!empty($request->request->all()['pasaporte']['fechaEmisionPasaporte'])) {
                     $pasaporte->setFechaEmisionPasaporte(\DateTime::createFromFormat('d/m/Y', $request->request->all()['pasaporte']['fechaEmisionPasaporte']));
@@ -141,7 +167,31 @@ class PasaporteController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['cara1']->getData())) {
+                    if ($pasaporte->getCara1() != null) {
+                        if (file_exists('uploads/tramites/pasaporte/' . $pasaporte->getCara1())) {
+                            unlink('uploads/tramites/pasaporte/' . $pasaporte->getCara1());
+                        }
+                    }
+                    $file = $form['cara1']->getData();
+                    $ext = $file->guessExtension();
+                    $file_name = md5(uniqid()) . "." . $ext;
+                    $pasaporte->setCara1($file_name);
+                    $file->move("uploads/tramites/pasaporte", $file_name);
+                }
 
+                if (!empty($form['cara2']->getData())) {
+                    if ($pasaporte->getCara2() != null) {
+                        if (file_exists('uploads/tramites/pasaporte/' . $pasaporte->getCara2())) {
+                            unlink('uploads/tramites/pasaporte/' . $pasaporte->getCara2());
+                        }
+                    }
+                    $file = $form['cara2']->getData();
+                    $ext = $file->guessExtension();
+                    $file_name = md5(uniqid()) . "." . $ext;
+                    $pasaporte->setCara2($file_name);
+                    $file->move("uploads/tramites/pasaporte", $file_name);
+                }
                 $temp = explode('/', $request->request->all()['pasaporte']['fechaEmisionPasaporte']);
                 $pasaporte->setFechaEmisionPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
@@ -149,18 +199,6 @@ class PasaporteController extends AbstractController
                 $pasaporte->setFechaCaducidadPasaporte(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
                 $pasaporteRepository->edit($pasaporte);
-                /*Actualizo todas las fichas que esten a la espera del pasaporte*/
-                $fichasDependientes = $documentoSalidaRepository->findBy(['persona' => $pasaporte->getPersona()->getId(), 'estadoDocumentoSalida' => $this->getParameter('estado_salida_tramite')]);
-
-                if (is_array($fichasDependientes)) {
-                    foreach ($fichasDependientes as $fichasDependiente) {
-                        $fichasDependiente->setNumeroPasaporte($pasaporte->getNumeroPasaporte());
-                        $fichasDependiente->setTipoPasaporte($pasaporte->getTipoPasaporte());
-                        $fichasDependiente->setFechaEmisionPasaporte($pasaporte->getFechaEmisionPasaporte());
-                        $fichasDependiente->setFechaCaducidadPasaporte($pasaporte->getFechaCaducidadPasaporte());
-                        $documentoSalidaRepository->edit($fichasDependiente, true);
-                    }
-                }
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_pasaporte_index', [], Response::HTTP_SEE_OTHER);
@@ -230,6 +268,58 @@ class PasaporteController extends AbstractController
             return $this->json($datos[0] ?? []);
         } catch (\Exception $exception) {
             return new JsonResponse([]);
+        }
+    }
+
+
+    /**
+     * @Route("/asignar_pasaporte", name="app_tramites_asignar_pasaporte", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function asignarPasaporteTramites(Request $request, EntityManagerInterface $entityManager, DocumentoSalidaRepository $documentoSalidaRepository, PasaporteRepository $pasaporteRepository)
+    {
+        try {
+            $idPasaporte = $request->request->all()['idPasaporte'];
+            $idDocumento = $request->request->all()['idDocumento'];
+
+            $pasaporte = $pasaporteRepository->find($idPasaporte);
+            $documentoSalida = $documentoSalidaRepository->find($idDocumento);
+
+            if (!$pasaporte) {
+                return $this->json(['msg' => 'Pasaporte no válido', 'status' => 0]);
+            }
+            if (!$documentoSalida) {
+                return $this->json(['msg' => 'Documento de salida no válido', 'status' => 0]);
+            }
+            $documentoSalida->setNumeroPasaporte($pasaporte->getNumeroPasaporte());
+            $documentoSalida->setFechaEmisionPasaporte($pasaporte->getFechaEmisionPasaporte());
+            $documentoSalida->setFechaCaducidadPasaporte($pasaporte->getFechaCaducidadPasaporte());
+            $entityManager->persist($documentoSalida);
+            $entityManager->flush();
+
+            return $this->json(['msg' => 'Documento asignado correctamente', 'status' => 1]);
+        } catch (\Exception $exception) {
+            return $this->json(false);
+        }
+    }
+
+
+    /**
+     * @Route("/get_documentos_salida", name="app_tramites_get_documentos_salida", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function getDocumentosSalidasDadoId(Request $request, EntityManagerInterface $entityManager, DocumentoSalidaRepository $documentoSalidaRepository, PasaporteRepository $pasaporteRepository)
+    {
+        try {
+            $idPasaporte = $request->request->all()['idPasaporte'];
+            $pasaporte = $pasaporteRepository->find($idPasaporte);
+            $documentoSalida = $documentoSalidaRepository->getDocumentos($pasaporte->getPersona()->getId());
+
+            return $this->json(['data' => $documentoSalida, 'status' => 1]);
+        } catch (\Exception $exception) {
+            return $this->json(false);
         }
     }
 }

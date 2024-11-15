@@ -30,6 +30,7 @@ use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
 use App\Repository\Tramite\TramiteRepository;
 use App\Services\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,7 +100,7 @@ class DocumentoSalidaController extends AbstractController
                         $documentoSalidaTramiteRepository->add($entidad, true);
                     }
                 }
-                $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_firmado_directivo')));
+                $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_tramite')));
                 $documentoSalidaRepository->edit($documentoSalida, true);
 
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
@@ -152,11 +153,11 @@ class DocumentoSalidaController extends AbstractController
      * @Route("/{id}/asignar_fecha_salida_regreso", name="app_documento_salida_asignar_fecha_salida_regreso", methods={"GET", "POST"})
      * @param Request $request
      * @param DocumentoSalida $documentoSalida
-     * @param DocumentoSalidaRepository $documentoSalidaRepository
      * @param EstadoFichaSalidaRepository $estadoFichaSalidaRepository
+     * @param DocumentoSalidaRepository $documentoSalidaRepository
      * @return Response
      */
-    public function asignarFechaSalidaRegreso(Request $request, TramiteRepository $tramiteRepository, DocumentoSalida $documentoSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository)
+    public function asignarFechaSalidaRegreso(Request $request, DocumentoSalida $documentoSalida, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository)
     {
         try {
             $form = $this->createForm(AsignarFechaSalidaType::class, $documentoSalida, ['action' => 'modificar']);
@@ -187,6 +188,71 @@ class DocumentoSalidaController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{id}/aprobar_tramites", name="app_documento_salida_aprobar_tramites", methods={"GET", "POST"})
+     * @param DocumentoSalida $documentoSalida
+     * @return Response
+     */
+    public function aprobarTramites(DocumentoSalida $documentoSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository)
+    {
+        try {
+            $listo = true;
+            $tramites = $documentoSalidaTramiteRepository->findBy(['documentoSalida' => $documentoSalida], ['id' => 'asc']);
+            foreach ($tramites as $value) {
+                if (!$value->getListo()) {
+                    $listo = false;
+                    break;
+                }
+            }
+            return $this->render('modules/tramite/documento_salida/aprobarTramites.html.twig', [
+                'tramites' => $tramites,
+                'listo' => $listo,
+                'documentoSalida' => $documentoSalida,
+                'persona' => $documentoSalida->getPersona(),
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+
+    /**
+     * @Route("/guardar_estado_tramite", name="app_documento_salida_aprobar_tramites_guardar", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function guardarFiltro(Request $request, EntityManagerInterface $entityManager, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
+    {
+        try {
+            $allPost = $request->request->All();
+            $registro = $documentoSalidaTramiteRepository->find($allPost['id']);
+            $registro->setListo($allPost['valor']);
+            $documentoSalidaTramiteRepository->edit($registro, true);
+
+            $listo = true;
+            $tramites = $documentoSalidaTramiteRepository->findBy(['documentoSalida' => $registro->getDocumentoSalida()->getId()], ['id' => 'asc']);
+            foreach ($tramites as $value) {
+                if (!$value->getListo()) {
+                    $listo = false;
+                    break;
+                }
+            }
+
+            if ($listo) {
+                $registro->getDocumentoSalida()->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_listo')));
+            } else {
+                $registro->getDocumentoSalida()->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_tramite')));
+            }
+            $entityManager->persist($registro->getDocumentoSalida());
+            $entityManager->flush();
+
+            //falta el cambio de estado del documento
+            return $this->json('OK');
+        } catch (\Exception $exception) {
+            return $this->json(null);
+        }
+    }
 
     /**
      * @Route("/{id}/finalizar_salida", name="app_documento_salida_finalizar_salida", methods={"GET"})

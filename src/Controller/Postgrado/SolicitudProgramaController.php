@@ -86,7 +86,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function registrar(Request $request, EntityManagerInterface $entityManager, PresencialidadProgramaRepository $presencialidadProgramaRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
-        try {
+//        try {
             $solicitudPrograma = new SolicitudPrograma();
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -174,10 +174,10 @@ class SolicitudProgramaController extends AbstractController
                 'id_tipo_solicitud_clasificacion_nuevo' => $this->getParameter('id_tipo_solicitud_clasificacion_nuevo'),
                 'id_tipo_solicitud_clasificacion_exitente' => $this->getParameter('id_tipo_solicitud_clasificacion_exitente'),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 

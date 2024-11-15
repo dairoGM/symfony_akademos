@@ -1,16 +1,41 @@
 <div class="row">
     <div class="col-6">
         <h5 class="mb-0"><b>Número de pasaporte:</b> {{ item.numeroPasaporte | default('') }}</h5>
-        <h5 class="mb-0"><b>Fecha de emisión de pasaporte:</b> {% if item.fechaEmisionPasaporte is not null %} {{ item.fechaEmisionPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</h5>
-    </div>
-    <div class="col-6">
-        <h5 class="mb-0"><b>Tipo de pasaporte:</b> {{ item.tipoPasaporte.nombre | default('') }}</h5>
-        <h5 class="mb-0"><b>Fecha de caducidad de pasaporte:</b> {% if item.fechaCaducidadPasaporte is not null %} {{ item.fechaCaducidadPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</h5>
+        <h5 class="mb-0"><b>Fecha de emisión de
+                pasaporte:</b> {% if item.fechaEmisionPasaporte is not null %} {{ item.fechaEmisionPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
+        </h5>
         {% if '1' == item.activo %}
             <h5 class="mb-0"><b>Estado:</b> Habilitado</h5>
         {% else %}
             <h5 class="mb-0"><b>Estado:</b> Deshabilitado</h5>
         {% endif %}
+
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Tipo de pasaporte:</b> {{ item.tipoPasaporte.nombre | default('') }}</h5>
+        <h5 class="mb-0"><b>Fecha de caducidad de
+                pasaporte:</b> {% if item.fechaCaducidadPasaporte is not null %} {{ item.fechaCaducidadPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}
+        </h5>
+
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><a
+                    href="{% if item.cara1 != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ item.cara1 }} {% else %} /assets/images/usuario.png {% endif %}"
+                    target="_blank">
+                <img src="{% if item.cara1 != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ item.cara1 }}{% else %} /assets/images/usuario.png {% endif %}"
+                     class=" " style="width: 450px;height: 400px; object-fit: cover">
+            </a></h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><a
+                    href="{% if item.cara2 != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ item.cara2 }} {% else %} /assets/images/usuario.png {% endif %}"
+                    target="_blank">
+                <img src="{% if item.cara2 != null %}{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ item.cara2 }}{% else %} /assets/images/usuario.png {% endif %}"
+                     class=" " style="width: 450px;height: 400px; object-fit: cover">
+            </a></h5>
     </div>
 </div>
 

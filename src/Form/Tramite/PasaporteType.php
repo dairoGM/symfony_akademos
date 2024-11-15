@@ -59,7 +59,19 @@ class PasaporteType extends AbstractType
             ])
             ->add('activo', CheckboxType::class, [
                 'required' => false,
-            ]);
+            ])
+            ->add('cara1', FileType::class, array(
+                "attr" => array("type" => "file"),
+                "required" => false,
+                "mapped" => false,
+
+            ))
+            ->add('cara2', FileType::class, array(
+                "attr" => array("type" => "file"),
+                "required" => false,
+                "mapped" => false,
+
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

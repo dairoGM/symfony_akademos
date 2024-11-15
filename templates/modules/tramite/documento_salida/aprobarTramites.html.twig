@@ -1,0 +1,91 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Aprobar trámites{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Aprobar trámites</h3>
+            </div>
+        </div>
+
+        <!-- /.card-header -->
+        <div class="card-body">
+            {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        </div>
+        <div style="margin-left: auto; padding-right: 2%">
+            <label>Estado del documento: </label> <label
+                    style="color:{% if listo %} green {% else %} red {% endif %}">{{ documentoSalida.estadoDocumentoSalida.nombre | default('') }}</label>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Trámite</th>
+                    <th>Listo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in tramites %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.tramite.nombre | default('') }}</td>
+                        <td>
+                            <div class="col-md-4">
+                                <input type="checkbox"
+                                       name="{{ item.id }}_check_activo"
+                                        {% if item.listo is defined and item.listo=='1' %}
+                                            checked=""
+                                        {% endif %}
+                                       data-bootstrap-switch="0"
+                                       data-off-color="danger"
+                                       data-on-color="success">
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $("[name*='check_']").bootstrapSwitch({
+            onText: 'SÍ',
+            offText: 'NO'
+        });
+        $("[name*='check_']").on('switchChange.bootstrapSwitch', function (event, state) {
+            console.log(state);
+            var campo = event.currentTarget.attributes.name.nodeValue.split('_');
+            console.log(campo);
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_documento_salida_aprobar_tramites_guardar') }}", {
+                    id: campo[0],
+                    valor: state == true ? 1 : 0
+                },
+                function (data) {
+                    toastr.success("Filtro aplicado correctamente.");
+                    setTimeout(function () {
+                        $(window).attr('location', window.location)
+                    }, 500);
+                    HoldOn.close()
+                });
+
+            // if (state) {
+            //     console.log("El switch está en verde (ON).");
+            // } else {
+            //     console.log("El switch está en rojo (OFF).");
+            // }
+        });
+
+
+    </script>
+{% endblock %}

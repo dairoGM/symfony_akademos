@@ -19,6 +19,43 @@
         {{ form_start(form) }}
         <div class="card-body">
             <div class="row">
+                <div class="col-4 form-group">
+                    <div class="row">
+                        <div class="col-10">
+                            {{ form_label(form.cara1) }}
+                            {{ form_widget(form.cara1) }}
+                            {{ form_errors(form.cara1) }}
+                        </div>
+                        <div class="col-2">
+                            <div id="image-holder"></div>
+
+                            {% if pasaporte.cara1 != null %}
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ pasaporte.cara1 }}"
+                                     class="img-circle imgp" alt="Imagen"
+                                     style="width: 40px; height: 40px; position: absolute; bottom: 0;">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 form-group">
+                    <div class="row">
+                        <div class="col-10">
+                            {{ form_label(form.cara2) }}
+                            {{ form_widget(form.cara2) }}
+                            {{ form_errors(form.cara2) }}
+                        </div>
+                        <div class="col-2">
+                            <div id="image-holder1"></div>
+
+                            {% if pasaporte.cara2 != null %}
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}/uploads/tramites/pasaporte/{{ pasaporte.cara2 }}"
+                                     class="img-circle imgp" alt="Imagen"
+                                     style="width: 40px; height: 40px; position: absolute; bottom: 0;">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.tipoPasaporte) }}
                     {{ form_widget(form.tipoPasaporte) }}
@@ -29,11 +66,7 @@
                     {{ form_widget(form.numeroPasaporte) }}
                     {{ form_errors(form.numeroPasaporte) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 2%">
-                    {{ form_label(form.activo) }}
-                    {{ form_widget(form.activo) }}
-                    {{ form_errors(form.activo) }}
-                </div>
+
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.fechaEmisionPasaporte) }}
                     <div class="input-group">
@@ -54,7 +87,11 @@
                         {{ form_errors(form.fechaCaducidadPasaporte) }}
                     </div>
                 </div>
-
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group" style="margin-top: 2%">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
             </div>
 
         </div>
@@ -69,12 +106,78 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('#pasaporte_fechaEmisionPasaporte').val({% if pasaporte.fechaEmisionPasaporte is not null %} {{ pasaporte.fechaEmisionPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
-        $('#pasaporte_fechaCaducidadPasaporte').val({% if pasaporte.fechaCaducidadPasaporte is not null %} {{ pasaporte.fechaCaducidadPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
+        var emision = "{% if pasaporte.fechaEmisionPasaporte is not null %} {{ pasaporte.fechaEmisionPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}" ;
+        $('#pasaporte_fechaEmisionPasaporte').val(emision);
+        var caducidad = "{% if pasaporte.fechaCaducidadPasaporte is not null %} {{ pasaporte.fechaCaducidadPasaporte | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}";
+        $('#pasaporte_fechaCaducidadPasaporte').val(caducidad);
 
         $('#pasaporte_fechaEmisionPasaporte, #pasaporte_fechaCaducidadPasaporte').datetimepicker({
             format: 'DD/MM/YYYY'
         });
 
+        $("#pasaporte_cara1").on('change', function () {
+            //Get count of selected files
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+
+                            $('.imgp').remove()
+                            $("<img />", {
+                                "src": e.target.result,
+                                "class": "thumb-image   img-circle",
+                                "style": 'width: 40px; height: 40px; position: absolute; bottom: 0;'
+                            }).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
+        $("#pasaporte_cara2").on('change', function () {
+            //Get count of selected files
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder1");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+
+                            $('.imgp').remove()
+                            $("<img />", {
+                                "src": e.target.result,
+                                "class": "thumb-image   img-circle",
+                                "style": 'width: 40px; height: 40px; position: absolute; bottom: 0;'
+                            }).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
     </script>
 {% endblock %}

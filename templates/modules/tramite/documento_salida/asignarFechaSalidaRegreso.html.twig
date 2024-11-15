@@ -12,7 +12,9 @@
 
             </div>
         </div>
-        {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        <div class="card-body">
+            {{ include('modules/personal/persona/partial.html.twig', { 'persona': persona }) }}
+        </div>
         <!-- /.card-header -->
         {{ form_start(form) }}
         <div class="card-body">

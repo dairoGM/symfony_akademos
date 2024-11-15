@@ -29,6 +29,17 @@ class DocumentoSalidaTramite extends BaseEntity
     private ?Tramite $tramite;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $listo = false;
+
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descripcion = null;
+
+    /**
      * @return DocumentoSalida|null
      */
     public function getDocumentoSalida(): ?DocumentoSalida
@@ -58,6 +69,38 @@ class DocumentoSalidaTramite extends BaseEntity
     public function setTramite(?Tramite $tramite): void
     {
         $this->tramite = $tramite;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getListo(): ?bool
+    {
+        return $this->listo;
+    }
+
+    /**
+     * @param bool|null $listo
+     */
+    public function setListo(?bool $listo): void
+    {
+        $this->listo = $listo;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
+    {
+        $this->descripcion = $descripcion;
     }
 
 }

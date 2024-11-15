@@ -50,6 +50,15 @@ class Pasaporte extends BaseEntity
     private $activo = false;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cara1 = null;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cara2 = null;
+
+    /**
      * @return Persona|null
      */
     public function getPersona(): ?Persona
@@ -143,6 +152,38 @@ class Pasaporte extends BaseEntity
     public function setActivo(bool $activo): void
     {
         $this->activo = $activo;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCara1()
+    {
+        return $this->cara1;
+    }
+
+    /**
+     * @param null $cara1
+     */
+    public function setCara1($cara1): void
+    {
+        $this->cara1 = $cara1;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCara2()
+    {
+        return $this->cara2;
+    }
+
+    /**
+     * @param null $cara2
+     */
+    public function setCara2($cara2): void
+    {
+        $this->cara2 = $cara2;
     }
 
 

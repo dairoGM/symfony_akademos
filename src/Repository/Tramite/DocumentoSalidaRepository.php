@@ -48,4 +48,22 @@ class DocumentoSalidaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getDocumentos($idPersona)
+    {
+        $qb = $this->createQueryBuilder('d'); // Alias 'd' para documentos
+        $qb->select("d.id, CONCAT(pais.nombre, ' - ', institucion.nombre) AS nombre")
+            ->innerJoin('d.persona', 'persona')
+            ->innerJoin('d.estadoDocumentoSalida', 'estado')
+            ->innerJoin('d.institucionCubana', 'institucion')
+            ->innerJoin('d.pais', 'pais')
+            ->where('persona.id = :idPersona')
+            ->andWhere('estado.id IN (:estadoIds)')
+            ->setParameter('idPersona', $idPersona)
+            ->setParameter('estadoIds', [7, 8]); // Lista de estados permitidos
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 }
