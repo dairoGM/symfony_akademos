@@ -88,7 +88,7 @@
                         <td>{{ item.tiempoEstancia | default('') }}</td>
                         <td>{{ item.estadoDocumentoSalida.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
-                            {% if item.estadoDocumentoSalida.id | default('') == 4 %}{# Revisión por el especialista DRI #}
+                            {% if item.estadoDocumentoSalida.id | default('') in [4, 7]  %}{# Revisión por el especialista DRI #}
                                 <a title="Asignar trámites"
                                    href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
@@ -104,7 +104,7 @@
                                 </a>
                             {% endif %}
 
-                            {% if item.estadoDocumentoSalida.id | default('') in [8, 7] %} {# En listo #}
+                            {% if item.estadoDocumentoSalida.id | default('') in [  7] %} {# En listo #}
                                 {# En tramite #}
                                 <a title="Aprobar trámites"
                                    href="{{ path('app_documento_salida_aprobar_tramites', {'id': item.id}) }}"

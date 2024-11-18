@@ -11,6 +11,7 @@ use App\Entity\Tramite\DocumentoSalidaEstado;
 use App\Entity\Tramite\DocumentoSalidaTramite;
 use App\Entity\Tramite\FichaSalida;
 use App\Entity\Tramite\FichaSalidaEstado;
+use App\Entity\Tramite\Pasaporte;
 use App\Form\Tramite\AsignarFechaSalidaType;
 use App\Form\Tramite\AsignarTramiteType;
 use App\Form\Tramite\CambioEstadoSalidaType;
@@ -28,6 +29,7 @@ use App\Repository\Tramite\DocumentoSalidaEstadoRepository;
 use App\Repository\Tramite\EstadoFichaSalidaRepository;
 use App\Repository\Tramite\FichaSalidaEstadoRepository;
 use App\Repository\Tramite\FichaSalidaRepository;
+use App\Repository\Tramite\PasaporteRepository;
 use App\Repository\Tramite\TramiteRepository;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,7 +83,7 @@ class DocumentoSalidaController extends AbstractController
      * @param EstadoFichaSalidaRepository $estadoFichaSalidaRepository
      * @return Response
      */
-    public function asignarTramites(Request $request, TramiteRepository $tramiteRepository, DocumentoSalida $documentoSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository)
+    public function asignarTramites(Request $request, PasaporteRepository $pasaporteRepository, TramiteRepository $tramiteRepository, DocumentoSalida $documentoSalida, DocumentoSalidaTramiteRepository $documentoSalidaTramiteRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository, DocumentoSalidaRepository $documentoSalidaRepository)
     {
         try {
 
@@ -98,6 +100,16 @@ class DocumentoSalidaController extends AbstractController
                         $entidad->setDocumentoSalida($documentoSalida);
                         $entidad->setTramite($tramiteRepository->find($value));
                         $documentoSalidaTramiteRepository->add($entidad, true);
+                        if ($this->getParameter('tramite_confeccion_pasaporte') == $value) {
+                            //si no hay ningun pasaporte asignado a esta persona pendiente por crear
+                            $existPasaporte = $pasaporteRepository->findBy(['persona' => $documentoSalida->getPersona(), 'activo' => 0]);
+                            if (!$existPasaporte) {
+                                $solicitudPasaporte = new Pasaporte();
+                                $solicitudPasaporte->setPersona($documentoSalida->getPersona());
+                                $solicitudPasaporte->setTipoPasaporte($documentoSalida->getTipoPasaporte());
+                                $pasaporteRepository->add($solicitudPasaporte, true);
+                            }
+                        }
                     }
                 }
                 $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find($this->getParameter('estado_salida_tramite')));
@@ -109,6 +121,11 @@ class DocumentoSalidaController extends AbstractController
 
             $tramitesAsignados = [];
             foreach ($data as $value) {
+                if (!empty($documentoSalida->getNumeroPasaporte())) {
+                    if ($value->getTramite()->getId() == $this->getParameter('tramite_confeccion_pasaporte')) {
+                        continue;
+                    }
+                }
                 $tramitesAsignados[] = $value->getTramite()->getId();
             }
 
