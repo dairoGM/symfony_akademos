@@ -86,7 +86,7 @@ class SolicitudProgramaController extends AbstractController
      */
     public function registrar(Request $request, EntityManagerInterface $entityManager, PresencialidadProgramaRepository $presencialidadProgramaRepository, SolicitudProgramaPresencialidadRepository $solicitudProgramaPresencialidadRepository, SolicitudProgramaInstitucionRepository $solicitudProgramaInstitucionRepository, InstitucionRepository $institucionRepository, TraceService $traceService, SolicitudProgramaRepository $solicitudProgramaRepository, EstadoProgramaRepository $estadoProgramaRepository)
     {
-//        try {
+        try {
             $solicitudPrograma = new SolicitudPrograma();
             $form = $this->createForm(SolicitudProgramaType::class, $solicitudPrograma, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -149,6 +149,8 @@ class SolicitudProgramaController extends AbstractController
                     $solicitudPrograma->setDescripcion($post['solicitud_programa']['nombreExistente']);
                 }
 
+                $solicitudProgramaRepository->add($solicitudPrograma, true);
+
                 if (!empty($post['solicitud_programa']['presencialidadPrograma'])) {
                     foreach ($post['solicitud_programa']['presencialidadPrograma'] as $value) {
                         $presencialidad = new SolicitudProgramaPresencialidad();
@@ -157,11 +159,9 @@ class SolicitudProgramaController extends AbstractController
                         $entityManager->persist($presencialidad);
                     }
                 }
-
-                $solicitudProgramaRepository->add($solicitudPrograma, true);
-                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
-
                 $entityManager->flush();
+
+                $traceService->registrar($this->getParameter('accion_registrar'), $this->getParameter('objeto_solicitud_programa'), null, DoctrineHelper::toArray($solicitudPrograma));
 
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
@@ -174,10 +174,10 @@ class SolicitudProgramaController extends AbstractController
                 'id_tipo_solicitud_clasificacion_nuevo' => $this->getParameter('id_tipo_solicitud_clasificacion_nuevo'),
                 'id_tipo_solicitud_clasificacion_exitente' => $this->getParameter('id_tipo_solicitud_clasificacion_exitente'),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
