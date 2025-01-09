@@ -99,21 +99,30 @@
                             {#                                <i class="fa fa-eye "></i> #}
                             {#                            </button> #}
 
-                            {% if item.estadoFichaSalida.id != 3 %}
-                                <a title="Modificar" href="{{ path('app_ficha_salida_modificar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-edit"></i>
-                                </a>
-                                <a title="Cambiar de estado"
-                                   href="{{ path('app_ficha_salida_cambiar_estado', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-address-book"></i>
-                                </a>
-                                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                        data-url="{{ path('app_ficha_salida_eliminar', {'id': item.id}) }}">
-                                    <i class="fa fa-trash"></i>
+                            {% if item.estadoFichaSalida.id == 1 and item.directivoFirma is null %}
+                                <button title="Firmar por el directivo" class="btn btn-outline-primary elementRemove"
+                                        data-url="{{ path('app_ficha_salida_firmar', {'id': item.id}) }}">
+                                    <i class="fa fa-signature"></i>
                                 </button>
+                            {% else %}
+                                {% if item.estadoFichaSalida.id != 3   %}
+                                    <a title="Modificar"
+                                       href="{{ path('app_ficha_salida_modificar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-edit"></i>
+                                    </a>
+                                    <a title="Cambiar de estado"
+                                       href="{{ path('app_ficha_salida_cambiar_estado', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-address-book"></i>
+                                    </a>
+                                {% endif %}
+
                             {% endif %}
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_ficha_salida_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </td>
 
                     </tr>

@@ -18,12 +18,12 @@ class InstitucionExtranjera extends BaseNomenclator
 {
 
     /**
-     * @ORM\Column(type="string", nullable=false, length="100")
+     * @ORM\Column(type="string", nullable=true, length="100")
      */
     private ?string $provincia = null;
 
  /**
-     * @ORM\Column(type="string", nullable=false, length="100")
+     * @ORM\Column(type="string", nullable=true, length="100")
      */
     private ?string $siglas = null;
 

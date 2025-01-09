@@ -57,9 +57,43 @@
         $('#asignar_fecha_salida_fechaSalidaReal').val({% if documentoSalida.fechaSalidaReal is not null %} {{ documentoSalida.fechaSalidaReal | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
         $('#asignar_fecha_salida_fechaRegresoReal').val({% if documentoSalida.fechaRegresoReal is not null %} {{ documentoSalida.fechaRegresoReal | date('d/m/Y') }} {% else %} {{ '' }} {% endif %});
 
-        $('#asignar_fecha_salida_fechaSalidaReal, #asignar_fecha_salida_fechaRegresoReal').datetimepicker({
-            format: 'DD/MM/YYYY'
+        $(document).ready(function () {
+            // Obtener la fecha actual
+            const today = moment();
+
+            // Inicializar el componente de fecha de salida
+            $('#asignar_fecha_salida_fechaSalidaReal').datetimepicker({
+                format: 'DD/MM/YYYY',
+                minDate: today // Establecer la fecha mínima como la fecha actual
+            });
+
+            // Inicializar el componente de fecha de regreso
+            $('#asignar_fecha_salida_fechaRegresoReal').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false // Evitar selección automática de fecha inválida
+            });
+
+            // Evento para actualizar el rango de fechas en el componente de regreso
+            $('#asignar_fecha_salida_fechaSalidaReal').on('dp.change', function (e) {
+                const selectedDate = e.date; // Obtener la fecha seleccionada
+                if (selectedDate) {
+                    // Actualizar el componente de regreso con una fecha mínima
+                    $('#asignar_fecha_salida_fechaRegresoReal').data('DateTimePicker').minDate(selectedDate.add(1, 'days'));
+                }
+            });
+
+            // Validación opcional para la fecha de regreso
+            $('#asignar_fecha_salida_fechaRegresoReal').on('dp.change', function (e) {
+                const selectedReturnDate = e.date;
+                const departureDate = $('#asignar_fecha_salida_fechaSalidaReal').data('DateTimePicker').date();
+
+                if (selectedReturnDate && selectedReturnDate.isSameOrBefore(departureDate)) {
+                    alert('La fecha de regreso debe ser posterior a la fecha de salida.');
+                    $('#asignar_fecha_salida_fechaRegresoReal').data('DateTimePicker').clear();
+                }
+            });
         });
+
 
         $('#btn_submit').click(function (e) {
             e.preventDefault();

@@ -8,6 +8,7 @@ use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Institucion\Institucion;
+use App\Entity\Security\User;
 
 /**
  * @ORM\Entity
@@ -127,6 +128,18 @@ class FichaSalida extends BaseEntity
      * @ORM\Column(type="string", nullable=true, length="255")
      */
     private ?string $cartaInvitacion = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaFirmaDirectivo;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $directivoFirma;
 
     /**
      * @return Persona|null
@@ -448,7 +461,37 @@ class FichaSalida extends BaseEntity
         $this->cartaInvitacion = $cartaInvitacion;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFechaFirmaDirectivo()
+    {
+        return $this->fechaFirmaDirectivo;
+    }
 
+    /**
+     * @param mixed $fechaFirmaDirectivo
+     */
+    public function setFechaFirmaDirectivo($fechaFirmaDirectivo): void
+    {
+        $this->fechaFirmaDirectivo = $fechaFirmaDirectivo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDirectivoFirma()
+    {
+        return $this->directivoFirma;
+    }
+
+    /**
+     * @param mixed $directivoFirma
+     */
+    public function setDirectivoFirma($directivoFirma): void
+    {
+        $this->directivoFirma = $directivoFirma;
+    }
 
 
 }

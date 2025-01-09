@@ -174,11 +174,82 @@
         });
 
 
-        $('#ficha_salida_fechaSalidaPrevista, #ficha_salida_fechaRegresoPrevista,' +
-            ' #ficha_salida_fechaEmisionPasaporte, ' +
-            '#ficha_salida_fechaCaducidadPasaporte').datetimepicker({
-            format: 'DD/MM/YYYY'
+        // $('#ficha_salida_fechaSalidaPrevista, #ficha_salida_fechaRegresoPrevista,' +
+        //     ' #ficha_salida_fechaEmisionPasaporte, ' +
+        //     '#ficha_salida_fechaCaducidadPasaporte').datetimepicker({
+        //     format: 'DD/MM/YYYY'
+        // });
+        $(document).ready(function () {
+            // Obtener la fecha actual
+            const today = moment();
+
+            // Inicializar el componente de fecha de emisión del pasaporte
+            $('#ficha_salida_fechaEmisionPasaporte').datetimepicker({
+                format: 'DD/MM/YYYY',
+                maxDate: today // La fecha de emisión debe ser igual o anterior a la fecha actual
+            });
+
+            // Inicializar el componente de fecha de caducidad del pasaporte
+            $('#ficha_salida_fechaCaducidadPasaporte').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false // Evitar selección automática de una fecha inválida
+            });
+
+            // Evento para actualizar el rango de fechas en el componente de caducidad
+            $('#ficha_salida_fechaEmisionPasaporte').on('dp.change', function (e) {
+                const selectedDate = e.date; // Obtener la fecha seleccionada
+                if (selectedDate) {
+                    // Actualizar el componente de caducidad con una fecha mínima
+                    $('#ficha_salida_fechaCaducidadPasaporte').data('DateTimePicker').minDate(selectedDate.add(1, 'days'));
+                } else {
+                    // Restablecer el rango si no se selecciona ninguna fecha
+                    $('#ficha_salida_fechaCaducidadPasaporte').data('DateTimePicker').minDate(false);
+                }
+            });
         });
+
+
+
+        $(document).ready(function () {
+            // Obtener la fecha actual
+            const today = moment();
+
+            // Inicializar el componente de fecha de salida
+            $('#ficha_salida_fechaSalidaPrevista').datetimepicker({
+                format: 'DD/MM/YYYY',
+                minDate: today // Establecer la fecha mínima como la fecha actual
+            });
+
+            // Inicializar el componente de fecha de regreso
+            $('#ficha_salida_fechaRegresoPrevista').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false // Evitar selección automática de fecha inválida
+            });
+
+            // Evento para actualizar el rango de fechas en el componente de regreso
+            $('#ficha_salida_fechaSalidaPrevista').on('dp.change', function (e) {
+                const selectedDate = e.date; // Obtener la fecha seleccionada
+                if (selectedDate) {
+                    // Actualizar el componente de regreso con una fecha mínima
+                    $('#ficha_salida_fechaRegresoPrevista').data('DateTimePicker').minDate(selectedDate.add(1, 'days'));
+                }
+            });
+
+            // Validación opcional para la fecha de regreso
+            $('#ficha_salida_fechaRegresoPrevista').on('dp.change', function (e) {
+                const selectedReturnDate = e.date;
+                const departureDate = $('#ficha_salida_fechaSalidaPrevista').data('DateTimePicker').date();
+
+                if (selectedReturnDate && selectedReturnDate.isSameOrBefore(departureDate)) {
+                    alert('La fecha de regreso debe ser posterior a la fecha de salida.');
+                    $('#ficha_salida_fechaRegresoPrevista').data('DateTimePicker').clear();
+                }
+            });
+        });
+
+
+
+
 
         $('#ficha_salida_pais').on('change', function () {
             if ($(this).val() != "") {

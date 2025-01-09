@@ -96,8 +96,33 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('#pasaporte_fechaEmisionPasaporte, #pasaporte_fechaCaducidadPasaporte').datetimepicker({
-            format: 'DD/MM/YYYY'
+        $(document).ready(function () {
+            // Obtener la fecha actual
+            const today = moment();
+
+            // Inicializar el componente de fecha de emisión del pasaporte
+            $('#pasaporte_fechaEmisionPasaporte').datetimepicker({
+                format: 'DD/MM/YYYY',
+                maxDate: today // La fecha de emisión debe ser igual o anterior a la fecha actual
+            });
+
+            // Inicializar el componente de fecha de caducidad del pasaporte
+            $('#pasaporte_fechaCaducidadPasaporte').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false // Evitar selección automática de una fecha inválida
+            });
+
+            // Evento para actualizar el rango de fechas en el componente de caducidad
+            $('#pasaporte_fechaEmisionPasaporte').on('dp.change', function (e) {
+                const selectedDate = e.date; // Obtener la fecha seleccionada
+                if (selectedDate) {
+                    // Actualizar el componente de caducidad con una fecha mínima
+                    $('#pasaporte_fechaCaducidadPasaporte').data('DateTimePicker').minDate(selectedDate.add(1, 'days'));
+                } else {
+                    // Restablecer el rango si no se selecciona ninguna fecha
+                    $('#pasaporte_fechaCaducidadPasaporte').data('DateTimePicker').minDate(false);
+                }
+            });
         });
         $('#btn_aceptar').on('click', function (e) {
             e.preventDefault();

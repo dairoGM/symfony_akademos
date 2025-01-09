@@ -8,6 +8,7 @@ use App\Entity\Tramite\InstitucionExtranjera;
 use App\Entity\Estructura\Pais;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use App\Entity\Personal\Persona;
 
 /**
  * @ORM\Entity
@@ -63,6 +64,23 @@ class Convenio extends BaseNomenclator
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $cantidadAcciones;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Persona::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $creadoPor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Persona::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $modificadoPor;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $documento = null;
 
     /**
      * @return Institucion|null
@@ -190,6 +208,54 @@ class Convenio extends BaseNomenclator
     public function setTipo(?Tipo $tipo): void
     {
         $this->tipo = $tipo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreadoPor()
+    {
+        return $this->creadoPor;
+    }
+
+    /**
+     * @param mixed $creadoPor
+     */
+    public function setCreadoPor($creadoPor): void
+    {
+        $this->creadoPor = $creadoPor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModificadoPor()
+    {
+        return $this->modificadoPor;
+    }
+
+    /**
+     * @param mixed $modificadoPor
+     */
+    public function setModificadoPor($modificadoPor): void
+    {
+        $this->modificadoPor = $modificadoPor;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumento(): ?string
+    {
+        return $this->documento;
+    }
+
+    /**
+     * @param string|null $documento
+     */
+    public function setDocumento(?string $documento): void
+    {
+        $this->documento = $documento;
     }
 
 

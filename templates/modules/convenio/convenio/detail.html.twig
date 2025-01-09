@@ -25,13 +25,54 @@
     <div class="col-6">
         <h5 class="mb-0"><b>Fecha caducidad:</b> {{ item.fechaCaducidad | date('d/m/Y') }}</h5>
     </div>
-{#    <div class="col-6">#}
-{#        <h5 class="mb-0"><b>Cantidad de acciones:</b> {{ item.cantidadAcciones | default('') }}</h5>#}
-{#    </div>#}
+
 </div>
 <div class="row">
     <div class="col-6">
         <h5 class="mb-0"><b>Descripción:</b> {{ item.descripcion }}</h5>
     </div>
 </div>
+<div class="row">
+    <div class="col-6">
+        <h5 class="mb-0"><b>Creado
+                por:</b> {% if item.creadoPor is not null %} {{ item.creadoPor.primerNombre ~ ' ' ~ item.creadoPor.segundoNombre ~' '~ item.creadoPor.primerApellido ~ ' ' ~ item.creadoPor.segundoApellido }} {% endif %}
+        </h5>
+    </div>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Modificado
+                por:</b> {% if item.modificadoPor is not null %} {{ item.modificadoPor.primerNombre ~ ' ' ~ item.modificadoPor.segundoNombre ~' '~ item.modificadoPor.primerApellido ~ ' ' ~ item.modificadoPor.segundoApellido }} {% endif %}
+        </h5>
+    </div>
+     <div class="col-6">
+         <h5 class="mb-0"><b>Documento: </b> <a target="_blank"
+                                                          href="{{ app.request.getSchemeAndHttpHost() }}/uploads/convenio/intrumento_juridico/documento/{{ item.documento }}">{{ item.documento }}</a>
+         </h5>
+    </div>
+
+</div>
+<hr>
+<div class="card-header">
+    <h3 style="margin-left: -2%" class="card-title font-weight-bold">
+        <i class="ion ion-clipboard mr-1"></i>
+        Acciones
+    </h3>
+</div>
+<table class="table table-bordered table-striped dataTable">
+    <thead class="table-custom-header">
+    <tr>
+        <th>No.</th>
+        <th>Nombre</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in acciones %}
+        <tr>
+            <td width="1%">{{ loop.index }}</td>
+            <td width="95%">{{ item.nombre }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
 

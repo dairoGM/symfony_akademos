@@ -4,10 +4,12 @@ namespace App\Controller\Convenio;
 
 use App\Entity\Convenio\Convenio;
 use App\Entity\Convenio\ConvenioAccion;
+use App\Entity\Personal\Persona;
 use App\Form\Convenio\ConvenioAccionesType;
 use App\Form\Convenio\ConvenioType;
 use App\Repository\Convenio\ConvenioRepository;
 use App\Repository\Convenio\ConvenioAccionRepository;
+use App\Repository\Personal\PersonaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +41,7 @@ class ConvenioController extends AbstractController
      * @param ConvenioRepository $convenioRepository
      * @return Response
      */
-    public function registrar(Request $request, ConvenioRepository $convenioRepository)
+    public function registrar(Request $request, ConvenioRepository $convenioRepository, PersonaRepository $personaRepository)
     {
         try {
             $entidad = new Convenio();
@@ -49,6 +51,14 @@ class ConvenioController extends AbstractController
 
                 $entidad->setFechaSuscribe(\DateTime::createFromFormat('d/m/Y', $request->request->all()['convenio']['fechaSuscribe']));
                 $entidad->setFechaCaducidad(\DateTime::createFromFormat('d/m/Y', $request->request->all()['convenio']['fechaCaducidad']));
+                $entidad->setCreadoPor($personaRepository->findOneBy(['usuario' => $this->getUser()]));
+
+                if (!empty($_FILES['convenio']['name']['documento'])) {
+                    $file = $form['documento']->getData();
+                    $file_name = $_FILES['convenio']['name']['documento'];
+                    $entidad->setDocumento($file_name);
+                    $file->move("uploads/convenio/intrumento_juridico/documento", $file_name);
+                }
 
                 $convenioRepository->add($entidad, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -72,7 +82,7 @@ class ConvenioController extends AbstractController
      * @param ConvenioRepository $convenioRepository
      * @return Response
      */
-    public function modificar(Request $request, Convenio $convenio, ConvenioRepository $convenioRepository)
+    public function modificar(Request $request, Convenio $convenio, ConvenioRepository $convenioRepository, PersonaRepository $personaRepository)
     {
         try {
             $form = $this->createForm(ConvenioType::class, $convenio, ['action' => 'modificar']);
@@ -84,6 +94,21 @@ class ConvenioController extends AbstractController
 
                 $temp = explode('/', $request->request->all()['convenio']['fechaCaducidad']);
                 $convenio->setFechaCaducidad(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
+                $convenio->setModificadoPor($personaRepository->findOneBy(['usuario' => $this->getUser()]));
+
+
+                if (!empty($_FILES['ficha_salida']['name']['cartaInvitacion'])) {
+                    if ($convenio->getDocumento() != null) {
+                        if (file_exists('uploads/tramites/ficha_salida/carta_invitacion/' . $convenio->getDocumento())) {
+                            unlink('uploads/convenio/intrumento_juridico/documento/' . $convenio->getDocumento());
+                        }
+                    }
+                    $file = $form['cartaInvitacion']->getData();
+                    $file_name = $_FILES['ficha_salida']['name']['cartaInvitacion'];
+                    $convenio->setDocumento($file_name);
+                    $file->move("uploads/convenio/intrumento_juridico/documento", $file_name);
+                }
+
 
                 $convenioRepository->edit($convenio);
 
@@ -97,21 +122,22 @@ class ConvenioController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_convenio_modificar', ['id' => $convenio->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_convenio_index', ['id' => $convenio->getId()], Response::HTTP_SEE_OTHER);
         }
     }
 
 
     /**
      * @Route("/{id}/detail", name="app_convenio_detail", methods={"GET", "POST"})
-     * @param Request $request
-     * @param Convenio $tipoPrograma
+     * @param Convenio $convenio
+     * @param ConvenioAccionRepository $convenioAccionRepository
      * @return Response
      */
-    public function detail(Request $request, Convenio $convenio)
+    public function detail(Convenio $convenio, ConvenioAccionRepository $convenioAccionRepository)
     {
         return $this->render('modules/convenio/convenio/detail.html.twig', [
             'item' => $convenio,
+            'acciones' => $convenioAccionRepository->findBy(['convenio' => $convenio->getId()])
         ]);
     }
 

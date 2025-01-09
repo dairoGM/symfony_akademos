@@ -157,7 +157,7 @@ class FichaSalidaType extends AbstractType
                 ]
             ])
             ->add('cartaInvitacion', FileType::class, [
-                'label' => 'Carta de invitaciónn',
+                'label' => 'Carta de invitación',
                 'mapped' => false,
                 'required' => false,
             ]);

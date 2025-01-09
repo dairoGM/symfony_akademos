@@ -18,7 +18,7 @@ class ConvenioAccion extends BaseNomenclator
 
     /**
      * @ORM\ManyToOne(targetEntity="Convenio")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?Convenio $convenio;
 

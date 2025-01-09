@@ -273,6 +273,30 @@ class FichaSalidaController extends AbstractController
             return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
         }
     }
+    /**
+     * @Route("/{id}/firmar", name="app_ficha_salida_firmar", methods={"GET"})
+     * @param Request $request
+     * @param fichaSalida $fichaSalida
+     * @param fichaSalidaRepository $fichaSalidaRepository
+     * @return Response
+     */
+    public function firmar(Request $request, FichaSalida $fichaSalida, FichaSalidaRepository $fichaSalidaRepository)
+    {
+        try {
+            if ($fichaSalidaRepository->find($fichaSalida) instanceof FichaSalida) {
+                $fichaSalida->setFechaFirmaDirectivo(new \DateTime());
+                $fichaSalida->setDirectivoFirma($this->getUser());
+                $fichaSalidaRepository->edit($fichaSalida, true);
+                $this->addFlash('success', 'El elemento ha sido firmado satisfactoriamente.');
+                return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_ficha_salida_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 
 
     /**
@@ -286,13 +310,13 @@ class FichaSalidaController extends AbstractController
     {
         try {
             $entidad = new FichaSalidaEstado();
-            $estadoFinal = 1;
+            $estadoFinal = [1];
             $estadoActual = $fichaSalida->getEstadoFichaSalida()->getId();
             if ($estadoActual == 1) {
-                $estadoFinal = 2;
+                $estadoFinal = [2, 9];
             }
             if ($estadoActual == 2) {
-                $estadoFinal = 3;
+                $estadoFinal = [3];
             }
             $form = $this->createForm(CambioEstadoSalidaType::class, $entidad, ['action' => 'modificar', 'estadoActual' => $estadoActual, 'estadoFinal' => $estadoFinal]);
             $form->handleRequest($request);
@@ -348,7 +372,7 @@ class FichaSalidaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_ficha_salida_cambiar_estado', ['id' => $fichaSalida->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ficha_salida_index', ['id' => $fichaSalida->getId()], Response::HTTP_SEE_OTHER);
         }
     }
 }

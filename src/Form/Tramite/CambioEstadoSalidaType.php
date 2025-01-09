@@ -48,8 +48,9 @@ class CambioEstadoSalidaType extends AbstractType
                 'required' => true,
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    $estadoFinal = $this->estadoFinal;
-                    return $er->createQueryBuilder('u')->where("u.id = $estadoFinal");
+
+                    $estadoFinal = implode(",", $this->estadoFinal);
+                    return $er->createQueryBuilder('u')->where("u.id IN ($estadoFinal)");
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

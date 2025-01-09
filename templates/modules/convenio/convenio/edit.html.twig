@@ -67,12 +67,21 @@
                         {{ form_errors(form.fechaCaducidad) }}
                     </div>
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.documento) }}
+                    {{ form_widget(form.documento) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.documento) }}
+                    <a target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/convenio/intrumento_juridico/documento/{{ convenio.documento }}">{{ convenio.documento }}</a>
+                </div>
 
-{#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">#}
-{#                    {{ form_label(form.cantidadAcciones) }}#}
-{#                    {{ form_widget(form.cantidadAcciones) }}#}
-{#                    {{ form_errors(form.cantidadAcciones) }}#}
-{#                </div>#}
+                {#                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group"> #}
+                {#                    {{ form_label(form.cantidadAcciones) }} #}
+                {#                    {{ form_widget(form.cantidadAcciones) }} #}
+                {#                    {{ form_errors(form.cantidadAcciones) }} #}
+                {#                </div> #}
             </div>
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
@@ -96,7 +105,10 @@
         $('#convenio_fechaSuscribe').datetimepicker({
             format: 'DD/MM/YYYY'
         });
-
+        $('#convenio_documento').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
         $('#convenio_fechaCaducidad').val('{{ convenio.fechaCaducidad | date('d-m-Y') }}');
         $('#convenio_fechaCaducidad').datetimepicker({
             format: 'DD/MM/YYYY'

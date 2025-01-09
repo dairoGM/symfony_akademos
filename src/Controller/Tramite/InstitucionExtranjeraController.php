@@ -42,7 +42,7 @@ class InstitucionExtranjeraController extends AbstractController
      */
     public function registrar(Request $request, InstitucionExtranjeraRepository $institucionExtranjeraRepository)
     {
-        try {
+//        try {
             $entidad = new InstitucionExtranjera();
             $form = $this->createForm(InstitucionExtranjeraType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -55,10 +55,10 @@ class InstitucionExtranjeraController extends AbstractController
             return $this->render('modules/tramite/institucion_extranjera/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_institucion_extranjera_registrar', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_institucion_extranjera_index', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 
