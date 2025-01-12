@@ -8,6 +8,7 @@ use App\Entity\Personal\Persona;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Institucion\Institucion;
+use App\Entity\Security\User;
 
 /**
  * @ORM\Entity
@@ -137,6 +138,19 @@ class DocumentoSalida extends BaseEntity
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $fechaFinalizado;
+
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $fechaFirmaDirectivo;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $directivoFirma;
 
     /**
      * @return Persona|null
@@ -488,6 +502,38 @@ class DocumentoSalida extends BaseEntity
     public function setFechaFinalizado($fechaFinalizado): void
     {
         $this->fechaFinalizado = $fechaFinalizado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFechaFirmaDirectivo()
+    {
+        return $this->fechaFirmaDirectivo;
+    }
+
+    /**
+     * @param mixed $fechaFirmaDirectivo
+     */
+    public function setFechaFirmaDirectivo($fechaFirmaDirectivo): void
+    {
+        $this->fechaFirmaDirectivo = $fechaFirmaDirectivo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDirectivoFirma()
+    {
+        return $this->directivoFirma;
+    }
+
+    /**
+     * @param mixed $directivoFirma
+     */
+    public function setDirectivoFirma($directivoFirma): void
+    {
+        $this->directivoFirma = $directivoFirma;
     }
 
 

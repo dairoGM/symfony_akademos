@@ -136,7 +136,7 @@ class FichaSalida extends BaseEntity
 
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist"})
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $directivoFirma;

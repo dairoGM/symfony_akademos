@@ -51,7 +51,7 @@ class DocumentoSalidaController extends AbstractController
      * @param documentoSalidaRepository $documentoSalidaRepository
      * @return Response
      */
-    public function index(Request $request, DocumentoSalidaRepository $documentoSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
+    public function index(Request $request, DocumentoSalidaRepository $documentoSalidaRepository, EntityManagerInterface $entityManager, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
     {
         $allPost = $request->request->all();
 
@@ -65,10 +65,24 @@ class DocumentoSalidaController extends AbstractController
         }
         $filtros = [];
         if ($request->getSession()->has('documento_salida_fil_estado')) {
-            $filtros['estadoFichaSalida'] = $request->getSession()->get('documento_salida_fil_estado');
+            $filtros['estadoDocumentoSalida'] = $request->getSession()->get('documento_salida_fil_estado');
         }
+        $registros = $documentoSalidaRepository->findBy($filtros, ['id' => 'desc']);
+        $currentDate = new \DateTime();
+
+//        foreach ($registros as $value) {
+//            if ($value->getFechaSalidaReal() >= $currentDate) {
+//                $value->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find(10));
+//            }
+//            else {
+//                $value->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find(5));
+//            }
+//            $entityManager->persist($value);
+//        }
+//        $entityManager->flush();
+        $registros = $documentoSalidaRepository->findBy($filtros, ['id' => 'desc']);
         return $this->render('modules/tramite/documento_salida/index.html.twig', [
-            'registros' => $documentoSalidaRepository->findBy($filtros, ['id' => 'desc']),
+            'registros' => $registros,
             'estados' => $estadoFichaSalidaRepository->findBy(['activo' => true, 'documentoSalida' => true], ['nombre' => 'asc']),
             'fil_estado' => $request->getSession()->get('documento_salida_fil_estado'),
             'text_fil' => $request->getSession()->has('documento_salida_text_fil_estado') ? " (Estado=" . $request->getSession()->get('documento_salida_text_fil_estado') . ")" : null,
@@ -286,6 +300,56 @@ class DocumentoSalidaController extends AbstractController
                 $documentoSalida->setFechaFinalizado(new \DateTime());
                 $documentoSalidaRepository->edit($documentoSalida, true);
                 $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
+                return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/viajando", name="app_documento_salida_viajando", methods={"GET"})
+     * @param DocumentoSalida $documentoSalida
+     * @param DocumentoSalidaRepository $documentoSalidaRepository
+     * @param EstadoFichaSalidaRepository $estadoFichaSalidaRepository
+     * @return Response
+     */
+    public function viajando(DocumentoSalida $documentoSalida, DocumentoSalidaRepository $documentoSalidaRepository, EstadoFichaSalidaRepository $estadoFichaSalidaRepository)
+    {
+        try {
+            if ($documentoSalidaRepository->find($documentoSalida) instanceof DocumentoSalida) {
+                $documentoSalida->setEstadoDocumentoSalida($estadoFichaSalidaRepository->find(10));
+                $documentoSalida->setFechaSalidaReal(new \DateTime());
+                $documentoSalidaRepository->edit($documentoSalida, true);
+                $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
+                return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $this->addFlash('error', 'Error en la entrada de datos');
+            return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/firmar", name="app_documento_salida_firmar", methods={"GET"})
+     * @param Request $request
+     * @param DocumentoSalida $documentoSalida
+     * @param DocumentoSalidaRepository $documentoSalidaRepository
+     * @return Response
+     */
+    public function firmar(Request $request, DocumentoSalida $documentoSalida, DocumentoSalidaRepository $documentoSalidaRepository)
+    {
+        try {
+            if ($documentoSalidaRepository->find($documentoSalida) instanceof DocumentoSalida) {
+                $documentoSalida->setFechaFirmaDirectivo(new \DateTime());
+                $documentoSalida->setDirectivoFirma($this->getUser());
+                $documentoSalidaRepository->edit($documentoSalida, true);
+                $this->addFlash('success', 'El elemento ha sido firmado satisfactoriamente.');
                 return $this->redirectToRoute('app_documento_salida_index', [], Response::HTTP_SEE_OTHER);
             }
             $this->addFlash('error', 'Error en la entrada de datos');

@@ -69,7 +69,7 @@
                     <th>Grado científico</th>
                     <th>Institución cubana</th>
                     <th>País</th>
-                    <th>Salida prevista</th>
+                    <th>Fecha de salida</th>
                     <th>Estancia</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
@@ -77,23 +77,32 @@
                 </thead>
                 <tbody>
                 {% for item in registros %}
-                    <tr>
+                    <tr {# style="{% if item.estadoDocumentoSalida.id == 5 %} color: #FFC107{% elseif item.estadoDocumentoSalida.id == 10 %} color: blue {% endif %} " #}>
                         <td width="1%">{{ loop.index }}</td>
 
                         <td>{{ item.persona.primerNombre ~ ' ' ~ item.persona.segundoNombre ~' '~ item.persona.primerApellido ~ ' ' ~ item.persona.segundoApellido }}</td>
                         <td>{{ item.persona.gradoAcademico.nombre | default('') }}</td>
                         <td>{{ item.institucionCubana.siglas | default('') }}</td>
                         <td>{{ item.pais.nombre | default('') }}</td>
-                        <td>{{ item.fechaSalidaPrevista | date('d/m/Y') }}</td>
+                        <td>{{ item.fechaSalidaReal | date('d/m/Y') }}</td>
                         <td>{{ item.tiempoEstancia | default('') }}</td>
                         <td>{{ item.estadoDocumentoSalida.nombre | default('') }}</td>
                         <td width="15%" class="text-center">
-                            {% if item.estadoDocumentoSalida.id | default('') in [4, 7]  %}{# Revisión por el especialista DRI #}
-                                <a title="Asignar trámites"
-                                   href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-address-book"></i>
-                                </a>
+                            {% if item.estadoDocumentoSalida.id | default('') in [4, 7] %}{# Revisión por el especialista DRI #}
+                                {% if  item.directivoFirma is null %}{# Revisión por el especialista DRI #}
+                                    <button title="Firmar"
+                                            class="btn btn-outline-primary elementRemove"
+                                            data-url="{{ path('app_documento_salida_firmar', {'id': item.id}) }}">
+                                        <i class="fa fa-signature"></i>
+                                    </button>
+
+                                {% else %}
+                                    <a title="Asignar trámites"
+                                       href="{{ path('app_documento_salida_asignar_tramite', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-address-book"></i>
+                                    </a>
+                                {% endif %}
                             {% endif %}
 
                             {% if item.estadoDocumentoSalida.id | default('') in [8 ] %} {# En listo #}
@@ -113,11 +122,24 @@
                                 </a>
                             {% endif %}
 
-                            {% if item.estadoDocumentoSalida.id | default('') == 5 %} {# Viajando #}
-                                <button title="Finalizar salida " class="btn btn-outline-primary elementRemove"
-                                        data-url="{{ path('app_documento_salida_finalizar_salida', {'id': item.id}) }}">
-                                    <i class="fa fa-plane-arrival"></i>
-                                </button>
+                            {% if item.estadoDocumentoSalida.id | default('') in [  5, 10] %} {# Viajando #}
+                                {% if item.estadoDocumentoSalida.id | default('') in [ 10] %}
+                                    <button title="Finalizar salida " class="btn btn-outline-primary elementRemove"
+                                            data-url="{{ path('app_documento_salida_finalizar_salida', {'id': item.id}) }}">
+                                        <i class="fa fa-plane-arrival"></i>
+                                    </button>
+                                {% else %}
+                                    <button title="Definir como viajando " class="btn btn-outline-primary elementRemove"
+                                            data-url="{{ path('app_documento_salida_viajando', {'id': item.id}) }}">
+                                        <i class="fa fa-plane"></i>
+                                    </button>
+                                    <a title="Redefinir fechas de salida y regreso"
+                                       href="{{ path('app_documento_salida_asignar_fecha_salida_regreso', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-calendar-plus"></i>
+                                    </a>
+
+                                {% endif %}
                             {% endif %}
                         </td>
 
