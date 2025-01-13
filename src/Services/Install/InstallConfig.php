@@ -235,7 +235,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_TIPO", "Gestión de tipos de convenios", "Gestión de tipos de convenios");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_MODALIDAD", "Gestión de modalidades de convenios", "Gestión de modalidades de convenios");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_CONVENIO", "Gestión de convenios", "Gestión de convenios");
-
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
         return $functionalities;
     }
 
@@ -256,7 +256,6 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TIPO_PASAPORTE", "Gestión de tipos de pasaportes", "Gestión de tipos de pasaportes");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION", "Gestión de planes de misión", "Gestión de planes de misión");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_PLAN_MISION_DETALLES", "Listado de personas en plan de misión", "Listado de personas en plan de misión");
-        $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_CONCEPTO_SALIDA", "Gestión de conceptos de salida", "Gestión de conceptos de salida");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_ESTADO_SALIDA", "Gestión de estados de salida", "Gestión de estados de salida");
         $functionalities[] = Functionality::createFunctionality("MODULE_TRAMITE", "ROLE_GEST_TRAMITE", "Gestión de trámites", "Gestión de trámites");
@@ -497,6 +496,7 @@ class InstallConfig
             ->addFunctionality("ROLE_HOME_CONVENIO")
             ->addFunctionality("ROLE_GEST_CONVENIO")
             ->addFunctionality("ROLE_GEST_TIPO")
+            ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
             ->addFunctionality("ROLE_GEST_MODALIDAD");
 
 
@@ -506,7 +506,6 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_PLAN_MISION")
             ->addFunctionality("ROLE_GEST_PLAN_MISION_DETALLES")
             ->addFunctionality("ROLE_GEST_TIPO_PASAPORTE")
-            ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
             ->addFunctionality("ROLE_GEST_CONCEPTO_SALIDA")
             ->addFunctionality("ROLE_GEST_FICHA_SALIDA")
             ->addFunctionality("ROLE_GEST_DOCUMENTO_SALIDA")
