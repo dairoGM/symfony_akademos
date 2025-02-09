@@ -14,8 +14,41 @@ use App\Entity\Personal\Persona;
  * @ORM\Entity
  * @ORM\Table(name="convenio.tbd_convenio")
  */
-class Convenio extends BaseNomenclator
+class Convenio
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected ?int $id;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $creado;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $actualizado;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private ?string $nombre = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descripcion = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $activo = true;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Modalidad")
@@ -29,10 +62,10 @@ class Convenio extends BaseNomenclator
     private ?Tipo $tipo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion\Institucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Estructura")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Institucion $institucionCubana;
+    private ?Estructura $institucionCubana;
 
 
     /**
@@ -83,20 +116,21 @@ class Convenio extends BaseNomenclator
     private ?string $documento = null;
 
     /**
-     * @return Institucion|null
+     * @return Estructura|null
      */
-    public function getInstitucionCubana(): ?Institucion
+    public function getInstitucionCubana(): ?Estructura
     {
         return $this->institucionCubana;
     }
 
     /**
-     * @param Institucion|null $institucionCubana
+     * @param Estructura|null $institucionCubana
      */
-    public function setInstitucionCubana(?Institucion $institucionCubana): void
+    public function setInstitucionCubana(?Estructura $institucionCubana): void
     {
         $this->institucionCubana = $institucionCubana;
     }
+
 
     /**
      * @return InstitucionExtranjera|null
@@ -256,6 +290,102 @@ class Convenio extends BaseNomenclator
     public function setDocumento(?string $documento): void
     {
         $this->documento = $documento;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreado()
+    {
+        return $this->creado;
+    }
+
+    /**
+     * @param mixed $creado
+     */
+    public function setCreado($creado): void
+    {
+        $this->creado = $creado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActualizado()
+    {
+        return $this->actualizado;
+    }
+
+    /**
+     * @param mixed $actualizado
+     */
+    public function setActualizado($actualizado): void
+    {
+        $this->actualizado = $actualizado;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param string|null $nombre
+     */
+    public function setNombre(?string $nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActivo(): ?bool
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param bool|null $activo
+     */
+    public function setActivo(?bool $activo): void
+    {
+        $this->activo = $activo;
     }
 
 

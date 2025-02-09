@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLPROGRAM') or hasRoles('ROLE_GEST_PROGRAMAPROB') %}
+        {% if hasRoles('ROLE_GEST_SOLPROGRAM') or hasRoles('ROLE_GEST_GRADO_CIENTIFICO')or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -25,11 +25,27 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if   hasRoles('ROLE_GEST_PROGRAMAPROB') %}
+                    {% if   hasRoles('ROLE_GEST_GRADO_CIENTIFICO') %}
                         <li class="nav-item">
-                            <a href="{{ path('app_programas_aprobados_index') }}"
+                            <a href="{{ path('app_posgrado_grados_cientificos_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Programas aprobados</p>
+                                <p>Grados científicos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if   hasRoles('ROLE_GEST_FORMACION_ACADEMICA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_posgrado_formacion_academica_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Formación académica de posgrado</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Centros Autorizados de Posgrado</p>
                             </a>
                         </li>
                     {% endif %}

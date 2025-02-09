@@ -5,6 +5,7 @@ namespace App\Form\Convenio;
 use App\Entity\Convenio\Convenio;
 use App\Entity\Convenio\Modalidad;
 use App\Entity\Convenio\Tipo;
+use App\Entity\Estructura\Estructura;
 use App\Entity\Estructura\Pais;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Tramite\InstitucionExtranjera;
@@ -67,11 +68,14 @@ class ConvenioType extends AbstractType
                 'empty_data' => null
             ])
             ->add('institucionCubana', EntityType::class, [
-                'class' => Institucion::class,
+                'class' => Estructura::class,
                 'label' => 'Institución cubana',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('i')
+                        ->where('i.activo = true')
+                        ->andWhere('i.esEntidad = true')
+                        ->orderBy('i.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

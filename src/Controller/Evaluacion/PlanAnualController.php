@@ -316,7 +316,7 @@ class PlanAnualController extends AbstractController
         try {
             $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(6));
             $solicitudRepository->edit($solicitud, true);
-            $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
+            $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
             return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());

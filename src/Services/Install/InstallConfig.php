@@ -208,11 +208,13 @@ class InstallConfig
         //Postgrado
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_HOME_POSTG", "Portada de Posgrado", "Portada de Posgrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_SOLPROGRAM", "Gestionar solicitudes de programas", "Gestionar solicitudes de programas");
-        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_PROGRAMAPROB", "Gestionar programas aprobados", "Gestionar programas aprobados");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_GRADO_CIENTIFICO", "Gestionar grados científicos", "Gestionar grados científicos");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_FORMACION_ACADEMICA", "Gestionar formación académica de posgrado", "Gestionar formación académica de posgrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_COPEP", "Gestionar copep", "Gestionar copep");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_COMISION", "Gestionar comision", "Gestionar comision");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_TIPPROGRAM", "Gestionar tipo de programa", "Gestionar tipo de programa");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_RAMCIENC", "Gestionar rama de la ciencia", "Gestionar rama de la ciencia");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_CENTRO_AUTORIZADO", "Centros autorizados de posgrado", "Centros autorizados de posgrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_ROLESPOS ", "Gestionar roles", "Gestionar roles");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_TIP_SOLICITUD_POST ", "Gestionar tipos de solicitudes", "Gestionar tipos de solicitudes");
 
@@ -483,11 +485,13 @@ class InstallConfig
 //            ->addFunctionality("ROLE_PORTADA_ADMIN")
             ->addFunctionality("ROLE_HOME_POSTG")
             ->addFunctionality("ROLE_GEST_SOLPROGRAM")
-            ->addFunctionality("ROLE_GEST_PROGRAMAPROB")
+            ->addFunctionality("ROLE_GEST_GRADO_CIENTIFICO")
+            ->addFunctionality("ROLE_GEST_FORMACION_ACADEMICA")
             ->addFunctionality("ROLE_GEST_COPEP")
             ->addFunctionality("ROLE_GEST_COMISION")
             ->addFunctionality("ROLE_GEST_TIPPROGRAM")
             ->addFunctionality("ROLE_GEST_RAMCIENC")
+            ->addFunctionality("ROLE_GEST_CENTRO_AUTORIZADO")
             ->addFunctionality("ROLE_GEST_ROLESPOS");
 
 

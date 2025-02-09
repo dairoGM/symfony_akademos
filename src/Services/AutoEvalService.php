@@ -150,7 +150,7 @@ class AutoEvalService
      * @param FormaEvaluacion $formaEvaluacion
      * @return floar
      */
-    private function aplicarFormulaBase(PlanIndicador $planIndicador, FormaEvaluacion $formaEvaluacion): float
+    private function aplicarFormulaBase(PlanIndicador $planIndicador, FormaEvaluacion $formaEvaluacion)
     {
         $plan = $planIndicador->getPlanValor();
         $real = $planIndicador->getPlanReal();

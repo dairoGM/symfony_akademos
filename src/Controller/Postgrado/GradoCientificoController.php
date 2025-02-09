@@ -24,20 +24,20 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/postgrado/programas_aprobados")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PROGRAMAPROB")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_GRADO_CIENTIFICO")
  */
-class ProgramasAprobadosController extends AbstractController
+class GradoCientificoController extends AbstractController
 {
 
     /**
-     * @Route("/", name="app_programas_aprobados_index", methods={"GET"})
+     * @Route("/grados_cientificos", name="app_posgrado_grados_cientificos_index", methods={"GET"})
      * @param SolicitudProgramaRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaRepository $solicitudProgramaRepository)
+    public function indexGradoCientifico(SolicitudProgramaRepository $solicitudProgramaRepository)
     {
         return $this->render('modules/postgrado/programas_aprobados/index.html.twig', [
-            'registros' => $solicitudProgramaRepository->findBy(['estadoPrograma' => 7], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $solicitudProgramaRepository->findBy(['tipoPrograma' => 6, 'estadoPrograma' => 7], ['activo' => 'desc', 'id' => 'desc']),
         ]);
     }
 

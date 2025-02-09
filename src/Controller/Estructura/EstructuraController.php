@@ -495,22 +495,5 @@ class EstructuraController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/centro_autorizado_postgrado/index", name="app_estructura_centro_autorizado_postgrado_index", methods={"GET"})
-     * @param EstructuraRepository $estructuraRepository
-     * @return Response
-     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
-     */
-    public function indexEstructurasCAP(EstructuraRepository $estructuraRepository, Utils $utils)
-    {
-        try {
-            $registros = $estructuraRepository->findBy(['centroAutorizadoPosgrado' => 1], ['activo' => 'desc', 'id' => 'desc']);
-            return $this->render('modules/estructura/estructura/centroAutorizadoPosgrado.html.twig', [
-                'registros' => $registros
-            ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
-        }
-    }
+
 }

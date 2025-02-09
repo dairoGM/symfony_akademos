@@ -2,6 +2,7 @@
 
 namespace App\Form\Informatizacion;
 
+use App\Entity\Estructura\Entidad;
 use App\Entity\Estructura\Estructura;
 use App\Entity\Informatizacion\LineaCelular;
 use App\Entity\Informatizacion\Marca;
@@ -56,7 +57,9 @@ class TelefonoCelularType extends AbstractType
                 'label' => 'Institución',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where("u.categoriaEstructura in (5,6,8) and u.activo = true and u.tipoEstructura in (15,25,33,30)")->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('e')
+                        ->where('e.esEntidad = true')
+                        ->orderBy('e.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null

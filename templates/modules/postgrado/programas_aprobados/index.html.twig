@@ -10,7 +10,17 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Listado de programas aprobados</h3>
+                <h3 class="card-title text-bold text-gray">
+
+                    {% if app.request.getRequestUri() == '/postgrado/programas_aprobados/formacion_academica' %}
+                        <p>Formación académica de posgrado</p>
+                    {% elseif app.request.getRequestUri() == '/postgrado/programas_aprobados/grados_cientificos' %}
+                        <p>Grados Científicos</p>
+                    {% else %}
+                        <p>Otro contenido</p>
+                    {% endif %}
+
+                </h3>
                 {#                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}"><i#}
                 {#                            class="fa fa-plus"></i>#}
                 {#                </a>#}
