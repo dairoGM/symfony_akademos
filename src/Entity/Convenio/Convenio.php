@@ -6,6 +6,7 @@ use App\Entity\BaseNomenclator;
 use App\Entity\Institucion\Institucion;
 use App\Entity\Tramite\InstitucionExtranjera;
 use App\Entity\Estructura\Pais;
+use App\Entity\Estructura\Estructura;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Personal\Persona;
@@ -115,10 +116,8 @@ class Convenio
      */
     private ?string $documento = null;
 
-    /**
-     * @return Estructura|null
-     */
-    public function getInstitucionCubana(): ?Estructura
+
+    public function getInstitucionCubana()
     {
         return $this->institucionCubana;
     }

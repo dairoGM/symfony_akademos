@@ -43,7 +43,7 @@ class ConvenioController extends AbstractController
      */
     public function registrar(Request $request, ConvenioRepository $convenioRepository, PersonaRepository $personaRepository)
     {
-//        try {
+        try {
             $entidad = new Convenio();
             $form = $this->createForm(ConvenioType::class, $entidad, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -68,10 +68,10 @@ class ConvenioController extends AbstractController
             return $this->render('modules/convenio/convenio/new.html.twig', [
                 'form' => $form->createView(),
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_convenio_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_convenio_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
