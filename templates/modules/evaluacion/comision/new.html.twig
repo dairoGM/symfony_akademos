@@ -131,14 +131,14 @@
                 </tbody>
             </table>
         </div>
-
+        <input type="hidden" id="idSolicitud" name="idSolicitud" value="{{ idSolicitud }}">
 
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
             <a class="btn btn-danger mr-2 btn-cancel"
                data-url="{% if idSolicitud is null %}  {{ path('app_comision_evaluadora_index') }}  {% else %}  {{ path('app_plan_anual_evaluacion_index') }} {% endif %}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-            <button class="btn btn-primary">Aceptar</button>
+            <button id="btn_aceptar" class="btn btn-primary">Aceptar</button>
         </div>
         {{ form_end(form) }}
     </div>
@@ -150,11 +150,22 @@
         $('#evaluacion_nombre').val(localStorage.getItem('nombre'));
         $('#evaluacion_descripcion').val(localStorage.getItem('descripcion'));
         $('#evaluacion_activo').val(localStorage.getItem('activo'));
-        var idSolicitud = '{{ idSolicitud }}';
-        console.log(idSolicitud);
+        var idSolicitud = $('#idSolicitud').val();
+
+        $('#btn_aceptar').click(function (e) {
+            console.log(idSolicitud);
+            e.preventDefault();
+            if (idSolicitud != null) {
+                $('form[name="comision"]').attr('action', 'registrar?id=' + idSolicitud);
+                $('form[name="comision"]').submit();
+            } else {
+                $('form[name="comision"]').attr('action', 'registrar');
+                $('form[name="comision"]').submit();
+            }
+        });
         $('#btn-asociar').click(function (e) {
             e.preventDefault();
-
+            console.log(idSolicitud);
             localStorage.setItem('nombre', $('#evaluacion_nombre').val());
             localStorage.setItem('descripcion', $('#evaluacion_descripcion').val());
             localStorage.setItem('activo', $('#evaluacion_activo').val());

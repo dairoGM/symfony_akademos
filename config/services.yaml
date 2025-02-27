@@ -62,6 +62,23 @@ parameters:
   tramite_confeccion_pasaporte: '%env(tramite_confeccion_pasaporte)%'
 
 
+  estado_evaluacion_solicitada: '%env(estado_evaluacion_solicitada)%'
+  estado_evaluacion_revision: '%env(estado_evaluacion_revision)%'
+  estado_evaluacion_aceptada: '%env(estado_evaluacion_aceptada)%'
+  estado_evaluacion_rechazada: '%env(estado_evaluacion_rechazada)%'
+  estado_evaluacion_pendiente_informe: '%env(estado_evaluacion_pendiente_informe)%'
+  estado_evaluacion_informe_aprobado: '%env(estado_evaluacion_informe_aprobado)%'
+  estado_evaluacion_informe_rechazado: '%env(estado_evaluacion_informe_rechazado)%'
+  estado_evaluacion_asignada_comision: '%env(estado_evaluacion_asignada_comision)%'
+  estado_evaluacion_pendiente_plan_trabajo: '%env(estado_evaluacion_pendiente_plan_trabajo)%'
+  estado_evaluacion_plan_trabajo_aprobado: '%env(estado_evaluacion_plan_trabajo_aprobado)%'
+  estado_evaluacion_plan_trabajo_rechazado: '%env(estado_evaluacion_plan_trabajo_rechazado)%'
+  estado_evaluacion_iniciar_proceso: '%env(estado_evaluacion_iniciar_proceso)%'
+  estado_evaluacion_en_evaluacion: '%env(estado_evaluacion_en_evaluacion)%'
+  estado_evaluacion_dictamen_cte: '%env(estado_evaluacion_dictamen_cte)%'
+  estado_evaluacion_dictamen_jan: '%env(estado_evaluacion_dictamen_jan)%'
+
+
 
 services:
   # default configuration for services in *this* file

@@ -89,28 +89,24 @@
                             {% endif %}
                             {% if item.estadoSolicitud.id == 2 %}
                                 {% if item.estadoInformeAutoevaluacion =='Aprobado' %}
-                                    <a title="Aceptar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
-                                       class="btn btn-outline-primary"><i
-                                                class="fa fa-calendar-check"></i>
-                                    </a>
+
                                     <a title="Rechazar" href="{{ path('app_solicitud_rechazar', {'id': item.id}) }}"
                                        class="btn btn-outline-primary"><i
                                                 class="fa fa-calendar-times"></i>
                                     </a>
                                 {% else %}
-                                    <a title="Subir informe de autoevaluación"
-                                       href="{{ path('app_solicitud_informe_autoevaluacion', {'id': item.id}) }}"
-                                       class="btn btn-outline-primary"><i
-                                                class="fa fa-upload"></i>
-                                    </a>
 
+                                    <a title="Aceptar" href="{{ path('app_solicitud_aprobar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary"><i
+                                                class="fa fa-check"></i>
+                                    </a>
                                 {% endif %}
 
                             {% endif %}
                             {% if item.estadoSolicitud.id == 1 %}
-                                <button title="Cambiar estado" class="btn btn-outline-primary elementRemove"
+                                <button title="En revisión" class="btn btn-outline-primary elementRemove"
                                         data-url="{{ path('app_solicitud_cambiar_estado', {'id': item.id}) }}">
-                                    <i class="fa fa-address-book"></i>
+                                    <i class="fa fa-pencil-ruler"></i>
                                 </button>
 
                             {% endif %}

@@ -1,0 +1,55 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Subir plan de trabajo{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Subir plan de trabajo</h3>
+            </div>
+        </div>
+        {{ include('modules/evaluacion/solicitud/detail.html.twig', { 'solicitud': solicitud }) }}
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.planTrabajo) }}
+                    {{ form_widget(form.planTrabajo) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.planTrabajo) }}
+                    <a id="doc_container" target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/planTrabajo/{{ solicitud.planTrabajo }}">{{ solicitud.planTrabajo }}</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_solicitud_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button id="btn_submit" class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#solicitud_plan_trabajo_planTrabajo').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('#btn_submit').click(function (e) {
+            e.preventDefault();
+
+            $('form[name="solicitud_plan_trabajo"]').attr('action', 'plan_trabajo');
+            if ($('#solicitud_plan_trabajo_planTrabajo')[0].reportValidity()) {
+                $('form[name="solicitud_plan_trabajo"]').submit();
+            }
+        })
+    </script>
+{% endblock %}

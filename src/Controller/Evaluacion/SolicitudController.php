@@ -115,7 +115,7 @@ class SolicitudController extends AbstractController
                     $solicitud->setCartaSolicitud($file_name);
                     $file->move("uploads/evaluacion/solicitud/cartaSolicitud", $file_name);
                 }
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(1));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_solicitada')));
                 $solicitudRepository->add($solicitud, true);
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
@@ -194,7 +194,7 @@ class SolicitudController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $temp = explode('/', $request->request->all()['aprobar_solicitud']['fechaAprobada']);
                 $solicitud->setFechaAprobada(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(3));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_aceptada')));
 
                 $solicitudRepository->edit($solicitud);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
@@ -225,7 +225,7 @@ class SolicitudController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(4));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_rechazada')));
                 $solicitudRepository->edit($solicitud);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
@@ -289,7 +289,7 @@ class SolicitudController extends AbstractController
     {
         try {
             if ($solicitudRepository->find($solicitud) instanceof Solicitud) {
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(2));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_revision')));
                 $solicitudRepository->edit($solicitud, true);
                 $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
                 return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
@@ -463,45 +463,4 @@ class SolicitudController extends AbstractController
     }
 
 
-    /**
-     * @Route("/{id}/informe_autoevaluacion", name="app_solicitud_informe_autoevaluacion", methods={"GET", "POST"})
-     * @param Request $request
-     * @param Solicitud $solicitud
-     * @param SolicitudRepository $solicitudRepository
-     * @return Response
-     */
-    public function informeAutoevaluacion(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository)
-    {
-        try {
-            $form = $this->createForm(SolicitudInformeAutoevaluacionType::class, $solicitud, ['action' => 'modificar']);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                if (!empty($form['informeAutoevaluacion']->getData())) {
-                    if ($solicitud->getInformeAutoevaluacion() != null) {
-                        if (file_exists('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion())) {
-                            unlink('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion());
-                        }
-                    }
-                    $file = $form['informeAutoevaluacion']->getData();
-                    $file_name = $_FILES['solicitud_informe_autoevaluacion']['name']['informeAutoevaluacion'];
-                    $solicitud->setInformeAutoevaluacion($file_name);
-                    $solicitud->setEstadoInformeAutoevaluacion(null);
-                    $file->move("uploads/evaluacion/solicitud/informe/autoevaluacion/", $file_name);
-                }
-
-                $solicitudRepository->edit($solicitud);
-                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
-            }
-
-            return $this->render('modules/evaluacion/solicitud/informeAutoevaluacion.html.twig', [
-                'form' => $form->createView(),
-                'solicitud' => $solicitud
-            ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
-        }
-    }
 }

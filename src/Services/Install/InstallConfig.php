@@ -305,6 +305,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_SOLICITUD", "Gestión de solicitudes", "Gestión de solicitudes");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_PLAN_ANUAL_EVALUACION", "Gestión de planes anuales de evaluación", "Gestión de planes anuales de evaluación");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_INFORME_AUTOEVALUACION", "Gestión de solicitudes de autoevaluaciön", "Gestión de solicitudes de autoevaluaciön");
+        $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_PLAN_TRABAJO", "Gestión de solicitudes de planes de trabajo", "Gestión de solicitudes de planes de trabajo");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_ROL_COMISION", "Gestión de roles para comisión de evaluación", "Gestión de roles para comisión de evaluación");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_COMISION_EVALUADORA", "Gestión de comisiones evaluadoras", "Gestión de comisiones evaluadoras");
         $functionalities[] = Functionality::createFunctionality("MODULE_EVALUACION", "ROLE_GEST_APLAZAMIENTO", "Gestión solicitudes de aplazamiento", "Gestión solicitudes de aplazamiento");
@@ -527,6 +528,7 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_SOLICITUD")
             ->addFunctionality("ROLE_GEST_PLAN_ANUAL_EVALUACION")
             ->addFunctionality("ROLE_GEST_INFORME_AUTOEVALUACION")
+            ->addFunctionality("ROLE_GEST_PLAN_TRABAJO")
             ->addFunctionality("ROLE_GEST_ESTADO_SOLICITUD")
             ->addFunctionality("ROLE_GEST_ESTADO_APLAZAMIENTO")
             ->addFunctionality("ROLE_GEST_COMISION_EVALUADORA")

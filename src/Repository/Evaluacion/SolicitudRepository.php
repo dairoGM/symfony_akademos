@@ -56,4 +56,11 @@ class SolicitudRepository extends ServiceEntityRepository
         $qb->orderBy('qb.id', 'desc');
         return $qb->getQuery()->getResult();
     }
+    public function getPlanTrabajo()
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->where("qb.planTrabajo IS NOT NULL");
+        $qb->orderBy('qb.id', 'desc');
+        return $qb->getQuery()->getResult();
+    }
 }

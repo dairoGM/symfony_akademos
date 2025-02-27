@@ -15,7 +15,9 @@ use App\Form\Evaluacion\AprobarSolicitudType;
 use App\Form\Evaluacion\RechazarSolicitudType;
 use App\Form\Evaluacion\SolicitudComisionType;
 use App\Form\Evaluacion\SolicitudCTEType;
+use App\Form\Evaluacion\SolicitudInformeAutoevaluacionType;
 use App\Form\Evaluacion\SolicitudJANType;
+use App\Form\Evaluacion\SolicitudPlanTrabajoType;
 use App\Form\Evaluacion\SolicitudType;
 use App\Repository\Evaluacion\AplazamientoSolicitudRepository;
 use App\Repository\Evaluacion\ComisionRepository;
@@ -52,7 +54,7 @@ class PlanAnualController extends AbstractController
     public function index(SolicitudRepository $solicitudRepository, ComisionRepository $comisionRepository, AplazamientoSolicitudRepository $aplazamientoSolicitudRepository)
     {
         $response = [];
-        $registros = $solicitudRepository->findBy(['estadoSolicitud' => [3, 5, 6, 7, 8, 9]], ['id' => 'desc']);
+        $registros = $solicitudRepository->findBy(['estadoSolicitud' => [3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14]], ['id' => 'desc']);
         if (is_array($registros)) {
             foreach ($registros as $value) {
                 $comisionAsignada = $comisionRepository->findBy(['solicitud' => $value->getId()]);
@@ -82,6 +84,92 @@ class PlanAnualController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}/informe_autoevaluacion", name="app_plan_anual_evaluacion_informe_autoevaluacion", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function informeAutoevaluacion(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudInformeAutoevaluacionType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['informeAutoevaluacion']->getData())) {
+                    if ($solicitud->getInformeAutoevaluacion() != null) {
+                        if (file_exists('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion())) {
+                            unlink('uploads/evaluacion/solicitud/informe/autoevaluacion/' . $solicitud->getInformeAutoevaluacion());
+                        }
+                    }
+                    $file = $form['informeAutoevaluacion']->getData();
+                    $file_name = $_FILES['solicitud_informe_autoevaluacion']['name']['informeAutoevaluacion'];
+                    $solicitud->setInformeAutoevaluacion($file_name);
+                    $solicitud->setEstadoInformeAutoevaluacion(null);
+                    $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_pendiente_informe')));//Pendiente de analisis del informe
+                    $file->move("uploads/evaluacion/solicitud/informe/autoevaluacion/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/solicitud/informeAutoevaluacion.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+
+    /**
+     * @Route("/{id}/plan_trabajo", name="app_plan_anual_evaluacion_plan_trabajo", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Solicitud $solicitud
+     * @param SolicitudRepository $solicitudRepository
+     * @return Response
+     */
+    public function planTrabajo(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
+    {
+        try {
+            $form = $this->createForm(SolicitudPlanTrabajoType::class, $solicitud, ['action' => 'modificar']);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if (!empty($form['planTrabajo']->getData())) {
+                    if ($solicitud->getPlanTrabajo() != null) {
+                        if (file_exists('uploads/evaluacion/solicitud/planTrabajo/' . $solicitud->getPlanTrabajo())) {
+                            unlink('uploads/evaluacion/solicitud/planTrabajo/' . $solicitud->getPlanTrabajo());
+                        }
+                    }
+                    $file = $form['planTrabajo']->getData();
+                    $file_name = $_FILES['solicitud_plan_trabajo']['name']['planTrabajo'];
+                    $solicitud->setPlanTrabajo($file_name);
+                    $solicitud->setEstadoPlanTrabajo(null);
+                    $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_pendiente_plan_trabajo')));//Pendiente de analisis del informe
+                    $file->move("uploads/evaluacion/solicitud/planTrabajo/", $file_name);
+                }
+
+                $solicitudRepository->edit($solicitud);
+                $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
+                return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('modules/evaluacion/solicitud/planTrabajo.html.twig', [
+                'form' => $form->createView(),
+                'solicitud' => $solicitud
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_solicitud_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 
     /**
      * @Route("/{id}/aplazar", name="app_comision_evaluadora_aplazar", methods={"GET", "POST"})
@@ -201,7 +289,7 @@ class PlanAnualController extends AbstractController
                     $solicitud->setDictamenCTE($file_name);
                     $file->move("uploads/evaluacion/plan_anual/cte/dictamen/", $file_name);
                 }
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(8));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_dictamen_cte')));
                 $solicitudRepository->edit($solicitud, true);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
@@ -249,7 +337,7 @@ class PlanAnualController extends AbstractController
                 $temp = explode('/', $request->request->all()['solicitud_jan']['fechaEmision']);
                 $solicitud->setFechaEmision(new \DateTime($temp[2] . '/' . $temp[1] . '/' . $temp[0]));
 
-                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(9));
+                $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_dictamen_jan')));
                 $solicitudRepository->edit($solicitud);
 
                 if ('institucion' == $solicitud->getTipoSolicitud()) {
@@ -314,7 +402,7 @@ class PlanAnualController extends AbstractController
     public function iniciarProceso(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
     {
         try {
-            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(6));
+            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_iniciar_proceso')));
             $solicitudRepository->edit($solicitud, true);
             $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
             return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);
@@ -334,7 +422,7 @@ class PlanAnualController extends AbstractController
     public function enEvaluacionPorElComiteTecnico(Request $request, Solicitud $solicitud, SolicitudRepository $solicitudRepository, EstadoSolicitudRepository $estadoSolicitudRepository)
     {
         try {
-            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find(7));
+            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_en_evaluacion')));
             $solicitudRepository->edit($solicitud, true);
             $this->addFlash('success', 'El elemento ha sido eliminado satisfactoriamente.');
             return $this->redirectToRoute('app_plan_anual_evaluacion_index', [], Response::HTTP_SEE_OTHER);

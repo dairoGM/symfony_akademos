@@ -75,7 +75,16 @@ class Solicitud extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
      */
+    private ?string $planTrabajo = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
     private ?string $estadoInformeAutoevaluacion = null;
+    /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $estadoPlanTrabajo = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="255")
@@ -444,6 +453,38 @@ class Solicitud extends BaseEntity
     public function setEstadoInformeAutoevaluacion(?string $estadoInformeAutoevaluacion): void
     {
         $this->estadoInformeAutoevaluacion = $estadoInformeAutoevaluacion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlanTrabajo(): ?string
+    {
+        return $this->planTrabajo;
+    }
+
+    /**
+     * @param string|null $planTrabajo
+     */
+    public function setPlanTrabajo(?string $planTrabajo): void
+    {
+        $this->planTrabajo = $planTrabajo;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEstadoPlanTrabajo(): ?string
+    {
+        return $this->estadoPlanTrabajo;
+    }
+
+    /**
+     * @param string|null $estadoPlanTrabajo
+     */
+    public function setEstadoPlanTrabajo(?string $estadoPlanTrabajo): void
+    {
+        $this->estadoPlanTrabajo = $estadoPlanTrabajo;
     }
 
 

@@ -34,41 +34,41 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/evaluacion/informe_autoevaluacion")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_INFORME_AUTOEVALUACION")
+ * @Route("/evaluacion/plan_trabajo")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_PLAN_TRABAJO")
  */
-class InformeAutoevaluacionController extends AbstractController
+class PlanTrabajoController extends AbstractController
 {
 
     /**
-     * @Route("/", name="app_informe_autoevaluacion_index", methods={"GET"})
+     * @Route("/", name="app_plan_trabajo_index", methods={"GET"})
      * @param SolicitudRepository $solicitudRepository
      * @return Response
      */
     public function index(SolicitudRepository $solicitudRepository)
     {
-        $registros = $solicitudRepository->getInformeAutoevaluacion();
+        $registros = $solicitudRepository->getPlanTrabajo();
         $respose = [];
         if (is_array($registros)) {
             foreach ($registros as $value) {
                 $class = null;
-                if ($value->getEstadoInformeAutoevaluacion() == 'Aprobado') {
+                if ($value->getEstadoPlanTrabajo() == 'Aprobado') {
                     $class = 'ms-status bg-green';
                 }
-                if ($value->getEstadoInformeAutoevaluacion() == 'Rechazado') {
+                if ($value->getEstadoPlanTrabajo() == 'Rechazado') {
                     $class = 'ms-status bg-red';
                 }
                 $value->classParams = $class;
                 $respose[] = $value;
             }
         }
-        return $this->render('modules/evaluacion/informe_autoevaluacion/index.html.twig', [
+        return $this->render('modules/evaluacion/plan_trabajo/index.html.twig', [
             'registros' => $respose
         ]);
     }
 
     /**
-     * @Route("/{id}/aprobar", name="app_informe_autoevaluacion_aprobar", methods={"GET"})
+     * @Route("/{id}/aprobar", name="app_plan_trabajo_aprobar", methods={"GET"})
      * @param Solicitud $solicitud
      * @param SolicitudRepository $solicitudRepository
      * @return Response
@@ -76,20 +76,20 @@ class InformeAutoevaluacionController extends AbstractController
     public function aprobar(Solicitud $solicitud, EntityManagerInterface $entityManager, EstadoSolicitudRepository $estadoSolicitudRepository, SolicitudRepository $solicitudRepository)
     {
         try {
-            $solicitud->setEstadoInformeAutoevaluacion('Aprobado');
+            $solicitud->setEstadoPlanTrabajo('Aprobado');
             $solicitudRepository->edit($solicitud, true);
-            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_informe_aprobado')));
+            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_plan_trabajo_aprobado')));
             $entityManager->flush();
             $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_plan_trabajo_index', [], Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_plan_trabajo_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
     /**
-     * @Route("/{id}/rechazar", name="app_informe_autoevaluacion_rechazar", methods={"POST"})
+     * @Route("/{id}/rechazar", name="app_plan_trabajo_rechazar", methods={"POST"})
      * @param Request $request
      * @param Solicitud $solicitud
      * @param SolicitudRepository $solicitudRepository
@@ -101,13 +101,13 @@ class InformeAutoevaluacionController extends AbstractController
             $file = $request->files->get('additionalFile');
             $imagePath = $file->getClientOriginalName();
 
-            if (file_exists('uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos/' . $imagePath)) {
-                unlink('uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos/' . $imagePath);
+            if (file_exists('uploads/evaluacion/solicitud/plan_trabajo/motivos_rechazos/' . $imagePath)) {
+                unlink('uploads/evaluacion/solicitud/plan_trabajo/motivos_rechazos/' . $imagePath);
             }
-            $file->move("uploads/evaluacion/solicitud/informe/autoevaluacion/motivos_rechazos", $imagePath);
+            $file->move("uploads/evaluacion/solicitud/plan_trabajo/motivos_rechazos", $imagePath);
 
-            $solicitud->setEstadoInformeAutoevaluacion('Rechazado');
-            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_informe_rechazado')));
+            $solicitud->setEstadoPlanTrabajo('Rechazado');
+            $solicitud->setEstadoSolicitud($estadoSolicitudRepository->find($this->getParameter('estado_evaluacion_plan_trabajo_rechazado')));
             $solicitud->setMotivoRechazo($imagePath);
 
             $solicitudRepository->edit($solicitud, true);
@@ -120,7 +120,7 @@ class InformeAutoevaluacionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/eliminar", name="app_informe_autoevaluacion_eliminar", methods={"GET"})
+     * @Route("/{id}/eliminar", name="app_plan_trabajo_eliminar", methods={"GET"})
      * @param Solicitud $solicitud
      * @param SolicitudRepository $solicitudRepository
      * @return Response
@@ -128,14 +128,14 @@ class InformeAutoevaluacionController extends AbstractController
     public function eliminar(Solicitud $solicitud, SolicitudRepository $solicitudRepository)
     {
         try {
-            $solicitud->setEstadoInformeAutoevaluacion(null);
-            $solicitud->setInformeAutoevaluacion(null);
+            $solicitud->setEstadoPlanTrabajo(null);
+            $solicitud->setPlanTrabajo(null);
             $solicitudRepository->edit($solicitud, true);
             $this->addFlash('success', 'El elemento ha sido modificado satisfactoriamente.');
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_plan_trabajo_index', [], Response::HTTP_SEE_OTHER);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_informe_autoevaluacion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_plan_trabajo_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 }

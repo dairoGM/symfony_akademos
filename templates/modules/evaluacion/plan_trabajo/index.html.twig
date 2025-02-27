@@ -1,0 +1,105 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Planes de trabajo{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de planes de trabajo</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Organismo</th>
+                    <th>Institución</th>
+                    <th>Programa de pregrado</th>
+                    <th>Programa de posgrado</th>
+                    <th>Evaluación actual</th>
+                    <th>Fecha propuesta</th>
+                    {#                    <th>Fecha aprobada</th> #}
+                    <th>Estado</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+
+                        {% if item.tipoSolicitud == 'institucion' %}
+                            <td>{{ item.institucion.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.institucion.nombre | default('') }}</td>
+                        {% elseif  item.tipoSolicitud == 'programa_pregrado' %}
+                            <td>{{ item.programaPregrado.centroRector.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.programaPregrado.centroRector.nombre | default('') }}</td>
+                        {% elseif  item.tipoSolicitud == 'programa_posgrado' %}
+                            <td>{{ item.programaPosgrado.universidad.estructura.estructura.siglas | default('') }}</td>
+                            <td>{{ item.programaPosgrado.universidad.nombre | default('') }}</td>
+                        {% endif %}
+                        <td>{{ item.programaPregrado.nombre | default('') }}</td>
+                        <td>{{ item.programaPosgrado.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacionActual | default('') }}</td>
+                        <td>{% if item.fechaPropuesta is not null %} {{ item.fechaPropuesta | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td>
+                        {#                        <td>{% if item.fechaAprobada is not null %} {{ item.fechaAprobada | date('d/m/Y') }} {% else %} {{ '' }} {% endif %}</td> #}
+                        <td>
+                            <span class="{{ item.classParams }}">{{ item.estadoPlanTrabajo | default('') }}</span>
+                        </td>
+                        <td width="15%" class="text-center">
+                            <a title="Descargar plan de trabajo" target="_blank"
+                               class="btn btn-outline-primary"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/planTrabajo/{{ item.planTrabajo }}">
+                                <i
+                                        class="fa fa-file-download"></i>
+                            </a>
+                            {% if item.estadoPlanTrabajo == 'Rechazado' %}
+                                <a title="Descargar motivos de rechazo" target="_blank"
+                                   class="btn btn-outline-primary"
+                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/solicitud/planTrabajo/motivos_rechazos/{{ item.motivoRechazo }}">
+                                    <i
+                                            class="fa fa-file-archive"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoPlanTrabajo is null %}
+                                <button title="Aceptar" class="btn btn-outline-primary elementRemove"
+                                        data-url="{{ path('app_plan_trabajo_aprobar', {'id': item.id}) }}">
+                                    <i class="fa fa-calendar-check"></i>
+
+                                </button>
+                                <button title="Rechazar" class="btn btn-outline-primary elementRemoveTexarea"
+                                        data-url="{{ path('app_plan_trabajo_rechazar', {'id': item.id}) }}"
+                                        data-title="Motivos"
+                                        data-url_redirect="{{ path('app_plan_trabajo_index') }}"
+                                >
+                                    <i class="fa fa-calendar-times"></i>
+                                </button>
+
+                                <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                        data-url="{{ path('app_plan_trabajo_eliminar', {'id': item.id}) }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            {% endif %}
+
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

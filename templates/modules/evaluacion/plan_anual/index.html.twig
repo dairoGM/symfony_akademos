@@ -83,50 +83,66 @@
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            {% if item.estadoSolicitud.id in [3,5] %}
-                                {% if item.comision is null %}
-                                    <a title="Asignar comisión"
-                                       href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
-                                       class="btn btn-outline-primary"><i
-                                                class="fa fa-user-friends"></i>
-                                    </a>
-                                {% endif %}
-                                {% if item.aplazamiento is null %}
-                                    <a title="Aplazar"
-                                       href="{{ path('app_comision_evaluadora_aplazar', {'id': item.id}) }}"
-                                       class="btn btn-outline-primary"><i
-                                                class="fa fa-calendar-plus"></i>
-                                    </a>
-                                {% endif %}
-                                {% if item.comision is not null %}
-                                    <button title="Iniciar proceso" class="btn btn-outline-primary elementRemove"
-                                            data-url="{{ path('app_plan_anual_evaluacion_iniciar_proceso', {'id': item.id}) }}">
-                                        <i class="fa fa-info"></i>
-                                    </button>
-                                {% endif %}
+                            {% if item.estadoSolicitud.id in [3] %}
+                                <a title="Subir informe de autoevaluación"
+                                   href="{{ path('app_plan_anual_evaluacion_informe_autoevaluacion', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-cloud-upload-alt"></i>
+                                </a>
                             {% endif %}
-                            {% if item.estadoSolicitud.id in [6] %}
+                            {% if item.comision is null and item.estadoSolicitud.id in [5] %}
+                                <a title="Asignar comisión"
+                                   href="{{ path('app_comision_evaluadora_registrar', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-user-friends"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoSolicitud.id in [7] %}
+                                <a title="Subir plan de trabajo"
+                                   href="{{ path('app_plan_anual_evaluacion_plan_trabajo', {'id': item.id}) }}"
+                                   class="btn btn-outline-primary"><i
+                                            class="fa fa-upload"></i>
+                                </a>
+                            {% endif %}
+                            {% if item.estadoSolicitud.id in [9] %}
+                                <button title="Iniciar proceso" class="btn btn-outline-primary elementRemove" #}
+                                        data-url="{{ path('app_plan_anual_evaluacion_iniciar_proceso', {'id': item.id}) }}">
+                                    <i class="fa fa-info"></i>
+                                </button>
+                            {% endif %}
+
+
+                            {#                                {% if item.aplazamiento is null %} #}
+                            {#                                    <a title="Aplazar" #}
+                            {#                                       href="{{ path('app_comision_evaluadora_aplazar', {'id': item.id}) }}" #}
+                            {#                                       class="btn btn-outline-primary"><i #}
+                            {#                                                class="fa fa-calendar-plus"></i> #}
+                            {#                                    </a> #}
+                            {#                                {% endif %} #}
+
+                            {% if item.estadoSolicitud.id in [11] %}
                                 <a title="Asignar dictámen de comisión"
                                    href="{{ path('app_plan_anual_evaluacion_dictamen_comision', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-file"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoSolicitud.id in [7] %}
+
+                            {% if item.estadoSolicitud.id in [12] %}
                                 <a title="Asignar dictámen del Comité Técnico Evaluador"
                                    href="{{ path('app_plan_anual_evaluacion_dictamen_cte', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-file-archive"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoSolicitud.id in [8] %}
+                            {% if item.estadoSolicitud.id in [13] %}
                                 <a title="Calificación"
                                    href="{{ path('app_plan_anual_evaluacion_dictamen_jan', {'id': item.id}) }}"
                                    class="btn btn-outline-primary"><i
                                             class="fa fa-book-open"></i>
                                 </a>
                             {% endif %}
-                            {% if item.estadoSolicitud.id in [9] %}
+                            {% if item.estadoSolicitud.id in [14] %}
                                 <a title="Descargar informe de la JAN" target="_blank"
                                    class="btn btn-outline-primary"
                                    href="{{ app.request.getSchemeAndHttpHost() }}/uploads/evaluacion/plan_anual/jan/dictamen/{{ item.dictamenJan }}">
