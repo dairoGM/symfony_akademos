@@ -86,7 +86,7 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('qb')
             ->select(
                 "qb.id, 
-                        concat('(',e1.siglas,') ', e1.nombre) as nombre_siglas_organismo, 
+                        concat('(',e.siglas,') ', e.nombre) as nombre_siglas_organismo, 
                         concat('(',c.siglas,') ', c.nombre) as nombre_siglas, 
                         qb.nombre,
                         tp.nombre as nombreTipoPrograma,
@@ -99,7 +99,6 @@ class SolicitudProgramaRepository extends ServiceEntityRepository
             ->join('qb.tipoPrograma', 'tp')
             ->join('qb.categoriaAcreditacion', 'ca')
             ->join('c.estructura', 'e')
-            ->join('e.estructura', 'e1')
             ->leftJoin('App\Entity\Evaluacion\CategoriaAcreditacionPosgrado', 'b', Join::WITH, 'qb.id = b.solicitudPrograma');
 
         $qb->orderBy('qb.nombre');
