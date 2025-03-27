@@ -112,6 +112,10 @@ class ConvenioType extends AbstractType
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Descripción',
                 'required' => false,
+            ])
+            ->add('activo', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Habilitado'
             ]);
 
     }

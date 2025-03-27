@@ -236,6 +236,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_HOME_CONVENIO", "Portada de Convenio", "Portada de Convenio");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_TIPO", "Gestión de tipos de convenios", "Gestión de tipos de convenios");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_MODALIDAD", "Gestión de modalidades de convenios", "Gestión de modalidades de convenios");
+        $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_REGION", "Gestión de regiones de convenios", "Gestión de modalidades de convenios");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_CONVENIO", "Gestión de convenios", "Gestión de convenios");
         $functionalities[] = Functionality::createFunctionality("MODULE_CONVENIO", "ROLE_GEST_INST_EXTRANJERA", "Gestión de institución extranjera", "Gestión de institución extranjera");
         return $functionalities;
@@ -502,7 +503,8 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_CONVENIO")
             ->addFunctionality("ROLE_GEST_TIPO")
             ->addFunctionality("ROLE_GEST_INST_EXTRANJERA")
-            ->addFunctionality("ROLE_GEST_MODALIDAD");
+            ->addFunctionality("ROLE_GEST_MODALIDAD")
+            ->addFunctionality("ROLE_GEST_REGION");
 
 
         $roles[] = Role::createRole('ROL_TRAMITES', "Administrador de Trámites", "Rol con permiso a la gestion de Trámites")

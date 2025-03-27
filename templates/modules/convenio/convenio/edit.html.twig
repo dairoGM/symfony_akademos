@@ -89,7 +89,13 @@
                     {{ form_widget(form.descripcion) }}
                     {{ form_errors(form.descripcion) }}
                 </div>
+                <div id="ip_active" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
             </div>
+
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
             <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_convenio_index') }}" data-title=""
@@ -101,6 +107,15 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        var modalidad = '{{ convenio.modalidad.id }}'
+        if (modalidad == 5) {
+            $('#ip_active').show();
+            $('#convenio_activo').prop('checked', true);
+        } else {
+            $('#ip_active').hide();
+            $('#convenio_activo').prop('checked', false);
+        }
+
         $('#convenio_fechaSuscribe').val('{{ convenio.fechaSuscribe | date('d-m-Y') }}');
         $('#convenio_fechaSuscribe').datetimepicker({
             format: 'DD/MM/YYYY'
@@ -130,6 +145,16 @@
                     }
                     HoldOn.close()
                 });
+            }
+        });
+
+        $('#convenio_modalidad').on('change', function () {
+            if ($(this).val() == 5) {
+                $('#ip_active').show();
+                $('#convenio_activo').prop('checked', true);
+            } else {
+                $('#ip_active').hide();
+                $('#convenio_activo').prop('checked', false);
             }
         });
     </script>

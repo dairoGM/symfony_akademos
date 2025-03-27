@@ -49,7 +49,7 @@ class Convenio
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private ?bool $activo = true;
+    private ?bool $activo = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Modalidad")

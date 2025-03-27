@@ -31,7 +31,7 @@ class ConvenioController extends AbstractController
     public function index(ConvenioRepository $convenioRepository)
     {
         return $this->render('modules/convenio/convenio/index.html.twig', [
-            'registros' => $convenioRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']),
+            'registros' => $convenioRepository->findBy([], ['id' => 'desc']),
         ]);
     }
 
