@@ -47,9 +47,9 @@ class InstitucionExtranjeraType extends AbstractType
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
                 'required' => false,
-                "attr" => [
-                    "data-inputmask" => '"mask": "(99) 9 999-99"',
-                    "data-mask" => ''
+                'attr' => [
+                    'data-inputmask' => '"mask": "(999) 999 999 999 999"', // Permite hasta 15 dígitos
+                    'data-mask' => ''
                 ]
             ])
             ->add('pais', EntityType::class, [
