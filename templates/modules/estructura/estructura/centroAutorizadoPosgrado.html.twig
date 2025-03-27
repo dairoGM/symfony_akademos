@@ -45,11 +45,13 @@
                         </td>
                         <td class="text-center">
                             <button class="btn btn-outline-primary modalDetailAction" title="Detalles"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_estructura_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la estructura">
                                 <i class="fa fa-eye "></i>
                             </button>
                             <button class="btn btn-outline-danger elementRemove" title="Eliminar"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_estructura_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>

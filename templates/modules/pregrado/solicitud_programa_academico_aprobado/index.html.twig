@@ -19,21 +19,34 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Ministerio</th>
                     <th>Programa académico</th>
                     <th>Tipo de programa académico</th>
                     <th>Rama de la ciencia</th>
                     <th>Fecha de aprobación</th>
                     <th>Centro rector</th>
-                    {#                    <th>Duración del curso diurno</th> #}
-                    {#                    <th>Duración del curso por encuentro</th> #}
                     <th>Categoría de acreditación</th>
                     <th class="text-center">Opciones</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Ministerio" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Programa académico" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo de programa académico"
+                               class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Rama de la ciencia" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Fecha de aprobación" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Centro rector" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de acreditación"
+                               class="responsive-input"/></th>
+                    <th></th> <!-- No filter for actions -->
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.organismoDemandante.nombre  | default('') }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
                         <td>{{ item.ramaCiencia.nombre | default('') }}</td>
@@ -46,91 +59,105 @@
                         {#                        <td>{% if item.duracionCursoDiurno is not null %} {{ item.duracionCursoDiurno | default('') }} años {% else %} {% endif %}</td> #}
                         {#                        <td>{% if item.duracionCursoPorEncuentro is not null %}  {{ item.duracionCursoPorEncuentro | default('') }} años{% else %} {% endif %}</td> #}
                         <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
-                        <td width="25%" class="text-center">
-                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles del Programas de Formación de Pregrado">
-                                <i class="fa fa-eye "></i>
-                            </button>
+                        <td width="25%" class="text-center responsive-col"
+                            style="white-space: nowrap; padding: 0; vertical-align: middle;">
+                            <div style="display: flex; flex-wrap: nowrap; gap: 2px; justify-content: center; align-items: center; width: 100%;">
+                                <button title="Detalles" class="btn btn-outline-primary btn-sm modalDetailAction"
+                                        style="min-width: auto; width: auto; padding: 2px 6px;"
+                                        data-url="{{ path('app_solicitud_programa_academico_aprobado_detail', {'id' : item.id}) }}"
+                                        data-title="Detalles del Programas de Formación de Pregrado">
+                                    <i class="fa fa-eye"></i>
+                                </button>
 
-                            {% if item.estadoProgramaAcademico.id == 2 %} {# Aprobado #}
-                                <a title="Modificar"
-                                   href="{{ path('app_solicitud_programa_academico_aprobar_modificar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-edit"></i>
-                                </a>
+                                {% if item.estadoProgramaAcademico.id == 2 %} {# Aprobado #}
+                                    <a title="Modificar"
+                                       href="{{ path('app_solicitud_programa_academico_aprobar_modificar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
 
-                                <a title="Asociar universidades en que se estudia "
-                                   href="{{ path('app_solicitud_programa_academico_aprobado_asignar_universidad', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-university"></i>
-                                </a>
+                                    <a title="Asociar universidades en que se estudia"
+                                       href="{{ path('app_solicitud_programa_academico_aprobado_asignar_universidad', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-university"></i>
+                                    </a>
 
-                                <a title="Asociar comisión nacional"
-                                   href="{{ path('app_solicitud_programa_academico_aprobado_asignar_comision', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-user-cog"></i>
-                                </a>
+                                    <a title="Asociar comisión nacional"
+                                       href="{{ path('app_solicitud_programa_academico_aprobado_asignar_comision', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-user-cog"></i>
+                                    </a>
 
-                                <a title="Reabrir programa académico"
-                                   href="{{ path('app_solicitud_programa_academico_aprobado_reabrir', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-bacon"></i>
-                                </a>
-                                <a title="Desactivar programa académico"
-                                   href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-deaf"></i>
-                                </a>
-                                {% if item.cartaAprobacion is not null %}
+                                    <a title="Reabrir programa académico"
+                                       href="{{ path('app_solicitud_programa_academico_aprobado_reabrir', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-bacon"></i>
+                                    </a>
+
+                                    <a title="Desactivar programa académico"
+                                       href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-deaf"></i>
+                                    </a>
+
+                                    {% if item.cartaAprobacion is not null %}
+                                        <a title="Descargar carta de aprobación" target="_blank"
+                                           class="btn btn-outline-primary btn-sm"
+                                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}"
+                                           style="padding: 2px 6px;">
+                                            <i class="fa fa-file-download"></i>
+                                        </a>
+                                    {% endif %}
+
+                                    {% if item.solicitud is not null %}
+                                        <a title="Descargar solicitud" target="_blank"
+                                           class="btn btn-outline-primary btn-sm"
+                                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/solicitud_programa_academico/solicitud/{{ item.solicitud }}"
+                                           style="padding: 2px 6px;">
+                                            <i class="fa fa-file-download"></i>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if item.estadoProgramaAcademico.id == 6 %} {# Desactivado #}
+                                    <a title="Descargar plan de estudio" target="_blank"
+                                       class="btn btn-outline-primary btn-sm"
+                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.plan_estudio }}"
+                                       style="padding: 2px 6px;">
+                                        <i class="fa fa-file-download"></i>
+                                    </a>
                                     <a title="Descargar carta de aprobación" target="_blank"
-                                       class="btn btn-outline-primary"
-                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}">
-                                        <i
-                                                class="fa fa-file-download"></i>
+                                       class="btn btn-outline-primary btn-sm"
+                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}"
+                                       style="padding: 2px 6px;">
+                                        <i class="fa fa-file-download"></i>
                                     </a>
                                 {% endif %}
-                                {% if item.solicitud is not null %}
-                                    <a title="Descargar solicitud" target="_blank" class="btn btn-outline-primary"
-                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/solicitud_programa_academico/solicitud/{{ item.solicitud }}">
-                                        <i
-                                                class="fa fa-file-download"></i>
+
+                                {% if item.estadoProgramaAcademico.id == 7 %} {# Reabierto #}
+                                    <a title="Desactivar programa académico"
+                                       href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="padding: 2px 6px;">
+                                        <i class="fa fa-deaf"></i>
+                                    </a>
+
+                                    <a title="Descargar plan de estudio" target="_blank"
+                                       class="btn btn-outline-primary btn-sm"
+                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.plan_estudio }}"
+                                       style="padding: 2px 6px;">
+                                        <i class="fa fa-file-download"></i>
+                                    </a>
+
+                                    <a title="Descargar carta de aprobación" target="_blank"
+                                       class="btn btn-outline-primary btn-sm"
+                                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}"
+                                       style="padding: 2px 6px;">
+                                        <i class="fa fa-file-download"></i>
                                     </a>
                                 {% endif %}
-                            {% endif %}
-
-                            {% if item.estadoProgramaAcademico.id == 6 %} {# Desactivado #}
-                                <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
-                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.plan_estudio }}">
-                                    <i
-                                            class="fa fa-file-download"></i>
-                                </a>
-                                <a title="Descargar carta de aprobación" target="_blank" class="btn btn-outline-primary"
-                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}">
-                                    <i
-                                            class="fa fa-file-download"></i>
-                                </a>
-                            {% endif %}
-
-                            {% if item.estadoProgramaAcademico.id == 7 %}  {# Reabierto #}
-                                <a title="Desactivar programa académico"
-                                   href="{{ path('app_solicitud_programa_academico_aprobado_desactivar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-deaf"></i>
-                                </a>
-                                <a title="Descargar plan de estudio" target="_blank" class="btn btn-outline-primary"
-                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/plan_estudio/{{ item.plan_estudio }}">
-                                    <i
-                                            class="fa fa-file-download"></i>
-                                </a>
-                                <a title="Descargar carta de aprobación" target="_blank" class="btn btn-outline-primary"
-                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/pregrado/carta_aprobacion/{{ item.cartaAprobacion }}">
-                                    <i
-                                            class="fa fa-file-download"></i>
-                                </a>
-                            {% endif %}
-
+                            </div>
                         </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

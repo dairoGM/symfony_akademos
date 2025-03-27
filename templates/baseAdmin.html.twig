@@ -51,6 +51,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Theme style -->
     <style>
+        .table td, .table th {
+            text-align: left; /* Alinea el texto a la izquierda */
+            vertical-align: middle; /* Centra verticalmente */
+        }
+        .table tbody tr:hover {
+            background-color: #d3d3d3; /* Cambia el color de fondo al pasar el mouse */
+        }
+        .table tbody tr.selected {
+            background-color: #e0e0e0; /* Gris claro, puedes cambiarlo a cualquier color */
+        }
+
         .table td {
             padding-top: 1%
         }
@@ -1133,7 +1144,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     })
 
+    // Obtener todas las filas de la tabla
+    const rows = document.querySelectorAll('.table tbody tr');
 
+    // Iterar sobre las filas y agregar un evento de clic
+    rows.forEach(row => {
+        row.addEventListener('click', function() {
+            // Remover la clase 'selected' de todas las filas
+            rows.forEach(r => r.classList.remove('selected'));
+
+            // Añadir la clase 'selected' a la fila clickeada
+            this.classList.add('selected');
+        });
+    });
 </script>
 
 {% for message in app.flashes('success') %}

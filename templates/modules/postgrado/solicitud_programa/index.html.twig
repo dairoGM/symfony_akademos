@@ -52,74 +52,79 @@
                         <td>{{ item.universidad.nombre | default('') }}</td>
                         <td>{{ item.nombreCoordinador | default('') }}</td>
                         <td>{{ item.estadoPrograma.nombre | default('') }}</td>
-                        <td width="20%" class="text-center responsive-col">
-                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la solicitud del programa">
-                                <i class="fa fa-eye "></i>
-                            </button>
-                            {% if item.tipoSolicitud.id is defined and item.tipoSolicitud.id == 1 %}
-                                <a title="Asignar comisión coordinadora"
-                                   href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id, 'tipo':'2'}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-address-book"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 and item.estadoPrograma.id != 7 %}
-                                <a title="Modificar"
-                                   href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-edit"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 1 %}
-                                <a title="Asignar comisión"
-                                   href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-address-card"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 2 %}
-                                <a title="Dictamenes"
-                                   href="{{ path('app_solicitud_programa_asociar_dictamen', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-paperclip"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 4 %}
-                                <a title="Votar"
-                                   href="{{ path('app_solicitud_programa_votacion', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-hand-pointer"></i>
-                                </a>
-                            {% endif %}
-
-                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 3 %}
-                                <a title="Revisar dictámenes"
-                                   href="{{ path('app_solicitud_programa_revisar_dictamenes', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-book-open"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 5 %}
-                                <a title="Aprobar"
-                                   href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-check"></i>
-                                </a>
-                            {% endif %}
-                            {% if item.estadoPrograma.id is defined and  item.estadoPrograma.id == 6 %}
-                                <a title="Rechazar"
-                                   href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
-                                   class="btn btn-outline-primary"><i
-                                            class="fa fa-times"></i>
-                                </a>
-                            {% endif %}
-                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_solicitud_programa_eliminar', {'id': item.id}) }}">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                        <td width="20%" class="text-center responsive-col" style="white-space: nowrap; padding: 0; vertical-align: middle;">
+                            <div style="display: flex; flex-wrap: nowrap; gap: 2px; justify-content: center; align-items: center; width: 100%;">
+                                <button title="Detalles" class="btn btn-outline-primary btn-sm modalDetailAction"
+                                        style="min-width: auto; width: auto; padding: 2px 6px;"
+                                        data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
+                                        data-title="Detalles de la solicitud del programa">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                {% if item.tipoSolicitud.id is defined and item.tipoSolicitud.id == 1 %}
+                                    <a title="Asignar comisión coordinadora"
+                                       href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id, 'tipo':'2'}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-address-book"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id != 4 and item.estadoPrograma.id != 5 and item.estadoPrograma.id != 7 %}
+                                    <a title="Modificar"
+                                       href="{{ path('app_solicitud_programa_modificar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 1 %}
+                                    <a title="Asignar comisión"
+                                       href="{{ path('app_solicitud_programa_asignar_comision', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-address-card"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 2 %}
+                                    <a title="Dictamenes"
+                                       href="{{ path('app_solicitud_programa_asociar_dictamen', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-paperclip"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 4 %}
+                                    <a title="Votar"
+                                       href="{{ path('app_solicitud_programa_votacion', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-hand-pointer"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 3 %}
+                                    <a title="Revisar dictámenes"
+                                       href="{{ path('app_solicitud_programa_revisar_dictamenes', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-book-open"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 5 %}
+                                    <a title="Aprobar"
+                                       href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                {% endif %}
+                                {% if item.estadoPrograma.id is defined and item.estadoPrograma.id == 6 %}
+                                    <a title="Rechazar"
+                                       href="{{ path('app_solicitud_programa_no_aprobar', {'id': item.id}) }}"
+                                       class="btn btn-outline-primary btn-sm" style="min-width: auto; width: auto; padding: 2px 6px;">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                {% endif %}
+                                <button title="Eliminar" class="btn btn-outline-danger btn-sm elementRemove"
+                                        style="min-width: auto; width: auto; padding: 2px 6px;"
+                                        data-url="{{ path('app_solicitud_programa_eliminar', {'id': item.id}) }}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
+
+
                     </tr>
                 {% endfor %}
                 </tbody>

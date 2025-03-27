@@ -21,9 +21,9 @@
                     {% endif %}
 
                 </h3>
-                {#                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}"><i#}
-                {#                            class="fa fa-plus"></i>#}
-                {#                </a>#}
+                {#                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}"><i #}
+                {#                            class="fa fa-plus"></i> #}
+                {#                </a> #}
 
             </div>
         </div>
@@ -33,6 +33,7 @@
                 <thead class="table-custom-header">
                 <tr>
                     <th>No.</th>
+                    <th>Ministerio</th>
                     <th>Nombre</th>
                     <th>Tipo de programa</th>
                     <th>Universidad</th>
@@ -43,11 +44,12 @@
                 <!-- Fila para los filtros de cada columna -->
                 <tr>
                     <th></th> <!-- No filter for index -->
-                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input" /></th>
-                    <th><input type="text" placeholder="Filtrar por Tipo" class="responsive-input" /></th>
-                    <th><input type="text" placeholder="Filtrar por Universidad" class="responsive-input" /></th>
-                    <th><input type="text" placeholder="Filtrar por Coordinador" class="responsive-input" /></th>
-                    <th><input type="text" placeholder="Filtrar por Categoría" class="responsive-input" /></th>
+                    <th><input type="text" placeholder="Filtrar por Ministerio" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Universidad" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Coordinador" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría" class="responsive-input"/></th>
                     <th></th> <!-- No filter for actions -->
                 </tr>
                 </thead>
@@ -55,26 +57,32 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.universidad.estructura.nombre | default('') }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoPrograma.nombre | default('') }}</td>
-{#                        <td>{{ item.codigoPrograma | default('') }}</td>#}
+                        {#                        <td>{{ item.codigoPrograma | default('') }}</td> #}
                         <td>{{ item.universidad.nombre | default('') }}</td>
                         <td>{{ item.nombreCoordinador | default('') }}</td>
                         <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
                         <td width="15%" class="text-center responsive-col">
                             <!-- Botones de acciones -->
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_solicitud_programa_detail', {'id' : item.id}) }}"
                                     data-title="Detalles del programa">
                                 <i class="fa fa-eye"></i>
                             </button>
-                            <a title="Completar información" href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                            <a title="Completar información"
+                               href="{{ path('app_solicitud_programa_aprobar', {'id': item.id}) }}"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                class="btn btn-outline-primary"><i class="fa fa-check"></i></a>
                             <a title="Descargar resolución" target="_blank" class="btn btn-outline-primary"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/resolucion_programa/{{ item.resolucionPrograma }}">
                                 <i class="fa fa-download"></i>
                             </a>
                             <a title="Descargar dictámen final" target="_blank" class="btn btn-outline-primary"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                href="{{ app.request.getSchemeAndHttpHost() }}/uploads/dictamen_final/{{ item.dictamenFinal }}">
                                 <i class="fa fa-file-download"></i>
                             </a>

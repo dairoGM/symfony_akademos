@@ -9,13 +9,55 @@ use App\Entity\Postgrado\RamaCiencia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
+ * @UniqueEntity(fields={"nombre", "tipoProgramaAcademico"}, message="Ya existe un programa con el mismo nombre y tipo de programa académico.")
  * @ORM\Table(name="pregrado.tbd_solicitud_programa_academico")
  */
-class SolicitudProgramaAcademico extends BaseNomenclator
+class SolicitudProgramaAcademico
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected ?int $id;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $creado;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $actualizado;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     * @Assert\Regex(
+     *           pattern= "/^[,0-9a-zA-ZäëïöüáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/",
+     *           match=   true,
+     *           message= "Caracteres no válidos, por favor verifique."
+     * )
+     */
+    private ?string $nombre = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descripcion = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $activo = true;
+
     /**
      * @ORM\ManyToOne(targetEntity="EstadoProgramaAcademico")
      * @ORM\JoinColumn(nullable=true)
@@ -601,6 +643,102 @@ class SolicitudProgramaAcademico extends BaseNomenclator
     public function setOrganismoFormador(?OrganismoFormador $organismoFormador)
     {
         $this->organismoFormador = $organismoFormador;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreado()
+    {
+        return $this->creado;
+    }
+
+    /**
+     * @param mixed $creado
+     */
+    public function setCreado($creado): void
+    {
+        $this->creado = $creado;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActualizado()
+    {
+        return $this->actualizado;
+    }
+
+    /**
+     * @param mixed $actualizado
+     */
+    public function setActualizado($actualizado): void
+    {
+        $this->actualizado = $actualizado;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param string|null $nombre
+     */
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion($descripcion): void
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActivo(): ?bool
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param bool|null $activo
+     */
+    public function setActivo($activo): void
+    {
+        $this->activo = $activo;
     }
 
 

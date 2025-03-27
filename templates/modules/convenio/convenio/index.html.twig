@@ -48,20 +48,24 @@
 
                         <td width="15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_convenio_detail', {'id' : item.id}) }}"
                                     data-title="Detalles del Instrumento Jurídico">
                                 <i class="fa fa-eye "></i>
                             </button>
 
                             <a title="Modificar" href="{{ path('app_convenio_modificar', {'id': item.id}) }}"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <a title="Definir acciones" href="{{ path('app_convenio_acciones', {'id': item.id}) }}"
-                                    class="btn btn-outline-primary"><i
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
+                               class="btn btn-outline-primary"><i
                                         class="fa fa fa-book-open"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_convenio_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
