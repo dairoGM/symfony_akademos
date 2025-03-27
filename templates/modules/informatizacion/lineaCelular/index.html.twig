@@ -44,24 +44,29 @@
                         <td>{{ item.planDatos | default('') }}{% if item.planDatos is not null %} Gb {% endif %}</td>
                         <td width="20%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_linea_celular_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la línea celular">
                                 <i class="fa fa-eye "></i>
                             </button>
 
                             <a title="Modificar" href="{{ path('app_linea_celular_modificar', {'id': item.id}) }}"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
                             <a title="Recargar" href="{{ path('app_linea_celular_recargar', {'id': item.id}) }}"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-dollar-sign"></i>
                             </a>
                             <a title="Responsable" href="{{ path('app_linea_celular_responsable', {'id': item.id}) }}"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                class="btn btn-outline-primary"><i
                                         class="fas fa-user"></i>
                             </a>
                             <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_linea_celular_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
