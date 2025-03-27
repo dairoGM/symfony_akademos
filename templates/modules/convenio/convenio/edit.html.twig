@@ -37,6 +37,11 @@
                     {{ form_errors(form.institucionCubana) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.region) }}
+                    {{ form_widget(form.region) }}
+                    {{ form_errors(form.region) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.pais) }}
                     {{ form_widget(form.pais) }}
                     {{ form_errors(form.pais) }}

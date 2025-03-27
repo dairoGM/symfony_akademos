@@ -45,6 +45,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if hasRoles('ROLE_GEST_REGION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_region_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Regiones</p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if hasRoles('ROLE_GEST_TIPO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_tipo_index') }}"

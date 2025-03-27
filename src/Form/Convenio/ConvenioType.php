@@ -4,6 +4,7 @@ namespace App\Form\Convenio;
 
 use App\Entity\Convenio\Convenio;
 use App\Entity\Convenio\Modalidad;
+use App\Entity\Convenio\Region;
 use App\Entity\Convenio\Tipo;
 use App\Entity\Estructura\Estructura;
 use App\Entity\Estructura\Pais;
@@ -35,6 +36,16 @@ class ConvenioType extends AbstractType
             ->add('modalidad', EntityType::class, [
                 'class' => Modalidad::class,
                 'label' => 'Modalidad',
+                'choice_label' => 'nombre',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                },
+                'placeholder' => 'Seleccione',
+                'empty_data' => null
+            ])
+            ->add('region', EntityType::class, [
+                'class' => Region::class,
+                'label' => 'Región',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');

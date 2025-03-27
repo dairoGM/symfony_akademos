@@ -56,6 +56,13 @@ class Convenio
      * @ORM\JoinColumn(nullable=true)
      */
     private ?Modalidad $modalidad;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Region")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Region $region;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Convenio\Tipo")
      * @ORM\JoinColumn(nullable=true)
@@ -385,6 +392,22 @@ class Convenio
     public function setActivo(?bool $activo): void
     {
         $this->activo = $activo;
+    }
+
+    /**
+     * @return Region|null
+     */
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param Region|null $region
+     */
+    public function setRegion(?Region $region): void
+    {
+        $this->region = $region;
     }
 
 

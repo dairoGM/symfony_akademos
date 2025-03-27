@@ -6,6 +6,9 @@
         <h5 class="mb-0"><b>Institución cubana:</b> {{ item.institucionCubana.nombre | default('') }}</h5>
     </div>
     <div class="col-6">
+        <h5 class="mb-0"><b>Región:</b> {{ item.region.nombre | default('') }}</h5>
+    </div>
+    <div class="col-6">
         <h5 class="mb-0"><b>País:</b> {{ item.pais.nombre | default('') }}</h5>
     </div>
     <div class="col-6">
@@ -43,10 +46,10 @@
                 por:</b> {% if item.modificadoPor is not null %} {{ item.modificadoPor.primerNombre ~ ' ' ~ item.modificadoPor.segundoNombre ~' '~ item.modificadoPor.primerApellido ~ ' ' ~ item.modificadoPor.segundoApellido }} {% endif %}
         </h5>
     </div>
-     <div class="col-6">
-         <h5 class="mb-0"><b>Documento: </b> <a target="_blank"
-                                                          href="{{ app.request.getSchemeAndHttpHost() }}/uploads/convenio/intrumento_juridico/documento/{{ item.documento }}">{{ item.documento }}</a>
-         </h5>
+    <div class="col-6">
+        <h5 class="mb-0"><b>Documento: </b> <a target="_blank"
+                                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/convenio/intrumento_juridico/documento/{{ item.documento }}">{{ item.documento }}</a>
+        </h5>
     </div>
 
 </div>
