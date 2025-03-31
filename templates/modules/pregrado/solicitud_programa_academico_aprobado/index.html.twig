@@ -46,7 +46,7 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.organismoDemandante.nombre  | default('') }}</td>
+                        <td>{{ item.organismoFormador.nombre  | default('') }}</td>
                         <td>{{ item.nombre }}</td>
                         <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
                         <td>{{ item.ramaCiencia.nombre | default('') }}</td>
