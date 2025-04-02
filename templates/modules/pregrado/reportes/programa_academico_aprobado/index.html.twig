@@ -1,0 +1,71 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Listado de Programas Aprobados{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de Programas Aprobados</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Ministerio</th>
+                    <th>Programa académico</th>
+                    <th>Tipo de programa académico</th>
+                    <th>Rama de la ciencia</th>
+                    <th>Centro rector</th>
+                    <th>Categoría de acreditación</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Ministerio" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Programa académico" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo de programa académico"
+                               class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Rama de la ciencia" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Centro rector" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de acreditación"
+                               class="responsive-input"/></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.organismoFormador.nombre  | default('') }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
+                        <td>{{ item.ramaCiencia.nombre | default('') }}</td>
+                        <td>{{ item.centroRector.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

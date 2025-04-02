@@ -190,6 +190,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_SOLPROG", "Gestionar solicitud de programas", "Gestionar solicitud de programas");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_PROGAPROB", "Gestionar programas aprobados", "Gestionar programas aprobados");
         $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_GEST_PROGEXTINT", "Gestionar programas extintos", "Gestionar programas extintos");
+        $functionalities[] = Functionality::createFunctionality("MODULE_PREGR", "ROLE_PREGRADO_REPORTE_PROG_APROBADOS", "Reporte de programas aprobados", "Reporte de programas aprobados");
 
         return $functionalities;
     }
@@ -480,7 +481,8 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_PROGAPROB")
             ->addFunctionality("ROLE_GEST_PROGEXTINT")
             ->addFunctionality("ROLE_GEST_TIP_SOLICITUD_POST")
-            ->addFunctionality("ROLE_GEST_OACE");
+            ->addFunctionality("ROLE_GEST_OACE")
+            ->addFunctionality("ROLE_PREGRADO_REPORTE_PROG_APROBADOS");
 
 
         $roles[] = Role::createRole('ROL_POSGRADO', "Administrador de Posgrado", "Rol con permiso a la gestion de Posgrado")

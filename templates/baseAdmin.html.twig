@@ -55,9 +55,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             text-align: left; /* Alinea el texto a la izquierda */
             vertical-align: middle; /* Centra verticalmente */
         }
+
         .table tbody tr:hover {
             background-color: #d3d3d3; /* Cambia el color de fondo al pasar el mouse */
         }
+
         .table tbody tr.selected {
             background-color: #e0e0e0; /* Gris claro, puedes cambiarlo a cualquier color */
         }
@@ -826,6 +828,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
 
+<script src="{{ asset('assets/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-buttons/js/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 {# <script src="{{ asset('assets/jquery/jquery-sortable.js') }}"></script> #}
 {% block javascripts %}{% endblock %}
 <script>
@@ -870,50 +875,97 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
+        var hasMultipleHeaderRows = $('.dataTable thead tr').length > 1;
         var hasMultipleHeaderRows = $('.dataTable thead tr').length > 1;
         var table = $(".dataTable").DataTable({
             "dom": '<"row"<"col-sm-6 text-left"f ><"col-sm-6 text-right"l>>rt<"row"<"col-sm-12"p>>',
             "pagingType": "full_numbers",
-            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "responsive": true,
             "lengthChange": true,
             "autoWidth": false,
             "scrollX": true,
             "ordering": !hasMultipleHeaderRows,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel"></i> Exportar a Excel',
+                    className: 'btn btn-success',
+                    filename: function() {
+                        var now = new Date();
+                        var year = now.getFullYear();
+                        var month = String(now.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos
+                        var day = String(now.getDate()).padStart(2, '0');
+                        var hours = String(now.getHours()).padStart(2, '0');
+                        var minutes = String(now.getMinutes()).padStart(2, '0');
+                        var seconds = String(now.getSeconds()).padStart(2, '0');
+
+                        return `reporte_${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+                    },
+                    title: '', // No usar título, para que el encabezado sea el de la tabla
+                    exportOptions: {
+                        columns: ':visible',
+                        search: 'applied',
+                        order: 'applied'
+                    },
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        var sheetData = $('sheetData', sheet);
+
+                        // 🔹 Obtener los encabezados directamente de la tabla
+                        var colHeaders = [];
+                        $('.dataTable thead tr:eq(0) th').each(function() {
+                            colHeaders.push($(this).text().trim());
+                        });
+
+                        // 🔹 Crear una nueva fila con los encabezados en negrita
+                        var newRow = '<row>';
+                        for (var i = 0; i < colHeaders.length; i++) {
+                            newRow += '<c t="inlineStr" s="2"><is><t>' + colHeaders[i] + '</t></is></c>';
+                        }
+                        newRow += '</row>';
+
+                        // 🔹 Insertar la nueva fila al principio del Excel
+                        sheetData.prepend(newRow);
+
+                        // 🔹 Agregar estilo en negrita a los encabezados
+                        var styles = xlsx.xl['styles.xml'];
+                        var cellXfs = $('cellXfs', styles);
+                        var fonts = $('fonts', styles);
+
+                        // Agregar una nueva fuente en negrita
+                        fonts.append('<font><b/><sz val="12"/></font>');
+                        cellXfs.append('<xf fontId="2" applyFont="1"/>'); // Aplica la fuente en negrita a los encabezados
+                    }
+                }
+            ],
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
                 "sZeroRecords": "No se encontraron resultados",
                 "sEmptyTable": "No existen resultados",
                 "sInfo": "Registros del _START_ al _END_ de  _TOTAL_ ",
-                "sInfoEmpty": "Rregistros del 0 al 0 de  0 ",
+                "sInfoEmpty": "Registros del 0 al 0 de  0 ",
                 "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
                 "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
                 "sLoadingRecords": "Cargando...",
                 "oPaginate": {
                     "sFirst": "Primero",
                     "sLast": "Último",
                     "sNext": "Siguiente",
                     "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                },
-                "buttons": {
-                    "copy": "Copiar",
-                    "colvis": "Visibilidad"
                 }
             }
         });
 
+// Usa el botón de la vista en lugar del que genera DataTables
+        $('#exportExcel').on('click', function() {
+            table.button('.buttons-excel').trigger();
+        });
         // Filtros individuales por columna
         $('.dataTable thead tr:eq(1) th').each(function(i) {
             $('input', this).on('keyup change', function() {
-                // Desactiva el ordenamiento temporalmente cuando hay filtros
                 if (table.column(i).search() !== this.value) {
                     table.column(i).search(this.value).draw();
                 }
@@ -924,16 +976,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         table.on('draw', function() {
             var hasFilter = false;
 
-            // Verifica si alguna columna tiene un filtro activo
             table.columns().every(function() {
                 if (this.search()) {
                     hasFilter = true;
                 }
             });
 
-            // Desactiva el ordenamiento si hay filtros
             if (hasFilter) {
-                table.order([]); // Desactiva el ordenamiento
+                table.order([]);
             }
         });
 
@@ -1149,7 +1199,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     // Iterar sobre las filas y agregar un evento de clic
     rows.forEach(row => {
-        row.addEventListener('click', function() {
+        row.addEventListener('click', function () {
             // Remover la clase 'selected' de todas las filas
             rows.forEach(r => r.classList.remove('selected'));
 
