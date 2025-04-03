@@ -92,9 +92,9 @@ class SolicitudProgramaAcademicoInstitucionRepository extends ServiceEntityRepos
                 INNER JOIN pregrado.tbd_solicitud_programa_academico t1_ ON t0_.solicitud_programa_academico_id = t1_.id 
                 INNER JOIN institucion.tbd_institucion t3_ ON t0_.institucion_id = t3_.id
                 INNER JOIN pregrado.tbn_tipo_programa_academico t4_ ON t1_.tipo_programa_academico_id = t4_.id
-                INNER JOIN institucion.tbn_categoria_acreditacion t5_ ON t0_.categoria_acreditacion_id = t5_.id
+                LEFT JOIN institucion.tbn_categoria_acreditacion t5_ ON t0_.categoria_acreditacion_id = t5_.id
                 INNER JOIN estructura.tbd_estructura t7_ ON t3_.estructura_id = t7_.id 
-                INNER JOIN estructura.tbd_estructura t2_ ON t7_.estructura_id = t2_.id
+                LEFT JOIN estructura.tbd_estructura t2_ ON t7_.estructura_id = t2_.id
                 LEFT JOIN evaluacion.temp_categoria_acreditacion_pregrado t6_ ON (t1_.id = t6_.solicitud_programa_academico_id and t0_.institucion_id = t6_.institucion_id  ) 
                 
                 ORDER BY t1_.nombre ASC";

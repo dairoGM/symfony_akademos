@@ -10,6 +10,12 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
                 <h3 class="card-title text-bold text-gray">Listado de Instituciones de Educación Superior</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+
+                </div>
             </div>
         </div>
         <!-- /.card-header -->
@@ -25,6 +31,17 @@
                     <th>Número de acuerdo del pleno</th>
                     <th>Años de vigencia</th>
                     <th class="text-center">Opciones</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de acreditación" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Fecha de emisión" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Número del pleno" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Número de acuerdo del pleno" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Años de vigencia" class="responsive-input"/></th>
+                    <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
