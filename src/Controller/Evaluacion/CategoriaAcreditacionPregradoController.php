@@ -93,7 +93,7 @@ class CategoriaAcreditacionPregradoController extends AbstractController
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository
      * @return Response
      */
-    public function modificar(Request $request, $idProgrInst, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, CategoriaAcreditacionPregradoRepository $categoriaAcreditacionPregradoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
+    public function modificar(Request $request,$id, $idProgrInst, SolicitudProgramaAcademicoInstitucionRepository $solicitudProgramaAcademicoInstitucionRepository, SolicitudProgramaAcademico $solicitudProgramaAcademico, CategoriaAcreditacionRepository $categoriaAcreditacionRepository, CategoriaAcreditacionPregradoRepository $categoriaAcreditacionPregradoRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaAcademicoRepository)
     {
         try {
             $new = new CategoriaAcreditacionPregrado();
