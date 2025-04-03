@@ -48,21 +48,30 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/pregrado/reporte/programa_academico_aprobado")
- * @IsGranted("ROLE_ADMIN", "ROLE_PREGRADO_REPORTE_PROG_APROBADOS")
+ * @Route("/pregrado/reporte/programa_academico_por_universidad")
+ * @IsGranted("ROLE_ADMIN", "ROLE_PREGRADO_REPORTE_PROG_POR_UNIVERSIDAD")
  */
-class ProgramaAcademicoAprobadoController extends AbstractController
+class ProgramaAcademicoPorUniversidadController extends AbstractController
 {
 
     /**
-     * @Route("/", name="app_reporte_programa_academico_aprobado_index", methods={"GET"})
+     * @Route("/", name="app_reporte_programa_academico_por_universidad_index", methods={"GET", "POST"})
      * @param SolicitudProgramaAcademicoRepository $solicitudProgramaRepository
      * @return Response
      */
-    public function index(SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
+    public function index(Request $request, InstitucionRepository $institucionRepository, SolicitudProgramaAcademicoRepository $solicitudProgramaRepository, SolicitudProgramaAcademicoPlanEstudioRepository $solicitudProgramaAcademicoPlanEstudioRepository)
     {
+        $allPost = $request->request->all();
+
+        if (isset($allPost['id_universidad']) && !empty($allPost['id_universidad'])) {
+            $request->getSession()->set('pregrado_programa_por_universidad', $allPost['id_universidad']);
+        }
+        if (isset($allPost['id_universidad']) && empty($allPost['id_universidad'])) {
+            $request->getSession()->remove('pregrado_programa_por_universidad');
+        }
+        $idCentroRector = $request->getSession()->get('pregrado_programa_por_universidad');
         $response = [];
-        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 6, 7]);
+        $registros = $solicitudProgramaRepository->getSolicitudProgramaAcademicoAprobado([2, 4, 6, 7], $idCentroRector);
         if (is_array($registros)) {
             foreach ($registros as $value) {
                 $temp = $solicitudProgramaAcademicoPlanEstudioRepository->findBy(['solicitudProgramaAcademico' => $value->getId()]);
@@ -72,8 +81,10 @@ class ProgramaAcademicoAprobadoController extends AbstractController
                 $response[] = $value;
             }
         }
-        return $this->render('modules/pregrado/reportes/programa_academico_aprobado/index.html.twig', [
+        return $this->render('modules/pregrado/reportes/programa_academico/por_universidad/index.html.twig', [
             'registros' => $response,
+            'universidad' => $institucionRepository->findBy([],['nombre' => 'ASC']),
+            'id_universidad' => $idCentroRector
         ]);
     }
 

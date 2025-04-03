@@ -1,0 +1,137 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Listado de Programas por Universidad{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .card-primary.card-outline {
+            border-top: 3px solid #134679 !important; /* Cambia el color de la línea superior */
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de Programas por Universidad</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="card card-primary card-outline direct-chat direct-chat-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Filtro por Universidad</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5" style="margin-left: 1%; margin-top: 1%">
+                            <!-- Agrega margen a la izquierda -->
+                            <label class="required" for="universidad">Universidad</label>
+                            <select id="universidad" name="universidad"
+                                    class="form-control select2-hidden-accessible"
+                                    data-select2-id="universidad"
+                                    tabindex="-1" aria-hidden="true">
+                                <option value="">Seleccione</option>
+                                {% for item2 in universidad %}
+                                    <option {% if item2.id ==id_universidad %} selected {% endif %}
+                                            value="{{ item2.id }}">{{ item2.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Agregar espacio debajo del select -->
+                    <div style="margin-bottom: 30px;"></div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Ministerio</th>
+                    <th>Programa académico</th>
+                    <th>Tipo de programa académico</th>
+                    <th>Rama de la ciencia</th>
+                    <th>Centro rector</th>
+                    <th>Categoría de acreditación</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Ministerio" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Programa académico" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo de programa académico"
+                               class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Rama de la ciencia" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Centro rector" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de acreditación"
+                               class="responsive-input"/></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.organismoFormador.nombre  | default('') }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
+                        <td>{{ item.ramaCiencia.nombre | default('') }}</td>
+                        <td>{{ item.centroRector.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+
+        $('#universidad').change(function (e) {
+            var id_universidad = $(this).val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_reporte_programa_academico_por_universidad_index') }}",
+                {
+                    id_universidad: id_universidad
+                },
+                function (data) {
+                    $(window).attr('location', window.location)
+                    HoldOn.close()
+                });
+        });
+
+    </script>
+{% endblock %}
