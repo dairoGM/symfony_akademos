@@ -14,15 +14,99 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @ORM\Table(name="tramite.tbd_institucion_extranjera")
  */
-class InstitucionExtranjera extends BaseNomenclator
+class InstitucionExtranjera
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected ?int $id;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $creado;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $actualizado;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCreado()
+    {
+        return $this->creado;
+    }
+
+    public function getActualizado()
+    {
+        return $this->actualizado;
+    }
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private ?string $nombre = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descripcion = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $activo = true;
+
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
 
     /**
      * @ORM\Column(type="string", nullable=true, length="100")
      */
     private ?string $provincia = null;
 
- /**
+    /**
      * @ORM\Column(type="string", nullable=true, length="100")
      */
     private ?string $siglas = null;
@@ -41,7 +125,7 @@ class InstitucionExtranjera extends BaseNomenclator
      * @ORM\ManyToOne(targetEntity="App\Entity\Estructura\Pais")
      * @ORM\JoinColumn(nullable=true)
      */
-    private ?Pais $pais ;
+    private ?Pais $pais;
 
 
     /**

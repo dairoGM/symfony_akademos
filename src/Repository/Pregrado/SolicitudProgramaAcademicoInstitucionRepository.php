@@ -49,6 +49,7 @@ class SolicitudProgramaAcademicoInstitucionRepository extends ServiceEntityRepos
             $this->getEntityManager()->flush();
         }
     }
+
     public function getSolicitudProgramaAcademicoAprobadoPorCategoriaAcreditacion($tipoProgramaAcademico)
     {
         $query = "SELECT t2.nombre,t2.color, count(*) as total
@@ -128,5 +129,51 @@ class SolicitudProgramaAcademicoInstitucionRepository extends ServiceEntityRepos
 //
 //        $resul = $qb->getQuery()->getResult();
 //        return $resul;
+    }
+
+
+    public function getProgramasV3($id = null)
+    {
+        $where = "";
+        if ($id) {
+            $where = " AND t3_.id IN( $id )";
+        }
+        $query = "SELECT 
+    t0_.id AS id_programa_institucion, 
+    t1_.id AS id_programa_academico,
+    COALESCE(t2_.nombre, '') AS nombre_organismo,
+    COALESCE(t1_.nombre, '') AS programa_academico,
+    t3_.id AS id_universidad,
+    COALESCE(t3_.nombre, '') AS nombre_universidad,
+    COALESCE(t4_.nombre, '') AS tipo_programa_academico,
+    t1_.centro_rector_id,
+    t1_.rama_ciencia_id,
+    COALESCE(rm_.nombre, '') AS rama_ciencia,
+    COALESCE(in_.nombre, '') AS centro_rector,
+    COALESCE(t5_.nombre, '') AS categoria_acreditacion
+FROM pregrado.tbr_solicitud_programa_academico_institucion t0_
+INNER JOIN pregrado.tbd_solicitud_programa_academico t1_ 
+        ON t0_.solicitud_programa_academico_id = t1_.id 
+INNER JOIN institucion.tbd_institucion t3_ 
+        ON t0_.institucion_id = t3_.id
+INNER JOIN pregrado.tbn_tipo_programa_academico t4_ 
+        ON t1_.tipo_programa_academico_id = t4_.id 
+INNER JOIN estructura.tbd_estructura t7_ 
+        ON t3_.estructura_id = t7_.id 
+INNER JOIN estructura.tbd_estructura t2_ 
+        ON t7_.estructura_id = t2_.id
+INNER JOIN postgrado.tbn_rama_ciencia rm_ 
+        ON rm_.id = t1_.rama_ciencia_id 
+INNER JOIN institucion.tbd_institucion in_ 
+        ON in_.id = t1_.centro_rector_id
+LEFT JOIN institucion.tbn_categoria_acreditacion t5_ 
+        ON t0_.categoria_acreditacion_id = t5_.id
+		where t1_.estado_programa_academico_id  in (2, 4, 6, 7) $where
+ORDER BY t1_.nombre ASC;
+";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        return $temp->fetchAllAssociative();
     }
 }

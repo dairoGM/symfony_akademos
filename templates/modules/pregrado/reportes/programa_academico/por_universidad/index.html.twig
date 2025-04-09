@@ -45,16 +45,19 @@
                         <div class="col-md-5" style="margin-left: 1%; margin-top: 1%">
                             <!-- Agrega margen a la izquierda -->
                             <label class="required" for="universidad">Universidad</label>
-                            <select id="universidad" name="universidad"
+                            <select id="universidad" name="universidad[]" multiple
                                     class="form-control select2-hidden-accessible"
                                     data-select2-id="universidad"
                                     tabindex="-1" aria-hidden="true">
                                 <option value="">Seleccione</option>
                                 {% for item2 in universidad %}
-                                    <option {% if item2.id ==id_universidad %} selected {% endif %}
-                                            value="{{ item2.id }}">{{ item2.nombre }}</option>
+                                    <option value="{{ item2.id }}"
+                                            {% if id_universidad is defined and item2.id in id_universidad %}selected{% endif %}>
+                                        {{ item2.nombre }}
+                                    </option>
                                 {% endfor %}
                             </select>
+
                         </div>
                     </div>
 
@@ -93,12 +96,12 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1%">{{ loop.index }}</td>
-                        <td>{{ item.organismoFormador.nombre  | default('') }}</td>
-                        <td>{{ item.nombre }}</td>
-                        <td>{{ item.tipoProgramaAcademico.nombre | default('') }}</td>
-                        <td>{{ item.ramaCiencia.nombre | default('') }}</td>
-                        <td>{{ item.centroRector.nombre | default('') }}</td>
-                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                        <td>{{ item.nombre_organismo  | default('') }}</td>
+                        <td>{{ item.programa_academico }}</td>
+                        <td>{{ item.tipo_programa_academico | default('') }}</td>
+                        <td>{{ item.rama_ciencia | default('') }}</td>
+                        <td>{{ item.centro_rector | default('') }}</td>
+                        <td>{{ item.categoria_acreditacion | default('') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -118,20 +121,31 @@
 
         $('#universidad').change(function (e) {
             var id_universidad = $(this).val();
+
             HoldOn.open({
                 theme: "sk-cube-grid",
                 message: 'Por favor espere...',
                 textColor: "white"
             });
-            $.post("{{ path('app_reporte_programa_academico_por_universidad_index') }}",
+
+            $.post("{{ path('app_reporte_programa_academico_por_universidad_filter') }}",
                 {
                     id_universidad: id_universidad
-                },
-                function (data) {
-                    $(window).attr('location', window.location)
-                    HoldOn.close()
+                })
+                .done(function (data) {
+                    // Cierra el loader
+                    HoldOn.close();
+
+                    // Refresca la página
+                    location.reload();
+                })
+                .fail(function (xhr, status, error) {
+                    HoldOn.close();
+                    console.error("Error al hacer el filtro:", error);
+                    alert("Ocurrió un error al filtrar por universidad.");
                 });
         });
+
 
     </script>
 {% endblock %}
