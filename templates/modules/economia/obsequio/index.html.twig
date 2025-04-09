@@ -1,0 +1,80 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Obsequios{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de obsequios</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_obsequio_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Talla</th>
+                    <th>Presentación</th>
+                    <th>Tipo</th>
+                    <th>Género</th>
+                    <th>Estado</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.nombre | default('') }}</td>
+                        <td>{{ item.marca | default('') }}</td>
+                        <td>{{ item.modelo | default('') }}</td>
+                        <td>{{ item.color | default('') }}</td>
+                        <td>{{ item.talla | default('') }}</td>
+                        <td>{{ item.presentacion | default('') }}</td>
+                        <td>{{ item.tipo | default('') }}</td>
+                        <td>{{ item.genero | default('') }}</td>
+                        <td width="3%" class="-text-center">
+                            {% if '1' == item.activo %}
+                                <span class="ms-status -active">Habilitado</span>
+                            {% else %}
+                                <span class="ms-status">Deshabilitado</span>
+                            {% endif %}
+                        </td>
+                        <td width="15%" class="text-center">
+                            <a title="Modificar" href="{{ path('app_obsequio_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_obsequio_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

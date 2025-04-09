@@ -285,6 +285,7 @@ class InstallConfig
         //Economia
         $functionalities[] = Functionality::createFunctionality("MODULE_ECONOMIA", "ROLE_HOME_ECONOMIA", "Portada de Economía", "Portada de Economía");
         $functionalities[] = Functionality::createFunctionality("MODULE_ECONOMIA", "ROLE_GEST_CONCEPTO_GASTO", "Gestión de concepto de gasto", "Gestión de concepto de gasto");
+        $functionalities[] = Functionality::createFunctionality("MODULE_ECONOMIA", "ROLE_GEST_OBSEQUIOS", "Gestión de obsequios", "Gestión de obsequios");
 
         return $functionalities;
     }
@@ -525,7 +526,8 @@ class InstallConfig
 
         $roles[] = Role::createRole('ROL_ECONOMIA', "Administrador de Economía", "Rol con permiso a la gestion de Economía", "")
             ->addFunctionality("ROLE_HOME_ECONOMIA")
-            ->addFunctionality("ROLE_GEST_CONCEPTO_GASTO");
+            ->addFunctionality("ROLE_GEST_CONCEPTO_GASTO")
+            ->addFunctionality("ROLE_GEST_OBSEQUIOS");
 
 
         $roles[] = Role::createRole('ROL_EVALUACION', "Administrador de Evaluación", "Rol con permiso a la gestion de Evaluación", "")

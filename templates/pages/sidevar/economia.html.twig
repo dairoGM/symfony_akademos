@@ -6,27 +6,27 @@
              with font-awesome or any other icon font library -->
 
 
-{#        {% if hasRoles('ROLE_HOME_ECONOMIA') %}#}
-{#            <li class="nav-item">#}
-{#                <a href="#"#}
-{#                   class="nav-link nav-link-menu">#}
-{#                    <i class="nav-icon fa fa-university"></i>#}
-{#                    <p>#}
-{#                        Economía#}
-{#                        <i class="right fas fa-angle-left"></i>#}
-{#                    </p>#}
-{#                </a>#}
-{#                <ul class="nav nav-treeview">#}
-{#                    <li class="nav-item">#}
-{#                        <a href="{{ path('app_institucion_index') }}"#}
-{#                           class="nav-link nav-link-menu">#}
-{#                            <p>IES</p>#}
-{#                        </a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        {% endif %}#}
-        {% if hasRoles('ROLE_GEST_CONCEPTO_GASTO')  %}
+        {#        {% if hasRoles('ROLE_HOME_ECONOMIA') %} #}
+        {#            <li class="nav-item"> #}
+        {#                <a href="#" #}
+        {#                   class="nav-link nav-link-menu"> #}
+        {#                    <i class="nav-icon fa fa-university"></i> #}
+        {#                    <p> #}
+        {#                        Economía #}
+        {#                        <i class="right fas fa-angle-left"></i> #}
+        {#                    </p> #}
+        {#                </a> #}
+        {#                <ul class="nav nav-treeview"> #}
+        {#                    <li class="nav-item"> #}
+        {#                        <a href="{{ path('app_institucion_index') }}" #}
+        {#                           class="nav-link nav-link-menu"> #}
+        {#                            <p>IES</p> #}
+        {#                        </a> #}
+        {#                    </li> #}
+        {#                </ul> #}
+        {#            </li> #}
+        {#        {% endif %} #}
+        {% if hasRoles('ROLE_GEST_CONCEPTO_GASTO') or hasRoles('ROLE_GEST_OBSEQUIOS') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -42,6 +42,14 @@
                             <a href="{{ path('app_concepto_gasto_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Conceptos de gastos</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_OBSEQUIOS') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_obsequio_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Obsequios</p>
                             </a>
                         </li>
                     {% endif %}
