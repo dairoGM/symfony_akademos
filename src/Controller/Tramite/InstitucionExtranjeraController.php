@@ -57,7 +57,7 @@ class InstitucionExtranjeraController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_institucion_extranjera_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_institucion_extranjera_registrar', [], Response::HTTP_SEE_OTHER);
         }
     }
 
