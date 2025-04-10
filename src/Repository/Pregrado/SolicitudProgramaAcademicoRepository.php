@@ -82,7 +82,19 @@ class SolicitudProgramaAcademicoRepository extends ServiceEntityRepository
         $resul = $qb->getQuery()->getResult();
         return $resul;
     }
-
+    public function getSolicitudProgramaAcademicoAprobadoFiltro($estadoIds, $id = null)
+    {
+        $qb = $this->createQueryBuilder('qb')
+            ->select("qb.nombre, qb.id")
+            ->where("qb.estadoProgramaAcademico IN(:valuesItems)")->setParameter('valuesItems', array_values($estadoIds))
+            ->orderBy('qb.id', 'desc');
+        if (!empty($id)) {
+            $qb->andWhere("qb.centroRector = $id");
+        }
+        $qb->orderBy('qb.nombre');
+        $resul = $qb->getQuery()->getResult();
+        return $resul;
+    }
     public function getSolicitudProgramaAcademicoAprobadoDesactivado($estadoIds)
     {
         $qb = $this->createQueryBuilder('qb')

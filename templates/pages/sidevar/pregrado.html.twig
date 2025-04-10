@@ -125,7 +125,7 @@
             </li>
         {% endif %}
 
-        {% if hasRoles('ROLE_PREGRADO_REPORTE_PROG_APROBADOS') or hasRoles('ROLE_PREGRADO_REPORTE_PROG_POR_UNIVERSIDAD') %}
+        {% if hasRoles('ROLE_PREGRADO_REPORTE_PROG_APROBADOS') or hasRoles('ROLE_PREGRADO_REPORTE_PROG_POR_UNIVERSIDAD') or hasRoles('ROLE_PREGRADO_REPORTE_UNIVERSIDAD_POR_PROG') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -140,7 +140,7 @@
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_programa_academico_aprobado_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Listado de programas aprobados</p>
+                                <p>Programas aprobados</p>
                             </a>
                         </li>
                     {% endif %}
@@ -148,7 +148,15 @@
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_programa_academico_por_universidad_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Listado de programas por universidad</p>
+                                <p>Programas por universidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_PREGRADO_REPORTE_UNIVERSIDAD_POR_PROG') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_reporte_universidad_por_programa_academico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Universidades por programas</p>
                             </a>
                         </li>
                     {% endif %}
