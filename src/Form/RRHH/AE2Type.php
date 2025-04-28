@@ -57,11 +57,17 @@ class AE2Type extends AbstractType
             ])
             ->add('totalPlantillaAprobada', NumberType::class, $commonFieldOptions)
             ->add('totalPlantillaCubierta', NumberType::class, $commonFieldOptions)
-            ->add('totalGeneralContratos', NumberType::class, $commonFieldOptions)
+            ->add('totalGeneralContratos', NumberType::class, array_merge($commonFieldOptions, [
+                'label' => 'Total General de Contratos (4+7+14)',
+            ]))
             ->add('totalContratosProfesoresTiempoDeterminado', NumberType::class, $commonFieldOptions)
             ->add('profesoresTiempoCompleto', NumberType::class, $commonFieldOptions)
-            ->add('totalContratosNoDocentes', NumberType::class, $commonFieldOptions)
-            ->add('contratosNoDocentesConRespaldo', NumberType::class, $commonFieldOptions)
+            ->add('totalContratosNoDocentes', NumberType::class, array_merge($commonFieldOptions, [
+                'label' => 'Total de Contratos No Docentes (7+14)',
+            ]))
+            ->add('contratosNoDocentesConRespaldo', NumberType::class, array_merge($commonFieldOptions, [
+                'label' => 'Contratos No Docentes con respaldo de plazas (8 a 13)',
+            ]))
             ->add('contratosPorSustitucion', NumberType::class, array_merge($commonFieldOptions, [
                 'label' => 'Contratos por sustitución',
             ]))
@@ -74,7 +80,9 @@ class AE2Type extends AbstractType
             ]))
             ->add('jubilados', NumberType::class, $commonFieldOptions)
             ->add('otrosConRespaldo', NumberType::class, $commonFieldOptions)
-            ->add('contratosNoDocentesSinRespaldo', NumberType::class, $commonFieldOptions)
+            ->add('contratosNoDocentesSinRespaldo', NumberType::class, array_merge($commonFieldOptions, [
+                'label' => 'Contratos No Docentes sin respaldo de plazas (15 a 19)',
+            ]))
             ->add('serenosAuxiliaresLimpiezaSinRespaldo', NumberType::class, $commonFieldOptions)
             ->add('laboresAgricolasSinRespaldo', NumberType::class, array_merge($commonFieldOptions, [
                 'label' => 'Labores Agrícolas',
