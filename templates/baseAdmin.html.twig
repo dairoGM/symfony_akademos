@@ -388,6 +388,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                            class="nav-link {% if app.request.pathinfo|split('/')[1] == 'informatizacion' %} active {% endif %}">Informatización</a>
                     </li>
                 {% endif %}
+
+                {% if hasRoles('ROLE_HOME_RRHH') %}
+                    <li class=" d-none d-sm-inline-block">
+                        <a href="{{ path('app_rrhh_portada') }}"
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'rrhh' %} active {% endif %}">Recursos Humanos</a>
+                    </li>
+                {% endif %}
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -615,6 +622,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% endif %}
                 {% if app.request.pathinfo|split('/')[1] == 'informatizacion' %}
                     {% include 'pages/sidevar/informatizacion.html.twig' %}
+                {% endif %}
+                {% if app.request.pathinfo|split('/')[1] == 'rrhh' %}
+                    {% include 'pages/sidevar/rrhh.html.twig' %}
                 {% endif %}
             {% endif %}
             <!-- /.sidebar-menu -->

@@ -525,11 +525,11 @@ class PersonaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($persona->getResponsabilidad()->getId() == $plantilla->getResponsabilidad()->getId() &&
-                $persona->getEstructura()->getId() == $plantilla->getEstructura()->getId()) {
-                $this->addFlash('error', 'La plantilla que intenta asignar ya existe.');
-                return $this->redirectToRoute('app_persona_modificar_estructura_responsabilidad', ['id' => $persona->getId()], Response::HTTP_SEE_OTHER);
-            }
+//            if ($persona->getResponsabilidad()->getId() == $plantilla->getResponsabilidad()->getId() &&
+//                $persona->getEstructura()->getId() == $plantilla->getEstructura()->getId()) {
+//                $this->addFlash('error', 'La plantilla que intenta asignar ya existe.');
+//                return $this->redirectToRoute('app_persona_modificar_estructura_responsabilidad', ['id' => $persona->getId()], Response::HTTP_SEE_OTHER);
+//            }
 
             $plantillas = $plantillaRepository->findBy(['persona' => $persona]);
             foreach ($plantillas as $value) {

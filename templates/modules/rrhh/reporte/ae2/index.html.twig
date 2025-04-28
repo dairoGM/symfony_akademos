@@ -1,0 +1,76 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modelos AE-2{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Listado de modelos AE-2</h3>
+                <a title="Adicionar" class="btn btn-primary mr-2"
+                   href="{{ path('app_rrhh_reporte_ae2_registrar') }}"><i
+                            class="fa fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Institución</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set meses = [
+                    '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                ] %}
+
+                {% for item in registros %}
+                    <tr>
+                        <td style="width: 1%;">{{ loop.index }}</td>
+                        <td style="width: 4%;">{{ item.anno | default('') }}</td>
+                        <td style="width: 4%;">{{ meses[item.mes]|default('') }}</td>
+                        <td>{{ item.entidad.nombre | default('') }}</td>
+
+                        <td style="width: 10%" class="text-center">
+                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_rrhh_reporte_ae2_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles de la categoría docente">
+                                <i class="fa fa-eye "></i>
+                            </button>
+
+                            <a title="Modificar"
+                               href="{{ path('app_rrhh_reporte_ae2_modificar', {'id': item.id}) }}"
+                               class="btn btn-outline-primary"><i
+                                        class="fa fa-edit"></i>
+                            </a>
+                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                                    data-url="{{ path('app_rrhh_reporte_ae2_eliminar', {'id': item.id}) }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,83 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modificar modelo AE-2{% endblock %}
+
+{% block body %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+
+                <h3 class="card-title text-bold text-gray">Modificar modelo AE-2</h3>
+
+            </div>
+        </div>
+        <!-- /.card-header -->
+        {{ form_start(form) }}
+        {{ form_start(form) }}
+        <div class="card-body">
+            {% set fields = [
+                form.totalPlantillaAprobada,
+                form.totalPlantillaCubierta,
+                form.totalGeneralContratos,
+                form.totalContratosProfesoresTiempoDeterminado,
+                form.profesoresTiempoCompleto,
+                form.totalContratosNoDocentes,
+                form.contratosNoDocentesConRespaldo,
+                form.contratosPorSustitucion,
+                form.periodoPrueba,
+                form.serenosAuxiliaresLimpieza,
+                form.laboresAgricolas,
+                form.jubilados,
+                form.otrosConRespaldo,
+                form.contratosNoDocentesSinRespaldo,
+                form.serenosAuxiliaresLimpiezaSinRespaldo,
+                form.laboresAgricolasSinRespaldo,
+                form.jubiladosSinRespaldo,
+                form.ejecucionObra,
+                form.otrosSinRespaldo,
+                form.reservaCientificaPreparacion,
+                form.recienGraduadosPreparacion,
+                form.reservaDireccionProvincialTrabajo,
+                form.tecnicosMediosPreparacion,
+                form.totalEstudiantesUniversidadContratados,
+                form.estudiantesAuxiliaresTecnicosDocencia,
+                form.estudiantesCargosNoDocentes
+            ] %}
+
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.anno) }}
+                    {{ form_widget(form.anno) }}
+                    {{ form_errors(form.anno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.mes) }}
+                    {{ form_widget(form.mes) }}
+                    {{ form_errors(form.mes) }}
+                </div>
+            </div>
+            <hr>
+            {% for i in 0..(fields|length // 3) %}
+                <div class="row">
+                    {% for j in 0..2 %}
+                        {% set index = i * 3 + j %}
+                        {% if index < fields|length %}
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                                {{ form_label(fields[index]) }}
+                                {{ form_widget(fields[index]) }}
+                                {{ form_errors(fields[index]) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_rrhh_reporte_ae2_index') }}" data-title=""
+               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
+            <button class="btn btn-primary">Aceptar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

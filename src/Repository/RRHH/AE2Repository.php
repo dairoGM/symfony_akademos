@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Repository\RRHH;
+
+use App\Entity\RRHH\AE2;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<AE2>
+ *
+ * @method AE2|null find($id, $lockMode = null, $lockVersion = null)
+ * @method AE2|null findOneBy(array $criteria, array $orderBy = null)
+ * @method AE2[]    findAll()
+ * @method AE2[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class AE2Repository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AE2::class);
+    }
+
+    public function add(AE2 $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function edit(AE2 $entity, bool $flush = true): AE2
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+
+        return $entity;
+    }
+
+    public function remove(AE2 $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+}
