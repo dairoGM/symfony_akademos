@@ -59,6 +59,10 @@ class AE2Controller extends AbstractController
             if (!$ae2->getAnno()) {
                 $ae2->setAnno((int)date('Y'));
             }
+            $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+            if (isset($persona[0]) && $persona[0]->getEntidad()) {
+                $ae2->setEntidad($persona[0]->getEntidad());
+            }
 
             $form = $this->createForm(AE2Type::class, $ae2, ['action' => 'registrar']);
             $form->handleRequest($request);
@@ -68,7 +72,7 @@ class AE2Controller extends AbstractController
                     if (!$persona[0]->getEntidad()) {
                         $this->addFlash('error', 'La institucion no es correcta.');
                     }
-                    $ae2->setEntidad($persona[0]->getEntidad());
+
                     $aE2Repository->add($ae2, true);
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                     return $this->redirectToRoute('app_rrhh_reporte_ae2_index', [], Response::HTTP_SEE_OTHER);
