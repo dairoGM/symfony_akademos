@@ -43,7 +43,7 @@ class AE2Type extends AbstractType
                 ],
                 'placeholder' => 'Seleccione un mes',
                 'required' => true,
-                'data' => (int)date('n'), // <-- Establece el mes actual (1-12)
+//                'data' => (int)date('n'), // <-- Establece el mes actual (1-12)
             ])
             ->add('anno', ChoiceType::class, [
                 'label' => 'Año',
@@ -53,7 +53,7 @@ class AE2Type extends AbstractType
                 ),
                 'placeholder' => 'Seleccione un año',
                 'required' => true,
-                'data' => (int)date('Y'), // <-- Establece el año actual (2025, 2026, etc.)
+//                'data' => (int)date('Y'), // <-- Establece el año actual (2025, 2026, etc.)
             ])
             ->add('totalPlantillaAprobada', NumberType::class, $commonFieldOptions)
             ->add('totalPlantillaCubierta', NumberType::class, $commonFieldOptions)

@@ -10,8 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="rrhh.tbd_ae2", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_mes_anio", columns={"mes", "anno"})})
- * @UniqueEntity(fields={"mes", "anno"}, message="Ya existe un registro para este mes y año.")
+ * @ORM\Table(name="rrhh.tbd_ae2", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_mes_anio", columns={"mes", "anno", "entidad_id"})})
+ * @UniqueEntity(fields={"mes", "anno", "entidad"}, message="Ya existe un registro para este mes y año.")
  */
 class AE2 extends BaseEntity
 {

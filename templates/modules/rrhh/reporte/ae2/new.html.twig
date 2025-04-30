@@ -1,84 +1,171 @@
 {% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Adicionar modelo AE-2{% endblock %}
+{% block stylesheets %}
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[readonly] {
+            font-weight: bold;
+            color: #000; /* Asegura que el texto sea legible */
+        }
+    </style>
+{% endblock %}
 {% block body %}
-
     <div class="card shadow-sm">
         <div class="card-header">
-            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
+            <div class="row d-flex justify-content-between align-items-center">
                 <h3 class="card-title text-bold text-gray">Adicionar modelo AE-2</h3>
-
             </div>
         </div>
 
         {{ form_start(form) }}
-        <div class="card-body">
-            {% set fields = [
-                form.totalPlantillaAprobada,
-                form.totalPlantillaCubierta,
-                form.totalGeneralContratos,
-                form.totalContratosProfesoresTiempoDeterminado,
-                form.profesoresTiempoCompleto,
-                form.totalContratosNoDocentes,
-                form.contratosNoDocentesConRespaldo,
-                form.contratosPorSustitucion,
-                form.periodoPrueba,
-                form.serenosAuxiliaresLimpieza,
-                form.laboresAgricolas,
-                form.jubilados,
-                form.otrosConRespaldo,
-                form.contratosNoDocentesSinRespaldo,
-                form.serenosAuxiliaresLimpiezaSinRespaldo,
-                form.laboresAgricolasSinRespaldo,
-                form.jubiladosSinRespaldo,
-                form.ejecucionObra,
-                form.otrosSinRespaldo,
-                form.reservaCientificaPreparacion,
-                form.recienGraduadosPreparacion,
-                form.reservaDireccionProvincialTrabajo,
-                form.tecnicosMediosPreparacion,
-                form.totalEstudiantesUniversidadContratados,
-                form.estudiantesAuxiliaresTecnicosDocencia,
-                form.estudiantesCargosNoDocentes
-            ] %}
 
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-6 text-gray">
+                    <h5>
+                        <b>
+                            <i class="fa fa-university  "></i>
+                        </b> ({{ entidad.siglas | default('') }}) {{ entidad.nombre | default('') }}
+                    </h5>
+                </div>
+            </div>
+            <hr>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-12 col-sm-6 col-md-4 form-group">
                     {{ form_label(form.anno) }}
                     {{ form_widget(form.anno) }}
                     {{ form_errors(form.anno) }}
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                <div class="col-12 col-sm-6 col-md-4 form-group">
                     {{ form_label(form.mes) }}
                     {{ form_widget(form.mes) }}
                     {{ form_errors(form.mes) }}
                 </div>
             </div>
+
             <hr>
-            {% for i in 0..(fields|length // 3) %}
-                <div class="row">
-                    {% for j in 0..2 %}
-                        {% set index = i * 3 + j %}
-                        {% if index < fields|length %}
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                                {{ form_label(fields[index]) }}
-                                {{ form_widget(fields[index]) }}
-                                {{ form_errors(fields[index]) }}
-                            </div>
-                        {% endif %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th style="width: 70%">Indicador</th>
+                        <th style="width: 30%">Valor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set fields = [
+                        {'label': 'Total plantilla aprobada', 'field': form.totalPlantillaAprobada},
+                        {'label': 'Total plantilla cubierta', 'field': form.totalPlantillaCubierta},
+                        {'label': 'Total general de contratos', 'field': form.totalGeneralContratos},
+                        {'label': 'Total contratos profesores tiempo determinado', 'field': form.totalContratosProfesoresTiempoDeterminado},
+                        {'label': 'Profesores tiempo completo', 'field': form.profesoresTiempoCompleto},
+                        {'label': 'Total contratos no docentes', 'field': form.totalContratosNoDocentes},
+                        {'label': 'Contratos no docentes con respaldo', 'field': form.contratosNoDocentesConRespaldo},
+                        {'label': 'Contratos por sustitución', 'field': form.contratosPorSustitucion},
+                        {'label': 'Período de prueba', 'field': form.periodoPrueba},
+                        {'label': 'Serenos, auxiliares, limpieza', 'field': form.serenosAuxiliaresLimpieza},
+                        {'label': 'Labores agrícolas', 'field': form.laboresAgricolas},
+                        {'label': 'Jubilados', 'field': form.jubilados},
+                        {'label': 'Otros con respaldo', 'field': form.otrosConRespaldo},
+                        {'label': 'Contratos no docentes sin respaldo', 'field': form.contratosNoDocentesSinRespaldo},
+                        {'label': 'Serenos, auxiliares, limpieza sin respaldo', 'field': form.serenosAuxiliaresLimpiezaSinRespaldo},
+                        {'label': 'Labores agrícolas sin respaldo', 'field': form.laboresAgricolasSinRespaldo},
+                        {'label': 'Jubilados sin respaldo', 'field': form.jubiladosSinRespaldo},
+                        {'label': 'Ejecución de obra', 'field': form.ejecucionObra},
+                        {'label': 'Otros sin respaldo', 'field': form.otrosSinRespaldo},
+                        {'label': 'Reserva científica en preparación', 'field': form.reservaCientificaPreparacion},
+                        {'label': 'Recién graduados en preparación', 'field': form.recienGraduadosPreparacion},
+                        {'label': 'Reserva dirección provincial de trabajo', 'field': form.reservaDireccionProvincialTrabajo},
+                        {'label': 'Técnicos medios en preparación', 'field': form.tecnicosMediosPreparacion},
+                        {'label': 'Total estudiantes universidad contratados', 'field': form.totalEstudiantesUniversidadContratados},
+                        {'label': 'Estudiantes auxiliares técnicos de docencia', 'field': form.estudiantesAuxiliaresTecnicosDocencia},
+                        {'label': 'Estudiantes en cargos no docentes', 'field': form.estudiantesCargosNoDocentes}
+                    ] %}
+
+                    {% for idx, fieldInfo in fields %}
+                        <tr>
+                            <td><strong>{{ idx + 1 }}.</strong> {{ fieldInfo.label }}</td>
+                            <td>
+                                {{ form_widget(fieldInfo.field, {'attr': {'class': 'form-control text-right', 'style': 'text-indent: 10px;'}}) }}
+                                {{ form_errors(fieldInfo.field) }}
+                            </td>
+                        </tr>
                     {% endfor %}
-                </div>
-            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
-
-        <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_rrhh_especialidad_index') }}" data-title=""
-               data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
-            <button class="btn btn-primary">Aceptar</button>
+        <div class="card-footer d-flex justify-content-end">
+            <a class="btn btn-danger mr-2 btn-cancel"
+               data-url="{{ path('app_rrhh_especialidad_index') }}"
+               data-title=""
+               data-content="¿Está seguro que desea realizar la acción?"
+               type="button">
+                Cancelar
+            </a>
+            <button class="btn btn-primary" type="submit">Aceptar</button>
         </div>
+
         {{ form_end(form) }}
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            const fieldSelectors = [];
+
+            // Captura todos los campos en orden
+            $('table tbody tr td:last-child input').each(function (index) {
+                fieldSelectors[index + 1] = $(this); // +1 para que coincida con tu numeración (1 a n)
+                $(this).on('input', function () {
+                    // Validar que solo permita números (float)
+                    this.value = this.value.replace(/[^0-9.]/g, '');
+                    updateCalculations();
+                });
+            });
+
+            // Deshabilitar campos que son automáticos
+            fieldSelectors[3].prop('readonly', true);
+            fieldSelectors[6].prop('readonly', true);
+            fieldSelectors[7].prop('readonly', true);
+            fieldSelectors[14].prop('readonly', true);
+
+            function updateCalculations() {
+                const val = n => parseFloat(fieldSelectors[n].val()) || 0;
+
+                // Indicador 3 = 4 + 7 + 14
+                fieldSelectors[3].val((val(4) + val(7) + val(14)).toFixed(2));
+
+                // Indicador 6 = 7 + 14
+                fieldSelectors[6].val((val(7) + val(14)).toFixed(2));
+
+                // Indicador 7 = suma de 7 al 13
+                let sum7to13 = 0;
+                for (let i = 7; i <= 13; i++) {
+                    sum7to13 += val(i);
+                }
+                fieldSelectors[7].val(sum7to13.toFixed(2));
+
+                // Indicador 14 = 15 + 16
+                fieldSelectors[14].val((val(15) + val(16) + val(17) + val(18) + val(19)).toFixed(2));
+            }
+
+            // Ejecutar una vez para iniciar
+            updateCalculations();
+        });
+
+    </script>
 {% endblock %}

@@ -42,6 +42,7 @@ class InstallConfig
 
         /***********************************DENYS*************************************/
         $modules[] = Module::createModule("MODULE_INFORMATIZACION", "Módulo de Informatización", "Módulo de Informatización");
+        $modules[] = Module::createModule("MODULE_RRHH", "Módulo de RRHH", "Módulo de RRHH");
 
         return $modules;
     }
@@ -392,7 +393,27 @@ class InstallConfig
 
         return $functionalities;
     }
+    /**
+     * Define una Lista de Funcionalidades para RRHH
+     *
+     * For create one -> Functionality::createFunctionality("ROLE_MODULO_RRHH", "Módulo de RRHH")
+     *
+     * @return Functionality[]
+     */
+    public static function defineFunctionalitiesForRRHH(): array
+    {
+        $functionalities = array();
 
+        //Reporte
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_HOME_RRHH", "Portada de RRHH", "Portada de RRHH");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_GEST_ESPECIALIDAD", "Gestión de especialidades", "Gestión de especialidades");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_GEST_CAT_DOC", "Gestión de categorías docentes especiales", "Gestión de categorías docentes especiales");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE2", "Gestión de modelo A2", "Gestión de modelo A2");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE3", "Gestión de modelo A3", "Gestión de modelo A3");
+
+
+        return $functionalities;
+    }
 
 
     //Roles -------------------------------------------------------------------------------------------
@@ -567,7 +588,13 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_TELEFONO_CELULAR")
             ->addFunctionality("ROLE_GEST_VISIBILIDAD");
 
-
+        $roles[] = Role::createRole('ROL_RRHH', "Administrador de RRHH", "Rol con permiso a la gestion de RRHH")
+            ->addFunctionality("ROL_RRHH")
+            ->addFunctionality("ROLE_HOME_RRHH")
+            ->addFunctionality("ROLE_RRHH_REPORTE_AE2")
+            ->addFunctionality("ROLE_RRHH_REPORTE_AE3")
+            ->addFunctionality("ROLE_RRHH_GEST_CAT_DOC")
+            ->addFunctionality("ROLE_RRHH_GEST_ESPECIALIDAD");
         return $roles;
     }
 }

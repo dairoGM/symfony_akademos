@@ -29,6 +29,14 @@
                     <th>Institución</th>
                     <th class="text-center">Opciones</th>
                 </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Año" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Mes" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Institución"
+                               class="responsive-input"/></th>
+                    <th></th> <!-- No filter for actions -->
+                </tr>
                 </thead>
                 <tbody>
                 {% set meses = [
@@ -43,10 +51,10 @@
                         <td style="width: 4%;">{{ meses[item.mes]|default('') }}</td>
                         <td>{{ item.entidad.nombre | default('') }}</td>
 
-                        <td style="width: 10%" class="text-center">
+                        <td style="width: 15%" class="text-center">
                             <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_rrhh_reporte_ae2_detail', {'id' : item.id}) }}"
-                                    data-title="Detalles de la categoría docente">
+                                    data-title="Detalles ">
                                 <i class="fa fa-eye "></i>
                             </button>
 

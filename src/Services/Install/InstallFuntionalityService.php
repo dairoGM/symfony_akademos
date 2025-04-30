@@ -77,6 +77,9 @@ class InstallFuntionalityService implements InstallFunctionalityInterface
         //Informatización
         $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForInformatizacion());
 
+        //RRHH
+        $functionalities = array_merge($functionalities, InstallConfig::defineFunctionalitiesForRRHH());
+
         return $functionalities;
     }
 

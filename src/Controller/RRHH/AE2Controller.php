@@ -30,13 +30,15 @@ class AE2Controller extends AbstractController
 
     /**
      * @Route("/", name="app_rrhh_reporte_ae2_index", methods={"GET"})
-     * @param CategoriaDocenteRepository $AE2Repository
+     * @param AE2Repository $AE2Repository
      * @return Response
      */
-    public function index(AE2Repository $AE2Repository)
+    public function index(AE2Repository $AE2Repository, PersonaRepository $personaRepository)
     {
+        $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+        $entidad = $persona[0]->getEntidad();
         return $this->render('modules/rrhh/reporte/ae2/index.html.twig', [
-            'registros' => $AE2Repository->findBy([], ['id' => 'desc']),
+            'registros' => $AE2Repository->findBy(['entidad' => $entidad], ['id' => 'desc']),
         ]);
     }
 
@@ -51,11 +53,21 @@ class AE2Controller extends AbstractController
     {
         try {
             $ae2 = new AE2();
+            if (!$ae2->getMes()) {
+                $ae2->setMes((int)date('n'));
+            }
+            if (!$ae2->getAnno()) {
+                $ae2->setAnno((int)date('Y'));
+            }
+
             $form = $this->createForm(AE2Type::class, $ae2, ['action' => 'registrar']);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
                 if (isset($persona[0])) {
+                    if (!$persona[0]->getEntidad()) {
+                        $this->addFlash('error', 'La institucion no es correcta.');
+                    }
                     $ae2->setEntidad($persona[0]->getEntidad());
                     $aE2Repository->add($ae2, true);
                     $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
@@ -63,8 +75,11 @@ class AE2Controller extends AbstractController
                 }
                 $this->addFlash('error', 'Persona no encontrada.');
             }
+            $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+            $entidad = $persona[0]->getEntidad();
             return $this->render('modules/rrhh/reporte/ae2/new.html.twig', [
                 'form' => $form->createView(),
+                'entidad' => $entidad
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -109,7 +124,7 @@ class AE2Controller extends AbstractController
      */
     public function detail(AE2 $ae2)
     {
-        return $this->render('modules/rrhh/reporte/detail.html.twig', [
+        return $this->render('modules/rrhh/reporte/Ae2/detail.html.twig', [
             'item' => $ae2,
         ]);
     }
