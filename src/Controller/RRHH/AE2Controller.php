@@ -76,7 +76,7 @@ class AE2Controller extends AbstractController
                 $this->addFlash('error', 'Persona no encontrada.');
             }
             $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
-            $entidad = $persona[0]->getEntidad();
+            $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
             return $this->render('modules/rrhh/reporte/ae2/new.html.twig', [
                 'form' => $form->createView(),
                 'entidad' => $entidad
@@ -95,7 +95,7 @@ class AE2Controller extends AbstractController
      * @param AE2Repository $ae2Repository
      * @return Response
      */
-    public function modificar(Request $request, AE2 $ae2, AE2Repository $ae2Repository)
+    public function modificar(Request $request, AE2 $ae2, AE2Repository $ae2Repository, PersonaRepository $personaRepository)
     {
         try {
             $form = $this->createForm(AE2Type::class, $ae2, ['action' => 'modificar']);
@@ -106,9 +106,11 @@ class AE2Controller extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_rrhh_reporte_ae2_index', [], Response::HTTP_SEE_OTHER);
             }
-
+            $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+            $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
             return $this->render('modules/rrhh/reporte/ae2/edit.html.twig', [
                 'form' => $form->createView(),
+                'entidad' => $entidad
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
