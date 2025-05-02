@@ -23,82 +23,82 @@ class AE2 extends BaseEntity
     private $anno;
 
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalPlantillaAprobada;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalPlantillaCubierta;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalGeneralContratos;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalContratosProfesoresTiempoDeterminado;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $profesoresTiempoCompleto;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalContratosNoDocentes;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $contratosNoDocentesConRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $contratosPorSustitucion;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $periodoPrueba;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $serenosAuxiliaresLimpieza;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $laboresAgricolas;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $jubilados;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $otrosConRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $contratosNoDocentesSinRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $serenosAuxiliaresLimpiezaSinRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $laboresAgricolasSinRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $jubiladosSinRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $ejecucionObra;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $otrosSinRespaldo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $reservaCientificaPreparacion;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $recienGraduadosPreparacion;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $reservaDireccionProvincialTrabajo;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $tecnicosMediosPreparacion;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $totalEstudiantesUniversidadContratados;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $estudiantesAuxiliaresTecnicosDocencia;
 
-    /** @ORM\Column(type="float", nullable=true) */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $estudiantesCargosNoDocentes;
 
     /**
@@ -107,11 +107,35 @@ class AE2 extends BaseEntity
     private $entidad = null;
 
     /**
-     * @param null $id
+     * @return mixed
      */
-    public function setId($id): void
+    public function getMes()
     {
-        $this->id = $id;
+        return $this->mes;
+    }
+
+    /**
+     * @param mixed $mes
+     */
+    public function setMes($mes): void
+    {
+        $this->mes = $mes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnno()
+    {
+        return $this->anno;
+    }
+
+    /**
+     * @param mixed $anno
+     */
+    public function setAnno($anno): void
+    {
+        $this->anno = $anno;
     }
 
     /**
@@ -544,38 +568,6 @@ class AE2 extends BaseEntity
     public function setEntidad($entidad): void
     {
         $this->entidad = $entidad;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMes()
-    {
-        return $this->mes;
-    }
-
-    /**
-     * @param mixed $mes
-     */
-    public function setMes($mes): void
-    {
-        $this->mes = $mes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAnno()
-    {
-        return $this->anno;
-    }
-
-    /**
-     * @param mixed $anno
-     */
-    public function setAnno($anno): void
-    {
-        $this->anno = $anno;
     }
 
 

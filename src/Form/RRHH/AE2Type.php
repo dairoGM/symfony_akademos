@@ -16,11 +16,11 @@ class AE2Type extends AbstractType
         $commonFieldOptions = [
             'required' => false,
             'html5' => true,
-            'scale' => 2, // Para permitir decimales (por ser float)
+            'scale' => 0, // Para permitir decimales (por ser float)
             'attr' => [
                 'min' => 1,
                 'max' => 1000,
-                'step' => 0.01, // Puedes poner '1' si quieres solo enteros
+                'step' => 1, // Puedes poner '1' si quieres solo enteros
             ],
         ];
 
@@ -43,7 +43,6 @@ class AE2Type extends AbstractType
                 ],
                 'placeholder' => 'Seleccione un mes',
                 'required' => true,
-//                'data' => (int)date('n'), // <-- Establece el mes actual (1-12)
             ])
             ->add('anno', ChoiceType::class, [
                 'label' => 'Año',
@@ -53,7 +52,6 @@ class AE2Type extends AbstractType
                 ),
                 'placeholder' => 'Seleccione un año',
                 'required' => true,
-//                'data' => (int)date('Y'), // <-- Establece el año actual (2025, 2026, etc.)
             ])
             ->add('totalPlantillaAprobada', NumberType::class, $commonFieldOptions)
             ->add('totalPlantillaCubierta', NumberType::class, $commonFieldOptions)

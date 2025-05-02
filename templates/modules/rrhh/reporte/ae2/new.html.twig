@@ -138,34 +138,40 @@
             });
 
             // Deshabilitar campos que son automáticos
-            fieldSelectors[3].prop('readonly', true);
-            fieldSelectors[6].prop('readonly', true);
-            fieldSelectors[7].prop('readonly', true);
-            fieldSelectors[14].prop('readonly', true);
+            fieldSelectors[3]?.prop('readonly', true);
+            fieldSelectors[6]?.prop('readonly', true);
+            fieldSelectors[7]?.prop('readonly', true);
+            fieldSelectors[14]?.prop('readonly', true);
+            fieldSelectors[24]?.prop('readonly', true); // Nuevo campo automático
 
             function updateCalculations() {
-                const val = n => parseFloat(fieldSelectors[n].val()) || 0;
+                const val = n => parseFloat(fieldSelectors[n]?.val()) || 0;
 
-                // Indicador 3 = 4 + 7 + 14
-                fieldSelectors[3].val((val(4) + val(7) + val(14)).toFixed(2));
-
-                // Indicador 6 = 7 + 14
-                fieldSelectors[6].val((val(7) + val(14)).toFixed(2));
-
-                // Indicador 7 = suma de 7 al 13
-                let sum7to13 = 0;
-                for (let i = 7; i <= 13; i++) {
-                    sum7to13 += val(i);
+                // 1. Indicador 7 = suma del 8 al 13
+                let sum8to13 = 0;
+                for (let i = 8; i <= 13; i++) {
+                    sum8to13 += val(i);
                 }
-                fieldSelectors[7].val(sum7to13.toFixed(2));
+                fieldSelectors[7]?.val(sum8to13.toFixed(0));
 
-                // Indicador 14 = 15 + 16
-                fieldSelectors[14].val((val(15) + val(16) + val(17) + val(18) + val(19)).toFixed(2));
+                // 2. Indicador 14 = 15 + 16 + 17 + 18 + 19
+                const sum15to19 = val(15) + val(16) + val(17) + val(18) + val(19);
+                fieldSelectors[14]?.val(sum15to19.toFixed(0));
+
+                // 3. Indicador 6 = 7 + 14
+                fieldSelectors[6]?.val((val(7) + val(14)).toFixed(0));
+
+                // 4. Indicador 3 = 4 + 7 + 14
+                fieldSelectors[3]?.val((val(4) + val(7) + val(14)).toFixed(0));
+
+                // 5. Indicador 24 = 25 + 26
+                fieldSelectors[24]?.val((val(25) + val(26)).toFixed(0));
             }
 
             // Ejecutar una vez para iniciar
             updateCalculations();
         });
-
     </script>
+
+
 {% endblock %}
