@@ -51,7 +51,7 @@ class AE2Controller extends AbstractController
      */
     public function registrar(Request $request, AE2Repository $aE2Repository, EstructuraRepository $estructuraRepository, PersonaRepository $personaRepository, UserRepository $userRepository)
     {
-        try {
+//        try {
             $ae2 = new AE2();
             if (!$ae2->getMes()) {
                 $ae2->setMes((int)date('n'));
@@ -85,10 +85,10 @@ class AE2Controller extends AbstractController
                 'form' => $form->createView(),
                 'entidad' => $entidad
             ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_rrhh_reporte_ae2_registrar', [], Response::HTTP_SEE_OTHER);
-        }
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//            return $this->redirectToRoute('app_rrhh_reporte_ae2_registrar', [], Response::HTTP_SEE_OTHER);
+//        }
     }
 
 
@@ -130,7 +130,7 @@ class AE2Controller extends AbstractController
      */
     public function detail(AE2 $ae2)
     {
-        return $this->render('modules/rrhh/reporte/Ae2/detail.html.twig', [
+        return $this->render('modules/rrhh/reporte/ae2/detail.html.twig', [
             'item' => $ae2,
         ]);
     }
