@@ -107,6 +107,11 @@ class AE2 extends BaseEntity
     private $entidad = null;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length="255")
+     */
+    private ?string $documento = null;
+
+    /**
      * @return mixed
      */
     public function getMes()
@@ -568,6 +573,22 @@ class AE2 extends BaseEntity
     public function setEntidad($entidad): void
     {
         $this->entidad = $entidad;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumento(): ?string
+    {
+        return $this->documento;
+    }
+
+    /**
+     * @param string|null $documento
+     */
+    public function setDocumento(?string $documento): void
+    {
+        $this->documento = $documento;
     }
 
 

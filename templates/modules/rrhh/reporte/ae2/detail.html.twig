@@ -1,3 +1,5 @@
+<a id="exportToExcel" class="btn btn-primary" style="float: right;">Exportar Excel</a>
+
 {% set meses = [
     '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -6,10 +8,10 @@
     <div class="col-6">
         <h5><b>Entidad:</b> {{ item.entidad.nombre }}</h5>
     </div>
-    <div class="col-3">
+    <div class="col-2">
         <h5><b>Mes:</b> {{ meses[item.mes]|capitalize }}</h5>
     </div>
-    <div class="col-3">
+    <div class="col-2">
         <h5><b>Año:</b> {{ item.anno }}</h5>
     </div>
 </div>
@@ -126,6 +128,85 @@
         <td>26.- Del total de estudiantes de CD contratados, cifras en cargos No Docentes</td>
         <td class="text-center">{{ item.estudiantesCargosNoDocentes | default('') }}</td>
     </tr>
+    <tr>
+        <td style="font-weight: bold">AE2 firmado</td>
+        <td class="text-center">
+            <div class="col-10">
+                <a target="_blank"
+                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae2/documento/{{ item.documento }}">{{ item.documento }}</a>
+            </div>
+        </td>
+    </tr>
     </tbody>
 </table>
 
+<!-- Primero carga las bibliotecas necesarias -->
+<script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+<script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#exportToExcel').on('click', function (e) {
+            e.preventDefault();
+
+            // 1. Crear libro y hoja
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet('Hoja1');
+
+            // 2. Configuración inicial
+            var entidad = $('h5:contains("Entidad:")').text().replace('Entidad:', '').trim();
+            var mes = $('h5:contains("Mes:")').text().replace('Mes:', '').trim();
+            var anno = $('h5:contains("Año:")').text().replace('Año:', '').trim();
+
+            // 3. Añadir datos con estilos
+            // Títulos en negrita
+            var row1 = worksheet.addRow(['MODELO 223.216 (I) AE-2']);
+            row1.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row3 = worksheet.addRow(['INDICADORES MENSUALES DE LA ACTIVIDAD DE RECURSOS HUMANOS']);
+            row3.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row5 = worksheet.addRow(['CENTRO INFORMANTE:', entidad]);
+            row5.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row7 = worksheet.addRow(['MES:', mes]);
+            row7.getCell(1).font = {bold: true};
+
+            var headerRow = worksheet.addRow(['Indicadores', 'Total']);
+            headerRow.eachCell(function (cell) {
+                cell.font = {bold: true};
+            });
+
+            // 4. Procesar los 26 indicadores
+            $('table tbody tr').slice(0, 26).each(function () {
+                worksheet.addRow([
+                    $(this).find('td:first').text().trim(),
+                    $(this).find('td:last').text().trim() || ""
+                ]);
+            });
+
+            // 5. Añadir pie del documento
+            // worksheet.addRow(['']);
+            // worksheet.addRow(['Confeccionado por:', '']);
+
+            // 6. Ajustar columnas
+            worksheet.getColumn(1).width = 60;
+            worksheet.getColumn(2).width = 15;
+
+            // 7. Crear hojas adicionales
+            workbook.addWorksheet('Hoja2');
+            workbook.addWorksheet('Hoja3');
+
+            // 8. Generar archivo (versión sincrónica alternativa)
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], {type: 'application/octet-stream'}),
+                    `Modelo_AE-2_${mes}_${anno}.xlsx`);
+            }).catch(function (error) {
+                console.error('Error al generar Excel:', error);
+            });
+        });
+    });
+</script>

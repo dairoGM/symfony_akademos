@@ -5,6 +5,7 @@ namespace App\Form\RRHH;
 use App\Entity\RRHH\AE2;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +19,7 @@ class AE2Type extends AbstractType
             'html5' => true,
             'scale' => 0, // Para permitir decimales (por ser float)
             'attr' => [
-                'min' => 1,
+                'min' => 0,
                 'max' => 1000,
                 'step' => 1, // Puedes poner '1' si quieres solo enteros
             ],
@@ -112,7 +113,12 @@ class AE2Type extends AbstractType
             ]))
             ->add('estudiantesCargosNoDocentes', NumberType::class, array_merge($commonFieldOptions, [
                 'label' => 'Del total de estudiantes de CD contratados, cifras en cargos No Docentes',
-            ]));
+            ]))
+            ->add('documento', FileType::class, [
+                'label' => 'AE2 firmado',
+                'mapped' => false,
+                'required' => $options['action'] == 'registrar',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

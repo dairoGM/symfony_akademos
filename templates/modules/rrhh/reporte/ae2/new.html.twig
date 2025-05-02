@@ -51,6 +51,13 @@
                     {{ form_widget(form.mes) }}
                     {{ form_errors(form.mes) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.documento) }}
+                    {{ form_widget(form.documento) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.documento) }}
+                </div>
             </div>
 
             <hr>
@@ -124,6 +131,13 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        $('#ae2_documento').change(function () {
+            var filename = jQuery(this).val().split('\\').pop();
+            $('.cargar-archivo').html(filename);
+        })
+        $('[data-mask]').inputmask()
+
         $(document).ready(function () {
             const fieldSelectors = [];
 
