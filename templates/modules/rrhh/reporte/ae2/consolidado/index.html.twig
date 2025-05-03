@@ -1,0 +1,154 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modelos AE-2{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Reporte de modelos AE-2</h3>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" style="background: #134679">
+                        <h4 class="card-title w-100">
+                            <a style="color: #FFFFFF" class="d-block w-100 collapsed" data-toggle="collapse"
+                               href="#collapseOne" aria-expanded="false">
+                                Búsqueda avanzada por: {{ text_fil | default('') }}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Select de Meses -->
+                                <div class="col-md-4">
+                                    <label class="required" for="mesFicha">Mes</label>
+                                    <select id="mesFicha" name="mesFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="mesFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un mes</option>
+                                        {% set meses = [
+                                            {id: 1, nombre: 'Enero'},
+                                            {id: 2, nombre: 'Febrero'},
+                                            {id: 3, nombre: 'Marzo'},
+                                            {id: 4, nombre: 'Abril'},
+                                            {id: 5, nombre: 'Mayo'},
+                                            {id: 6, nombre: 'Junio'},
+                                            {id: 7, nombre: 'Julio'},
+                                            {id: 8, nombre: 'Agosto'},
+                                            {id: 9, nombre: 'Septiembre'},
+                                            {id: 10, nombre: 'Octubre'},
+                                            {id: 11, nombre: 'Noviembre'},
+                                            {id: 12, nombre: 'Diciembre'}
+                                        ] %}
+                                        {% for mes in meses %}
+                                            <option value="{{ mes.id }}" {% if mes.id == fil_mes %} selected {% endif %}>
+                                                {{ mes.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Select de Años -->
+                                <div class="col-md-4">
+                                    <label class="required" for="annoFicha">Año</label>
+                                    <select id="annoFicha" name="annoFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="annoFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un año</option>
+                                        {% set annoActual = "now"|date("Y") %}
+                                        {% set annoInicial = annoActual - 5 %}
+                                        {% for anno in annoActual..annoInicial %}
+                                            <option value="{{ anno }}" {% if anno == fil_anno  %} selected {% endif %}>
+                                                {{ anno }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Institución</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Institución"
+                               class="responsive-input"/></th>
+                    <th></th> <!-- No filter for actions -->
+                </tr>
+                </thead>
+                <tbody>
+                {% set meses = [
+                    '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                ] %}
+
+                {% for item in registros %}
+                    <tr>
+                        <td style="width: 1%;">{{ loop.index }}</td>
+                        <td>{{ item.nombre | default('') }}</td>
+
+                        <td style="width: 5%" class="text-center">
+                            <button style="padding: 2px 6px;" title="Detalles"
+                                    class="btn btn-outline-primary modalDetailAction"
+                                    data-url="{{ path('app_rrhh_reporte_ae2_consolidado_detail', {'id' : item.id}) }}"
+                                    data-title="Detalles ">
+                                <i class="fa fa-eye "></i>
+                            </button>
+
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        $('#mesFicha, #annoFicha').change(function (e) {
+            var mes = $('#mesFicha').val();
+            var anno = $('#annoFicha').val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_rrhh_reporte_ae2_consolidado_index') }}",
+                {
+                    mes: mes,
+                    anno: anno
+                },
+                function (data) {
+                    $(window).attr('location', window.location)
+                    HoldOn.close()
+                });
+        });
+
+    </script>
+{% endblock %}
+
+

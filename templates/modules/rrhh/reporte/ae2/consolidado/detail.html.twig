@@ -1,0 +1,186 @@
+<a id="exportToExcel" class="btn btn-primary" style="float: right;">
+    <i class="fas fa-file-excel me-2"></i> Exportar Excel
+</a>
+
+{% set meses = [
+    '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+] %}
+<div class="row mb-4">
+    <div class="col-8">
+        <h5 id="entidad-header">
+            <b>
+                <i class="fa fa-university"></i>
+            </b> ({{ item[0].entidad.siglas | default('') }}) {{ item[0].entidad.nombre | default('') }}
+        </h5>
+    </div>
+
+    <div class="col-3">
+        <h5><b>Fecha:</b> {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+</div>
+
+<table id="tbl_details" class="table table-bordered">
+    <thead class="thead-light text-center">
+    <tr>
+        <th>Indicadores</th>
+        {% set romanos = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'] %}
+        {% for trimestre in item %}
+            <th>{{ romanos[loop.index0] }}</th>
+        {% endfor %}
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set indicadores = [
+        { 'label': '1.- Total Plantilla Aprobada', 'key': 'totalPlantillaAprobada' },
+        { 'label': '2.- Total Plantilla Cubierta', 'key': 'totalPlantillaCubierta' },
+        { 'label': '3.- Total General de Contratos (4+7+14)', 'key': 'totalGeneralContratos' },
+        { 'label': '4.- Total de Contratos de Profesores por tiempo determinado', 'key': 'totalContratosProfesoresTiempoDeterminado' },
+        { 'label': '5.- De ellos: a tiempo completo', 'key': 'profesoresTiempoCompleto' },
+        { 'label': '6.- Total de Contratos No Docentes (7+14)', 'key': 'totalContratosNoDocentes' },
+        { 'label': '7.- Contratos No Docentes con respaldo de plazas (8 a 13)', 'key': 'contratosNoDocentesConRespaldo' },
+        { 'label': '8.- De ellos: por sustitución', 'key': 'contratosPorSustitucion' },
+        { 'label': '9.- Período de Prueba', 'key': 'periodoPrueba' },
+        { 'label': '10.- Serenos y Auxiliares de Limpieza', 'key': 'serenosAuxiliaresLimpieza' },
+        { 'label': '11.- Labores Agrícolas', 'key': 'laboresAgricolas' },
+        { 'label': '12.- Jubilados', 'key': 'jubilados' },
+        { 'label': '13.- Otros', 'key': 'otrosConRespaldo' },
+        { 'label': '14.- Contratos No Docentes sin respaldo de plazas (15 a 19)', 'key': 'contratosNoDocentesSinRespaldo' },
+        { 'label': '15.- De ellos: Serenos y Auxiliares de Limpieza', 'key': 'serenosAuxiliaresLimpiezaSinRespaldo' },
+        { 'label': '16.- Labores Agrícolas', 'key': 'laboresAgricolasSinRespaldo' },
+        { 'label': '17.- Jubilados', 'key': 'jubiladosSinRespaldo' },
+        { 'label': '18.- Ejecución de Obra', 'key': 'ejecucionObra' },
+        { 'label': '19.- Otros', 'key': 'otrosSinRespaldo' },
+        { 'label': '20.- Reserva Científica en Preparación', 'key': 'reservaCientificaPreparacion' },
+        { 'label': '21.- Recién Graduados en Preparación (Nivel Sup.)', 'key': 'recienGraduadosPreparacion' },
+        { 'label': '22.- Reserva Dirección Provincial de Trabajo', 'key': 'reservaDireccionProvincialTrabajo' },
+        { 'label': '23.- Técnicos Medios en Preparación', 'key': 'tecnicosMediosPreparacion' },
+        { 'label': '24.- Del total de estudiantes de la Universidad de CD contratados por tiempo determinado', 'key': 'totalEstudiantesUniversidadContratados' },
+        { 'label': '25.- Del total de estudiantes de CD contratados, cifras como Auxiliar Técnico de la Docencia', 'key': 'estudiantesAuxiliaresTecnicosDocencia' },
+        { 'label': '26.- Del total de estudiantes de CD contratados, cifras en cargos No Docentes', 'key': 'estudiantesCargosNoDocentes' }
+    ] %}
+
+    {% for indicador in indicadores %}
+        <tr>
+            <td>{{ indicador.label }}</td>
+            {% set total = 0 %}
+            {% for trimestre in item %}
+                {% set valor = attribute(trimestre, indicador.key)|default(0) %}
+                <td class="text-center">{{ valor }}</td>
+                {% set total = total + valor %}
+            {% endfor %}
+            <td class="text-center font-weight-bold">{{ total }}</td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td style="font-weight: bold">AE2 firmado</td>
+        {% for trimestre in item %}
+            <td class="text-center">
+                {% if trimestre.documento %}
+                    <div class="col-10 text-center">
+                        <a target="_blank"
+                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae2/documento/{{ trimestre.documento }}"
+                           title="Exportar a Excel">
+                            <i class="fas fa-file-excel fa-lg text-success"></i>
+                        </a>
+                    </div>
+                {% else %}
+                    &mdash;
+                {% endif %}
+            </td>
+        {% endfor %}
+        <td></td> {# celda vacía para mantener la estructura #}
+    </tr>
+    </tbody>
+</table>
+
+
+<!-- Carga de bibliotecas necesarias -->
+<script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+<script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#exportToExcel').on('click', function (e) {
+            e.preventDefault();
+
+            // 1. Crear libro y hoja
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet('Datos');
+
+            // 2. Obtener información de encabezado
+            var entidad = $('#entidad-header').text().trim();
+            var fecha = $('h5:contains("Fecha:")').text().replace('Fecha:', '').trim();
+
+            // 3. Agregar metadatos
+            worksheet.addRow(['MODELO 223.216 (I) AE-2']).getCell(1).font = {bold: true};
+            worksheet.addRow(['INDICADORES MENSUALES DE LA ACTIVIDAD DE RECURSOS HUMANOS']).getCell(1).font = {bold: true};
+            worksheet.addRow(['CENTRO INFORMANTE:', entidad]).getCell(1).font = {bold: true};
+            worksheet.addRow(['FECHA:', fecha]).getCell(1).font = {bold: true};
+            worksheet.addRow(['']); // Espacio en blanco
+
+            // 4. Exportar estructura de la tabla HTML
+            var table = $('#tbl_details');
+
+            // Obtener encabezados
+            var headers = [];
+            table.find('thead th').each(function () {
+                headers.push($(this).text().trim());
+            });
+            worksheet.addRow(headers);
+
+            // Estilo para encabezados
+            worksheet.lastRow.eachCell(function (cell) {
+                cell.font = {bold: true};
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: {argb: 'FFD3D3D3'} // Gris claro
+                };
+                cell.border = {
+                    top: {style: 'thin'},
+                    left: {style: 'thin'},
+                    bottom: {style: 'thin'},
+                    right: {style: 'thin'}
+                };
+            });
+
+            // Obtener datos de las filas
+            table.find('tbody tr').each(function () {
+                var rowData = [];
+                $(this).find('td').each(function () {
+                    // Manejar celdas con iconos (como los de AE2 firmado)
+                    if ($(this).find('i.fa-file-excel').length) {
+                        rowData.push('Firmado');
+                    } else {
+                        rowData.push($(this).text().trim());
+                    }
+                });
+                worksheet.addRow(rowData);
+            });
+
+            // 5. Ajustar anchos de columnas automáticamente
+            worksheet.columns.forEach(function (column, i) {
+                var maxLength = 0;
+                column.eachCell({includeEmpty: true}, function (cell) {
+                    var cellLength = cell.value ? cell.value.toString().length : 0;
+                    if (cellLength > maxLength) {
+                        maxLength = cellLength;
+                    }
+                });
+                column.width = Math.min(Math.max(maxLength + 2, 10), 30); // Mínimo 10, máximo 30
+            });
+
+            // 6. Guardar archivo
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], {type: 'application/octet-stream'}),
+                    `AE2_${entidad}_${fecha.replace(/\//g, '-')}.xlsx`);
+            }).catch(function (error) {
+                console.error('Error al generar Excel:', error);
+                alert('Ocurrió un error al generar el archivo Excel');
+            });
+        });
+    });
+</script>

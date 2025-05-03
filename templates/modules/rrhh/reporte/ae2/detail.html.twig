@@ -1,4 +1,6 @@
-<a id="exportToExcel" class="btn btn-primary" style="float: right;">Exportar Excel</a>
+<a id="exportToExcel" class="btn btn-primary" style="float: right;">
+    <i class="fas fa-file-excel me-2"></i> Exportar Excel
+</a>
 
 {% set meses = [
     '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -6,7 +8,11 @@
 ] %}
 <div class="row mb-4">
     <div class="col-6">
-        <h5><b>Entidad:</b> {{ item.entidad.nombre }}</h5>
+        <h5>
+            <b>
+                <i class="fa fa-university  "></i>
+            </b> ({{ item.entidad.siglas | default('') }}) {{ item.entidad.nombre | default('') }}
+        </h5>
     </div>
     <div class="col-2">
         <h5><b>Mes:</b> {{ meses[item.mes]|capitalize }}</h5>

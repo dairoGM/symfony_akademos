@@ -52,18 +52,24 @@
                         <td>{{ item.entidad.nombre | default('') }}</td>
 
                         <td style="width: 15%" class="text-center">
-                            <button title="Detalles" class="btn btn-outline-primary modalDetailAction"
+                            <button style="padding: 2px 6px;" title="Detalles" class="btn btn-outline-primary modalDetailAction"
                                     data-url="{{ path('app_rrhh_reporte_ae2_detail', {'id' : item.id}) }}"
                                     data-title="Detalles ">
                                 <i class="fa fa-eye "></i>
                             </button>
 
-                            <a title="Modificar"
+                            <a style="padding: 2px 6px;"title="Modificar"
                                href="{{ path('app_rrhh_reporte_ae2_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <button title="Eliminar" class="btn btn-outline-danger elementRemove"
+                            <a title="Descargar AE2 firmado" target="_blank"
+                               class="btn btn-outline-primary btn-sm"
+                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae2/documento/{{ item.documento }}"
+                               style="padding: 2px 6px;">
+                                <i class="fa fa-file-download"></i>
+                            </a>
+                            <button style="padding: 2px 6px;" title="Eliminar" class="btn btn-outline-danger elementRemove"
                                     data-url="{{ path('app_rrhh_reporte_ae2_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>

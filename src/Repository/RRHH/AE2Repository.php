@@ -48,4 +48,32 @@ class AE2Repository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findDistinctEntidades(?int $entidadId = null, ?int $mes = null, ?int $anno = null): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('DISTINCT e.id, e.nombre')
+            ->join('a.entidad', 'e');
+
+        if ($entidadId !== null) {
+            $qb->andWhere('e.id = :entidadId')
+                ->setParameter('entidadId', $entidadId);
+        }
+
+        if ($mes !== null) {
+            $qb->andWhere('a.mes = :mes')
+                ->setParameter('mes', $mes);
+        }
+
+        if ($anno !== null) {
+            $qb->andWhere('a.anno = :anno')
+                ->setParameter('anno', $anno);
+        }
+
+        return $qb->orderBy('e.nombre', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+
 }
