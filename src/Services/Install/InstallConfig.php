@@ -393,6 +393,7 @@ class InstallConfig
 
         return $functionalities;
     }
+
     /**
      * Define una Lista de Funcionalidades para RRHH
      *
@@ -409,6 +410,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_GEST_ESPECIALIDAD", "Gestión de especialidades", "Gestión de especialidades");
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_GEST_CAT_DOC", "Gestión de categorías docentes especiales", "Gestión de categorías docentes especiales");
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE2", "Gestión de modelo A2", "Gestión de modelo A2");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE2_CONSOLIDADO", "Reporte de modelo A2", "Reporte de modelo A2");
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE3", "Gestión de modelo A3", "Gestión de modelo A3");
 
 
@@ -594,6 +596,7 @@ class InstallConfig
             ->addFunctionality("ROLE_RRHH_REPORTE_AE2")
             ->addFunctionality("ROLE_RRHH_REPORTE_AE3")
             ->addFunctionality("ROLE_RRHH_GEST_CAT_DOC")
+            ->addFunctionality("ROLE_RRHH_REPORTE_AE2_CONSOLIDADO")
             ->addFunctionality("ROLE_RRHH_GEST_ESPECIALIDAD");
         return $roles;
     }
