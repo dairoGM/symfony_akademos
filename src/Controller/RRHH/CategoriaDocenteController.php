@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/rrhh/categoria_docente")
+ * @Route("/rrhh/categoria_docente_especial")
  * @IsGranted("ROLE_ADMIN", "ROLE_RRHH_GEST_CAT_DOC")
  */
 class CategoriaDocenteController extends AbstractController

@@ -6,37 +6,55 @@
              with font-awesome or any other icon font library -->
 
 
-                {% if hasRoles('ROLE_RRHH_REPORTE_AE2') or  hasRoles('ROLE_RRHH_REPORTE_AE3') %}
-                    <li class="nav-item">
-                        <a href="#"
-                           class="nav-link nav-link-menu">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>
-                                Modelos
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ path('app_rrhh_reporte_ae2_index') }}"
-                                   class="nav-link nav-link-menu">
-                                    <p>AE-2</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ path('app_rrhh_reporte_ae3_index') }}"
-                                   class="nav-link nav-link-menu">
-                                    <p>AE-3</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                {% endif %}
+        {% if hasRoles('ROLE_RRHH_REPORTE_AE2') or  hasRoles('ROLE_RRHH_REPORTE_AE3') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Modelos
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_RRHH_REPORTE_AE2') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_ae2_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>AE-2</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
 
 
-        {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or  hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD')%}
+        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Reportes
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_ae2_consolidado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>AE-2</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+
+
+        {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -47,7 +65,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC')  %}
+                    {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') %}
                         <li class="nav-item">
                             <a href="{{ path('app_rrhh_categoria_docente_index') }}"
                                class="nav-link nav-link-menu">
@@ -63,31 +81,6 @@
                             </a>
                         </li>
                     {% endif %}
-                </ul>
-
-            </li>
-        {% endif %}
-
-        {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or  hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD')%}
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link nav-link-menu">
-                    <i class="nav-icon fas fa-cog"></i>
-                    <p>
-                        Reportes
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO')  %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_rrhh_reporte_ae2_consolidado_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>AE-2</p>
-                            </a>
-                        </li>
-                    {% endif %}
-
                 </ul>
 
             </li>
