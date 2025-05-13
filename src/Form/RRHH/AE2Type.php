@@ -20,7 +20,7 @@ class AE2Type extends AbstractType
             'scale' => 0, // Para permitir decimales (por ser float)
             'attr' => [
                 'min' => 0,
-                'max' => 1000,
+                'max' => 10000,
                 'step' => 1, // Puedes poner '1' si quieres solo enteros
             ],
         ];
@@ -115,7 +115,7 @@ class AE2Type extends AbstractType
                 'label' => 'Del total de estudiantes de CD contratados, cifras en cargos No Docentes',
             ]))
             ->add('documento', FileType::class, [
-                'label' => 'AE2 firmado',
+                'label' => 'AE-2 firmado',
                 'mapped' => false,
                 'required' => $options['action'] == 'registrar',
             ]);
