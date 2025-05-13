@@ -97,12 +97,12 @@ class AE2ConsolidadoController extends AbstractController
      */
     public function detail($id, AE2Repository $ae2Repository)
     {
+        $temp = ['','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $meses = [];
         $ae2 = $ae2Repository->findBy(['entidad' => $id]);
         foreach ($ae2 ?? [] as $item) {
-            $meses[$item->getMes()] = $item->getMes();
+            $meses[$item->getMes()] = $temp[$item->getMes()];
         }
-
         return $this->render('modules/rrhh/reporte/ae2/consolidado/detail.html.twig', [
             'item' => $ae2,
             'mesesB' => $meses

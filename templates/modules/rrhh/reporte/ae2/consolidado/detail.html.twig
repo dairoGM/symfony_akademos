@@ -2,7 +2,6 @@
     <i class="fas fa-file-excel me-2"></i> Exportar Excel
 </a>
 
-{% set meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
 <div class="row mb-4">
     <div class="col-8">
         <h5 id="entidad-header">
@@ -25,8 +24,8 @@
 {#        {% for trimestre in item %}#}
 {#            <th>{{ romanos[loop.index0] }}</th>#}
 {#        {% endfor %}#}
-        {% for item in item %}
-            <th>{{ meses[item.mes] }}</th>
+        {% for item1 in mesesB  %}
+            <th>{{ item1  }}</th>
         {% endfor %}
         <th>Total</th>
     </tr>
