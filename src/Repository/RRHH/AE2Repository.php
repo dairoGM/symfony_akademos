@@ -75,5 +75,123 @@ class AE2Repository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    public function findByFilters(array $filters = [])
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->orderBy('a.anno', 'ASC')
+            ->addOrderBy('a.mes', 'ASC');
 
+        if (!empty($filters['entidad'])) {
+            $qb->andWhere('a.entidad = :entidad')
+                ->setParameter('entidad', $filters['entidad']);
+        }
+
+        if (!empty($filters['mes'])) {
+            $qb->andWhere('a.mes = :mes')
+                ->setParameter('mes', $filters['mes']);
+        }
+
+        if (!empty($filters['anno'])) {
+            $qb->andWhere('a.anno = :anno')
+                ->setParameter('anno', $filters['anno']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findFilteredAndTotalized(array $filters = [])
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a');
+
+        // Aplicar filtros
+        if (!empty($filters['entidad'])) {
+            $qb->andWhere('a.entidad = :entidad')
+                ->setParameter('entidad', $filters['entidad']);
+        }
+
+        if (!empty($filters['mes'])) {
+            $qb->andWhere('a.mes = :mes')
+                ->setParameter('mes', $filters['mes']);
+        }
+
+        if (!empty($filters['anno'])) {
+            $qb->andWhere('a.anno = :anno')
+                ->setParameter('anno', $filters['anno']);
+        }
+
+        // Obtener los registros filtrados
+        $registros = $qb->getQuery()->getResult();
+
+        // Calcular totales
+        $totales = $this->calculateTotales($registros);
+
+        return [
+            'registros' => $registros,
+            'totales' => $totales
+        ];
+    }
+
+    private function calculateTotales(array $registros): array
+    {
+        $totales = [];
+
+        if (empty($registros)) {
+            return $totales;
+        }
+
+        // Campos numéricos que queremos totalizar
+        $numericFields = [
+            'totalPlantillaAprobada',
+            'totalPlantillaCubierta',
+            'totalGeneralContratos',
+            'totalContratosProfesoresTiempoDeterminado',
+            'profesoresTiempoCompleto',
+            'totalContratosNoDocentes',
+            'contratosNoDocentesConRespaldo',
+            'contratosPorSustitucion',
+            'periodoPrueba',
+            'serenosAuxiliaresLimpieza',
+            'laboresAgricolas',
+            'jubilados',
+            'otrosConRespaldo',
+            'contratosNoDocentesSinRespaldo',
+            'serenosAuxiliaresLimpiezaSinRespaldo',
+            'laboresAgricolasSinRespaldo',
+            'jubiladosSinRespaldo',
+            'ejecucionObra',
+            'otrosSinRespaldo',
+            'reservaCientificaPreparacion',
+            'recienGraduadosPreparacion',
+            'reservaDireccionProvincialTrabajo',
+            'tecnicosMediosPreparacion',
+            'totalEstudiantesUniversidadContratados',
+            'estudiantesAuxiliaresTecnicosDocencia',
+            'estudiantesCargosNoDocentes'
+        ];
+
+        foreach ($numericFields as $field) {
+            $getter = 'get' . ucfirst($field);
+            if (method_exists(AE2::class, $getter)) {
+                $totales[$field] = array_reduce($registros, function ($carry, $item) use ($getter) {
+                    return $carry + ($item->$getter() ?? 0);
+                }, 0);
+            }
+        }
+
+        return $totales;
+    }
+
+    public function getUniversidadesAE2()
+    {
+        $query = "SELECT distinct tbd_estructura.id, tbd_estructura.nombre 
+                   FROM rrhh.tbd_ae2 
+                   join estructura.tbd_estructura  on tbd_estructura.id = tbd_ae2.entidad_id
+                     order by  tbd_estructura.nombre";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        $temp = $temp->fetchAllAssociative();
+        return $temp;
+    }
 }

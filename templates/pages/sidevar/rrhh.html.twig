@@ -30,7 +30,7 @@
         {% endif %}
 
 
-        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') %}
+        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_AE2_MES') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -46,6 +46,14 @@
                             <a href="{{ path('app_rrhh_reporte_ae2_consolidado_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Indicadores de RH (AE2)</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_RRHH_REPORTE_AE2_MES') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_ae2_mes_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Indicadores de RH (AE2) MES</p>
                             </a>
                         </li>
                     {% endif %}

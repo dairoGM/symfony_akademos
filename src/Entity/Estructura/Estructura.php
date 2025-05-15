@@ -375,5 +375,8 @@ class Estructura extends BaseEntity
         $this->centroAutorizadoPosgrado = $centroAutorizadoPosgrado;
     }
 
-
+    public function __toString(): string
+    {
+        return $this->getNombre() ?? ''; // Asume que hay un campo 'nombre' o usa el campo apropiado
+    }
 }

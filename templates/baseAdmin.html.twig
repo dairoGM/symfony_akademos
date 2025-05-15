@@ -10,8 +10,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>{% block title %}Welcome!{% endblock %}</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+{#    <link rel="stylesheet"#}
+{#          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">#}
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free/css/all.min.css') }}">
 
@@ -30,9 +30,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('assets/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/HoldOn.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
-          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
-          crossorigin=""/>
+{#    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"#}
+{#          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="#}
+{#          crossorigin=""/>#}
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/Control.FullScreen.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/leaflet.extra-markers.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/MarkerCluster.css') }}">
@@ -817,10 +817,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('assets/highcharts/modules/export-data.js') }}"></script>
 
 
-<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
-        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
-        crossorigin=""></script>
+{#<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"#}
+{#        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="#}
+{#        crossorigin=""></script>#}
 
+<script src="{{ asset('assets/leaftlet/leaflet.js') }}"></script>
 <script src="{{ asset('assets/leaftlet/Control.FullScreen.js') }}"></script>
 <script src="{{ asset('assets/leaftlet/leaflet.extra-markers.js') }}"></script>
 <script src="{{ asset('assets/leaftlet/leaflet.markercluster.js') }}"></script>

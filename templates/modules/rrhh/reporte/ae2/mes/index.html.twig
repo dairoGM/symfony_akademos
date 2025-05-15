@@ -1,0 +1,168 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Reporte de modelos AE-2 MES{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .table-indicadores {
+            width: auto;
+        }
+
+        .table-indicadores th, .table-indicadores td {
+            white-space: nowrap;
+            padding: 8px 12px;
+        }
+
+        .col-indicador {
+            width: 1%;
+            white-space: normal;
+            min-width: 250px;
+        }
+
+        .col-mes {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .col-total {
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Reporte de modelos AE-2 MES</h3>
+            </div>
+        </div>
+
+        {# Filtros #}
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" style="background: #134679">
+                    <h4 class="card-title w-100">
+                        <a style="color: #FFFFFF" class="d-block w-100 collapsed" data-toggle="collapse"
+                           href="#collapseOne" aria-expanded="false">
+                            Búsqueda avanzada por: {{ text_fil | default('') }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Select de Meses -->
+                            <div class="col-md-4">
+                                <label class="required" for="mesFicha">Mes</label>
+                                <select id="mesFicha" name="mesFicha" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    {% for id, nombre in meses %}
+                                        <option value="{{ id }}" {% if id == fil_mes %} selected {% endif %}>
+                                            {{ nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Select de Años -->
+                            <div class="col-md-4">
+                                <label class="required" for="annoFicha">Año</label>
+                                <select id="annoFicha" name="annoFicha" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    {% set annoActual = "now"|date("Y") %}
+                                    {% set annoInicial = annoActual - 5 %}
+                                    {% for anno in annoActual..annoInicial %}
+                                        <option value="{{ anno }}" {% if anno == fil_anno %} selected {% endif %}>
+                                            {{ anno }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Select de Universidad -->
+                            <div class="col-md-4">
+                                <label class="required" for="annoFicha">Universidad</label>
+                                <select id="universidadFicha" name="universidadFicha" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    {% for univ in universidades %}
+                                        <option value="{{ univ.id }}" {% if univ.id == fil_universidad %} selected {% endif %}>
+                                            {{ univ.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Resultados #}
+        <div class="card">
+            <div class="card-body">
+                {% if datos.meses is defined and datos.meses|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-indicadores">
+                            <thead>
+                            <tr>
+                                <th class="col-indicador">Indicador</th>
+                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}
+                                    <th class="col-mes">{{ meses[mesData.mes] }}/{{ mesData.anno }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for field in fields %}
+                                <tr>
+                                    <td class="col-indicador">{{ field.label }}</td>
+                                    {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}
+                                        <td>{{ mesData.valores[field.field] ?? 0 }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            <tr class="table-active">
+                                <td class="col-indicador"><strong>Total por Mes</strong></td>
+                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}
+                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="text-align: center" class="alert alert-info">
+                        No se encontraron registros con los filtros aplicados.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#mesFicha, #annoFicha, #universidadFicha').change(function (e) {
+            var mes = $('#mesFicha').val();
+            var anno = $('#annoFicha').val();
+            var universidad = $('#universidadFicha').val();
+            HoldOn.open({
+                theme: "sk-cube-grid",
+                message: 'Por favor espere...',
+                textColor: "white"
+            });
+            $.post("{{ path('app_rrhh_reporte_ae2_mes_index') }}",
+                {
+                    mes: mes,
+                    anno: anno,
+                    universidad: universidad
+                },
+                function (data) {
+                    $(window).attr('location', window.location)
+                    HoldOn.close()
+                });
+        });
+
+    </script>
+{% endblock %}

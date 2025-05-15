@@ -39,7 +39,7 @@ class AE2ConsolidadoController extends AbstractController
      * @param AE2Repository $AE2Repository
      * @return Response
      */
-    public function index(Request $request, AE2Repository $AE2Repository)
+    public function index(Request $request, AE2Repository $AE2Repository, Utils $utils)
     {
         $allPost = $request->request->all();
 
@@ -63,23 +63,7 @@ class AE2ConsolidadoController extends AbstractController
             }
         }
 
-        $meses = [
-            1 => 'Enero',
-            2 => 'Febrero',
-            3 => 'Marzo',
-            4 => 'Abril',
-            5 => 'Mayo',
-            6 => 'Junio',
-            7 => 'Julio',
-            8 => 'Agosto',
-            9 => 'Septiembre',
-            10 => 'Octubre',
-            11 => 'Noviembre',
-            12 => 'Diciembre'
-        ];
-
-
-        $filMesText = $meses[$request->getSession()->get('ae2_mes')];
+        $meses = $utils->getMesesNombres();
 
         $response = $this->render('modules/rrhh/reporte/ae2/consolidado/index.html.twig', [
             'registros' => $AE2Repository->findDistinctEntidades(null, $request->getSession()->get('ae2_mes'), $request->getSession()->get('ae2_anno')),
@@ -92,12 +76,13 @@ class AE2ConsolidadoController extends AbstractController
 
     /**
      * @Route("/{id}/detail", name="app_rrhh_reporte_ae2_consolidado_detail", methods={"GET", "POST"})
-     * @param AE2 $ae2
+     * @param $id
+     * @param AE2Repository $ae2Repository
      * @return Response
      */
     public function detail($id, AE2Repository $ae2Repository)
     {
-        $temp = ['','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        $temp = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $meses = [];
         $ae2 = $ae2Repository->findBy(['entidad' => $id]);
         foreach ($ae2 ?? [] as $item) {

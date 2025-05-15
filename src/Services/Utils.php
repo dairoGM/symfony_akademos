@@ -1017,4 +1017,89 @@ class Utils
 
         }
     }
+
+
+    public function getMesesNombres(): array
+    {
+        return [
+            1 => 'Enero',
+            2 => 'Febrero',
+            3 => 'Marzo',
+            4 => 'Abril',
+            5 => 'Mayo',
+            6 => 'Junio',
+            7 => 'Julio',
+            8 => 'Agosto',
+            9 => 'Septiembre',
+            10 => 'Octubre',
+            11 => 'Noviembre',
+            12 => 'Diciembre'
+        ];
+    }
+
+    public function organizarDatosPorMes(array $registros): array
+    {
+        $datos = [
+            'meses' => [],
+            'totalesPorMes' => []
+        ];
+
+        foreach ($registros as $registro) {
+            $key = $registro->getMes() . '-' . $registro->getAnno();
+
+            if (!isset($datos['meses'][$key])) {
+                $datos['meses'][$key] = [
+                    'mes' => $registro->getMes(),
+                    'anno' => $registro->getAnno(),
+                    'entidad' => $registro->getEntidad(),
+                    'valores' => []
+                ];
+                $datos['totalesPorMes'][$key] = 0;
+            }
+
+            // Sumar todos los valores para el total por mes
+            $totalMes = 0;
+            foreach ($this->getFieldsConfig() as $field) {
+                $value = $registro->{'get' . ucfirst($field['field'])}() ?? 0;
+                @$datos['meses'][$key]['valores'][$field['field']] += $value;
+                $totalMes += $value;
+            }
+            $datos['totalesPorMes'][$key] += $totalMes;
+        }
+
+        return $datos;
+    }
+
+    public function getFieldsConfig(): array
+    {
+        return [
+            ['label' => '1.- Total plantilla aprobada', 'field' => 'totalPlantillaAprobada'],
+            ['label' => '2.- Total plantilla cubierta', 'field' => 'totalPlantillaCubierta'],
+            ['label' => '3.- Total general de contratos (4+7+14)', 'field' => 'totalGeneralContratos'],
+            ['label' => '4.- Total contratos profesores tiempo determinado', 'field' => 'totalContratosProfesoresTiempoDeterminado'],
+            ['label' => '5.- Profesores tiempo completo', 'field' => 'profesoresTiempoCompleto'],
+            ['label' => '6.- Total de contratos no docentes (7+14)', 'field' => 'totalContratosNoDocentes'],
+            ['label' => '7.- Contratos no docentes con respaldo de plazas (8 a 13)', 'field' => 'contratosNoDocentesConRespaldo'],
+            ['label' => '8.- Contratos por sustitución', 'field' => 'contratosPorSustitucion'],
+            ['label' => '9.- Período de prueba', 'field' => 'periodoPrueba'],
+            ['label' => '10.- Serenos, auxiliares, limpieza', 'field' => 'serenosAuxiliaresLimpieza'],
+            ['label' => '11.- Labores agrícolas', 'field' => 'laboresAgricolas'],
+            ['label' => '12.- Jubilados', 'field' => 'jubilados'],
+            ['label' => '13.- Otros con respaldo', 'field' => 'otrosConRespaldo'],
+            ['label' => '14.- Contratos no docentes sin respaldo de plazas (15 a 19)', 'field' => 'contratosNoDocentesSinRespaldo'],
+            ['label' => '15.- Serenos, auxiliares, limpieza sin respaldo', 'field' => 'serenosAuxiliaresLimpiezaSinRespaldo'],
+            ['label' => '16.- Labores Agrícolas sin respaldo', 'field' => 'laboresAgricolasSinRespaldo'],
+            ['label' => '17.- Jubilados sin respaldo', 'field' => 'jubiladosSinRespaldo'],
+            ['label' => '18.- Ejecución de obra', 'field' => 'ejecucionObra'],
+            ['label' => '19.- Otros sin respaldo', 'field' => 'otrosSinRespaldo'],
+            ['label' => '20.- Reserva científica en preparación', 'field' => 'reservaCientificaPreparacion'],
+            ['label' => '21.- Recién graduados en preparación (Nivel Sup.)', 'field' => 'recienGraduadosPreparacion'],
+            ['label' => '22.- Reserva dirección provincial de trabajo', 'field' => 'reservaDireccionProvincialTrabajo'],
+            ['label' => '23.- Técnicos medios en preparación', 'field' => 'tecnicosMediosPreparacion'],
+            ['label' => '24.- Total estudiantes universidad contratados', 'field' => 'totalEstudiantesUniversidadContratados'],
+            ['label' => '25.- Estudiantes auxiliares técnicos de docencia', 'field' => 'estudiantesAuxiliaresTecnicosDocencia'],
+            ['label' => '26.- Estudiantes en cargos no docentes', 'field' => 'estudiantesCargosNoDocentes']
+        ];
+    }
+
 }

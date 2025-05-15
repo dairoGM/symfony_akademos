@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-4">
-        <h5><b>Fecha de envío:</b> {{ "now"|date("d/m/Y") }}</h5>
+        <h5><b>Último envío:</b> {{ "now"|date("d/m/Y") }}</h5>
     </div>
 </div>
 
@@ -27,7 +27,7 @@
         {% for item1 in mesesB  %}
             <th>{{ item1  }}</th>
         {% endfor %}
-        <th>Total</th>
+{#        <th>Total</th>#}
     </tr>
     </thead>
     <tbody>
@@ -69,7 +69,7 @@
                 <td class="text-center">{{ valor }}</td>
                 {% set total = total + valor %}
             {% endfor %}
-            <td class="text-center font-weight-bold">{{ total }}</td>
+{#            <td class="text-center font-weight-bold">{{ total }}</td>#}
         </tr>
     {% endfor %}
 
@@ -90,7 +90,7 @@
                 {% endif %}
             </td>
         {% endfor %}
-        <td></td> {# celda vacía para mantener la estructura #}
+{#        <td></td> #}{# celda vacía para mantener la estructura #}
     </tr>
     </tbody>
 </table>
