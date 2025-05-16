@@ -54,17 +54,17 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- Select de Meses -->
-                            <div class="col-md-4">
-                                <label class="required" for="mesFicha">Mes</label>
-                                <select id="mesFicha" name="mesFicha" class="form-control">
-                                    <option value="">Seleccione</option>
-                                    {% for id, nombre in meses %}
-                                        <option value="{{ id }}" {% if id == fil_mes %} selected {% endif %}>
-                                            {{ nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+{#                            <div class="col-md-4">#}
+{#                                <label class="required" for="mesFicha">Mes</label>#}
+{#                                <select id="mesFicha" name="mesFicha" class="form-control">#}
+{#                                    <option value="">Seleccione</option>#}
+{#                                    {% for id, nombre in meses %}#}
+{#                                        <option value="{{ id }}" {% if id == fil_mes %} selected {% endif %}>#}
+{#                                            {{ nombre }}#}
+{#                                        </option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
 
                             <!-- Select de Años -->
                             <div class="col-md-4">
@@ -82,17 +82,17 @@
                             </div>
 
                             <!-- Select de Universidad -->
-                            <div class="col-md-4">
-                                <label class="required" for="annoFicha">Universidad</label>
-                                <select id="universidadFicha" name="universidadFicha" class="form-control">
-                                    <option value="">Seleccione</option>
-                                    {% for univ in universidades %}
-                                        <option value="{{ univ.id }}" {% if univ.id == fil_universidad %} selected {% endif %}>
-                                            {{ univ.nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+{#                            <div class="col-md-4">#}
+{#                                <label class="required" for="annoFicha">Universidad</label>#}
+{#                                <select id="universidadFicha" name="universidadFicha" class="form-control">#}
+{#                                    <option value="">Seleccione</option>#}
+{#                                    {% for univ in universidades %}#}
+{#                                        <option value="{{ univ.id }}" {% if univ.id == fil_universidad %} selected {% endif %}>#}
+{#                                            {{ univ.nombre }}#}
+{#                                        </option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
                         </div>
                     </div>
                 </div>
@@ -122,12 +122,12 @@
                                     {% endfor %}
                                 </tr>
                             {% endfor %}
-                            <tr class="table-active">
-                                <td class="col-indicador"><strong>Total por Mes</strong></td>
-                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}
-                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td>
-                                {% endfor %}
-                            </tr>
+{#                            <tr class="table-active">#}
+{#                                <td class="col-indicador"><strong>Total por Mes</strong></td>#}
+{#                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}#}
+{#                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td>#}
+{#                                {% endfor %}#}
+{#                            </tr>#}
                             </tbody>
                         </table>
                     </div>

@@ -53,7 +53,8 @@ class AE2Repository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->select('DISTINCT e.id, e.nombre')
-            ->join('a.entidad', 'e');
+            ->join('a.entidad', 'e')
+            ->orderBy('a.mes', 'asc');
 
         if ($entidadId !== null) {
             $qb->andWhere('e.id = :entidadId')

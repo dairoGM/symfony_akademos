@@ -63,13 +63,14 @@ class AE2ConsolidadoController extends AbstractController
             }
         }
 
-        $meses = $utils->getMesesNombres();
+//        $meses = $utils->getMesesNombres();
 
         $response = $this->render('modules/rrhh/reporte/ae2/consolidado/index.html.twig', [
             'registros' => $AE2Repository->findDistinctEntidades(null, $request->getSession()->get('ae2_mes'), $request->getSession()->get('ae2_anno')),
             'fil_mes' => $request->getSession()->get('ae2_mes'),
             'fil_anno' => $request->getSession()->get('ae2_anno'),
-            'text_fil' => "Mes: " . $meses[$request->getSession()->get('ae2_mes')] . ",   Año: " . $request->getSession()->get('ae2_anno'),
+//            'text_fil' => "Mes: " . $meses[$request->getSession()->get('ae2_mes')] . ",   Año: " . $request->getSession()->get('ae2_anno'),
+            'text_fil' => "Año: " . $request->getSession()->get('ae2_anno'),
         ]);
         return $response;
     }
@@ -84,7 +85,7 @@ class AE2ConsolidadoController extends AbstractController
     {
         $temp = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $meses = [];
-        $ae2 = $ae2Repository->findBy(['entidad' => $id]);
+        $ae2 = $ae2Repository->findBy(['entidad' => $id], ['mes' => 'asc']);
         foreach ($ae2 ?? [] as $item) {
             $meses[$item->getMes()] = $temp[$item->getMes()];
         }

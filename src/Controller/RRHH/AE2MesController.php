@@ -87,13 +87,14 @@ class AE2MesController extends AbstractController
         $mesNombre = $meses[$filMes] ?? null;
 
         $nombreUniversidad = null;
-        foreach ($universidades as $value){
-            if ($value['id'] == $filUniversidad){
+        foreach ($universidades as $value) {
+            if ($value['id'] == $filUniversidad) {
                 $nombreUniversidad = $value['nombre'];
             }
         }
 
-        $textFil = "Mes: " . ($mesNombre ?? ' ') . " | Año: " . ($filAnno ?? ' ') . " | Universidad: " . ($nombreUniversidad ?? ' ');
+        $textFil = "Año: " . ($filAnno ?? ' ');
+//        $textFil = "Mes: " . ($mesNombre ?? ' ') . " | Año: " . ($filAnno ?? ' ') . " | Universidad: " . ($nombreUniversidad ?? ' ');
 
         return $this->render('modules/rrhh/reporte/ae2/mes/index.html.twig', [
             'datos' => $datosOrganizados,
