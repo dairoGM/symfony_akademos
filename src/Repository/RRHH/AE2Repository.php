@@ -56,15 +56,15 @@ class AE2Repository extends ServiceEntityRepository
             ->join('a.entidad', 'e')
             ->orderBy('a.mes', 'asc');
 
-        if ($entidadId !== null) {
-            $qb->andWhere('e.id = :entidadId')
-                ->setParameter('entidadId', $entidadId);
-        }
+//        if ($entidadId !== null) {
+//            $qb->andWhere('e.id = :entidadId')
+//                ->setParameter('entidadId', $entidadId);
+//        }
 
-        if ($mes !== null) {
-            $qb->andWhere('a.mes = :mes')
-                ->setParameter('mes', $mes);
-        }
+//        if ($mes !== null) {
+//            $qb->andWhere('a.mes = :mes')
+//                ->setParameter('mes', $mes);
+//        }
 
         if ($anno !== null) {
             $qb->andWhere('a.anno = :anno')
@@ -82,15 +82,15 @@ class AE2Repository extends ServiceEntityRepository
             ->orderBy('a.anno', 'ASC')
             ->addOrderBy('a.mes', 'ASC');
 
-        if (!empty($filters['entidad'])) {
-            $qb->andWhere('a.entidad = :entidad')
-                ->setParameter('entidad', $filters['entidad']);
-        }
-
-        if (!empty($filters['mes'])) {
-            $qb->andWhere('a.mes = :mes')
-                ->setParameter('mes', $filters['mes']);
-        }
+//        if (!empty($filters['entidad'])) {
+//            $qb->andWhere('a.entidad = :entidad')
+//                ->setParameter('entidad', $filters['entidad']);
+//        }
+//
+//        if (!empty($filters['mes'])) {
+//            $qb->andWhere('a.mes = :mes')
+//                ->setParameter('mes', $filters['mes']);
+//        }
 
         if (!empty($filters['anno'])) {
             $qb->andWhere('a.anno = :anno')
