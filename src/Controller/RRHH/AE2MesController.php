@@ -15,6 +15,7 @@ use App\Repository\RRHH\CategoriaDocenteRepository;
 use App\Repository\Security\UserRepository;
 use App\Services\Utils;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Handler\Curl\Util;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,5 +109,68 @@ class AE2MesController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/reporte-ae2-mes/detalle", name="app_rrhh_reporte_ae2_mes_detalle", methods={"POST"})
+     */
+    public function detalleMes(Request $request, Utils $utils): Response
+    {
+        $mes = $request->request->get('mes');
+        $anno = $request->request->get('anno');
 
+        // Datos fijos de ejemplo (ajusta con tus datos reales)
+        $datosTrabajadores = [
+            [
+                'ces' => 'UPR',
+                'aprobada' => 2508,
+                'cubierta' => 1644,
+                'promedio' => 2062,
+                'vacantes' => 864,
+                'cubrim' => 65.6
+            ],
+            [
+                'ces' => 'Org. Soroa',
+                'aprobada' => 55,
+                'cubierta' => 40,
+                'promedio' => 43,
+                'vacantes' => 15,
+                'cubrim' => 72.7
+            ],
+            // ... resto de tus datos
+        ];
+
+        return $this->render('modules/rrhh/reporte/ae2/mes/tabla1.2.html.twig', [
+            'mes' => $mes,
+            'anno' => $anno,
+            'meses' => $utils->getMesesNombres(), // Pasa el array directamente
+            'datos' => $datosTrabajadores // Asegúrate que esta estructura coincide con lo que espera la vista
+        ]);
+    }
+
+
+    /**
+     * @Route("/reporte-ae2-mes/detalle2", name="app_rrhh_reporte_ae2_mes_detalle2", methods={"POST"})
+     */
+    public function detalleMes2(Request $request, Utils $utils): Response
+    {
+        $mes = $request->request->get('mes');
+        $anno = $request->request->get('anno');
+
+        // Obtén los datos para la segunda tabla
+        $datosAdicionales = [
+            // Tu estructura de datos para la tabla 1.3
+            [
+                'categoria' => 'Profesores',
+                'cantidad' => 120,
+                'porcentaje' => 45.2
+            ],
+            // ... más datos
+        ];
+
+        return $this->render('modules/rrhh/reporte/ae2/mes/tabla1.3.html.twig', [
+            'mes' => $mes,
+            'anno' => $anno,
+            'meses' => $utils->getMesesNombres(),
+            'datos' => $datosAdicionales
+        ]);
+    }
 }

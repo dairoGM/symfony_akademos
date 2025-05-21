@@ -28,6 +28,40 @@
             font-weight: bold;
             background-color: #f8f9fa;
         }
+
+        /* Botones originales (fondo blanco con borde) */
+        .btn-modal-1-2 {
+            color: #007bff !important;
+            background-color: white !important;
+            border: 1px solid #007bff !important;
+        }
+
+        .btn-modal-1-3 {
+            color: #6c757d !important;
+            background-color: white !important;
+            border: 1px solid #6c757d !important;
+        }
+
+        /* Hover states */
+        .btn-modal-1-2:hover {
+            color: white !important;
+            background-color: #007bff !important;
+        }
+
+        .btn-modal-1-3:hover {
+            color: white !important;
+            background-color: #6c757d !important;
+        }
+
+        /* Tamaño y espaciado */
+        .btn-modal-1-2, .btn-modal-1-3 {
+            padding: 0.15rem 0.35rem;
+            font-size: 0.7rem;
+            line-height: 1.2;
+            border-radius: 0.2rem;
+            text-decoration: none !important;
+            margin-left: 4px;
+        }
     </style>
 {% endblock %}
 
@@ -54,17 +88,17 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- Select de Meses -->
-{#                            <div class="col-md-4">#}
-{#                                <label class="required" for="mesFicha">Mes</label>#}
-{#                                <select id="mesFicha" name="mesFicha" class="form-control">#}
-{#                                    <option value="">Seleccione</option>#}
-{#                                    {% for id, nombre in meses %}#}
-{#                                        <option value="{{ id }}" {% if id == fil_mes %} selected {% endif %}>#}
-{#                                            {{ nombre }}#}
-{#                                        </option>#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                            </div>#}
+                            {#                            <div class="col-md-4"> #}
+                            {#                                <label class="required" for="mesFicha">Mes</label> #}
+                            {#                                <select id="mesFicha" name="mesFicha" class="form-control"> #}
+                            {#                                    <option value="">Seleccione</option> #}
+                            {#                                    {% for id, nombre in meses %} #}
+                            {#                                        <option value="{{ id }}" {% if id == fil_mes %} selected {% endif %}> #}
+                            {#                                            {{ nombre }} #}
+                            {#                                        </option> #}
+                            {#                                    {% endfor %} #}
+                            {#                                </select> #}
+                            {#                            </div> #}
 
                             <!-- Select de Años -->
                             <div class="col-md-4">
@@ -82,17 +116,17 @@
                             </div>
 
                             <!-- Select de Universidad -->
-{#                            <div class="col-md-4">#}
-{#                                <label class="required" for="annoFicha">Universidad</label>#}
-{#                                <select id="universidadFicha" name="universidadFicha" class="form-control">#}
-{#                                    <option value="">Seleccione</option>#}
-{#                                    {% for univ in universidades %}#}
-{#                                        <option value="{{ univ.id }}" {% if univ.id == fil_universidad %} selected {% endif %}>#}
-{#                                            {{ univ.nombre }}#}
-{#                                        </option>#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                            </div>#}
+                            {#                            <div class="col-md-4"> #}
+                            {#                                <label class="required" for="annoFicha">Universidad</label> #}
+                            {#                                <select id="universidadFicha" name="universidadFicha" class="form-control"> #}
+                            {#                                    <option value="">Seleccione</option> #}
+                            {#                                    {% for univ in universidades %} #}
+                            {#                                        <option value="{{ univ.id }}" {% if univ.id == fil_universidad %} selected {% endif %}> #}
+                            {#                                            {{ univ.nombre }} #}
+                            {#                                        </option> #}
+                            {#                                    {% endfor %} #}
+                            {#                                </select> #}
+                            {#                            </div> #}
                         </div>
                     </div>
                 </div>
@@ -109,7 +143,29 @@
                             <tr>
                                 <th class="col-indicador">Indicador</th>
                                 {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}
-                                    <th class="col-mes">{{ meses[mesData.mes] }}/{{ mesData.anno }}</th>
+                                    <th class="col-mes" style="white-space: nowrap;">
+                                        {{ meses[mesData.mes] }}/{{ mesData.anno }}
+                                        <span style="display: inline-flex; gap: 4px; margin-left: 8px;">
+                                        <!-- Botón Tabla 1.2 -->
+                                            <a href="#" class="btn-modal-1-2 btn-primary"
+                                               data-mes="{{ mesData.mes }}"
+                                               data-anno="{{ mesData.anno }}"
+                                               data-toggle="modal"
+                                               data-target="#modalDetalleMes"
+                                               title="Tabla 1.2 - Detalles de trabajadores">
+                                                <i class="fas fa-users"></i> 1.2
+                                            </a>
+                                            <!-- Botón Tabla 1.3 -->
+                                            <a href="#" class="btn-modal-1-3 btn-secondary"
+                                               data-mes="{{ mesData.mes }}"
+                                               data-anno="{{ mesData.anno }}"
+                                               data-toggle="modal"
+                                               data-target="#modalDetalleMes2"
+                                               title="Tabla 1.3 - Estadísticas adicionales">
+                                                <i class="fas fa-table"></i> 1.3
+                                            </a>
+                                    </span>
+                                    </th>
                                 {% endfor %}
                             </tr>
                             </thead>
@@ -122,12 +178,12 @@
                                     {% endfor %}
                                 </tr>
                             {% endfor %}
-{#                            <tr class="table-active">#}
-{#                                <td class="col-indicador"><strong>Total por Mes</strong></td>#}
-{#                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %}#}
-{#                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td>#}
-{#                                {% endfor %}#}
-{#                            </tr>#}
+                            {#                            <tr class="table-active"> #}
+                            {#                                <td class="col-indicador"><strong>Total por Mes</strong></td> #}
+                            {#                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %} #}
+                            {#                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td> #}
+                            {#                                {% endfor %} #}
+                            {#                            </tr> #}
                             </tbody>
                         </table>
                     </div>
@@ -139,6 +195,68 @@
             </div>
         </div>
     </div>
+    <!-- Modal para tabla 1.2 -->
+    <div class="modal fade" id="modalDetalleMes" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" style="max-width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header text-black">
+                    <h5 class="modal-title" id="modalDetalleMesLabel">Tabla 1.2</h5>
+                    <!-- Botón Exportar Excel -->
+                    <div class="d-flex align-items-center ml-auto"> <!-- ml-auto para empujar a la derecha -->
+                        <button id="exportExcelBtn" class="btn btn-success btn-sm mr-2" title="Exportar a Excel">
+                            <i class="fas fa-file-excel mr-1"></i> Exportar
+                        </button>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="modalDetalleMesContent">
+                        <!-- El contenido se cargará aquí dinámicamente via AJAX -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <p class="mt-2">Cargando datos...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Segundo Modal para Tabla 1.3 -->
+    <div class="modal fade" id="modalDetalleMes2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" style="max-width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header   text-black">
+                    <h5 class="modal-title" id="modalDetalleMesLabel2">Tabla 1.3</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="modalDetalleMesContent2">
+                        <!-- El contenido se cargará aquí dinámicamente via AJAX -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <p class="mt-2">Cargando datos...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div> `
 {% endblock %}
 
 {% block javascripts %}
@@ -164,5 +282,68 @@
                 });
         });
 
+
+        // Configuración inicial de meses
+        window.meses = {{ meses|json_encode|raw }};
+
+        // Manejo del modal para Tabla 1.2
+        $(document).on('click', '.btn-modal-1-2', function (e) {
+            e.preventDefault();
+            loadModalData(
+                $(this).data('mes'),
+                $(this).data('anno'),
+                '#modalDetalleMes',
+                '#modalDetalleMesLabel',
+                '#modalDetalleMesContent',
+                "{{ path('app_rrhh_reporte_ae2_mes_detalle') }}",
+                "Tabla 1.2 -  "
+            );
+        });
+
+        // Manejo del modal para Tabla 1.3
+        $(document).on('click', '.btn-modal-1-3', function (e) {
+            e.preventDefault();
+            loadModalData(
+                $(this).data('mes'),
+                $(this).data('anno'),
+                '#modalDetalleMes2',
+                '#modalDetalleMesLabel2',
+                '#modalDetalleMesContent2',
+                "{{ path('app_rrhh_reporte_ae2_mes_detalle2') }}",
+                "Tabla 1.3 -  "
+            );
+        });
+
+        // Función reusable para cargar datos modales
+        function loadModalData(mes, anno, modalId, labelId, contentId, url, titleTable) {
+            $(labelId).text('Cargando...');
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {mes: mes, anno: anno},
+                beforeSend: function () {
+                    $(contentId).html(`
+                        <div class="text-center py-4">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <p>Por favor espere...</p>
+                        </div>
+                    `);
+                },
+                success: function (response) {
+                    $(labelId).text(titleTable + window.meses[mes] + ' ' + anno);
+                    $(contentId).html(response);
+                },
+                error: function () {
+                    $(contentId).html(`
+                        <div class="alert alert-danger">
+                            Error al cargar los datos. Intente nuevamente.
+                        </div>
+                    `);
+                }
+            });
+        }
     </script>
 {% endblock %}

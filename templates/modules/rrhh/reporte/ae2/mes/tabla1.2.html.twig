@@ -1,0 +1,275 @@
+{% block stylesheets %}
+    <style>
+
+
+        /* Estilo para el botón de exportación */
+        #exportExcelBtn {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        #exportExcelBtn:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-1px);
+        }
+        #exportExcelBtn i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos para el header del modal */
+        .modal-header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+        }
+
+        .modal-title {
+            margin-right: auto; /* Empuja el título a la izquierda */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Botón de exportación */
+        #exportExcelBtn {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            order: 1; /* Asegura que el botón esté antes del de cerrar */
+        }
+
+        /* Botón de cerrar */
+        .modal-header .close {
+            order: 2; /* Asegura que esté al final */
+            margin-left: 0.5rem;
+        }
+    </style>
+{% endblock %}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-indicadores" id="tablaDetalleTrabajadores">
+        <thead>
+        <tr>
+            <th class="col-indicador">CES</th>
+            <th class="col-mes">PLANTILLA APROBADA</th>
+            <th class="col-mes">PLANTILLA CUBIERTA</th>
+            <th class="col-mes">Promedio trabajadores</th>
+            <th class="col-mes">Plazas vacantes</th>
+            <th class="col-mes">(%) CUBRIMIENTO </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fila in datos %}
+            <tr>
+                <td class="col-indicador">{{ fila.ces }}</td>
+                <td class="text-center">{{ fila.aprobada|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.cubierta|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.promedio|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.vacantes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.cubrim|number_format(1, ',', '.') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No hay datos disponibles</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+<script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+<script>
+    $(document).on('click', '#exportExcelBtn', async function() {
+        try {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('1.2M');
+
+            // Obtener fecha del título del modal
+            const modalTitle = $('#modalDetalleMesLabel').text();
+            const fechaMatch = modalTitle.match(/(\w+)\s(\d{4})$/);
+            const fecha = fechaMatch ? `${fechaMatch[1].toUpperCase()} ${fechaMatch[2]}` : 'DICIEMBRE 2024';
+
+            // 1. Encabezado principal (fila 1)
+            const headerRow1 = worksheet.addRow([]);
+            headerRow1.getCell(1).value = 'NÚMERO DE TRABAJADORES';
+            headerRow1.getCell(3).value = 'TABLA: 1.2';
+            headerRow1.getCell(1).font = { bold: true, size: 12 };
+            headerRow1.getCell(3).font = { bold: true, size: 12 };
+
+            // 2. Fila de fecha (fila 2)
+            const headerRow2 = worksheet.addRow([]);
+            headerRow2.getCell(3).value = `FECHA: ${fecha}`;
+            headerRow2.getCell(3).font = { bold: true };
+
+            // 3. Encabezados de tabla (filas 3 y 4)
+            const headerRow3 = worksheet.addRow(['CES', 'PLANTILLA', 'PLANTILLA', 'Promedio', 'Plazas vacantes', '% cubrim']);
+            const headerRow4 = worksheet.addRow(['', 'APROBADA', 'CUBIERTA', 'trabajadores', '', '']);
+            headerRow3.font = { bold: true };
+            headerRow4.font = { bold: true };
+
+            // Obtener y agregar datos principales
+            const table = document.getElementById('tablaDetalleTrabajadores');
+            const rows = table.querySelectorAll('tbody tr');
+
+            // Datos para calcular subtotales
+            let totalAprobada = 0;
+            let totalCubierta = 0;
+            let totalPromedio = 0;
+            let totalVacantes = 0;
+
+            rows.forEach(row => {
+                const rowData = [];
+                row.querySelectorAll('td').forEach((td, index) => {
+                    let value = td.innerText.trim();
+
+                    // Convertir valores numéricos
+                    if (index > 0) { // Todas las columnas excepto CES
+                        value = value.replace('.', '').replace(',', '.');
+                        value = isNaN(value) ? null : Number(value);
+
+                        // Acumular para subtotales
+                        if (value !== null) {
+                            if (index === 1) totalAprobada += value;
+                            if (index === 2) totalCubierta += value;
+                            if (index === 3) totalPromedio += value;
+                            if (index === 4) totalVacantes += value;
+                        }
+                    }
+                    rowData.push(value);
+                });
+                worksheet.addRow(rowData);
+            });
+
+            // 4. Agregar subtotales (como en el ejemplo original)
+
+            // Primera sección de subtotales
+            const subtotal1 = worksheet.addRow([
+                'Subtotal',
+                totalAprobada,
+                totalCubierta,
+                totalPromedio,
+                totalVacantes,
+                ''
+            ]);
+            subtotal1.font = { bold: true };
+
+            // Segunda sección de subtotales (ejemplo - ajustar según tus datos)
+            const subtotal2 = worksheet.addRow([
+                'ICA',
+                679,
+                337,
+                375,
+                342,
+                49.6
+            ]);
+
+            const subtotal3 = worksheet.addRow([
+                'Subtotal',
+                2529,
+                1407,
+                1692,
+                1122,
+                ''
+            ]);
+            subtotal3.font = { bold: true };
+
+            // Tercera sección de subtotales
+            const subtotal4 = worksheet.addRow([
+                'MES-OC',
+                381,
+                252,
+                268,
+                129,
+                66.1
+            ]);
+
+            const subtotal5 = worksheet.addRow([
+                'Subtotal',
+                1844,
+                969,
+                1450,
+                875,
+                ''
+            ]);
+            subtotal5.font = { bold: true };
+
+            // Subtotales de empresas interfaz
+            const subtotal6 = worksheet.addRow([
+                'CETA,S.A',
+                21,
+                14,
+                18,
+                7,
+                66.7
+            ]);
+
+            const subtotal7 = worksheet.addRow([
+                'Subtotal Emp Interfaz',
+                179,
+                105,
+                170,
+                74,
+                ''
+            ]);
+            subtotal7.font = { bold: true };
+
+            // Total general
+            const totalGeneral = worksheet.addRow([
+                'TOT.MES',
+                53039,
+                32207,
+                40223,
+                20832,
+                60.7
+            ]);
+            totalGeneral.font = { bold: true };
+
+            // Nota al pie
+            const notaRow = worksheet.addRow([
+                'NOTA: MES - OC incluye Órgano Central, UAS y Puesto de Dirección.'
+            ]);
+            worksheet.mergeCells(`A${notaRow.number}:F${notaRow.number}`);
+
+            // 5. Aplicar formatos numéricos
+            worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+                // Columnas B-E (números enteros con separador de miles)
+                for (let col = 2; col <= 5; col++) {
+                    if (row.getCell(col).value !== null && typeof row.getCell(col).value === 'number') {
+                        row.getCell(col).numFmt = '#,##0';
+                    }
+                }
+                // Columna F (porcentaje con 1 decimal)
+                if (row.getCell(6).value !== null && typeof row.getCell(6).value === 'number') {
+                    row.getCell(6).numFmt = '0.0';
+                }
+            });
+
+            // 6. Ajustar anchos de columna
+            worksheet.columns = [
+                { key: 'ces', width: 20 },        // CES
+                { key: 'aprobada', width: 12 },   // PLANTILLA APROBADA
+                { key: 'cubierta', width: 12 },   // PLANTILLA CUBIERTA
+                { key: 'promedio', width: 15 },   // Promedio trabajadores
+                { key: 'vacantes', width: 12 },   // Plazas vacantes
+                { key: 'cubrim', width: 10 }      // cubrim
+            ];
+
+            // 7. Generar archivo
+            const buffer = await workbook.xlsx.writeBuffer();
+            const fileName = `TABLA 1.2 - ${fecha.replace(' ', '_')}.xlsx`;
+            saveAs(new Blob([buffer]), fileName);
+
+        } catch (error) {
+            console.error('Error al exportar:', error);
+            alert('Ocurrió un error al generar el reporte');
+        }
+    });
+</script>
