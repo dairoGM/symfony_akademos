@@ -112,31 +112,13 @@ class AE2MesController extends AbstractController
     /**
      * @Route("/reporte-ae2-mes/detalle", name="app_rrhh_reporte_ae2_mes_detalle", methods={"POST"})
      */
-    public function detalleMes(Request $request, Utils $utils): Response
+    public function detalleMes(Request $request, Utils $utils, AE2Repository $aE2Repository): Response
     {
         $mes = $request->request->get('mes');
         $anno = $request->request->get('anno');
 
         // Datos fijos de ejemplo (ajusta con tus datos reales)
-        $datosTrabajadores = [
-            [
-                'ces' => 'UPR',
-                'aprobada' => 2508,
-                'cubierta' => 1644,
-                'promedio' => 2062,
-                'vacantes' => 864,
-                'cubrim' => 65.6
-            ],
-            [
-                'ces' => 'Org. Soroa',
-                'aprobada' => 55,
-                'cubierta' => 40,
-                'promedio' => 43,
-                'vacantes' => 15,
-                'cubrim' => 72.7
-            ],
-            // ... resto de tus datos
-        ];
+        $datosTrabajadores = $aE2Repository->getTabla12($mes, $anno);
 
         return $this->render('modules/rrhh/reporte/ae2/mes/tabla1.2.html.twig', [
             'mes' => $mes,

@@ -12,11 +12,13 @@
             display: inline-flex;
             align-items: center;
         }
+
         #exportExcelBtn:hover {
             background-color: #218838;
             border-color: #1e7e34;
             transform: translateY(-1px);
         }
+
         #exportExcelBtn i {
             margin-right: 5px;
             font-size: 0.9rem;
@@ -58,23 +60,26 @@
         <thead>
         <tr>
             <th class="col-indicador">CES</th>
-            <th class="col-mes">PLANTILLA APROBADA</th>
-            <th class="col-mes">PLANTILLA CUBIERTA</th>
+            <th class="col-mes">Plantilla aprobada</th>
+            <th class="col-mes">Plantilla cubierta</th>
             <th class="col-mes">Promedio trabajadores</th>
             <th class="col-mes">Plazas vacantes</th>
-            <th class="col-mes">(%) CUBRIMIENTO </th>
+            <th class="col-mes">(%) cubrimiento</th>
         </tr>
         </thead>
         <tbody>
         {% for fila in datos %}
-            <tr>
-                <td class="col-indicador">{{ fila.ces }}</td>
-                <td class="text-center">{{ fila.aprobada|number_format(0, ',', '.') }}</td>
-                <td class="text-center">{{ fila.cubierta|number_format(0, ',', '.') }}</td>
-                <td class="text-center">{{ fila.promedio|number_format(0, ',', '.') }}</td>
-                <td class="text-center">{{ fila.vacantes|number_format(0, ',', '.') }}</td>
-                <td class="text-center">{{ fila.cubrim|number_format(1, ',', '.') }}</td>
-            </tr>
+            {# Verificar si todas las columnas numéricas son 0 #}
+            {% if fila.aprobada != 0 or fila.cubierta != 0 or fila.promedio != 0 or fila.vacantes != 0  %}
+                <tr class="{{ fila.es_subtotal ? 'font-weight-bold' : '' }}">
+                    <td class="col-indicador">{{ fila.ces }}</td>
+                    <td class="text-center">{{ fila.aprobada|number_format(0, ',', '.') }}</td>
+                    <td class="text-center">{{ fila.cubierta|number_format(0, ',', '.') }}</td>
+                    <td class="text-center">{{ fila.promedio|number_format(0, ',', '.') }}</td>
+                    <td class="text-center">{{ fila.vacantes|number_format(0, ',', '.') }}</td>
+                    <td class="text-center">{{ fila.cubrim|number_format(1, ',', '.') }}</td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="6" class="text-center">No hay datos disponibles</td>
@@ -87,7 +92,7 @@
 <script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
 
 <script>
-    $(document).on('click', '#exportExcelBtn', async function() {
+    $(document).on('click', '#exportExcelBtn', async function () {
         try {
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('1.2M');
@@ -101,19 +106,19 @@
             const headerRow1 = worksheet.addRow([]);
             headerRow1.getCell(1).value = 'NÚMERO DE TRABAJADORES';
             headerRow1.getCell(3).value = 'TABLA: 1.2';
-            headerRow1.getCell(1).font = { bold: true, size: 12 };
-            headerRow1.getCell(3).font = { bold: true, size: 12 };
+            headerRow1.getCell(1).font = {bold: true, size: 12};
+            headerRow1.getCell(3).font = {bold: true, size: 12};
 
             // 2. Fila de fecha (fila 2)
             const headerRow2 = worksheet.addRow([]);
             headerRow2.getCell(3).value = `FECHA: ${fecha}`;
-            headerRow2.getCell(3).font = { bold: true };
+            headerRow2.getCell(3).font = {bold: true};
 
             // 3. Encabezados de tabla (filas 3 y 4)
             const headerRow3 = worksheet.addRow(['CES', 'PLANTILLA', 'PLANTILLA', 'Promedio', 'Plazas vacantes', '% cubrim']);
             const headerRow4 = worksheet.addRow(['', 'APROBADA', 'CUBIERTA', 'trabajadores', '', '']);
-            headerRow3.font = { bold: true };
-            headerRow4.font = { bold: true };
+            headerRow3.font = {bold: true};
+            headerRow4.font = {bold: true};
 
             // Obtener y agregar datos principales
             const table = document.getElementById('tablaDetalleTrabajadores');
@@ -159,7 +164,7 @@
                 totalVacantes,
                 ''
             ]);
-            subtotal1.font = { bold: true };
+            subtotal1.font = {bold: true};
 
             // Segunda sección de subtotales (ejemplo - ajustar según tus datos)
             const subtotal2 = worksheet.addRow([
@@ -179,7 +184,7 @@
                 1122,
                 ''
             ]);
-            subtotal3.font = { bold: true };
+            subtotal3.font = {bold: true};
 
             // Tercera sección de subtotales
             const subtotal4 = worksheet.addRow([
@@ -199,7 +204,7 @@
                 875,
                 ''
             ]);
-            subtotal5.font = { bold: true };
+            subtotal5.font = {bold: true};
 
             // Subtotales de empresas interfaz
             const subtotal6 = worksheet.addRow([
@@ -219,7 +224,7 @@
                 74,
                 ''
             ]);
-            subtotal7.font = { bold: true };
+            subtotal7.font = {bold: true};
 
             // Total general
             const totalGeneral = worksheet.addRow([
@@ -230,7 +235,7 @@
                 20832,
                 60.7
             ]);
-            totalGeneral.font = { bold: true };
+            totalGeneral.font = {bold: true};
 
             // Nota al pie
             const notaRow = worksheet.addRow([
@@ -239,7 +244,7 @@
             worksheet.mergeCells(`A${notaRow.number}:F${notaRow.number}`);
 
             // 5. Aplicar formatos numéricos
-            worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+            worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
                 // Columnas B-E (números enteros con separador de miles)
                 for (let col = 2; col <= 5; col++) {
                     if (row.getCell(col).value !== null && typeof row.getCell(col).value === 'number') {
@@ -254,12 +259,12 @@
 
             // 6. Ajustar anchos de columna
             worksheet.columns = [
-                { key: 'ces', width: 20 },        // CES
-                { key: 'aprobada', width: 12 },   // PLANTILLA APROBADA
-                { key: 'cubierta', width: 12 },   // PLANTILLA CUBIERTA
-                { key: 'promedio', width: 15 },   // Promedio trabajadores
-                { key: 'vacantes', width: 12 },   // Plazas vacantes
-                { key: 'cubrim', width: 10 }      // cubrim
+                {key: 'ces', width: 20},        // CES
+                {key: 'aprobada', width: 12},   // PLANTILLA APROBADA
+                {key: 'cubierta', width: 12},   // PLANTILLA CUBIERTA
+                {key: 'promedio', width: 15},   // Promedio trabajadores
+                {key: 'vacantes', width: 12},   // Plazas vacantes
+                {key: 'cubrim', width: 10}      // cubrim
             ];
 
             // 7. Generar archivo
