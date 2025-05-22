@@ -397,7 +397,7 @@ class SolicitudProgramaController extends AbstractController
 
                 $solicitudProgramaRepository->edit($solicitudPrograma, true);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
-                return $this->redirectToRoute('app_programas_aprobados_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
             }
 
 
@@ -415,7 +415,7 @@ class SolicitudProgramaController extends AbstractController
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_programas_aprobados_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_solicitud_programa_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
