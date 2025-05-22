@@ -222,7 +222,7 @@ SELECT
     false AS es_subtotal
 FROM rrhh.tbd_ae2 ae
 JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
-WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (5, 8)
+WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (5, 8, 6)
 
 UNION ALL
 
@@ -249,7 +249,7 @@ SELECT
     true AS es_subtotal
 FROM rrhh.tbd_ae2 ae
 JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
-WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (5, 8)
+WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (5, 8, 6)
 
 UNION ALL
 
@@ -332,7 +332,7 @@ SELECT
     false
 FROM rrhh.tbd_ae2 ae
 JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
-WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (6, 7)
+WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (7)
 
 UNION ALL
 
@@ -359,7 +359,7 @@ SELECT
     true
 FROM rrhh.tbd_ae2 ae
 JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
-WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (6, 7)
+WHERE ae.mes = $mes AND ae.anno = $anno AND e.categoria_estructura_id IN (7)
 
 UNION ALL
 

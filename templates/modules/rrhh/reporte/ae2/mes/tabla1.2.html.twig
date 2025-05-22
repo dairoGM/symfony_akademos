@@ -68,9 +68,13 @@
         </tr>
         </thead>
         <tbody>
+        {% set total_aprobada = 0 %}
+        {% set total_cubierta = 0 %}
+        {% set total_promedio = 0 %}
+        {% set total_vacantes = 0 %}
+
         {% for fila in datos %}
-            {# Verificar si todas las columnas numéricas son 0 #}
-            {% if fila.aprobada != 0 or fila.cubierta != 0 or fila.promedio != 0 or fila.vacantes != 0  %}
+            {% if fila.aprobada != 0 or fila.cubierta != 0 or fila.promedio != 0 or fila.vacantes != 0 %}
                 <tr class="{{ fila.es_subtotal ? 'font-weight-bold' : '' }}">
                     <td class="col-indicador">{{ fila.ces }}</td>
                     <td class="text-center">{{ fila.aprobada|number_format(0, ',', '.') }}</td>
@@ -79,12 +83,38 @@
                     <td class="text-center">{{ fila.vacantes|number_format(0, ',', '.') }}</td>
                     <td class="text-center">{{ fila.cubrim|number_format(1, ',', '.') }}</td>
                 </tr>
+
+                {# Acumular totales si no es un subtotal #}
+                {% if not fila.es_subtotal %}
+                    {% set total_aprobada = total_aprobada + fila.aprobada %}
+                    {% set total_cubierta = total_cubierta + fila.cubierta %}
+                    {% set total_promedio = total_promedio + fila.promedio %}
+                    {% set total_vacantes = total_vacantes + fila.vacantes %}
+                {% endif %}
             {% endif %}
         {% else %}
             <tr>
                 <td colspan="6" class="text-center">No hay datos disponibles</td>
             </tr>
         {% endfor %}
+
+        {# Fila de total general #}
+        {% if datos|length > 0 %}
+            <tr class="font-weight-bold bg-light">
+                <td class="col-indicador">TOTAL GENERAL</td>
+                <td class="text-center">{{ total_aprobada|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ total_cubierta|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ total_promedio|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ total_vacantes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">
+                    {% if total_aprobada > 0 %}
+                    {{ ((total_cubierta / total_aprobada) * 100)|number_format(1, ',', '.') }}
+                {% else %}
+                    0.0
+                    {% endif %}%
+                </td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 </div>
