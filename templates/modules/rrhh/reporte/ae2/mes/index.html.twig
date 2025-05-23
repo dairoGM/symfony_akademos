@@ -37,9 +37,9 @@
         }
 
         .btn-modal-1-3 {
-            color: #6c757d !important;
+            color: #134679 !important;
             background-color: white !important;
-            border: 1px solid #6c757d !important;
+            border: 1px solid #134679 !important;
         }
 
         /* Hover states */
@@ -50,7 +50,7 @@
 
         .btn-modal-1-3:hover {
             color: white !important;
-            background-color: #6c757d !important;
+            background-color: #134679 !important;
         }
 
         /* Tamaño y espaciado */
@@ -156,14 +156,14 @@
                                                 <i class="fas fa-users"></i> 1.2
                                             </a>
                                             <!-- Botón Tabla 1.3 -->
-{#                                            <a href="#" class="btn-modal-1-3 btn-secondary"#}
-{#                                               data-mes="{{ mesData.mes }}"#}
-{#                                               data-anno="{{ mesData.anno }}"#}
-{#                                               data-toggle="modal"#}
-{#                                               data-target="#modalDetalleMes2"#}
-{#                                               title="Tabla 1.3 - Estadísticas adicionales">#}
-{#                                                <i class="fas fa-table"></i> 1.3#}
-{#                                            </a>#}
+                                            <a href="#" class="btn-modal-1-3 btn-secondary"
+                                               data-mes="{{ mesData.mes }}"
+                                               data-anno="{{ mesData.anno }}"
+                                               data-toggle="modal"
+                                               data-target="#modalDetalleMes2"
+                                               title="Tabla 1.3 - Estadísticas adicionales">
+                                                <i class="fas fa-table"></i> 1.3
+                                            </a>
                                     </span>
                                     </th>
                                 {% endfor %}
@@ -178,12 +178,6 @@
                                     {% endfor %}
                                 </tr>
                             {% endfor %}
-                            {#                            <tr class="table-active"> #}
-                            {#                                <td class="col-indicador"><strong>Total por Mes</strong></td> #}
-                            {#                                {% for mesData in datos.meses|sort((a, b) => a.anno <=> b.anno ?? a.mes <=> b.mes) %} #}
-                            {#                                    <td class="col-total">{{ datos.totalesPorMes[mesData.mes~'-'~mesData.anno] }}</td> #}
-                            {#                                {% endfor %} #}
-                            {#                            </tr> #}
                             </tbody>
                         </table>
                     </div>
@@ -199,21 +193,20 @@
     <div class="modal fade" id="modalDetalleMes" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document" style="max-width: 95%;">
             <div class="modal-content">
-                <div class="modal-header text-black">
-                    <h5 class="modal-title" id="modalDetalleMesLabel">Tabla 1.2</h5>
-                    <!-- Botón Exportar Excel -->
-                    <div class="d-flex align-items-center ml-auto"> <!-- ml-auto para empujar a la derecha -->
+                <div class="modal-header bg-white"> <!-- Fondo blanco -->
+                    <h5 class="modal-title text-dark" id="modalDetalleMesLabel">Tabla 1.2</h5> <!-- Texto oscuro -->
+                    <div class="d-flex align-items-center ml-auto">
                         <button id="exportExcelBtn" class="btn btn-success btn-sm mr-2" title="Exportar a Excel">
                             <i class="fas fa-file-excel mr-1"></i> Exportar
                         </button>
-                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                            <!-- Icono X en negro -->
+                            <span aria-hidden="true" style="color: black !important">&times;</span>
                         </button>
                     </div>
                 </div>
                 <div class="modal-body p-0">
                     <div id="modalDetalleMesContent">
-                        <!-- El contenido se cargará aquí dinámicamente via AJAX -->
                         <div class="text-center py-5">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Cargando...</span>
@@ -236,9 +229,15 @@
             <div class="modal-content">
                 <div class="modal-header   text-black">
                     <h5 class="modal-title" id="modalDetalleMesLabel2">Tabla 1.3</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="d-flex align-items-center ml-auto">
+                        <button id="exportExcelBtn" class="btn btn-success btn-sm mr-2" title="Exportar a Excel">
+                            <i class="fas fa-file-excel mr-1"></i> Exportar
+                        </button>
+                        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                            <!-- Icono X en negro -->
+                            <span aria-hidden="true" style="color: black !important">&times;</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="modal-body p-0">
                     <div id="modalDetalleMesContent2">

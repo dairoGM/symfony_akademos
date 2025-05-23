@@ -123,6 +123,14 @@
 
 <script>
     $(document).on('click', '#exportExcelBtn', async function () {
+        const $btn = $(this);
+
+        // Si el botón ya está deshabilitado, no hacer nada (evitar múltiples clics)
+        if ($btn.prop('disabled')) return;
+
+        // Deshabilitar el botón para evitar múltiples clics
+        $btn.prop('disabled', true);
+
         try {
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('1.2M');
@@ -160,6 +168,18 @@
             let totalPromedio = 0;
             let totalVacantes = 0;
 
+            // Función para agregar filas con formato condicional
+            const addFormattedRow = (values) => {
+                const row = worksheet.addRow(values);
+                // Aplicar negrita si la primera celda contiene "Subtotal" o "Total" (sin distinción de mayúsculas/minúsculas)
+                if (values[0] && (values[0].toString().toLowerCase().includes('subtotal') ||
+                    values[0].toString().toLowerCase().includes('total'))) {
+                    row.font = {bold: true};
+                }
+                return row;
+            };
+
+            // Procesar cada fila de la tabla
             rows.forEach(row => {
                 const rowData = [];
                 row.querySelectorAll('td').forEach((td, index) => {
@@ -180,98 +200,10 @@
                     }
                     rowData.push(value);
                 });
-                worksheet.addRow(rowData);
+
+                // Usar la función addFormattedRow para mantener consistencia
+                addFormattedRow(rowData);
             });
-
-            // 4. Agregar subtotales (como en el ejemplo original)
-
-            // Primera sección de subtotales
-            const subtotal1 = worksheet.addRow([
-                'Subtotal',
-                totalAprobada,
-                totalCubierta,
-                totalPromedio,
-                totalVacantes,
-                ''
-            ]);
-            subtotal1.font = {bold: true};
-
-            // Segunda sección de subtotales (ejemplo - ajustar según tus datos)
-            const subtotal2 = worksheet.addRow([
-                'ICA',
-                679,
-                337,
-                375,
-                342,
-                49.6
-            ]);
-
-            const subtotal3 = worksheet.addRow([
-                'Subtotal',
-                2529,
-                1407,
-                1692,
-                1122,
-                ''
-            ]);
-            subtotal3.font = {bold: true};
-
-            // Tercera sección de subtotales
-            const subtotal4 = worksheet.addRow([
-                'MES-OC',
-                381,
-                252,
-                268,
-                129,
-                66.1
-            ]);
-
-            const subtotal5 = worksheet.addRow([
-                'Subtotal',
-                1844,
-                969,
-                1450,
-                875,
-                ''
-            ]);
-            subtotal5.font = {bold: true};
-
-            // Subtotales de empresas interfaz
-            const subtotal6 = worksheet.addRow([
-                'CETA,S.A',
-                21,
-                14,
-                18,
-                7,
-                66.7
-            ]);
-
-            const subtotal7 = worksheet.addRow([
-                'Subtotal Emp Interfaz',
-                179,
-                105,
-                170,
-                74,
-                ''
-            ]);
-            subtotal7.font = {bold: true};
-
-            // Total general
-            const totalGeneral = worksheet.addRow([
-                'TOT.MES',
-                53039,
-                32207,
-                40223,
-                20832,
-                60.7
-            ]);
-            totalGeneral.font = {bold: true};
-
-            // Nota al pie
-            const notaRow = worksheet.addRow([
-                'NOTA: MES - OC incluye Órgano Central, UAS y Puesto de Dirección.'
-            ]);
-            worksheet.mergeCells(`A${notaRow.number}:F${notaRow.number}`);
 
             // 5. Aplicar formatos numéricos
             worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
@@ -285,6 +217,13 @@
                 if (row.getCell(6).value !== null && typeof row.getCell(6).value === 'number') {
                     row.getCell(6).numFmt = '0.0';
                 }
+
+                // Aplicar negrita a filas existentes que contengan "Subtotal" o "Total"
+                const firstCellValue = row.getCell(1).value;
+                if (firstCellValue && (firstCellValue.toString().toLowerCase().includes('subtotal') ||
+                    firstCellValue.toString().toLowerCase().includes('total'))) {
+                    row.font = {bold: true};
+                }
             });
 
             // 6. Ajustar anchos de columna
@@ -297,14 +236,36 @@
                 {key: 'cubrim', width: 10}      // cubrim
             ];
 
-            // 7. Generar archivo
+            // 7. Generar archivo con método más controlado
             const buffer = await workbook.xlsx.writeBuffer();
             const fileName = `TABLA 1.2 - ${fecha.replace(' ', '_')}.xlsx`;
-            saveAs(new Blob([buffer]), fileName);
+
+            // Crear enlace de descarga temporal
+            const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.style.display = 'none';
+
+            // Agregar al documento y hacer clic
+            document.body.appendChild(a);
+            a.click();
+
+            // Limpiar después de 100ms
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
 
         } catch (error) {
             console.error('Error al exportar:', error);
             alert('Ocurrió un error al generar el reporte');
+        } finally {
+            // Rehabilitar el botón después de 1 segundo (incluso si hay error)
+            setTimeout(() => {
+                $btn.prop('disabled', false);
+            }, 1000);
         }
     });
 </script>

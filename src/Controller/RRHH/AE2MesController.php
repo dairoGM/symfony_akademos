@@ -110,7 +110,7 @@ class AE2MesController extends AbstractController
     }
 
     /**
-     * @Route("/reporte-ae2-mes/detalle", name="app_rrhh_reporte_ae2_mes_detalle", methods={"POST"})
+     * @Route("/tabla1-2", name="app_rrhh_reporte_ae2_mes_detalle", methods={"POST"})
      */
     public function detalleMes(Request $request, Utils $utils, AE2Repository $aE2Repository): Response
     {
@@ -130,29 +130,20 @@ class AE2MesController extends AbstractController
 
 
     /**
-     * @Route("/reporte-ae2-mes/detalle2", name="app_rrhh_reporte_ae2_mes_detalle2", methods={"POST"})
+     * @Route("/tabla1-3", name="app_rrhh_reporte_ae2_mes_detalle2", methods={"POST"})
      */
-    public function detalleMes2(Request $request, Utils $utils): Response
+    public function detalleMes2(Request $request, AE2Repository $ae2Repository, Utils $utils): Response
     {
         $mes = $request->request->get('mes');
         $anno = $request->request->get('anno');
 
-        // Obtén los datos para la segunda tabla
-        $datosAdicionales = [
-            // Tu estructura de datos para la tabla 1.3
-            [
-                'categoria' => 'Profesores',
-                'cantidad' => 120,
-                'porcentaje' => 45.2
-            ],
-            // ... más datos
-        ];
-
+        // Datos fijos de ejemplo (ajusta con tus datos reales)
+        $datos = $ae2Repository->getTabla13($mes, $anno);
         return $this->render('modules/rrhh/reporte/ae2/mes/tabla1.3.html.twig', [
             'mes' => $mes,
             'anno' => $anno,
-            'meses' => $utils->getMesesNombres(),
-            'datos' => $datosAdicionales
+            'meses' => $utils->getMesesNombres(), // Pasa el array directamente
+            'datos' => $datos // Asegúrate que esta estructura coincide con lo que espera la vista
         ]);
     }
 }

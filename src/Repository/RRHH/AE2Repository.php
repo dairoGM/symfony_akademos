@@ -425,4 +425,273 @@ ORDER BY orden, es_subtotal, ces;
         $temp = $temp->fetchAllAssociative();
         return $temp;
     }
+    public function getTabla13($mes, $anno)
+    {
+        $query = "(
+-- GRUPO 1: categoria_estructura_id IN (5, 8, 6)
+SELECT 
+    e.id,
+    e.categoria_estructura_id,
+    e.siglas AS ces,
+	 
+	ae.total_contratos_no_docentes,
+	
+	ae.contratos_no_docentes_con_respaldo,
+	ae.contratos_por_sustitucion,
+	ae.otros_con_respaldo,
+	
+	ae.contratos_no_docentes_sin_respaldo,	
+	ae.jubilados_sin_respaldo,
+	ae.labores_agricolas_sin_respaldo,
+	ae.otros_sin_respaldo,
+	
+	ae.reserva_cientifica_preparacion,
+	ae.tecnicos_medios_preparacion,
+	ae.recien_graduados_preparacion,
+	 
+	
+	ae.estudiantes_auxiliares_tecnicos_docencia,
+	ae.estudiantes_cargos_no_docentes,
+	ae.total_estudiantes_universidad_contratados,
+	
+     
+	
+    1 AS orden,
+    false AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id IN (5, 8, 6)
+
+UNION ALL
+
+-- SUBTOTAL GRUPO 1
+SELECT 
+    NULL AS id,
+    5 AS categoria_estructura_id,
+    'Subtotal' AS ces,
+	
+    
+    SUM(ae.total_contratos_no_docentes),
+	
+	SUM(ae.contratos_no_docentes_con_respaldo),
+	SUM(ae.contratos_por_sustitucion),
+	SUM(ae.otros_con_respaldo),
+	
+	SUM(ae.contratos_no_docentes_sin_respaldo),
+	SUM(ae.jubilados_sin_respaldo),
+	SUM(ae.labores_agricolas_sin_respaldo),
+	SUM(ae.otros_sin_respaldo),
+	
+	SUM(ae.reserva_cientifica_preparacion),
+	SUM(ae.tecnicos_medios_preparacion),
+	SUM(ae.recien_graduados_preparacion),
+	 
+	SUM(ae.estudiantes_auxiliares_tecnicos_docencia),
+	SUM(ae.estudiantes_cargos_no_docentes),
+	SUM(ae.total_estudiantes_universidad_contratados),
+	
+    2 AS orden,
+    true AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id IN (5, 8, 6)
+
+UNION ALL
+
+-- GRUPO 2: categoria_estructura_id = 24
+SELECT 
+    e.id,
+    e.categoria_estructura_id,
+    e.siglas AS ces,
+    ae.total_contratos_no_docentes,
+	
+	ae.contratos_no_docentes_con_respaldo,
+	ae.contratos_por_sustitucion,
+	ae.otros_con_respaldo,
+	
+	ae.contratos_no_docentes_sin_respaldo,	
+	ae.jubilados_sin_respaldo,
+	ae.labores_agricolas_sin_respaldo,
+	ae.otros_sin_respaldo,
+	
+	ae.reserva_cientifica_preparacion,
+	ae.tecnicos_medios_preparacion,
+	ae.recien_graduados_preparacion,
+	 
+	
+	ae.estudiantes_auxiliares_tecnicos_docencia,
+	ae.estudiantes_cargos_no_docentes,
+	ae.total_estudiantes_universidad_contratados,
+    3 AS orden,
+    false AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 24
+
+UNION ALL
+
+-- SUBTOTAL GRUPO 2
+SELECT 
+    NULL AS id,
+    24 AS categoria_estructura_id,
+    'Subtotal' AS ces,
+    SUM(ae.total_contratos_no_docentes),
+	
+	SUM(ae.contratos_no_docentes_con_respaldo),
+	SUM(ae.contratos_por_sustitucion),
+	SUM(ae.otros_con_respaldo),
+	
+	SUM(ae.contratos_no_docentes_sin_respaldo),
+	SUM(ae.jubilados_sin_respaldo),
+	SUM(ae.labores_agricolas_sin_respaldo),
+	SUM(ae.otros_sin_respaldo),
+	
+	SUM(ae.reserva_cientifica_preparacion),
+	SUM(ae.tecnicos_medios_preparacion),
+	SUM(ae.recien_graduados_preparacion),
+	 
+	SUM(ae.estudiantes_auxiliares_tecnicos_docencia),
+	SUM(ae.estudiantes_cargos_no_docentes),
+	SUM(ae.total_estudiantes_universidad_contratados),
+    4 AS orden,
+    true AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 24
+
+UNION ALL
+
+-- GRUPO 3: categoria_estructura_id = 7
+SELECT 
+    e.id,
+    e.categoria_estructura_id,
+    e.siglas AS ces,
+    ae.total_contratos_no_docentes,
+	
+	ae.contratos_no_docentes_con_respaldo,
+	ae.contratos_por_sustitucion,
+	ae.otros_con_respaldo,
+	
+	ae.contratos_no_docentes_sin_respaldo,	
+	ae.jubilados_sin_respaldo,
+	ae.labores_agricolas_sin_respaldo,
+	ae.otros_sin_respaldo,
+	
+	ae.reserva_cientifica_preparacion,
+	ae.tecnicos_medios_preparacion,
+	ae.recien_graduados_preparacion,
+	 
+	
+	ae.estudiantes_auxiliares_tecnicos_docencia,
+	ae.estudiantes_cargos_no_docentes,
+	ae.total_estudiantes_universidad_contratados,
+    5 AS orden,
+    false AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 7
+
+UNION ALL
+
+-- SUBTOTAL GRUPO 3
+SELECT 
+    NULL AS id,
+    7 AS categoria_estructura_id,
+    'Subtotal' AS ces,
+    SUM(ae.total_contratos_no_docentes),
+	
+	SUM(ae.contratos_no_docentes_con_respaldo),
+	SUM(ae.contratos_por_sustitucion),
+	SUM(ae.otros_con_respaldo),
+	
+	SUM(ae.contratos_no_docentes_sin_respaldo),
+	SUM(ae.jubilados_sin_respaldo),
+	SUM(ae.labores_agricolas_sin_respaldo),
+	SUM(ae.otros_sin_respaldo),
+	
+	SUM(ae.reserva_cientifica_preparacion),
+	SUM(ae.tecnicos_medios_preparacion),
+	SUM(ae.recien_graduados_preparacion),
+	 
+	SUM(ae.estudiantes_auxiliares_tecnicos_docencia),
+	SUM(ae.estudiantes_cargos_no_docentes),
+	SUM(ae.total_estudiantes_universidad_contratados),
+    6 AS orden,
+    true AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 7
+
+UNION ALL
+
+-- GRUPO 4: categoria_estructura_id = 20
+SELECT 
+    e.id,
+    e.categoria_estructura_id,
+    e.siglas AS ces,
+    ae.total_contratos_no_docentes,
+	
+	ae.contratos_no_docentes_con_respaldo,
+	ae.contratos_por_sustitucion,
+	ae.otros_con_respaldo,
+	
+	ae.contratos_no_docentes_sin_respaldo,	
+	ae.jubilados_sin_respaldo,
+	ae.labores_agricolas_sin_respaldo,
+	ae.otros_sin_respaldo,
+	
+	ae.reserva_cientifica_preparacion,
+	ae.tecnicos_medios_preparacion,
+	ae.recien_graduados_preparacion,
+	 
+	
+	ae.estudiantes_auxiliares_tecnicos_docencia,
+	ae.estudiantes_cargos_no_docentes,
+	ae.total_estudiantes_universidad_contratados,
+    7 AS orden,
+    false AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 20
+
+UNION ALL
+
+-- SUBTOTAL GRUPO 4
+SELECT 
+    NULL AS id,
+    20 AS categoria_estructura_id,
+    'Subtotal' AS ces,
+   SUM(ae.total_contratos_no_docentes),
+	
+	SUM(ae.contratos_no_docentes_con_respaldo),
+	SUM(ae.contratos_por_sustitucion),
+	SUM(ae.otros_con_respaldo),
+	
+	SUM(ae.contratos_no_docentes_sin_respaldo),
+	SUM(ae.jubilados_sin_respaldo),
+	SUM(ae.labores_agricolas_sin_respaldo),
+	SUM(ae.otros_sin_respaldo),
+	
+	SUM(ae.reserva_cientifica_preparacion),
+	SUM(ae.tecnicos_medios_preparacion),
+	SUM(ae.recien_graduados_preparacion),
+	 
+	SUM(ae.estudiantes_auxiliares_tecnicos_docencia),
+	SUM(ae.estudiantes_cargos_no_docentes),
+	SUM(ae.total_estudiantes_universidad_contratados),
+    8 AS orden,
+    true AS es_subtotal
+FROM rrhh.tbd_ae2 ae
+JOIN estructura.tbd_estructura e ON e.id = ae.entidad_id
+WHERE ae.mes = 4 AND ae.anno = 2025 AND e.categoria_estructura_id = 20
+)
+ORDER BY orden, es_subtotal, ces;";
+
+        $connect = $this->getEntityManager()->getConnection();
+        $temp = $connect->executeQuery($query);
+        $temp = $temp->fetchAllAssociative();
+        return $temp;
+    }
+
+
 }
