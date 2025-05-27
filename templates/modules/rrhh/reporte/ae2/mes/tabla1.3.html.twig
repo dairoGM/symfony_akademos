@@ -1,32 +1,35 @@
 {% block stylesheets %}
     <style>
-        /* Estilos generales de la tabla */
-        .table-responsive {
+        /* Estilos optimizados para la tabla */
+        .table-container {
+            width: 100%;
             overflow-x: auto;
+            margin-bottom: 20px;
         }
 
         .table-indicadores {
             width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
+            margin-bottom: 0;
             border-collapse: collapse;
+            font-size: 0.9rem;
         }
 
         .table-indicadores th,
         .table-indicadores td {
-            padding: 0.5rem;
-            vertical-align: middle;
+            padding: 8px 12px;
             border: 1px solid #dee2e6;
+            vertical-align: middle;
         }
 
         .table-indicadores thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
             background-color: #f8f9fa;
+            font-weight: bold;
             text-align: center;
+            position: sticky;
+            top: 0;
         }
 
-        .table-indicadores tbody tr:nth-of-type(odd) {
+        .table-indicadores tbody tr:nth-child(even) {
             background-color: rgba(0, 0, 0, 0.02);
         }
 
@@ -34,267 +37,248 @@
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .font-weight-bold {
-            font-weight: bold !important;
-        }
-
-        .bg-light {
-            background-color: #f8f9fa !important;
+        .col-entidad {
+            white-space: nowrap;
+            text-align: left;
+            min-width: 180px;
+            position: sticky;
+            left: 0;
+            background-color: white;
+            z-index: 1;
         }
 
         .text-center {
             text-align: center !important;
         }
 
-        /* Estilo para el botón de exportación */
-        #exportExcelBtn {
+        .total-row {
+            font-weight: bold;
+            background-color: #f8f9fa !important;
+        }
+
+        /* Estilo único para el botón */
+        .btn-export-excel {
             background-color: #28a745;
-            border-color: #28a745;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
             display: inline-flex;
             align-items: center;
         }
 
-        #exportExcelBtn:hover {
+        .btn-export-excel:hover {
             background-color: #218838;
-            border-color: #1e7e34;
-            transform: translateY(-1px);
         }
 
-        #exportExcelBtn i {
+        .btn-export-excel i {
             margin-right: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* Estilos para el header del modal */
-        .modal-header {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.25rem;
-        }
-
-        .modal-title {
-            margin-right: auto;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Estilos específicos para la tabla de contratos */
-        .col-entidad {
-            width: 20%;
-        }
-
-        .col-contrato {
-            width: 10%;
-        }
-
-
-        .table-indicadores {
-            width: 100%;
-            table-layout: auto;
-        }
-        .col-entidad {
-            white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-            width: 1%; /* Fuerza el ancho mínimo inicial */
-            min-width: 100px; /* Ancho mínimo por si acaso */
-            max-width: 250px; /* Ancho máximo para evitar que sea demasiado ancho */
-            padding: 8px 12px;
-        }
-        .table-indicadores td, .table-indicadores th {
-            padding: 8px 12px;
-            /*text-align: center;*/
-            vertical-align: middle;
-        }
-        .table-indicadores thead th {
-            background-color: #f8f9fa;
-            font-weight: bold;
         }
     </style>
 {% endblock %}
 
-<table class="table table-striped table-bordered table-indicadores" id="tablaDetalleContratos">
-    <thead>
-    <tr>
-        <th rowspan="2" class="col-entidad">ENTIDAD</th>
-        <th rowspan="2" class="text-center">TOTAL No Doc.</th>
-        <th colspan="3" class="text-center">CON RESPALDO DE PLAZA</th>
-        <th colspan="4" class="text-center">SIN RESPALDO DE PLAZA</th>
-        <th colspan="3" class="text-center">RECIÉN GRADUADOS</th>
-        <th colspan="3" class="text-center">ESTUDIANTES CONTRATADOS</th>
-    </tr>
-    <tr>
-        <!-- Columnas CON RESPALDO -->
-        <th class="text-center">Contratos</th>
-        <th class="text-center">Sustitución</th>
-        <th class="text-center">Otros</th>
-
-        <!-- Columnas SIN RESPALDO -->
-        <th class="text-center">Total</th>
-        <th class="text-center">Jubilados</th>
-        <th class="text-center">Lab. Agric.</th>
-        <th class="text-center">Otros</th>
-
-        <!-- Columnas RECIÉN GRADUADOS -->
-        <th class="text-center">Reserva Científica</th>
-        <th class="text-center">Técnicos Medios</th>
-        <th class="text-center">Recién Graduados</th>
-
-        <!-- Columnas ESTUDIANTES -->
-        <th class="text-center">ATD</th>
-        <th class="text-center">No Docentes</th>
-        <th class="text-center">TOTAL</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% set total_general = 0 %}
-    {% set total_contratos_con_respaldo = 0 %}
-    {% set total_sustitucion = 0 %}
-    {% set total_otros_con_respaldo = 0 %}
-    {% set total_sin_respaldo = 0 %}
-    {% set total_jubilados = 0 %}
-    {% set total_labores = 0 %}
-    {% set total_otros_sin_respaldo = 0 %}
-    {% set total_reserva = 0 %}
-    {% set total_tecnicos = 0 %}
-    {% set total_recien_graduados = 0 %}
-    {% set total_atd = 0 %}
-    {% set total_nodoc = 0 %}
-    {% set total_estudiantes = 0 %}
-
-    {% set has_data = false %}
-
-    {% for fila in datos %}
-        <tr class="{{ fila.es_subtotal ? 'font-weight-bold' : '' }}">
-            <td class="col-entidad">{{ fila.ces }}</td>
-            <td class="text-center">{{ fila.total_contratos_no_docentes|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.contratos_no_docentes_con_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.contratos_por_sustitucion|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.otros_con_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.contratos_no_docentes_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.jubilados_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.labores_agricolas_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.otros_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.reserva_cientifica_preparacion|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.tecnicos_medios_preparacion|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.recien_graduados_preparacion|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.estudiantes_auxiliares_tecnicos_docencia|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.estudiantes_cargos_no_docentes|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ fila.total_estudiantes_universidad_contratados|number_format(0, ',', '.') }}</td>
-        </tr>
-
-        {% if not fila.es_subtotal %}
-            {% set total_general = total_general + fila.total_contratos_no_docentes %}
-            {% set total_contratos_con_respaldo = total_contratos_con_respaldo + fila.contratos_no_docentes_con_respaldo %}
-            {% set total_sustitucion = total_sustitucion + fila.contratos_por_sustitucion %}
-            {% set total_otros_con_respaldo = total_otros_con_respaldo + fila.otros_con_respaldo %}
-            {% set total_sin_respaldo = total_sin_respaldo + fila.contratos_no_docentes_sin_respaldo %}
-            {% set total_jubilados = total_jubilados + fila.jubilados_sin_respaldo %}
-            {% set total_labores = total_labores + fila.labores_agricolas_sin_respaldo %}
-            {% set total_otros_sin_respaldo = total_otros_sin_respaldo + fila.otros_sin_respaldo %}
-            {% set total_reserva = total_reserva + fila.reserva_cientifica_preparacion %}
-            {% set total_tecnicos = total_tecnicos + fila.tecnicos_medios_preparacion %}
-            {% set total_recien_graduados = total_recien_graduados + fila.recien_graduados_preparacion %}
-            {% set total_atd = total_atd + fila.estudiantes_auxiliares_tecnicos_docencia %}
-            {% set total_nodoc = total_nodoc + fila.estudiantes_cargos_no_docentes %}
-            {% set total_estudiantes = total_estudiantes + fila.total_estudiantes_universidad_contratados %}
-            {% set has_data = true %}
-        {% endif %}
-    {% else %}
+<!-- Tabla con estructura corregida -->
+<div class="table-container">
+    <table class="table-indicadores" id="tablaDetalleContratos">
+        <thead>
         <tr>
-            <td colspan="15" class="text-center">No hay datos disponibles</td>
+            <th rowspan="2" class="col-entidad">ENTIDAD</th>
+            <th rowspan="2" class="text-center">TOTAL Gral.</th>
+            <th rowspan="2" class="text-center">TOTAL Doc.</th>
+            <th rowspan="2" class="text-center">TOTAL No Doc.</th>
+            <th colspan="3" class="text-center">CON RESPALDO DE PLAZA</th>
+            <th colspan="4" class="text-center">SIN RESPALDO DE PLAZA</th>
+            <th colspan="3" class="text-center">RECIÉN GRADUADOS</th>
+            <th colspan="3" class="text-center">ESTUDIANTES CONTRATADOS</th>
         </tr>
-    {% endfor %}
+        <tr>
+            <th class="text-center">Contratos</th>
+            <th class="text-center">Sustitución</th>
+            <th class="text-center">Otros</th>
+            <th class="text-center">Total</th>
+            <th class="text-center">Jubilados</th>
+            <th class="text-center">Lab. Agric.</th>
+            <th class="text-center">Otros</th>
+            <th class="text-center">Reserva Científica</th>
+            <th class="text-center">Técnicos Medios</th>
+            <th class="text-center">Recién Graduados</th>
+            <th class="text-center">ATD</th>
+            <th class="text-center">No Docentes</th>
+            <th class="text-center">TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set totals = {
+            general: 0,
+            general_contratos: 0,
+            docentes: 0,
+            con_respaldo: 0,
+            sustitucion: 0,
+            otros_con: 0,
+            sin_respaldo: 0,
+            jubilados: 0,
+            labores: 0,
+            otros_sin: 0,
+            reserva: 0,
+            tecnicos: 0,
+            recien_graduados: 0,
+            atd: 0,
+            nodoc: 0,
+            estudiantes: 0
+        } %}
 
-    {% if has_data %}
-        <tr class="font-weight-bold bg-light">
-            <td class="col-entidad">TOTAL GENERAL</td>
-            <td class="text-center">{{ total_general|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_contratos_con_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_sustitucion|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_otros_con_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_jubilados|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_labores|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_otros_sin_respaldo|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_reserva|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_tecnicos|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_recien_graduados|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_atd|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_nodoc|number_format(0, ',', '.') }}</td>
-            <td class="text-center">{{ total_estudiantes|number_format(0, ',', '.') }}</td>
-        </tr>
-    {% endif %}
-    </tbody>
-</table>
+        {% set has_data = false %}
+
+        {% for fila in datos %}
+            <tr class="{{ fila.es_subtotal ? 'font-weight-bold' : '' }}">
+                <td class="col-entidad">{{ fila.ces }}</td>
+                <td class="text-center">{{ fila.total_general_contratos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_contratos_profesores_tiempo_determinado|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_contratos_no_docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_no_docentes_con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_por_sustitucion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.otros_con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_no_docentes_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.jubilados_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.labores_agricolas_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.otros_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.reserva_cientifica_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.tecnicos_medios_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.recien_graduados_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.estudiantes_auxiliares_tecnicos_docencia|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.estudiantes_cargos_no_docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_estudiantes_universidad_contratados|number_format(0, ',', '.') }}</td>
+            </tr>
+
+            {% if not fila.es_subtotal %}
+                {% set totals = totals|merge({
+                    general_contratos: totals.general_contratos + fila.total_general_contratos,
+                    docentes: totals.docentes + fila.total_contratos_profesores_tiempo_determinado,
+                    general: totals.general + fila.total_contratos_no_docentes,
+                    con_respaldo: totals.con_respaldo + fila.contratos_no_docentes_con_respaldo,
+                    sustitucion: totals.sustitucion + fila.contratos_por_sustitucion,
+                    otros_con: totals.otros_con + fila.otros_con_respaldo,
+                    sin_respaldo: totals.sin_respaldo + fila.contratos_no_docentes_sin_respaldo,
+                    jubilados: totals.jubilados + fila.jubilados_sin_respaldo,
+                    labores: totals.labores + fila.labores_agricolas_sin_respaldo,
+                    otros_sin: totals.otros_sin + fila.otros_sin_respaldo,
+                    reserva: totals.reserva + fila.reserva_cientifica_preparacion,
+                    tecnicos: totals.tecnicos + fila.tecnicos_medios_preparacion,
+                    recien_graduados: totals.recien_graduados + fila.recien_graduados_preparacion,
+                    atd: totals.atd + fila.estudiantes_auxiliares_tecnicos_docencia,
+                    nodoc: totals.nodoc + fila.estudiantes_cargos_no_docentes,
+                    estudiantes: totals.estudiantes + fila.total_estudiantes_universidad_contratados
+                }) %}
+                {% set has_data = true %}
+            {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="17" class="text-center">No hay datos disponibles</td>
+            </tr>
+        {% endfor %}
+
+        {% if has_data %}
+            <tr class="total-row">
+                <td class="col-entidad">TOTAL GENERAL</td>
+                <td class="text-center">{{ totals.general_contratos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.general|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.sustitucion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.otros_con|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.jubilados|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.labores|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.otros_sin|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.reserva|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.tecnicos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.recien_graduados|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.atd|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.nodoc|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.estudiantes|number_format(0, ',', '.') }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
 
 <script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
 <script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
 
 <script>
-    $(document).on('click', '#exportExcelBtn2', async function () {
-        const $btn = $(this);
-        if ($btn.prop('disabled')) return;
-        $btn.prop('disabled', true);
+    // Variable para controlar si ya se hizo clic
+    let exportInProgress = false;
+
+    document.getElementById('exportExcelBtn2').addEventListener('click', async function() {
+        const btn = this;
+
+        // Si ya hay una exportación en progreso, no hacer nada
+        if (exportInProgress) return;
+
+        btn.disabled = true;
+        exportInProgress = true;
 
         try {
             const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('1.3M');
+            const worksheet = workbook.addWorksheet('Contratos');
 
-            // Obtener fecha
-            const modalTitle = $('#modalDetalleMesLabel2').text();
+            // Obtener fecha del título del modal
+            const modalTitle = document.getElementById('modalDetalleMesLabel')?.textContent || 'DICIEMBRE 2024';
             const fechaMatch = modalTitle.match(/(\w+)\s(\d{4})$/);
             const fecha = fechaMatch ? `${fechaMatch[1].toUpperCase()} ${fechaMatch[2]}` : 'DICIEMBRE 2024';
 
-            // Configurar encabezados
-            const headerRow1 = worksheet.addRow([]);
-            headerRow1.getCell(1).value = 'CONTRATOS';
-            headerRow1.getCell(1).font = {bold: true, size: 12};
-            headerRow1.getCell(3).value = 'TABLA: 1.3';
-            headerRow1.getCell(3).font = {bold: true, size: 12};
+            // Título y metadatos
+            worksheet.mergeCells('A1:Q1');
+            const titleRow = worksheet.getCell('A1');
+            titleRow.value = 'CONTRATOS - TABLA 1.3';
+            titleRow.font = { bold: true, size: 14 };
+            titleRow.alignment = { horizontal: 'center' };
 
-            const headerRow2 = worksheet.addRow([]);
-            headerRow2.getCell(3).value = `FECHA: ${fecha}`;
-            headerRow2.getCell(3).font = {bold: true};
+            worksheet.mergeCells('A2:Q2');
+            const dateRow = worksheet.getCell('A2');
+            dateRow.value = `FECHA: ${fecha}`;
+            dateRow.font = { bold: true };
+            dateRow.alignment = { horizontal: 'center' };
+
+            // Encabezados agrupados
+            const groupHeaders = worksheet.addRow([]);
+            groupHeaders.getCell(5).value = 'CON RESPALDO DE PLAZA';
+            worksheet.mergeCells('E3:G3');
+            groupHeaders.getCell(8).value = 'SIN RESPALDO DE PLAZA';
+            worksheet.mergeCells('H3:K3');
+            groupHeaders.getCell(12).value = 'RECIÉN GRADUADOS';
+            worksheet.mergeCells('L3:N3');
+            groupHeaders.getCell(15).value = 'ESTUDIANTES CONTRATADOS';
+            worksheet.mergeCells('O3:Q3');
 
             // Encabezados de columnas
-            const headerRow3 = worksheet.addRow([
-                'ENTIDAD', 'TOTAL No Doc.',
-                'CON RESPALDO DE PLAZA', '', '',
-                'SIN RESPALDO DE PLAZA', '', '', '',
-                'RECIÉN GRADUADOS', '', '',
-                'ESTUDIANTES CONTRATADOS', '', ''
-            ]);
-
-            const headerRow4 = worksheet.addRow([
-                '', '',
+            const headerRow = worksheet.addRow([
+                'ENTIDAD', 'TOTAL Gral.', 'TOTAL Doc.', 'TOTAL No Doc.',
                 'Contratos', 'Sustitución', 'Otros',
                 'Total', 'Jubilados', 'Lab. Agric.', 'Otros',
                 'Reserva Científica', 'Técnicos Medios', 'Recién Graduados',
                 'ATD', 'No Docentes', 'TOTAL'
             ]);
 
-            // const headerRow5 = worksheet.addRow([
-            //     '', '',
-            //     '(1)', '(2)', '(3)',
-            //     '(4)', '(5)', '(6)', '(7)',
-            //     '(8)', '(9)', '(10)',
-            //     '(11)', '(12)', '(13)'
-            // ]);
-
             // Formatear encabezados
-            [headerRow3, headerRow4 ].forEach(row => {
-                row.font = {bold: true};
-                row.alignment = {horizontal: 'center'};
+            [groupHeaders, headerRow].forEach(row => {
+                row.eachCell(cell => {
+                    cell.font = { bold: true };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFE9ECEF' }
+                    };
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
             });
-
-            // Combinar celdas
-            worksheet.mergeCells('C3:E3');
-            worksheet.mergeCells('F3:I3');
-            worksheet.mergeCells('J3:L3');
-            worksheet.mergeCells('M3:O3');
 
             // Procesar datos de la tabla
             const table = document.getElementById('tablaDetalleContratos');
@@ -305,44 +289,43 @@
                 if (row.querySelector('th') || row.cells.length <= 1) return;
 
                 const rowData = [];
-                let allZeros = true;
-                const cells = row.querySelectorAll('td');
-                const isTotalRow = row.classList.contains('bg-light') ||
-                    row.cells[0].innerText.includes('TOTAL') ||
-                    row.cells[0].innerText.includes('Subtotal');
+                const isTotalRow = row.classList.contains('total-row') || row.classList.contains('font-weight-bold');
 
-                cells.forEach((cell, index) => {
-                    let value = cell.innerText.trim();
-
+                row.querySelectorAll('td').forEach((cell, index) => {
+                    let value = cell.textContent.trim();
                     if (index > 0) {
                         value = value.replace(/\./g, '').replace(',', '.');
                         value = isNaN(value) ? 0 : Number(value);
-                        if (value !== 0) allZeros = false;
                     }
                     rowData.push(value);
                 });
 
-                // Solo agregar fila si tiene datos o es un subtotal necesario
-                if (!isTotalRow || !allZeros) {
-                    const excelRow = worksheet.addRow(rowData);
+                const excelRow = worksheet.addRow(rowData);
 
-                    if (isTotalRow) {
-                        excelRow.font = {bold: true};
-                        if (row.classList.contains('bg-light')) {
-                            excelRow.fill = {
-                                type: 'pattern',
-                                pattern: 'solid',
-                                fgColor: {argb: 'FFF8F9FA'}
-                            };
-                            hasData = true;
-                        }
+                if (isTotalRow) {
+                    excelRow.font = { bold: true };
+                    if (row.classList.contains('total-row')) {
+                        excelRow.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFF8F9FA' }
+                        };
+                        hasData = true;
                     }
                 }
+
+                // Alinear números al centro y texto a la izquierda
+                excelRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+                    cell.alignment = {
+                        horizontal: colNumber === 1 ? 'left' : 'center',
+                        vertical: 'middle'
+                    };
+                });
             });
 
             // Aplicar formatos numéricos
-            worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
-                for (let col = 2; col <= 15; col++) {
+            worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+                for (let col = 2; col <= 17; col++) {
                     if (typeof row.getCell(col).value === 'number') {
                         row.getCell(col).numFmt = '#,##0';
                     }
@@ -351,50 +334,39 @@
 
             // Ajustar anchos de columna
             worksheet.columns = [
-                {key: 'entidad', width: 25},    // ENTIDAD
-                {key: 'total', width: 12},      // TOTAL No Doc.
-                {key: 'contratos', width: 10},  // Contratos
-                {key: 'sustitucion', width: 10}, // Sustitución
-                {key: 'otros_con', width: 10},  // Otros con respaldo
-                {key: 'total_sin', width: 10},  // Total sin respaldo
-                {key: 'jubilados', width: 10},  // Jubilados
-                {key: 'labores', width: 12},    // Lab. Agric.
-                {key: 'otros_sin', width: 10},  // Otros sin respaldo
-                {key: 'reserva', width: 12},    // Reserva Científica
-                {key: 'tecnicos', width: 12},   // Técnicos Medios
-                {key: 'recien', width: 12},     // Recién Graduados
-                {key: 'atd', width: 10},       // ATD
-                {key: 'nodoc', width: 10},     // No Docentes
-                {key: 'total_est', width: 10}   // TOTAL Estudiantes
+                { key: 'entidad', width: 25 },
+                { key: 'total_gral', width: 12 },
+                { key: 'total_doc', width: 12 },
+                { key: 'total_no_doc', width: 12 },
+                { key: 'contratos', width: 10 },
+                { key: 'sustitucion', width: 10 },
+                { key: 'otros_con', width: 10 },
+                { key: 'total_sin', width: 10 },
+                { key: 'jubilados', width: 10 },
+                { key: 'labores', width: 12 },
+                { key: 'otros_sin', width: 10 },
+                { key: 'reserva', width: 12 },
+                { key: 'tecnicos', width: 12 },
+                { key: 'recien', width: 12 },
+                { key: 'atd', width: 10 },
+                { key: 'nodoc', width: 10 },
+                { key: 'total_est', width: 10 }
             ];
 
-            // Generar archivo solo si hay datos
+            // Generar archivo
             if (hasData) {
                 const buffer = await workbook.xlsx.writeBuffer();
-                const fileName = `TABLA 1.3 - ${fecha.replace(' ', '_')}.xlsx`;
-                const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                saveAs(blob, `TABLA_1.3_${fecha.replace(' ', '_')}.xlsx`);
             } else {
                 alert('No hay datos para exportar');
             }
-
         } catch (error) {
             console.error('Error al exportar:', error);
             alert('Ocurrió un error al generar el reporte');
         } finally {
-            setTimeout(() => {
-                $btn.prop('disabled', false);
-            }, 1000);
+            btn.disabled = false;
+            exportInProgress = false;
         }
     });
 </script>

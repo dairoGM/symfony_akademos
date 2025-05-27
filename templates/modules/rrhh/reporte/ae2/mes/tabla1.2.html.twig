@@ -124,11 +124,7 @@
 <script>
     $(document).on('click', '#exportExcelBtn', async function () {
         const $btn = $(this);
-
-        // Si el botón ya está deshabilitado, no hacer nada (evitar múltiples clics)
         if ($btn.prop('disabled')) return;
-
-        // Deshabilitar el botón para evitar múltiples clics
         $btn.prop('disabled', true);
 
         try {
@@ -140,58 +136,52 @@
             const fechaMatch = modalTitle.match(/(\w+)\s(\d{4})$/);
             const fecha = fechaMatch ? `${fechaMatch[1].toUpperCase()} ${fechaMatch[2]}` : 'DICIEMBRE 2024';
 
-            // 1. Encabezado principal (fila 1)
+            // 1. Encabezado principal
             const headerRow1 = worksheet.addRow([]);
             headerRow1.getCell(1).value = 'NÚMERO DE TRABAJADORES';
             headerRow1.getCell(3).value = 'TABLA: 1.2';
             headerRow1.getCell(1).font = {bold: true, size: 12};
             headerRow1.getCell(3).font = {bold: true, size: 12};
 
-            // 2. Fila de fecha (fila 2)
+            // 2. Fila de fecha
             const headerRow2 = worksheet.addRow([]);
             headerRow2.getCell(3).value = `FECHA: ${fecha}`;
             headerRow2.getCell(3).font = {bold: true};
 
-            // 3. Encabezados de tabla (filas 3 y 4)
+            // 3. Encabezados de tabla
             const headerRow3 = worksheet.addRow(['CES', 'PLANTILLA', 'PLANTILLA', 'Promedio', 'Plazas vacantes', '% cubrim']);
             const headerRow4 = worksheet.addRow(['', 'APROBADA', 'CUBIERTA', 'trabajadores', '', '']);
             headerRow3.font = {bold: true};
             headerRow4.font = {bold: true};
 
-            // Obtener y agregar datos principales
+            // Obtener datos de la tabla HTML
             const table = document.getElementById('tablaDetalleTrabajadores');
             const rows = table.querySelectorAll('tbody tr');
 
-            // Datos para calcular subtotales
+            // Variables para calcular el % de cubrimiento del TOTAL GENERAL
             let totalAprobada = 0;
             let totalCubierta = 0;
             let totalPromedio = 0;
             let totalVacantes = 0;
 
-            // Función para agregar filas con formato condicional
-            const addFormattedRow = (values) => {
-                const row = worksheet.addRow(values);
-                // Aplicar negrita si la primera celda contiene "Subtotal" o "Total" (sin distinción de mayúsculas/minúsculas)
-                if (values[0] && (values[0].toString().toLowerCase().includes('subtotal') ||
-                    values[0].toString().toLowerCase().includes('total'))) {
-                    row.font = {bold: true};
-                }
-                return row;
-            };
-
             // Procesar cada fila de la tabla
             rows.forEach(row => {
                 const rowData = [];
+                let isSubtotal = row.classList.contains('font-weight-bold') ||
+                    row.classList.contains('bg-light') ||
+                    row.textContent.includes('Subtotal') ||
+                    row.textContent.includes('TOTAL');
+
                 row.querySelectorAll('td').forEach((td, index) => {
                     let value = td.innerText.trim();
 
                     // Convertir valores numéricos
                     if (index > 0) { // Todas las columnas excepto CES
-                        value = value.replace('.', '').replace(',', '.');
+                        value = value.replace(/\./g, '').replace(',', '.');
                         value = isNaN(value) ? null : Number(value);
 
-                        // Acumular para subtotales
-                        if (value !== null) {
+                        // Acumular para totales generales (excluyendo subtotales)
+                        if (value !== null && !isSubtotal) {
                             if (index === 1) totalAprobada += value;
                             if (index === 2) totalCubierta += value;
                             if (index === 3) totalPromedio += value;
@@ -201,58 +191,65 @@
                     rowData.push(value);
                 });
 
-                // Usar la función addFormattedRow para mantener consistencia
-                addFormattedRow(rowData);
+                // Agregar fila manteniendo los formatos originales
+                const addedRow = worksheet.addRow(rowData);
+                if (isSubtotal) {
+                    addedRow.font = {bold: true};
+                    if (rowData[0] === 'TOTAL GENERAL') {
+                        addedRow.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: {argb: 'FFEEEEEE'}
+                        };
+                    }
+                }
             });
 
-            // 5. Aplicar formatos numéricos
-            worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
-                // Columnas B-E (números enteros con separador de miles)
+            // Calcular % cubrimiento para el TOTAL GENERAL con 2 decimales
+            const totalCubrim = totalAprobada > 0 ?
+                parseFloat(((totalCubierta / totalAprobada) * 100).toFixed(2)) :
+                0.00;
+
+            // Actualizar solo el % cubrimiento en el TOTAL GENERAL
+            worksheet.eachRow((row, rowNumber) => {
+                // Aplicar formatos numéricos
                 for (let col = 2; col <= 5; col++) {
                     if (row.getCell(col).value !== null && typeof row.getCell(col).value === 'number') {
                         row.getCell(col).numFmt = '#,##0';
                     }
                 }
-                // Columna F (porcentaje con 1 decimal)
+
+                // Formato para % cubrimiento (2 decimales)
                 if (row.getCell(6).value !== null && typeof row.getCell(6).value === 'number') {
-                    row.getCell(6).numFmt = '0.0';
+                    row.getCell(6).numFmt = '0.00';
                 }
 
-                // Aplicar negrita a filas existentes que contengan "Subtotal" o "Total"
-                const firstCellValue = row.getCell(1).value;
-                if (firstCellValue && (firstCellValue.toString().toLowerCase().includes('subtotal') ||
-                    firstCellValue.toString().toLowerCase().includes('total'))) {
-                    row.font = {bold: true};
+                // Actualizar solo el % del TOTAL GENERAL
+                if (row.getCell(1).value === 'TOTAL GENERAL') {
+                    row.getCell(6).value = totalCubrim;
+                    row.getCell(6).numFmt = '0.00';
                 }
             });
 
-            // 6. Ajustar anchos de columna
+            // Ajustar anchos de columna
             worksheet.columns = [
-                {key: 'ces', width: 20},        // CES
-                {key: 'aprobada', width: 12},   // PLANTILLA APROBADA
-                {key: 'cubierta', width: 12},   // PLANTILLA CUBIERTA
-                {key: 'promedio', width: 15},   // Promedio trabajadores
-                {key: 'vacantes', width: 12},   // Plazas vacantes
-                {key: 'cubrim', width: 10}      // cubrim
+                {width: 20}, {width: 12}, {width: 12},
+                {width: 15}, {width: 12}, {width: 10}
             ];
 
-            // 7. Generar archivo con método más controlado
+            // Generar archivo Excel
             const buffer = await workbook.xlsx.writeBuffer();
             const fileName = `TABLA 1.2 - ${fecha.replace(' ', '_')}.xlsx`;
 
-            // Crear enlace de descarga temporal
+            // Crear enlace de descarga
             const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = fileName;
             a.style.display = 'none';
-
-            // Agregar al documento y hacer clic
             document.body.appendChild(a);
             a.click();
-
-            // Limpiar después de 100ms
             setTimeout(() => {
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
@@ -262,10 +259,7 @@
             console.error('Error al exportar:', error);
             alert('Ocurrió un error al generar el reporte');
         } finally {
-            // Rehabilitar el botón después de 1 segundo (incluso si hay error)
-            setTimeout(() => {
-                $btn.prop('disabled', false);
-            }, 1000);
+            setTimeout(() => $btn.prop('disabled', false), 1000);
         }
     });
 </script>
