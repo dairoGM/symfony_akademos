@@ -1,0 +1,69 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Listado de Grados Científicos{% endblock %}
+
+{% block body %}
+
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Listado de Grados Científicos</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-striped dataTable">
+                <thead class="table-custom-header">
+                <tr>
+                    <th>No.</th>
+                    <th>Ministerio</th>
+                    <th>Programa</th>
+                    <th>Tipo de programa</th>
+                    <th>Universidad</th>
+                    <th>Categoría de acreditación</th>
+                    <th>Rama de la Ciencia</th>
+                </tr>
+                <!-- Fila para los filtros de cada columna -->
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Ministerio" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Programa" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Tipo" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Universidad" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Rama de la Ciencia" class="responsive-input"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in registros %}
+                    <tr>
+                        <td width="1%">{{ loop.index }}</td>
+                        <td>{{ item.universidad.estructura.nombre | default('') }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.tipoPrograma.nombre | default('') }}</td>
+                        <td>{{ item.universidad.nombre | default('') }}</td>
+                        <td>{{ item.categoriaAcreditacion.nombre | default('') }}</td>
+                        <td>{{ item.ramaCiencia.nombre | default('') }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+{% endblock %}
+
+

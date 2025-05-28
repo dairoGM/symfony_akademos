@@ -221,6 +221,8 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_CENTRO_AUTORIZADO", "Centros autorizados de posgrado", "Centros autorizados de posgrado");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_ROLESPOS ", "Gestionar roles", "Gestionar roles");
         $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_GEST_TIP_SOLICITUD_POST ", "Gestionar tipos de solicitudes", "Gestionar tipos de solicitudes");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA ", "Reporte de Formación académica de posgrado", "Reporte de Formación académica de posgrado");
+        $functionalities[] = Functionality::createFunctionality("MODULE_POSTG", "ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO ", "Reporte de Grados científicos ", "Reporte de Grados científicos ");
 
         return $functionalities;
     }
@@ -525,7 +527,9 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_TIPPROGRAM")
             ->addFunctionality("ROLE_GEST_RAMCIENC")
             ->addFunctionality("ROLE_GEST_CENTRO_AUTORIZADO")
-            ->addFunctionality("ROLE_GEST_ROLESPOS");
+            ->addFunctionality("ROLE_GEST_ROLESPOS")
+            ->addFunctionality("ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA")
+            ->addFunctionality("ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO");
 
 
         $roles[] = Role::createRole('ROL_CONVENIO', "Administrador de Convenio", "Rol con permiso a la gestion de Convenio")

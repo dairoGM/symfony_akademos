@@ -116,5 +116,35 @@
                 </ul>
             </li>
         {% endif %}
+        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Reportes
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if  hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_reporte_postgrado_grado_cientifico_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Grados científicos </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if  hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_reporte_postgrado_formacion_academica_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Formación académica de posgrado</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
     </ul>
 </nav>
