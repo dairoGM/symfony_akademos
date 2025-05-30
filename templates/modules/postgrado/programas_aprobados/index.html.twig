@@ -13,9 +13,9 @@
                 <h3 class="card-title text-bold text-gray">
 
                     {% if app.request.getRequestUri() == '/postgrado/programas_aprobados/formacion_academica' %}
-                        <p>Formación académica de posgrado</p>
+                        <p>Listado de Maestrías y Especialidades</p>
                     {% elseif app.request.getRequestUri() == '/postgrado/programas_aprobados/grados_cientificos' %}
-                        <p>Grados Científicos</p>
+                        <p>Listado de Doctorados</p>
                     {% else %}
                         <p>Otro contenido</p>
                     {% endif %}

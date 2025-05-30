@@ -6,7 +6,7 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_SOLPROGRAM') or hasRoles('ROLE_GEST_GRADO_CIENTIFICO')or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
+        {% if hasRoles('ROLE_GEST_SOLPROGRAM') or hasRoles('ROLE_GEST_GRADO_CIENTIFICO') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -41,14 +41,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Centros Autorizados de Posgrado</p>
-                            </a>
-                        </li>
-                    {% endif %}
+
                 </ul>
             </li>
         {% endif %}
@@ -116,7 +109,7 @@
                 </ul>
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -127,6 +120,15 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Centros Autorizados de Posgrado</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
                     {% if  hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_postgrado_grado_cientifico_index') }}"
