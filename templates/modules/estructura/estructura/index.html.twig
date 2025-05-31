@@ -19,8 +19,8 @@
                                 class="fa fa-plus"></i>
                     </a>
 
-                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i
-                                class="fa fa-map"></i> </a>
+{#                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i#}
+{#                                class="fa fa-map"></i> </a>#}
                     <a title="Vista de árbol" href="{{ path('app_estructura_index_arbol') }}" class="btn btn-primary"><i
                                 class="fa fa-folder-plus"></i> </a>
                     <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
@@ -33,6 +33,16 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-6 text-gray">
+                    <h5>
+                        <b>
+                            <i class="fa fa-university  "></i>
+                        </b> ({{ entidad.siglas | default('') }}) {{ entidad.nombre | default('') }}
+                    </h5>
+                </div>
+            </div>
+            <hr>
             <table class="table table-bordered table-striped dataTable">
                 <thead class="table-custom-header">
                 <tr>
@@ -48,7 +58,15 @@
                 {% for item in registros %}
                     <tr>
                         <td width="1">{{ loop.index }}</td>
-                        <td>{{ item.estructura.nombre | default('') }}</td>
+{#                        <td>{{ item.estructura.nombre | default('') }}</td>#}
+                        <td>
+                            {% if item.estructura is not null
+                                and item.estructura.estructura is not null
+                                and item.estructura.estructura.siglas is not empty %}
+                                ({{ item.estructura.estructura.siglas }})
+                            {% endif %}
+                            {{ item.estructura.nombre|default('') }}
+                        </td>
 {#                        {% if item.estructura.siglas is defined %}#}
 {#                            <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td>#}
 {#                        {% else %}#}

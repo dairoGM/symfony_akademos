@@ -55,7 +55,7 @@ class AE2Controller extends AbstractController
      * @param AE2Repository $aE2Repository
      * @return Response
      */
-    public function registrar(Request $request, AE2Repository $aE2Repository, EstructuraRepository $estructuraRepository, PersonaRepository $personaRepository, UserRepository $userRepository)
+    public function registrar(Request $request, AE2Repository $aE2Repository, PersonaRepository $personaRepository)
     {
         try {
             $ae2 = new AE2();

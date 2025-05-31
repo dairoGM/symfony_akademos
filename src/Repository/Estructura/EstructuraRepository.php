@@ -140,6 +140,53 @@ class EstructuraRepository extends ServiceEntityRepository
         return $resul;
     }
 
+    public function getEstructurasNegocios($estructurasNegocio): array
+    {
+        if (empty($estructurasNegocio)) {
+            return [];
+        }
+
+        $entityManager = $this->getEntityManager();
+        $connection = $entityManager->getConnection();
+
+        // Usamos CTE recursivo para mejor performance
+        $sql = "
+        WITH RECURSIVE estructura_tree AS (
+            SELECT id, nombre, estructura_id 
+            FROM estructura.tbd_estructura 
+            WHERE activo = true AND id IN (:parents)
+            
+            UNION ALL
+            
+            SELECT e.id, e.nombre, e.estructura_id
+            FROM estructura.tbd_estructura e
+            JOIN estructura_tree et ON e.estructura_id = et.id
+            WHERE e.activo = true
+        )
+        SELECT e.* 
+        FROM estructura.tbd_estructura e
+        JOIN estructura_tree et ON e.id = et.id
+        ORDER BY e.nombre
+    ";
+
+        $stmt = $connection->executeQuery($sql, ['parents' => $estructurasNegocio]);
+        $result = $stmt->fetchAllAssociative();
+
+        return $this->transformResultsToEntities($result);
+    }
+
+    private function transformResultsToEntities(array $results): array
+    {
+        $entities = [];
+        foreach ($results as $row) {
+            $entities[] = $this->find($row['id']);
+        }
+        return $entities;
+    }
+
+
+
+
     public function getEstructurasDadoIdsCategoria()
     {
         $qb = $this->createQueryBuilder('qb')

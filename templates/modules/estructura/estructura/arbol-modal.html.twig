@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 style="color: {{ estructura.categoriaEstructura ? estructura.categoriaEstructura.color : '#333' }}">
+                {{ estructura.nombre }}
+            </h4>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fa fa-info-circle"></i> Información Básica</h5>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                        {% if estructura.siglas %}
+                            <tr>
+                                <th width="40%">Siglas:</th>
+                                <td>{{ estructura.siglas }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Estado:</th>
+                            <td>
+                                    <span class="badge badge-{{ estructura.activo ? 'success' : 'danger' }}">
+                                        {{ estructura.activo ? 'Activa' : 'Inactiva' }}
+                                    </span>
+                            </td>
+                        </tr>
+                        {% if estructura.tipoEstructura %}
+                            <tr>
+                                <th>Tipo:</th>
+                                <td>{{ estructura.tipoEstructura.nombre }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if estructura.categoriaEstructura %}
+                            <tr>
+                                <th>Categoría:</th>
+                                <td>
+                                        <span style="color: {{ estructura.categoriaEstructura.color }}">
+                                            {{ estructura.categoriaEstructura.nombre }}
+                                        </span>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <h5><i class="fa fa-address-card"></i> Contacto</h5>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                        {% if estructura.email %}
+                            <tr>
+                                <th width="40%">Email:</th>
+                                <td>{{ estructura.email | default() }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if estructura.telefono %}
+                            <tr>
+                                <th>Teléfono:</th>
+                                <td>{{ estructura.telefono | default() }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Ubicación:</th>
+                            <td>
+                                {{ estructura.direccion | default() }}<br>
+                                {{ estructura.municipio.nombre | default()  }}, {{ estructura.provincia.nombre | default() }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if estructura.estructura %}
+                <div class="alert alert-light">
+                    <strong><i class="fa fa-level-up-alt"></i> Estructura superior:</strong>
+                    <span style="color: {{ estructura.estructura.categoriaEstructura ? estructura.estructura.categoriaEstructura.color : '#333' }}">
+                        {{ estructura.estructura.nombre }}
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

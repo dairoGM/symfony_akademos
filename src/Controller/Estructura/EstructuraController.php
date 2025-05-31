@@ -14,6 +14,7 @@ use App\Repository\Estructura\MunicipioRepository;
 use App\Repository\Estructura\PlazaRepository;
 use App\Repository\Estructura\ProvinciaRepository;
 use App\Repository\Estructura\TipoEstructuraRepository;
+use App\Repository\Personal\PersonaRepository;
 use App\Services\HandlerFop;
 use App\Services\Utils;
 use Doctrine\DBAL\DriverManager;
@@ -79,22 +80,30 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function index(EstructuraRepository $estructuraRepository, Utils $utils)
+    public function index(EstructuraRepository $estructuraRepository, Utils $utils, PersonaRepository $personaRepository)
     {
         try {
-            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
-            if (count($estructurasNegocio) > 0) {
-                $registros = $estructuraRepository->geEstructuras($estructurasNegocio);
+            $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+            $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $estructuraNegocio = $entidad->getId();
+            //$isAdmin = false;
+
+            if (!$isAdmin) {
+                $registros = $estructuraRepository->getEstructurasNegocios($estructuraNegocio);
             } else {
                 $registros = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
             }
+
+
             $data = [];
             foreach ($registros as $value) {
-                $data[$value->getId()] = !in_array($value->getId(), $estructurasNegocio);
+                $data[$value->getId()] = !in_array($value->getId(), [$estructuraNegocio]);
             }
             return $this->render('modules/estructura/estructura/index.html.twig', [
                 'registros' => $registros,
                 'dataShow' => $data,
+                'entidad' => $entidad,
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -108,30 +117,64 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function indexArbol(EstructuraRepository $estructuraRepository, Utils $utils)
+    public function indexArbol(EstructuraRepository $estructuraRepository, Utils $utils, PersonaRepository $personaRepository): Response
     {
-        $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
-        if (count($estructurasNegocio) > 0) {
-            $element = $estructuraRepository->geEstructuras($estructurasNegocio);
-        } else {
-            $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
-        }
+        $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+        $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+        $estructuraNegocio = $entidad->getId();
 
+//        $isAdmin = false;
+        $elementos = !$isAdmin
+            ? $estructuraRepository->getEstructurasNegocios($estructuraNegocio)
+            : $estructuraRepository->findBy(['activo' => true], ['nombre' => 'ASC']);
 
-        $registros = [];
-        foreach ($element as $el) {
-            $aux = [];
-            $aux['id'] = $el->getId();
-            $aux['parent'] = $el->getEstructura() ? $el->getEstructura()->getId() : '#';
-            $aux['text'] = $el->getNombre();
-            $aux['color'] = method_exists($el->getCategoriaEstructura(), 'getColor') ? $el->getCategoriaEstructura()->getColor() : null;
-            $registros[] = $aux;
-        }
+        $registros = array_map(function (Estructura $el) use ($estructuraNegocio, $isAdmin) {
+            $color = $el->getCategoriaEstructura() ? $el->getCategoriaEstructura()->getColor() : '#333';
+            $parent = $el->getEstructura() ? $el->getEstructura()->getId() : '#';
+            if ($el->getId() == $estructuraNegocio && !$isAdmin) {
+                $parent = '#';
+            }
+            return [
+                'id' => $el->getId(),
+                'parent' => $parent,
+                'text' => $el->getNombre(),
+                'color' => $color,
+                'a_attr' => [
+                    'style' => "color: {$color};",
+                    'data-id' => $el->getId()
+                ]
+            ];
+        }, $elementos);
 
         return $this->render('modules/estructura/estructura/arbol.html.twig', [
-            'registros' => json_encode($registros),
+            'registros' => $registros,
+            'entidad' => $entidad
         ]);
+    }
 
+    /**
+     * @Route("/estructura/detalles-arbol", name="app_estructura_detalles_arbol", methods={"POST"})
+     */
+    public function detallesArbol(Request $request, EstructuraRepository $estructuraRepository): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->json(['error' => 'Petición no válida'], 400);
+        }
+
+        $id = $request->request->get('id');
+        if (!$id) {
+            return $this->json(['error' => 'ID de estructura no proporcionado'], 400);
+        }
+
+        $estructura = $estructuraRepository->find($id);
+        if (!$estructura) {
+            return $this->json(['error' => 'Estructura no encontrada'], 404);
+        }
+
+        return $this->render('modules/estructura/estructura/arbol-modal.html.twig', [
+            'estructura' => $estructura
+        ]);
     }
 
     /**
@@ -140,16 +183,24 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function indexMapa(EstructuraRepository $estructuraRepository, Utils $utils)
+    public function indexMapa(EstructuraRepository $estructuraRepository, PersonaRepository $personaRepository): Response
     {
-        $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
-        if (count($estructurasNegocio) > 0) {
-            $element = $estructuraRepository->geEstructuras($estructurasNegocio);
+        $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+        $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+
+        $isAdmin=false;
+        // Obtener registros según el rol
+        if ($isAdmin) {
+            $registros = $estructuraRepository->findBy(['activo' => true], ['nombre' => 'ASC']);
         } else {
-            $element = $estructuraRepository->findBy([], ['activo' => 'desc', 'id' => 'desc']);
+            $estructuraNegocio = $entidad ? $entidad->getId() : null;
+            $registros = $estructuraNegocio ? $estructuraRepository->getEstructurasNegocios($estructuraNegocio) : [];
         }
+
         return $this->render('modules/estructura/estructura/mapa.html.twig', [
-            'registros' => $element
+            'registros' => $registros,
+            'mapbox_token' => 'pk.eyJ1IjoibmVzdHk5MzA2IiwiYSI6ImNsM2x0c21oYzBmbHUzcHF1bmhiZjVscnUifQ.qhpQLdO9ZXK8qnWjHBh7hg' // Tu token de Mapbox
         ]);
     }
 
@@ -160,11 +211,18 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function registrar(Request $request, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
+    public function registrar(Request $request, PersonaRepository $personaRepository, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
     {
+        $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+        $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+        $estructuraNegocio = [$entidad->getId()];
+        if ($isAdmin) {
+            $estructuraNegocio = [];
+        }
         try {
             $estructuraEntity = new Estructura();
-            $form = $this->createForm(EstructuraType::class, $estructuraEntity, ['action' => 'registrar', 'data_choices' => -1, 'estructuraNegocio' => $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId())]);
+            $form = $this->createForm(EstructuraType::class, $estructuraEntity, ['action' => 'registrar', 'data_choices' => -1, 'estructuraNegocio' => $estructuraNegocio]);
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 $estructuraEntity->setFechaActivacion(\DateTime::createFromFormat('d/m/Y', $request->request->all()['estructura']['fechaActivacion']));
@@ -189,9 +247,12 @@ class EstructuraController extends AbstractController
                 $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
                 return $this->redirectToRoute('app_estructura_index', [], Response::HTTP_SEE_OTHER);
             }
+
+
             return $this->render('modules/estructura/estructura/new.html.twig', [
                 'form' => $form->createView(),
-                'accion' => 'add'
+                'accion' => 'add',
+                'entidad' => $entidad
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -208,11 +269,18 @@ class EstructuraController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT" )
      */
-    public function modificar(Request $request, Estructura $estructura, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
+    public function modificar(Request $request, Estructura $estructura, PersonaRepository $personaRepository, EstructuraRepository $estructuraRepository, MunicipioRepository $municipioRepository, Utils $utils)
     {
         try {
-            $estructurasNegocio = $utils->procesarRolesUsuarioAutenticado($this->getUser()->getId());
-            $form = $this->createForm(EstructuraType::class, $estructura, ['action' => 'modificar', 'data_choices' => $estructura->getProvincia()->getId(), 'estructuraNegocio' => $estructurasNegocio]);
+            $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+            $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+            $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            $estructuraNegocio = [$entidad->getId()];
+            if ($isAdmin) {
+                $estructuraNegocio = [];
+            }
+
+            $form = $this->createForm(EstructuraType::class, $estructura, ['action' => 'modificar', 'data_choices' => $estructura->getProvincia()->getId(), 'estructuraNegocio' => $estructuraNegocio]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) {
@@ -224,7 +292,8 @@ class EstructuraController extends AbstractController
             }
             return $this->render('modules/estructura/estructura/edit.html.twig', [
                 'form' => $form->createView(),
-                'estructura' => $estructura
+                'estructura' => $estructura,
+                'entidad' => $entidad
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());

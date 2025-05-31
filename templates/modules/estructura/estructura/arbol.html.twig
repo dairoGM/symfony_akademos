@@ -2,77 +2,369 @@
 
 {% block title %}Estructuras{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .modal-estructura .modal-dialog {
+            max-width: 80%;  /* Ocupa el 90% del ancho de la pantalla */
+            min-width: 800px;  /* Mínimo 800px de ancho */
+            min-height: 60vh;  /* 80% del alto de la pantalla */
+        }
+
+        .modal-estructura .modal-content {
+            height: 80vh;  /* Ajusta según necesidad */
+        }
+
+        .tree-container {
+            font-family: Arial, sans-serif;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 500px;
+        }
+
+        .tree-toolbar {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tree-search {
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .tree-ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .tree-li {
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .tree-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .tree-item.has-children::before {
+            content: "▶";
+            margin-right: 8px;
+            font-size: 10px;
+            color: #666;
+            transition: transform 0.2s;
+        }
+
+        .tree-item.has-children.open::before {
+            content: "▼";
+        }
+
+        /* Modal styles */
+        .modal-estructura .modal-content {
+            border-radius: 4px;
+        }
+
+        .context-menu {
+            position: absolute;
+            display: none;
+            background: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .context-menu-item {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .no-results {
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-
-
-
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-                <h3 class="card-title text-bold text-gray">Listado de estructuras </h3>
+                <h3 class="card-title text-bold text-gray">Árbol de estructuras</h3>
                 <div>
-                    <a title="Vista de tabla" href="{{ path('app_estructura_index') }}" class="btn btn-primary"><i
-                                class="fa fa-table"></i> </a>
-                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}"><i
-                                class="fa fa-plus"></i>
+                    <a title="Vista de tabla" href="{{ path('app_estructura_index') }}" class="btn btn-primary">
+                        <i class="fa fa-table"></i>
                     </a>
+{#                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}">#}
+{#                        <i class="fa fa-plus"></i>#}
+{#                    </a>#}
                 </div>
             </div>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
-            <div id="jstree_demo_div" class="mt-1"></div>
+            <div class="row mb-4">
+                <div class="col-6 text-gray">
+                    <h5>
+                        <b>
+                            <i class="fa fa-university  "></i>
+                        </b> ({{ entidad.siglas | default('') }}) {{ entidad.nombre | default('') }}
+                    </h5>
+                </div>
+            </div>
+            <hr>
+            <div class="tree-toolbar">
+                <div class="input-group tree-search">
+                    <input type="text" id="tree-search" class="form-control" placeholder="Buscar estructura...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="tree-clear-search">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary" id="expand-all">
+                    <i class="fa fa-plus-circle"></i> Expandir todo
+                </button>
+                <button class="btn btn-outline-primary" id="collapse-all">
+                    <i class="fa fa-minus-circle"></i> Contraer todo
+                </button>
+            </div>
+
+            <div class="tree-container">
+                <div id="tree-view"></div>
+                <div id="no-results" class="no-results" style="display: none;">
+                    No se encontraron resultados
+                </div>
+            </div>
         </div>
-        <!-- /.card-body -->
     </div>
 
+    <!-- Modal para detalles -->
+    <div class="modal fade modal-estructura" id="estructuraModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles de la Estructura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="estructuraModalBody">
+                    <!-- Contenido cargado via AJAX -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menú contextual -->
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" id="viewDetails">
+            <i class="fa fa-info-circle mr-2"></i>Ver detalles
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
+        $(document).ready(function () {
+            const treeData = {{ registros|json_encode|raw }};
+            let selectedNodeId = null;
+            let allNodes = [];
 
-        let elments = '{{ registros | raw }}'
+            // Construir el árbol
+            function buildTree(parentId = '#') {
+                const children = treeData.filter(item => item.parent == parentId);
+                if (children.length === 0) return '';
 
-        console.log('elements', JSON.parse(elments))
+                let html = '<ul class="tree-ul">';
+                children.forEach(child => {
+                    const hasChildren = treeData.some(item => item.parent == child.id);
+                    const nodeColor = child.color || '#333';
 
-        let treData = JSON.parse(elments);
+                    html += `
+                <li class="tree-li" data-id="${child.id}">
+                    <div class="tree-item ${hasChildren ? 'has-children' : ''}"
+                         data-id="${child.id}"
+                         style="color: ${nodeColor}">
+                        <span>${child.text}</span>
+                    </div>
+                    ${buildTree(child.id)}
+                </li>
+            `;
+                });
+                html += '</ul>';
+                return html;
+            }
 
+            // Inicializar el árbol
+            $('#tree-view').html(buildTree());
+            allNodes = $('.tree-li').toArray();
 
-        $('#jstree_demo_div')
+            // Manejar clic en elementos con hijos
+            $(document).on('click', '.tree-item.has-children', function (e) {
+                e.stopPropagation();
+                const $li = $(this).closest('li');
+                const $children = $li.children('ul');
 
-            .on('select_node.jstree', function (e, data) {
-                // select_node
-                // changed
-
-
-            })
-            .on('loaded.jstree', function () {
-                $('#jstree_demo_div').jstree('open_all');
-                treData.forEach((e) => {
-                    console.log(e.color)
-                    $("#" + e.id + " >a").css("color", e.color);
-                })
-            })
-            .on('open_node.jstree', function () {
-                // $("#" + 4 + " >a").css("color", "red");
-                treData.forEach((e) => {
-                    $("#" + e.id + " >a").css("color", e.color);
-                })
-            })
-
-            .jstree({
-                'core': {
-                    'data': treData,
-                    "check_callback": true,
-                    'themes': {
-                        'name': 'proton',
-                        'responsive': true
-                    }
-
+                if ($children.is(':visible')) {
+                    $children.hide();
+                    $(this).removeClass('open');
+                } else {
+                    $children.show();
+                    $(this).addClass('open');
                 }
             });
 
+            // Manejar clic derecho para mostrar el menú contextual
+            $(document).on('contextmenu', '.tree-item', function (e) {
+                e.preventDefault();
+                selectedNodeId = $(this).data('id');
 
+                $('#contextMenu')
+                    .css({
+                        'left': e.pageX,
+                        'top': e.pageY
+                    })
+                    .show();
+
+                // Cerrar el menú al hacer clic en cualquier otro lugar
+                $(document).one('click', function () {
+                    $('#contextMenu').hide();
+                });
+
+                return false;
+            });
+
+            // Manejar clic en "Ver detalles" del menú contextual
+            $('#viewDetails').click(function () {
+                $('#contextMenu').hide();
+                if (selectedNodeId) {
+                    loadEstructuraDetails(selectedNodeId);
+                }
+            });
+
+            // Expandir todo
+            $('#expand-all').click(function () {
+                $('.tree-item.has-children').addClass('open');
+                $('.tree-ul').show();
+            });
+
+            // Contraer todo
+            $('#collapse-all').click(function () {
+                $('.tree-item.has-children').removeClass('open');
+                $('.tree-ul').hide();
+                // Mostrar solo el primer nivel
+                $('#tree-view > .tree-ul').show();
+            });
+
+            // Búsqueda en el árbol
+            $('#tree-search').on('input', function () {
+                const searchTerm = $(this).val().toLowerCase();
+
+                if (searchTerm.length < 2) {
+                    $('#no-results').hide();
+                    $('.tree-li').show();
+                    $('.tree-ul').show();
+                    $('.tree-item.has-children').addClass('open');
+                    return;
+                }
+
+                let hasResults = false;
+
+                allNodes.forEach(node => {
+                    const $node = $(node);
+                    const text = $node.find('.tree-item span').text().toLowerCase();
+                    const matches = text.includes(searchTerm);
+
+                    if (matches) {
+                        hasResults = true;
+                        $node.show();
+                        // Mostrar ancestros
+                        $node.parents('.tree-li').show();
+                        // Mostrar hijos
+                        $node.find('.tree-ul').show();
+                        $node.find('.tree-item.has-children').addClass('open');
+                    } else {
+                        $node.hide();
+                    }
+                });
+
+                if (hasResults) {
+                    $('#no-results').hide();
+                } else {
+                    $('#no-results').show();
+                }
+            });
+
+            // Limpiar búsqueda
+            $('#tree-clear-search').click(function () {
+                $('#tree-search').val('').trigger('input');
+            });
+
+            // Contraer todo al inicio (excepto primer nivel)
+            $('.tree-ul:not(#tree-view > .tree-ul)').hide();
+        });
+
+        // Función para cargar detalles de la estructura via POST
+        function loadEstructuraDetails(id) {
+            $('#estructuraModalBody').html(`
+                <div class="text-center py-4">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    <p>Cargando información...</p>
+                </div>
+            `);
+
+            $('#estructuraModal').modal('show');
+
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            const baseUrl = '{{ path('app_estructura_detail', {'id': 0}) }}'.replace('0', id);
+            $.ajax({
+                url: baseUrl, // Ruta sin ID
+                method: 'POST',
+                data: {
+                    '_token': csrfToken,
+                    'id': id  // Enviamos el ID como parte del cuerpo de la petición
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (data) {
+                    $('#estructuraModalBody').html(data);
+                },
+                error: function (xhr) {
+                    let errorMsg = 'Error al cargar los detalles';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg = xhr.responseJSON.error;
+                    }
+                    $('#estructuraModalBody').html(`
+                <div class="alert alert-danger">
+                    ${errorMsg}
+                </div>
+            `);
+                }
+            });
+        }
     </script>
-
 {% endblock %}

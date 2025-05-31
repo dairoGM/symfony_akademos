@@ -72,13 +72,58 @@ class EstructuraType extends AbstractType
             ->add('estructura', EntityType::class, [
                 'class' => Estructura::class,
                 'label' => 'Subordinado a',
-                'choice_label' => 'nombre',
+                'choice_label' => function (Estructura $estructura) {
+                    $siglasPadre = $estructura->getEstructura() ? $estructura->getEstructura()->getSiglas() : null;
+                    return $siglasPadre ? sprintf('(%s) %s', $siglasPadre, $estructura->getNombre()) : $estructura->getNombre();
+                },
                 'query_builder' => function (EntityRepository $er) {
                     $estructurasNegocio = $this->estructuraNegocio;
+
                     if (count($estructurasNegocio) > 0) {
-                        return $er->createQueryBuilder('u')->where("u.activo = true and u.id IN(:valuesItems)")->setParameter('valuesItems', array_values($estructurasNegocio))->orderBy('u.nombre', 'ASC');
+                        // Primero obtenemos todas las IDs de las estructuras negocio y sus descendientes
+                        $qb = $er->createQueryBuilder('e');
+                        $qb->select('e.id')
+                            ->where('e.activo = true')
+                            ->andWhere($qb->expr()->in('e.id', ':parents'))
+                            ->setParameter('parents', array_values($estructurasNegocio));
+
+                        $idsPadres = array_column($qb->getQuery()->getScalarResult(), 'id');
+
+                        // Función recursiva para obtener todas las descendientes
+                        $getAllChildrenIds = function ($parentIds) use ($er) {
+                            $allChildren = [];
+                            $currentLevel = $parentIds;
+
+                            while (!empty($currentLevel)) {
+                                $qb = $er->createQueryBuilder('e');
+                                $children = $qb->select('e.id')
+                                    ->where('e.activo = true')
+                                    ->andWhere($qb->expr()->in('e.estructura', ':parents'))
+                                    ->setParameter('parents', $currentLevel)
+                                    ->getQuery()
+                                    ->getScalarResult();
+
+                                $currentLevel = array_column($children, 'id');
+                                $allChildren = array_merge($allChildren, $currentLevel);
+                            }
+
+                            return $allChildren;
+                        };
+
+                        $idsHijos = $getAllChildrenIds($idsPadres);
+                        $todasIds = array_unique(array_merge($idsPadres, $idsHijos));
+
+                        // Finalmente buscamos todas las estructuras que están en la lista completa
+                        return $er->createQueryBuilder('e')
+                            ->where('e.activo = true')
+                            ->andWhere('e.id IN(:allIds)')
+                            ->setParameter('allIds', $todasIds)
+                            ->orderBy('e.nombre', 'ASC');
                     }
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+
+                    return $er->createQueryBuilder('e')
+                        ->where('e.activo = true')
+                        ->orderBy('e.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'empty_data' => null,
