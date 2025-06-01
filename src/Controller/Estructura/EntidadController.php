@@ -3,9 +3,13 @@
 namespace App\Controller\Estructura;
 
 use App\Entity\Estructura\Entidad;
+use App\Entity\Estructura\Estructura;
 use App\Form\Estructura\EntidadType;
 use App\Repository\Estructura\EntidadRepository;
+use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Estructura\MunicipioRepository;
+use App\Repository\Personal\PersonaRepository;
+use App\Services\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +22,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class EntidadController extends AbstractController
 {
+
+
+    /**
+     * @Route("/index", name="app_estructura_entidad_index", methods={"GET"})
+     * @param EstructuraRepository $estructuraRepository
+     * @return Response
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     */
+    public function indexEstructurasEntidades(EstructuraRepository $estructuraRepository, Utils $utils)
+    {
+        try {
+            $registros = $estructuraRepository->findBy(['esEntidad' => 1], ['activo' => 'desc', 'id' => 'desc']);
+            return $this->render('modules/estructura/estructura/entidad.html.twig', [
+                'registros' => $registros
+            ]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
+        }
+    }
 
     /**
      * @Route("/", name="app_entidad_index", methods={"GET"})
@@ -43,21 +67,30 @@ class EntidadController extends AbstractController
      * @param MunicipioRepository $municipioRepository
      * @return Response
      */
-    public function registrar(Request $request, EntidadRepository $entidadRepository, MunicipioRepository $municipioRepository)
+    public function registrar(Request $request, PersonaRepository $personaRepository, EstructuraRepository $estructuraRepository, EntidadRepository $entidadRepository, MunicipioRepository $municipioRepository)
     {
-        $catEntidadEntity = new Entidad();
-        $form = $this->createForm(EntidadType::class, $catEntidadEntity, ['data_choices' => -1]);
+        $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
+        $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+        $estructuraNegocio = [$entidad->getId()];
+        if ($isAdmin) {
+            $estructuraNegocio = [];
+        }
+
+        $form = $this->createForm(EntidadType::class, null, ['data_choices' => -1, 'estructuraNegocio' => $estructuraNegocio]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $catEntidadEntity->setMunicipio($municipioRepository->find($_POST['entidad']['municipio']));
-            $entidadRepository->add($catEntidadEntity, true);
+            $estructura = $estructuraRepository->find($form->get('estructura')->getData()->getId());
+            $estructura->setEsEntidad(true);
+            $estructuraRepository->edit($estructura, true);
             $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_entidad_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('modules/estructura/entidad/new.html.twig', [
             'form' => $form->createView(),
+            'entidad' => $entidad
         ]);
 
     }

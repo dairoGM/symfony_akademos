@@ -2,127 +2,110 @@
 
 namespace App\Form\Estructura;
 
-use App\Entity\Estructura\CategoriaEntidad;
-use App\Entity\Estructura\Entidad;
+use App\Entity\Estructura\CategoriaEstructura;
 use App\Entity\Estructura\Estructura;
-use App\Entity\Estructura\Municipio;
-use App\Entity\Estructura\Provincia;
-use App\Entity\Estructura\TipoEntidad;
-use App\Repository\Estructura\CategoriaEntidadRepository;
-use App\Repository\Estructura\MunicipioRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EntidadType extends AbstractType
 {
     private $idProvincia;
+    private $estructuraNegocio;
 
     public function __construct()
     {
         $this->idProvincia = null;
+        $this->estructuraNegocio = [];
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->idProvincia = $options['data_choices'];
+        $this->estructuraNegocio = $options['estructuraNegocio'];
+
         $builder
-            ->add('email', EmailType::class, [
-                'label' => 'Correo',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])->add('siglas', TextType::class, [
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])
-            ->add('telefono', TextType::class, [
-                'label' => 'Teléfono',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ],
-                "attr" => [
-                    "data-inputmask" => '"mask": "(99) 9 999-99"',
-                    "data-mask" => ''
-                ]
-            ])
-            ->add('direccion', TextType::class, [
-                'label' => 'Dirección',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])->add('codigo', TextType::class, [
-                'label' => 'Código',
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])
-            ->add('nombre', TextType::class, [
-                'constraints' => [
-                    new NotBlank([],'Este valor no debe estar en blanco.')
-                ]
-            ])
-            ->add('tipoEntidad', EntityType::class, [
-                'class' => TipoEntidad::class,
-                'label' => 'Tipo de entidad',
+            ->add('categoriaEstructura', EntityType::class, [
+                'class' => CategoriaEstructura::class,
+                'label' => 'Categoría de estructura',
                 'choice_label' => 'nombre',
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    return $er->createQueryBuilder('u')
+                        ->where('u.activo = true')
+                        ->orderBy('u.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null
+                'required' => false,
+                'mapped' => false // Esto indica que no está mapeado a ninguna propiedad
             ])
             ->add('estructura', EntityType::class, [
-                'label' => 'Subordinado a',
                 'class' => Estructura::class,
-                'choice_label' => 'nombre',
+                'label' => 'Estructura',
+                'required' => true,
+                'choice_label' => function (Estructura $estructura) {
+                    $siglasPadre = $estructura->getEstructura() ? $estructura->getEstructura()->getSiglas() : null;
+                    return $siglasPadre ? sprintf('(%s) %s', $siglasPadre, $estructura->getNombre()) : $estructura->getNombre();
+                },
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
+                    $estructurasNegocio = $this->estructuraNegocio;
+
+                    if (count($estructurasNegocio) > 0) {
+                        $qb = $er->createQueryBuilder('e');
+                        $qb->select('e.id')
+                            ->where('e.activo = true and e.esEntidad = false')
+                            ->andWhere($qb->expr()->in('e.id', ':parents'))
+                            ->setParameter('parents', array_values($estructurasNegocio));
+
+                        $idsPadres = array_column($qb->getQuery()->getScalarResult(), 'id');
+
+                        $getAllChildrenIds = function ($parentIds) use ($er) {
+                            $allChildren = [];
+                            $currentLevel = $parentIds;
+
+                            while (!empty($currentLevel)) {
+                                $qb = $er->createQueryBuilder('e');
+                                $children = $qb->select('e.id')
+                                    ->where('e.activo = true and e.esEntidad = false')
+                                    ->andWhere($qb->expr()->in('e.estructura', ':parents'))
+                                    ->setParameter('parents', $currentLevel)
+                                    ->getQuery()
+                                    ->getScalarResult();
+
+                                $currentLevel = array_column($children, 'id');
+                                $allChildren = array_merge($allChildren, $currentLevel);
+                            }
+
+                            return $allChildren;
+                        };
+
+                        $idsHijos = $getAllChildrenIds($idsPadres);
+                        $todasIds = array_unique(array_merge($idsPadres, $idsHijos));
+
+                        return $er->createQueryBuilder('e')
+                            ->where('e.activo = true and e.esEntidad = false')
+                            ->andWhere('e.id IN(:allIds)')
+                            ->setParameter('allIds', $todasIds)
+                            ->orderBy('e.nombre', 'ASC');
+                    }
+
+                    return $er->createQueryBuilder('e')
+                        ->where('e.activo = true  and e.esEntidad = false')
+                        ->orderBy('e.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
-                'empty_data' => null,
-                'required' => false
-            ])
-            ->add('provincia', EntityType::class, [
-                'class' => Provincia::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')->where('u.activo = true')->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null
-            ])
-            ->add('municipio', EntityType::class, [
-                'class' => Municipio::class,
-                'choice_label' => 'nombre',
-                'query_builder' => function (EntityRepository $er) {
-                    $pro = $this->idProvincia;
-                    return $er->createQueryBuilder('u')->where("u.activo = true and u.provincia = '$pro' ")->orderBy('u.nombre', 'ASC');
-                },
-                'placeholder' => 'Seleccione',
-                'empty_data' => null,
-                'mapped' => false
-            ])
-            ->add('activo', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Habilitado'
-            ]);
+                'mapped' => false // Esto indica que no está mapeado a ninguna propiedad
+            ]) ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Entidad::class,
-            'data_choices' => []
+            'data_class' => null,
+            'data_choices' => [],
+            'estructuraNegocio' => [],
         ]);
     }
 }

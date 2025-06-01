@@ -19,12 +19,16 @@
                                 class="fa fa-plus"></i>
                     </a>
 
-{#                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i#}
-{#                                class="fa fa-map"></i> </a>#}
+                    {#                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i #}
+                    {#                                class="fa fa-map"></i> </a> #}
                     <a title="Vista de árbol" href="{{ path('app_estructura_index_arbol') }}" class="btn btn-primary"><i
                                 class="fa fa-folder-plus"></i> </a>
-                    <a title="Exportar a pdf" class="btn btn-primary" target="_blank"
+                    <a title="Exportar a pdf" class="btn btn-success" target="_blank"
                        href="{{ path('app_estructura_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
+                    </a>
+
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
                     </a>
                 </div>
 
@@ -53,12 +57,21 @@
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Estructura superior" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de estructura" class="responsive-input"/>
+                    </th>
+                    <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input"/></th>
+                    <th></th> <!-- No filter for actions -->
+                </tr>
                 </thead>
                 <tbody>
                 {% for item in registros %}
                     <tr>
                         <td width="1">{{ loop.index }}</td>
-{#                        <td>{{ item.estructura.nombre | default('') }}</td>#}
+                        {#                        <td>{{ item.estructura.nombre | default('') }}</td> #}
                         <td>
                             {% if item.estructura is not null
                                 and item.estructura.estructura is not null
@@ -67,11 +80,11 @@
                             {% endif %}
                             {{ item.estructura.nombre|default('') }}
                         </td>
-{#                        {% if item.estructura.siglas is defined %}#}
-{#                            <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td>#}
-{#                        {% else %}#}
-                            <td>{{ item.nombre | default('')}}</td>
-{#                        {% endif %}#}
+                        {#                        {% if item.estructura.siglas is defined %} #}
+                        {#                            <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td> #}
+                        {#                        {% else %} #}
+                        <td>{{ item.nombre | default('') }}</td>
+                        {#                        {% endif %} #}
                         <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
                         <td class="-text-center">
                             {% if '1' == item.activo %}
@@ -82,30 +95,36 @@
                         </td>
                         <td class="text-center">
                             <button class="btn btn-outline-primary modalDetailAction" title="Detalles"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
                                     data-url="{{ path('app_estructura_detail', {'id' : item.id}) }}"
                                     data-title="Detalles de la estructura">
                                 <i class="fa fa-eye "></i>
                             </button>
                             {% if dataShow[item.id] %}
                                 <a class="btn btn-outline-primary" title="Modificar"
+                                   style="min-width: auto; width: auto; padding: 2px 6px;"
                                    href="{{ path('app_estructura_modificar', {'id': item.id}) }}"><i
                                             class="fa fa-edit"></i>
                                 </a>
                             {% endif %}
                             <a class="btn btn-outline-primary" title="Asociar Composición"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                href="{{ path('app_estructura_plaza', {'id': item.id}) }}"><i
                                         class="fa fa-cogs"></i>
                             </a>
                             <a class="btn btn-outline-primary" title="Crear estructura hija"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                href="{{ path('app_estructura_registrar_hija', {'id': item.id}) }}"><i
                                         class="fa fa-plus"></i>
                             </a>
                             <a class="btn btn-outline-primary" title="Exportar estructuras hijas" target="_blank"
+                               style="min-width: auto; width: auto; padding: 2px 6px;"
                                href="{{ path('app_estructura_exportar_estructuras_hijas', {'id': item.id}) }}"><i
                                         class="fa fa-file-pdf"></i>
                             </a>
                             {% if dataShow[item.id] %}
                                 <button class="btn btn-outline-danger elementRemove" title="Eliminar"
+                                        style="min-width: auto; width: auto; padding: 2px 6px;"
                                         data-url="{{ path('app_estructura_eliminar', {'id': item.id}) }}">
                                     <i class="fa fa-trash"></i>
                                 </button>

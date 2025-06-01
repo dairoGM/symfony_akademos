@@ -545,24 +545,4 @@ class EstructuraController extends AbstractController
     }
 
 
-    /**
-     * @Route("/entidad/index", name="app_estructura_entidad_index", methods={"GET"})
-     * @param EstructuraRepository $estructuraRepository
-     * @return Response
-     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
-     */
-    public function indexEstructurasEntidades(EstructuraRepository $estructuraRepository, Utils $utils)
-    {
-        try {
-            $registros = $estructuraRepository->findBy(['esEntidad' => 1], ['activo' => 'desc', 'id' => 'desc']);
-            return $this->render('modules/estructura/estructura/entidad.html.twig', [
-                'registros' => $registros
-            ]);
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
-        }
-    }
-
-
 }

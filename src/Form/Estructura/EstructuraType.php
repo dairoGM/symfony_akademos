@@ -143,14 +143,14 @@ class EstructuraType extends AbstractType
                 'required' => false,
                 'label' => 'Habilitado',
             ])
-            ->add('esEntidad', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Entidad',
-            ])
-            ->add('centroAutorizadoPosgrado', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Centro autorizado de posgrado',
-            ])
+//            ->add('esEntidad', CheckboxType::class, [
+//                'required' => false,
+//                'label' => 'Entidad',
+//            ])
+//            ->add('centroAutorizadoPosgrado', CheckboxType::class, [
+//                'required' => false,
+//                'label' => 'Centro autorizado de posgrado',
+//            ])
             ->add('ubicacion', TextType::class, [
                 'label' => 'Ubicación',
                 'required' => false

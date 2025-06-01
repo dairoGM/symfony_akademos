@@ -13,7 +13,9 @@
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
                 <h3 class="card-title text-bold text-gray">Listado de Centro Autorizado de Posgrado </h3>
-
+                <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                    <i class="fa fa-file-excel"></i>
+                </a>
             </div>
         </div>
         <!-- /.card-header -->
@@ -27,6 +29,15 @@
                     <th>Categoría de estructura</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
+                </tr>
+                <tr>
+                    <th></th> <!-- No filter for index -->
+                    <th><input type="text" placeholder="Filtrar por Estructura superior" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
+                    <th><input type="text" placeholder="Filtrar por Categoría de estructura" class="responsive-input"/>
+                    </th>
+                    <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input"/></th>
+                    <th></th> <!-- No filter for actions -->
                 </tr>
                 </thead>
                 <tbody>
