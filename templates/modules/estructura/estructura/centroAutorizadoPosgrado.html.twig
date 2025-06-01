@@ -11,11 +11,16 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Listado de Centros Autorizados de Posgrado </h3>
+                <div>
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_postgrado_centro_autorizado_postgrado_registrar') }}"><i
+                                class="fa fa-plus"></i>
+                    </a>
 
-                <h3 class="card-title text-bold text-gray">Listado de Centro Autorizado de Posgrado </h3>
-                <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
-                    <i class="fa fa-file-excel"></i>
-                </a>
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+                </div>
             </div>
         </div>
         <!-- /.card-header -->

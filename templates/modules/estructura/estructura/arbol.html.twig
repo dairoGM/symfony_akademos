@@ -14,7 +14,10 @@
         .modal-estructura .modal-content {
             height: 80vh;  /* Ajusta según necesidad */
         }
-
+        .modal-estructura .modal-body {
+            max-height: 70vh; /* 70% del alto de la ventana */
+            overflow-y: auto; /* Scroll vertical si es necesario */
+        }
         .tree-container {
             font-family: Arial, sans-serif;
             padding: 15px;
@@ -114,9 +117,9 @@
                     <a title="Vista de tabla" href="{{ path('app_estructura_index') }}" class="btn btn-primary">
                         <i class="fa fa-table"></i>
                     </a>
-{#                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}">#}
-{#                        <i class="fa fa-plus"></i>#}
-{#                    </a>#}
+                    {#                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}">#}
+                    {#                        <i class="fa fa-plus"></i>#}
+                    {#                    </a>#}
                 </div>
             </div>
         </div>
@@ -167,7 +170,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="estructuraModalBody">
+                <div class="modal-body" id="estructuraModalBody" style="overflow-y: auto; max-height: 70vh;">
                     <!-- Contenido cargado via AJAX -->
                 </div>
                 <div class="modal-footer">

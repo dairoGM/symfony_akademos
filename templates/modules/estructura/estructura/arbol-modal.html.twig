@@ -1,13 +1,13 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12"> <!-- Cambiado a col-12 para ocupar todo el ancho -->
             <h4 style="color: {{ estructura.categoriaEstructura ? estructura.categoriaEstructura.color : '#333' }}">
                 {{ estructura.nombre }}
             </h4>
             <hr>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-sm-6"> <!-- Cambiado a col-sm-6 para mejor adaptación -->
                     <h5><i class="fa fa-info-circle"></i> Información Básica</h5>
                     <table class="table table-sm table-borderless">
                         <tbody>
@@ -20,9 +20,9 @@
                         <tr>
                             <th>Estado:</th>
                             <td>
-                                    <span class="badge badge-{{ estructura.activo ? 'success' : 'danger' }}">
-                                        {{ estructura.activo ? 'Activa' : 'Inactiva' }}
-                                    </span>
+                                <span class="badge badge-{{ estructura.activo ? 'success' : 'danger' }}">
+                                    {{ estructura.activo ? 'Activa' : 'Inactiva' }}
+                                </span>
                             </td>
                         </tr>
                         {% if estructura.tipoEstructura %}
@@ -35,9 +35,9 @@
                             <tr>
                                 <th>Categoría:</th>
                                 <td>
-                                        <span style="color: {{ estructura.categoriaEstructura.color }}">
-                                            {{ estructura.categoriaEstructura.nombre }}
-                                        </span>
+                                    <span style="color: {{ estructura.categoriaEstructura.color }}">
+                                        {{ estructura.categoriaEstructura.nombre }}
+                                    </span>
                                 </td>
                             </tr>
                         {% endif %}
@@ -45,7 +45,7 @@
                     </table>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-sm-6">
                     <h5><i class="fa fa-address-card"></i> Contacto</h5>
                     <table class="table table-sm table-borderless">
                         <tbody>
@@ -65,7 +65,7 @@
                             <th>Ubicación:</th>
                             <td>
                                 {{ estructura.direccion | default() }}<br>
-                                {{ estructura.municipio.nombre | default()  }}, {{ estructura.provincia.nombre | default() }}
+                                {{ estructura.municipio.nombre | default() }}, {{ estructura.provincia.nombre | default() }}
                             </td>
                         </tr>
                         </tbody>

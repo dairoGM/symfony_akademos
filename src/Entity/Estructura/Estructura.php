@@ -105,6 +105,11 @@ class Estructura extends BaseEntity
      */
     private ?Provincia $provincia;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false, options={"default": 0})
+     */
+    private int $orden = 0;
+
     public function __construct()
     {
         $this->fechaActivacion = new \DateTime();
@@ -379,4 +384,21 @@ class Estructura extends BaseEntity
     {
         return $this->getNombre() ?? ''; // Asume que hay un campo 'nombre' o usa el campo apropiado
     }
+
+    /**
+     * @return int
+     */
+    public function getOrden(): int
+    {
+        return $this->orden;
+    }
+
+    /**
+     * @param int $orden
+     */
+    public function setOrden(int $orden): void
+    {
+        $this->orden = $orden;
+    }
+
 }

@@ -127,7 +127,7 @@ class EstructuraController extends AbstractController
 //        $isAdmin = false;
         $elementos = !$isAdmin
             ? $estructuraRepository->getEstructurasNegocios($estructuraNegocio)
-            : $estructuraRepository->findBy(['activo' => true], ['nombre' => 'ASC']);
+            : $estructuraRepository->findBy(['activo' => true], ['orden' => 'ASC', 'nombre' => 'ASC']);
 
         $registros = array_map(function (Estructura $el) use ($estructuraNegocio, $isAdmin) {
             $color = $el->getCategoriaEstructura() ? $el->getCategoriaEstructura()->getColor() : '#333';
@@ -189,7 +189,7 @@ class EstructuraController extends AbstractController
         $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
 
-        $isAdmin=false;
+        $isAdmin = false;
         // Obtener registros según el rol
         if ($isAdmin) {
             $registros = $estructuraRepository->findBy(['activo' => true], ['nombre' => 'ASC']);
