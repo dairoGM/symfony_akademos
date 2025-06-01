@@ -141,6 +141,7 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_PROVIN", "Gestionar provincias", "Gestionar provincias");
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_RESPON", "Gestionar responsabilidades", "Gestionar responsabilidades");
         $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_TYPEESTR", "Gestionar tipos de estructura", "Gestionar tipos de estructura");
+        $functionalities[] = Functionality::createFunctionality("MODULE_STRUCT", "ROLE_GEST_ENTITY", "Gestionar entidades", "Gestionar entidades");
 
 
         return $functionalities;
@@ -454,7 +455,7 @@ class InstallConfig
             ->addFunctionality("ROLE_GEST_MUNICP")
             ->addFunctionality("ROLE_GEST_PROVIN")
             ->addFunctionality("ROLE_GEST_RESPON")
-//            ->addFunctionality("ROLE_GEST_TYPENTY")
+            ->addFunctionality("ROLE_GEST_ENTITY")
             ->addFunctionality("ROLE_GEST_TYPEESTR");
 
         $roles[] = Role::createRole('ROL_PERSON', "Administrador de Personal", "Rol con permisos a todas las funcionalidades de personal")
