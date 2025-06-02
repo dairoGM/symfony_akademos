@@ -46,8 +46,7 @@
             </li>
         {% endif %}
 
-        {% if hasRoles('ROLE_GEST_COPEP') or hasRoles('ROLE_GEST_COMISION')  or hasRoles('ROLE_GEST_TIPPROGRAM')
-            or hasRoles('ROLE_GEST_RAMCIENC')  or hasRoles('ROLE_GEST_ROLESPOS') %}
+        {% if hasRoles('ROLE_GEST_RAMCIENC') or hasRoles('ROLE_GEST_ROLESPOS')  or hasRoles('ROLE_GEST_TIPPROGRAM') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -58,22 +57,6 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_GEST_COPEP') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_copep_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>COPEP</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if  hasRoles('ROLE_GEST_COMISION') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_comision_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Comisiones</p>
-                            </a>
-                        </li>
-                    {% endif %}
                     {% if  hasRoles('ROLE_GEST_TIPPROGRAM') %}
                         <li class="nav-item">
                             <a href="{{ path('app_tipo_programa_index') }}"
@@ -109,26 +92,66 @@
                 </ul>
             </li>
         {% endif %}
-        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+        {% if hasRoles('ROLE_GEST_COPEP') or hasRoles('ROLE_GEST_COMISION') or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
-                    <i class="nav-icon fas fa-cog"></i>
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Gobernanza
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_COPEP') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_copep_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>COPEP</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if  hasRoles('ROLE_GEST_COMISION') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_comision_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Comisiones</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Centros Autorizados (Maestrías y Especialidades) </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_FORMACION_DOCTORES') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_postgrado_formacion_doctores_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>IAFD (Formación de Doctores)</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-file-signature"></i>
                     <p>
                         Reportes
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_GEST_CENTRO_AUTORIZADO') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Centros Autorizados de Posgrado</p>
-                            </a>
-                        </li>
-                    {% endif %}
-
                     {% if  hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_postgrado_grado_cientifico_index') }}"

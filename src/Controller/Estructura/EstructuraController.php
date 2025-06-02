@@ -307,7 +307,7 @@ class EstructuraController extends AbstractController
      * @param Estructura $estructura
      * @param EstructuraRepository $estructuraRepository
      * @return Response
-     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT", "ROLE_GEST_CENTRO_AUTORIZADO", "ROLE_GEST_FORMACION_DOCTORES")
      */
     public function eliminar(Request $request, Estructura $estructura, EstructuraRepository $estructuraRepository)
     {
@@ -331,7 +331,7 @@ class EstructuraController extends AbstractController
      * @param Estructura $estructura
      * @param Plaza $plazaRepository
      * @return Response
-     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
+     * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT", "ROLE_GEST_CENTRO_AUTORIZADO", "ROLE_GEST_FORMACION_DOCTORES")
      */
     public function detail(Request $request, Estructura $estructura, PlazaRepository $plazaRepository)
     {

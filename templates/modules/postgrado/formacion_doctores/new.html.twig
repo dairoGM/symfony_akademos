@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Adicionar Centro Autorizado de Posgrado{% endblock %}
+{% block title %}Adicionar IAFD (Formación de Doctores){% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
 
-                <h3 class="card-title text-bold text-gray">Adicionar Centro Autorizado de Posgrado</h3>
+                <h3 class="card-title text-bold text-gray">Adicionar IAFD (Formación de Doctores)</h3>
 
             </div>
         </div>
@@ -39,8 +39,7 @@
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel"
-               data-url="{{ path('app_postgrado_centro_autorizado_postgrado_index') }}"
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_postgrado_formacion_doctores_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>

@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Entidades{% endblock %}
+{% block title %}Empresas{% endblock %}
 
 {% block body %}
 
@@ -11,11 +11,11 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-                <h3 class="card-title text-bold text-gray">Listado de entidades </h3>
+                <h3 class="card-title text-bold text-gray">Listado de Empresas </h3>
                 <div>
-                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_entidad_registrar') }}"><i
-                                class="fa fa-plus"></i>
-                    </a>
+{#                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_empresa_registrar') }}"><i#}
+{#                                class="fa fa-plus"></i>#}
+{#                    </a>#}
 
                     <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
                         <i class="fa fa-file-excel"></i>
@@ -32,7 +32,6 @@
                     <th>Estructura superior</th>
                     <th>Nombre</th>
                     <th>Categoría de estructura</th>
-                    <th>Clasificación Presupuestaria</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -42,8 +41,6 @@
                     <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
                     <th><input type="text" placeholder="Filtrar por Categoría de estructura" class="responsive-input"/>
                     </th>
-                    <th><input type="text" placeholder="Filtrar por Clasificación Presupuestaria"
-                               class="responsive-input"/></th>
                     <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input"/></th>
                     <th></th> <!-- No filter for actions -->
                 </tr>
@@ -55,7 +52,6 @@
                         <td>{{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.nombre | default('') }}</td>
                         <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
-                        <td>{{ item.clasificacionPresupuestaria | default('') }}</td>
                         <td class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>

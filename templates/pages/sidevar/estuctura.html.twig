@@ -6,13 +6,97 @@
              with font-awesome or any other icon font library -->
 
 
-        {% if hasRoles('ROLE_GEST_CATGEST') or hasRoles('ROLE_GEST_TYPEESTR') or hasRoles('ROLE_GEST_ESTRUCT') %}
+        {% if hasRoles('ROLE_GEST_ESTRUCT') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
                     <i class="nav-icon fas fa-network-wired"></i>
                     <p>
                         Estructura
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% if hasRoles('ROLE_GEST_ESTRUCT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Estructuras</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if hasRoles('ROLE_GEST_ENTITY') or hasRoles('ROLE_ESTRUCTURA_EMPRESA') or hasRoles('ROLE_ESTRUCTURA_UNIDAD_PRESUPUESTADA_TRATAMIENTO_ESPECIAL') or hasRoles('ROLE_ESTRUCTURA_UNIDAD_PRESUPUESTADA') or hasRoles('ROLE_ESTRUCTURA_INTERFACES_MYPIMES') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Entidades
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if hasRoles('ROLE_GEST_ENTITY') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_entidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Entidades</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if hasRoles('ROLE_ESTRUCTURA_UNIDAD_PRESUPUESTADA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_unidad_presupuestada_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Unidades Presupuestadas (UP)
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_ESTRUCTURA_UNIDAD_PRESUPUESTADA_TRATAMIENTO_ESPECIAL') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_unidad_presupuestada_tratamiento_especial_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p> Unidades Presupuestadas con Tratamiento Especial (UPTE)
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_ESTRUCTURA_INTERFACES_MYPIMES') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_interfaces_mypimes_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p> Interfaces y MiPYMES </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_ESTRUCTURA_EMPRESA') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_estructura_empresa_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Empresas</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if hasRoles('ROLE_GEST_CATRESP') or hasRoles('ROLE_GEST_RESPON') or hasRoles('ROLE_GEST_PROVIN') or hasRoles('ROLE_GEST_MUNICP') or hasRoles('ROLE_GEST_CATGEST') or hasRoles('ROLE_GEST_TYPEESTR') %}
+            <li class="nav-item">
+                <a href="#"
+                   class="nav-link nav-link-menu">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Configuración
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -33,68 +117,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if hasRoles('ROLE_GEST_ESTRUCT') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_estructura_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Estructuras</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if hasRoles('ROLE_GEST_ESTRUCT') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_estructura_entidad_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Entidades</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </li>
-        {% endif %}
 
-        {% if hasRoles('ROLE_GEST_CATRESP') or hasRoles('ROLE_GEST_RESPON') %}
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link nav-link-menu">
-                    <i class="nav-icon fas fa-cog"></i>
-                    <p>
-                        Responsabilidad
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    {% if hasRoles('ROLE_GEST_CATRESP') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_categoria_responsabilidad_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Categorías de responsabilidad</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if hasRoles('ROLE_GEST_RESPON') %}
-                        <li class="nav-item">
-                            <a href="{{ path('app_responsabilidad_index') }}"
-                               class="nav-link nav-link-menu">
-                                <p>Responsabilidad</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </li>
-        {% endif %}
-
-        {% if hasRoles('ROLE_GEST_PROVIN') or hasRoles('ROLE_GEST_MUNICP') %}
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link nav-link-menu">
-                    <i class="nav-icon fas fa-cog"></i>
-                    <p>
-                        Configuración
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
                     {% if hasRoles('ROLE_GEST_PROVIN') %}
                         <li class="nav-item">
                             <a href="{{ path('app_pais_index') }}"
@@ -117,6 +140,22 @@
                             <a href="{{ path('app_municipio_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Municipios</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_CATRESP') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_categoria_responsabilidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Categorías de responsabilidad</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_GEST_RESPON') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_responsabilidad_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Responsabilidad</p>
                             </a>
                         </li>
                     {% endif %}

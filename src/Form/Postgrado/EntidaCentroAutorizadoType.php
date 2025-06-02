@@ -55,7 +55,7 @@ class EntidaCentroAutorizadoType extends AbstractType
                     if (count($estructurasNegocio) > 0) {
                         $qb = $er->createQueryBuilder('e');
                         $qb->select('e.id')
-                            ->where('e.activo = true and e.centroAutorizadoPosgrado = false')
+                            ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                             ->andWhere($qb->expr()->in('e.id', ':parents'))
                             ->setParameter('parents', array_values($estructurasNegocio));
 
@@ -68,7 +68,7 @@ class EntidaCentroAutorizadoType extends AbstractType
                             while (!empty($currentLevel)) {
                                 $qb = $er->createQueryBuilder('e');
                                 $children = $qb->select('e.id')
-                                    ->where('e.activo = true and e.centroAutorizadoPosgrado = false')
+                                    ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                                     ->andWhere($qb->expr()->in('e.estructura', ':parents'))
                                     ->setParameter('parents', $currentLevel)
                                     ->getQuery()
@@ -85,19 +85,19 @@ class EntidaCentroAutorizadoType extends AbstractType
                         $todasIds = array_unique(array_merge($idsPadres, $idsHijos));
 
                         return $er->createQueryBuilder('e')
-                            ->where('e.activo = true and e.centroAutorizadoPosgrado = false')
+                            ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                             ->andWhere('e.id IN(:allIds)')
                             ->setParameter('allIds', $todasIds)
                             ->orderBy('e.nombre', 'ASC');
                     }
 
                     return $er->createQueryBuilder('e')
-                        ->where('e.activo = true  and e.centroAutorizadoPosgrado = false')
+                        ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                         ->orderBy('e.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'mapped' => false // Esto indica que no está mapeado a ninguna propiedad
-            ]) ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -36,10 +36,15 @@
                     {{ form_widget(form.estructura) }}
                     {{ form_errors(form.estructura) }}
                 </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.clasificacionPresupuestaria) }}
+                    {{ form_widget(form.clasificacionPresupuestaria) }}
+                    {{ form_errors(form.clasificacionPresupuestaria) }}
+                </div>
             </div>
         </div>
         <div class="card-footer" style="display: flex; justify-content: flex-end; align-items: center;">
-            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_entidad_index') }}"
+            <a class="btn btn-danger mr-2 btn-cancel" data-url="{{ path('app_estructura_entidad_index') }}"
                data-title=""
                data-content="¿Está seguro que desea realizar la acción?" type="button">Cancelar</a>
             <button class="btn btn-primary">Aceptar</button>

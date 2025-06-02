@@ -19,6 +19,10 @@ class Estructura extends BaseEntity
      * @ORM\Column(type="string", length=255)
      */
     private ?string $nombre;
+    /**
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private ?string $clasificacionPresupuestaria;
 
     /**
      * @ORM\Column(type="string", nullable=true, length="15")
@@ -38,6 +42,11 @@ class Estructura extends BaseEntity
      * @ORM\Column(type="boolean", nullable=true)
      */
     private ?bool $centroAutorizadoPosgrado = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private ?bool $iafd = false;
 
 
     /**
@@ -399,6 +408,38 @@ class Estructura extends BaseEntity
     public function setOrden(int $orden): void
     {
         $this->orden = $orden;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIafd(): ?bool
+    {
+        return $this->iafd;
+    }
+
+    /**
+     * @param bool|null $iafd
+     */
+    public function setIafd(?bool $iafd): void
+    {
+        $this->iafd = $iafd;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getClasificacionPresupuestaria(): ?string
+    {
+        return $this->clasificacionPresupuestaria;
+    }
+
+    /**
+     * @param string|null $clasificacionPresupuestaria
+     */
+    public function setClasificacionPresupuestaria(?string $clasificacionPresupuestaria): void
+    {
+        $this->clasificacionPresupuestaria = $clasificacionPresupuestaria;
     }
 
 }

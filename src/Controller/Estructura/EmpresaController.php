@@ -17,35 +17,34 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/estructura/entidad")
- * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ENTITY")
+ * @Route("/estructura/empresas")
+ * @IsGranted("ROLE_ADMIN", "ROLE_ESTRUCTURA_EMPRESA")
  */
-class EntidadController extends AbstractController
+class EmpresaController extends AbstractController
 {
 
 
     /**
-     * @Route("/", name="app_estructura_entidad_index", methods={"GET"})
+     * @Route("/", name="app_estructura_empresa_index", methods={"GET"})
      * @param EstructuraRepository $estructuraRepository
      * @return Response
      * @IsGranted("ROLE_ADMIN", "ROLE_GEST_ESTRUCT")
      */
-    public function indexEstructurasEntidades(EstructuraRepository $estructuraRepository, Utils $utils)
+    public function index(EstructuraRepository $estructuraRepository, Utils $utils)
     {
         try {
-            $registros = $estructuraRepository->findBy(['esEntidad' => 1], ['activo' => 'desc', 'id' => 'desc']);
-            return $this->render('modules/estructura/estructura/entidad.html.twig', [
+            $registros = $estructuraRepository->findBy(['categoriaEstructura' => 7], ['activo' => 'desc', 'id' => 'desc']);
+            return $this->render('modules/estructura/estructura/empresa.html.twig', [
                 'registros' => $registros
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_estructura_empresa_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
-
     /**
-     * @Route("/registrar", name="app_entidad_registrar", methods={"GET", "POST"})
+     * @Route("/registrar", name="app_estructura_empresa_registrar", methods={"GET", "POST"})
      * @param Request $request
      * @param EntidadRepository $entidadRepository
      * @param MunicipioRepository $municipioRepository
@@ -67,10 +66,9 @@ class EntidadController extends AbstractController
         if ($form->isSubmitted()) {
             $estructura = $estructuraRepository->find($form->get('estructura')->getData()->getId());
             $estructura->setEsEntidad(true);
-            $estructura->setClasificacionPresupuestaria($form->get('clasificacionPresupuestaria')->getData());
             $estructuraRepository->edit($estructura, true);
             $this->addFlash('success', 'El elemento ha sido creado satisfactoriamente.');
-            return $this->redirectToRoute('app_estructura_entidad_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_estructura_empresa_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('modules/estructura/entidad/new.html.twig', [
@@ -79,5 +77,6 @@ class EntidadController extends AbstractController
         ]);
 
     }
+
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Estructura;
+namespace App\Form\Postgrado;
 
 use App\Entity\Estructura\CategoriaEstructura;
 use App\Entity\Estructura\Estructura;
@@ -8,12 +8,10 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class EntidadType extends AbstractType
+class FormacionDoctoresType extends AbstractType
 {
     private $idProvincia;
     private $estructuraNegocio;
@@ -43,18 +41,6 @@ class EntidadType extends AbstractType
                 'required' => false,
                 'mapped' => false // Esto indica que no está mapeado a ninguna propiedad
             ])
-            ->add('clasificacionPresupuestaria', ChoiceType::class, [
-                'label' => 'Clasificación Presupuestaria',
-                'choices' => [
-                    'UP' => 'UP',
-                    'UPTE' => 'UPTE',
-                ],
-                'placeholder' => 'Seleccione',
-                'required' => false, // o true si es obligatorio
-                'constraints' => [
-                    new NotBlank([], 'Este valor no debe estar en blanco.') // Si lo quieres requerido
-                ]
-            ])
             ->add('estructura', EntityType::class, [
                 'class' => Estructura::class,
                 'label' => 'Estructura',
@@ -69,7 +55,7 @@ class EntidadType extends AbstractType
                     if (count($estructurasNegocio) > 0) {
                         $qb = $er->createQueryBuilder('e');
                         $qb->select('e.id')
-                            ->where('e.activo = true and e.esEntidad = false')
+                            ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                             ->andWhere($qb->expr()->in('e.id', ':parents'))
                             ->setParameter('parents', array_values($estructurasNegocio));
 
@@ -82,7 +68,7 @@ class EntidadType extends AbstractType
                             while (!empty($currentLevel)) {
                                 $qb = $er->createQueryBuilder('e');
                                 $children = $qb->select('e.id')
-                                    ->where('e.activo = true and e.esEntidad = false')
+                                    ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                                     ->andWhere($qb->expr()->in('e.estructura', ':parents'))
                                     ->setParameter('parents', $currentLevel)
                                     ->getQuery()
@@ -99,19 +85,19 @@ class EntidadType extends AbstractType
                         $todasIds = array_unique(array_merge($idsPadres, $idsHijos));
 
                         return $er->createQueryBuilder('e')
-                            ->where('e.activo = true and e.esEntidad = false')
+                            ->where('e.activo = true and e.iafd = false and e.centroAutorizadoPosgrado = false')
                             ->andWhere('e.id IN(:allIds)')
                             ->setParameter('allIds', $todasIds)
                             ->orderBy('e.nombre', 'ASC');
                     }
 
                     return $er->createQueryBuilder('e')
-                        ->where('e.activo = true  and e.esEntidad = false')
+                        ->where('e.activo = true  and e.iafd = false and e.centroAutorizadoPosgrado = false')
                         ->orderBy('e.nombre', 'ASC');
                 },
                 'placeholder' => 'Seleccione',
                 'mapped' => false // Esto indica que no está mapeado a ninguna propiedad
-            ]);
+            ]) ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
