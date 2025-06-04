@@ -123,7 +123,7 @@ class AE2Controller extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 if (!empty($_FILES['ae2']['name']['documento'])) {
-                    $file = $form['resolucion']->getData();
+                    $file = $form['documento']->getData();
                     $file_name = $_FILES['ae2']['name']['documento'];
                     $ae2->setDocumento($file_name);
                     $file->move("uploads/rrhh/ae2/documento", $file_name);

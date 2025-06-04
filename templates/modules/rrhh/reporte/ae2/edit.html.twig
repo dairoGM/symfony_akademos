@@ -139,6 +139,12 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
+
+            $('#ae2_documento').change(function () {
+                var filename = jQuery(this).val().split('\\').pop();
+                $('.cargar-archivo').html(filename);
+            })
+
             const fieldSelectors = [];
 
             // Captura todos los campos en orden
