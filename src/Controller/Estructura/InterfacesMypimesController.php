@@ -33,7 +33,7 @@ class InterfacesMypimesController extends AbstractController
     public function index(EstructuraRepository $estructuraRepository, Utils $utils)
     {
         try {
-            $registros = $estructuraRepository->findBy(['categoriaEstructura' => 20], ['activo' => 'desc', 'id' => 'desc']);
+            $registros = $estructuraRepository->findBy(['categoriaEstructura' => 20, 'esEntidad'=>true], ['activo' => 'desc', 'id' => 'desc']);
             return $this->render('modules/estructura/estructura/interfacesMypimes.html.twig', [
                 'registros' => $registros
             ]);

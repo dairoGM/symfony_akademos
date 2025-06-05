@@ -33,7 +33,7 @@ class EmpresaController extends AbstractController
     public function index(EstructuraRepository $estructuraRepository, Utils $utils)
     {
         try {
-            $registros = $estructuraRepository->findBy(['categoriaEstructura' => 7], ['activo' => 'desc', 'id' => 'desc']);
+            $registros = $estructuraRepository->findBy(['categoriaEstructura' => 7, 'esEntidad'=>true], ['activo' => 'desc', 'id' => 'desc']);
             return $this->render('modules/estructura/estructura/empresa.html.twig', [
                 'registros' => $registros
             ]);
