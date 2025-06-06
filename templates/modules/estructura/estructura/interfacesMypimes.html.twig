@@ -31,7 +31,7 @@
                     <th>No.</th>
                     <th>Estructura superior</th>
                     <th>Nombre</th>
-                    <th>Categoría de estructura</th>
+                    <th>Tipo de estructura</th>
                     <th>Estado</th>
                     <th class="text-center">Opciones</th>
                 </tr>
@@ -39,7 +39,7 @@
                     <th></th> <!-- No filter for index -->
                     <th><input type="text" placeholder="Filtrar por Estructura superior" class="responsive-input"/></th>
                     <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
-                    <th><input type="text" placeholder="Filtrar por Categoría de estructura" class="responsive-input"/>
+                    <th><input type="text" placeholder="Filtrar por Tipo de estructura" class="responsive-input"/>
                     </th>
                     <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input"/></th>
                     <th></th> <!-- No filter for actions -->
@@ -51,7 +51,7 @@
                         <td width="1">{{ loop.index }}</td>
                         <td>{{ item.estructura.nombre | default('') }}</td>
                         <td>{{ item.nombre | default('') }}</td>
-                        <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
+                        <td>{{ item.tipoEstructura.nombre | default('') }}</td>
                         <td class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
