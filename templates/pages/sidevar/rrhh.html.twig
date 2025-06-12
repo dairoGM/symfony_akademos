@@ -12,7 +12,7 @@
                    class="nav-link nav-link-menu">
                     <i class="nav-icon fas fa-user"></i>
                     <p>
-                        Modelos
+                        Estadística
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -21,7 +21,17 @@
                         <li class="nav-item">
                             <a href="{{ path('app_rrhh_reporte_ae2_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Indicadores de RH (AE2)</p>
+                                <p>Modelo 223.216 (I) (AE2)
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_RRHH_REPORTE_AE3') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_ae3_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Modelo 223.216 (I) (AE3)
+                                </p>
                             </a>
                         </li>
                     {% endif %}
@@ -45,7 +55,7 @@
                         <li class="nav-item">
                             <a href="{{ path('app_rrhh_reporte_ae2_consolidado_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Indicadores de RH (AE2)</p>
+                                <p>Modelo 223.216 (I) (AE2)-IES</p>
                             </a>
                         </li>
                     {% endif %}
@@ -53,7 +63,7 @@
                         <li class="nav-item">
                             <a href="{{ path('app_rrhh_reporte_ae2_mes_index') }}"
                                class="nav-link nav-link-menu">
-                                <p>Indicadores de RH (AE2) MES</p>
+                                <p>Modelo 223.216 (I) (AE2)-MES</p>
                             </a>
                         </li>
                     {% endif %}

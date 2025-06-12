@@ -1,0 +1,481 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Adicionar Modelo 223.216 (III) (AE3){% endblock %}
+
+{% block stylesheets %}
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[readonly] {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .table {
+            table-layout: fixed;
+        }
+
+        .input-number {
+            min-width: 50px;
+            max-width: 70px;
+        }
+
+        .readonly-field {
+            background-color: #ffffcc !important;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 1600px) {
+            .table {
+                font-size: 0.8rem;
+            }
+
+            .input-number {
+                min-width: 40px;
+                max-width: 60px;
+                padding: 0.1rem !important;
+                height: 25px !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row d-flex justify-content-between align-items-center">
+                <h3 class="card-title text-bold text-gray">Adicionar Modelo 223.216 (III) (AE3)</h3>
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-6 text-gray">
+                    <h5>
+                        <b>
+                            <i class="fa fa-university"></i>
+                        </b> ({{ entidad.siglas | default('') }}) {{ entidad.nombre | default('') }}
+                    </h5>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 form-group">
+                    {{ form_label(form.anno) }}
+                    {{ form_widget(form.anno) }}
+                    {{ form_errors(form.anno) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 form-group">
+                    {{ form_label(form.mes) }}
+                    {{ form_widget(form.mes) }}
+                    {{ form_errors(form.mes) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.documento) }}
+                    {{ form_widget(form.documento) }}
+                    <span style="margin-top: 1%;position: absolute;margin-left: -95%;z-index: 100;"
+                          class="cargar-archivo"> </span>
+                    {{ form_errors(form.documento) }}
+                </div>
+            </div>
+
+            <hr>
+            {% set indicadores = {
+                'total_cuadros': '1. TOTAL CUADROS (Suma 2-5)',
+                'cuadros_docentes': '2. Cuadros Docentes',
+                'cuadros_administrativos': '3. Cuadros Administrativos',
+                'cuadros_investigacion': '4. Cuadros Investigación',
+                'otros_cuadros': '5. Otros Cuadros',
+                'total_tecnicos': '6. TOTAL TÉCNICOS  (Suma 7-10)',
+                'profesores_tiempo_completo': '7. Profesores a Tiempo Completo',
+                'asesores_metodologos': '8. Asesores o Metodólogos',
+                'investigadores': '9. Investigadores',
+                'otros_tecnicos': '10. Otros Técnicos',
+                'administrativos': '11. ADMINISTRATIVOS',
+                'servicio': '12. SERVICIO',
+                'operarios': '13. OPERARIOS',
+                'total': 'TOTAL',
+                'profesores_tipo_parcial': 'Profesores a Tiempo Parcial'
+            } %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" style="font-size: 0.85rem; width: auto;">
+                    <colgroup>
+                        <col style="width: 25%; min-width: 200px;"> {# INDICADORES #}
+                        <col style="width: 5%;"> {# FILA #}
+                        <col style="width: 5%;"> {# Total #}
+                        <col style="width: 5%;"> {# Fem. #}
+                        <col style="width: 5%;"> {# Jóvenes Total #}
+                        <col style="width: 5%;"> {# Jóvenes Fem. #}
+                        {# Profesores e Investigadores #}
+                        <col style="width: 4%;"> {# PT #}
+                        <col style="width: 4%;"> {# PA #}
+                        <col style="width: 4%;"> {# As #}
+                        <col style="width: 4%;"> {# I #}
+                        <col style="width: 4%;"> {# IT #}
+                        <col style="width: 4%;"> {# IA #}
+                        <col style="width: 4%;"> {# IAg #}
+                        <col style="width: 4%;"> {# AI #}
+                        <col style="width: 4%;"> {# Aux.Téc.Doc. #}
+                        <col style="width: 4%;"> {# MsC #}
+                        <col style="width: 4%;"> {# Dr. #}
+                    </colgroup>
+                    <thead class="thead-light">
+                    <tr>
+                        <th rowspan="3">INDICADORES</th>
+                        <th rowspan="3">FILA</th>
+                        <th rowspan="3">Total cubierta</th>
+                        <th rowspan="3">Fem.</th>
+                        <th colspan="2">Jóvenes</th>
+                        <th colspan="11">Profesores a Tiempo Completo e Investigadores</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Total</th>
+                        <th rowspan="2">Fem.</th>
+                        <th rowspan="2">PT</th>
+                        <th rowspan="2">PA</th>
+                        <th rowspan="2">As</th>
+                        <th rowspan="2">I</th>
+                        <th rowspan="2">IT</th>
+                        <th rowspan="2">IA</th>
+                        <th rowspan="2">IAg</th>
+                        <th rowspan="2">AI</th>
+                        <th rowspan="2">Aux.Téc.Doc.</th>
+                        <th rowspan="2">MsC</th>
+                        <th rowspan="2">Dr.</th>
+                    </tr>
+                    <tr>
+                        {# Esta fila vacía completa la estructura de 3 filas en el encabezado #}
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                        <th>17</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, label in indicadores %}
+                        <tr>
+                            <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ label }}</td>
+                            <td style="text-align: center;">{{ "%02d"|format(loop.index) }}</td>
+
+                            {# Total Cubierta #}
+                            <td>
+                                {{ form_widget(attribute(form, key ~ '_total_cubierta'), {
+                                    'attr': {
+                                        'class': 'form-control text-right input-number' ~
+                                        (key in ['profesores_tiempo_completo','asesores_metodologos','investigadores', 'cuadros_investigacion','cuadros_docentes','total_cuadros', 'total_tecnicos', 'total', 'profesores_tipo_parcial'] ? ' readonly-field' : ''),
+                                        'style': 'padding: 0.2rem; height: 28px;',
+                                        'readonly': key in ['profesores_tiempo_completo','asesores_metodologos','investigadores','cuadros_investigacion', 'cuadros_docentes','total_cuadros', 'total_tecnicos', 'total', 'profesores_tipo_parcial'] ? 'readonly' : false
+                                    }
+                                }) }}
+                            </td>
+
+                            {# Fem. #}
+                            <td>
+                                {{ form_widget(attribute(form, key ~ '_de_ellos_fem'), {
+                                    'attr': {
+                                        'class': 'form-control text-right input-number' ~
+                                        (key in ['total_cuadros', 'total_tecnicos', 'total' ] ? ' readonly-field' : ''),
+                                        'style': 'padding: 0.2rem; height: 28px;',
+                                        'readonly': key in ['total_cuadros', 'total_tecnicos', 'total' ] ? 'readonly' : false
+                                    }
+                                }) }}
+                            </td>
+
+                            {# Jóvenes Total #}
+                            <td>
+                                {{ form_widget(attribute(form, key ~ '_jovenes_total'), {
+                                    'attr': {
+                                        'class': 'form-control text-right input-number' ~
+                                        (key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                        loop.index in [1,6,14] ? ' readonly-field' : ''),
+                                        'style': 'padding: 0.2rem; height: 28px;',
+                                        'readonly': key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                        loop.index in [1,6,14] ? 'readonly' : false
+                                    }
+                                }) }}
+                            </td>
+
+                            {# Jóvenes Fem. #}
+                            <td>
+                                {{ form_widget(attribute(form, key ~ '_jovenes_fem'), {
+                                    'attr': {
+                                        'class': 'form-control text-right input-number' ~
+                                        (key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                        loop.index in [1,6,14] ? ' readonly-field' : ''),
+                                        'style': 'padding: 0.2rem; height: 28px;',
+                                        'readonly': key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                        loop.index in [1,6,14] ? 'readonly' : false
+                                    }
+                                }) }}
+                            </td>
+
+                            {# Profesores e Investigadores (columnas 7-17) #}
+                            {% for i in 7..17 %}
+                                <td>
+                                    {% if i in [16,17] %}
+                                        {# MsC y Dr. son readonly y se calculan automáticamente #}
+                                        {{ form_widget(attribute(form, key ~ '_' ~ {
+                                            7: 'pt',
+                                            8: 'pa',
+                                            9: 'as',
+                                            10: 'i',
+                                            11: 'it',
+                                            12: 'ia',
+                                            13: 'iag',
+                                            14: 'ai',
+                                            15: 'aux_tec_doc',
+                                            16: 'msc',
+                                            17: 'dr'
+                                        }[i]), {
+                                            'attr': {
+                                                'class': 'form-control text-right input-number readonly-field',
+                                                'style': 'padding: 0.2rem; height: 28px;',
+                                                'readonly': 'readonly'
+                                            }
+                                        }) }}
+                                    {% else %}
+                                        {# Otras columnas según la lógica original #}
+                                        {{ form_widget(attribute(form, key ~ '_' ~ {
+                                            7: 'pt',
+                                            8: 'pa',
+                                            9: 'as',
+                                            10: 'i',
+                                            11: 'it',
+                                            12: 'ia',
+                                            13: 'iag',
+                                            14: 'ai',
+                                            15: 'aux_tec_doc',
+                                            16: 'msc',
+                                            17: 'dr'
+                                        }[i]), {
+                                            'attr': {
+                                                'class': 'form-control text-right input-number' ~
+                                                (key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                                loop.index in [14] ? ' readonly-field' : ''),
+                                                'style': 'padding: 0.2rem; height: 28px;',
+                                                'readonly': key in ['total_cuadros', 'total_tecnicos', 'total' ] or
+                                                loop.index in [14] ? 'readonly' : false
+                                            }
+                                        }) }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer d-flex justify-content-end">
+                <a class="btn btn-danger mr-2 btn-cancel"
+                   data-url="{{ path('app_rrhh_reporte_ae3_index') }}"
+                   data-title=""
+                   data-content="¿Está seguro que desea realizar la acción?"
+                   type="button">
+                    Cancelar
+                </a>
+                <button class="btn btn-primary" type="submit">Aceptar</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#ae3_documento').change(function () {
+                var filename = jQuery(this).val().split('\\').pop();
+                $('.cargar-archivo').html(filename);
+            })
+            $('[data-mask]').inputmask()
+
+            // Inicializar todos los cálculos
+            $('.input-number:not(.readonly-field)').trigger('change');
+
+            // Deshabilitar todos los campos readonly
+            $('.readonly-field').prop('readonly', true).css('background-color', '#ffffcc');
+
+
+            // Función para sumar campos
+            function calcularSuma(selector) {
+                let suma = 0;
+                $(selector).each(function () {
+                    const valor = parseFloat($(this).val()) || 0;
+                    suma += valor;
+                });
+                return Math.round(suma); // Redondear para evitar decimales
+            }
+
+            // Nueva función para calcular sumas específicas de profesores/investigadores
+            function calcularSumaProfesores() {
+                const campos = ['pt', 'pa', 'as', 'i', 'it', 'ia', 'iag', 'ai', 'aux_tec_doc'];
+                let sumaTotal = 0;
+
+                // Calcular para cada fila editable
+                $('tr').each(function () {
+                    if (!$(this).find('td:first').text().includes('TOTAL') &&
+                        !$(this).find('td:first').text().includes('Profesores')) {
+                        let sumaFila = 0;
+                        campos.forEach(campo => {
+                            const valor = parseFloat($(this).find(`[id$="_${campo}"]`).val()) || 0;
+                            sumaFila += valor;
+                        });
+
+                        // Actualizar MsC y Dr. para esta fila
+                        $(this).find('[id$="_msc"]').val(sumaFila);
+                        $(this).find('[id$="_dr"]').val(sumaFila);
+
+                        sumaTotal += sumaFila;
+                    }
+                });
+
+                return sumaTotal;
+            }
+
+            // Calcular totales cuando cambia un valor
+            $('.input-number:not(.readonly-field)').on('change', function () {
+                // Calcular CUADROS DOCENTES HORIZONTALES
+                const temp1 = calcularSuma('[id$="ae3_cuadros_docentes_pt"], [id$="ae3_cuadros_docentes_pa"], [id$="ae3_cuadros_docentes_as"], [id$="ae3_cuadros_docentes_i"], [id$="ae3_cuadros_docentes_it"], [id$="ae3_cuadros_docentes_ia"], [id$="ae3_cuadros_docentes_iag"], [id$="ae3_cuadros_docentes_ai"], [id$="ae3_cuadros_docentes_aux_tec_doc"]');
+                $('#ae3_cuadros_docentes_total_cubierta').val(temp1);
+
+                // Calcular CUADROS INVESTIGACION HORIZONTALES
+                const temp2 = calcularSuma('[id$="ae3_cuadros_investigacion_pt"], [id$="ae3_cuadros_investigacion_pa"], [id$="ae3_cuadros_investigacion_as"], [id$="ae3_cuadros_investigacion_i"], [id$="ae3_cuadros_investigacion_it"], [id$="ae3_cuadros_investigacion_ia"], [id$="ae3_cuadros_investigacion_iag"], [id$="ae3_cuadros_investigacion_ai"], [id$="ae3_cuadros_investigacion_aux_tec_doc"]');
+                $('#ae3_cuadros_investigacion_total_cubierta').val(temp2);
+
+
+                // Calcular TOTAL CUADROS (suma de filas 2-5)
+                const totalCuadros = calcularSuma('[id$="ae3_cuadros_docentes_total_cubierta"], [id$="ae3_cuadros_administrativos_total_cubierta"], [id$="ae3_otros_tecnicos_total_cubierta"], [id$="ae3_administrativos_total_cubierta"] , [id$="ae3_servicio_total_cubierta"], [id$="ae3_operarios_total_cubierta"]');
+                $('#ae3_total_cuadros_total_cubierta').val(totalCuadros);
+
+
+                // Calcular TOTAL fem
+                const totalFem = calcularSuma('[id$="ae3_cuadros_docentes_de_ellos_fem"], [id$="ae3_cuadros_administrativos_de_ellos_fem"], [id$="ae3_cuadros_investigacion_de_ellos_fem"], [id$="ae3_otros_cuadros_de_ellos_fem"]  ');
+                $('#ae3_total_cuadros_de_ellos_fem').val(totalFem);
+
+                // Calcular totalJovTotal
+                const totalJovTotal = calcularSuma('[id$="ae3_cuadros_docentes_jovenes_total"], [id$="ae3_cuadros_administrativos_jovenes_total"], [id$="ae3_cuadros_investigacion_jovenes_total"], [id$="ae3_otros_cuadros_jovenes_total"]  ');
+                $('#ae3_total_cuadros_jovenes_total').val(totalJovTotal);
+
+                // Calcular totalJovFem
+                const totalJovFem = calcularSuma('[id$="ae3_cuadros_docentes_jovenes_fem"], [id$="ae3_cuadros_administrativos_jovenes_fem"], [id$="ae3_cuadros_investigacion_jovenes_fem"], [id$="ae3_otros_cuadros_jovenes_fem"]  ');
+                $('#ae3_total_cuadros_jovenes_fem').val(totalJovFem);
+
+
+                const sufijos = {
+                    7: 'pt',
+                    8: 'pa',
+                    9: 'as',
+                    10: 'i',
+                    11: 'it',
+                    12: 'ia',
+                    13: 'iag',
+                    14: 'ai',
+                    15: 'aux_tec_doc',
+                    16: 'msc',
+                    17: 'dr'
+                };
+
+                const sufijos2 = {
+                    3: 'total_cubierta',
+                    4: 'de_ellos_fem',
+                    5: 'jovenes_total',
+                    6: 'jovenes_fem',
+                    7: 'pt',
+                    8: 'pa',
+                    9: 'as',
+                    10: 'i',
+                    11: 'it',
+                    12: 'ia',
+                    13: 'iag',
+                    14: 'ai',
+                    15: 'aux_tec_doc',
+                    16: 'msc',
+                    17: 'dr'
+                };
+
+                // Función para sumar valores de inputs con selector
+                function calcularSuma(selector) {
+                    let suma = 0;
+                    $(selector).each(function () {
+                        const val = parseFloat($(this).val()) || 0;
+                        suma += val;
+                    });
+                    return suma;
+                }
+
+                // Iterar sobre cada sufijo y calcular su total
+                $.each(sufijos, function (key, sufijo) {
+                    const selector =
+                        '[id$="ae3_cuadros_docentes_' + sufijo + '"], ' +
+                        '[id$="ae3_cuadros_administrativos_' + sufijo + '"], ' +
+                        '[id$="ae3_cuadros_investigacion_' + sufijo + '"], ' +
+                        '[id$="ae3_otros_cuadros_' + sufijo + '"]';
+
+                    const total = calcularSuma(selector);
+                    $('#ae3_total_cuadros_' + sufijo).val(total);
+                });
+
+                // Iterar sobre cada sufijo y calcular su total
+                $.each(sufijos2, function (key, sufijo) {
+                    const selector =
+                        '[id$="ae3_profesores_tiempo_completo_' + sufijo + '"], ' +
+                        '[id$="ae3_asesores_metodologos_' + sufijo + '"], ' +
+                        '[id$="ae3_investigadores_' + sufijo + '"], ' +
+                        '[id$="ae3_otros_tecnicos_' + sufijo + '"]';
+
+                    const total = calcularSuma(selector);
+                    $('#ae3_total_tecnicos_' + sufijo).val(total);
+                });
+
+
+                // Calcular columnas MsC y Dr. para todas las filas
+                // calcularSumaProfesores();
+            });
+
+            // Validar que solo se ingresen números
+            $('input[type="number"]').on('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            // Inicializar valores readonly
+            $('.input-number:not(.readonly-field)').trigger('change');
+
+        });
+        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc,#ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr, #ae3_administrativos_msc, #ae3_administrativos_dr #ae3_profesores_tiempo_completo_dr, #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc').removeAttr('readonly');
+        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc, #ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr,#ae3_administrativos_msc, #ae3_administrativos_dr, #ae3_profesores_tiempo_completo_dr,  #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc').removeClass('readonly-field');
+
+        $(document).ready(function () {
+            $('input[type="number"]').addClass('text-right');
+        });
+    </script>
+{% endblock %}

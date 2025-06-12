@@ -1,0 +1,188 @@
+<a id="exportToExcel" class="btn btn-primary" style="float: right;">
+    <i class="fas fa-file-excel me-2"></i> Exportar Excel
+</a>
+
+{% set meses = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
+<div class="row mb-4">
+    <div class="col-6">
+        <h5><b><i class="fa fa-university"></i></b> ({{ item.entidad.siglas }}) {{ item.entidad.nombre }}</h5>
+    </div>
+    <div class="col-2">
+        <h5><b>Mes:</b> {{ meses[item.mes] }}</h5>
+    </div>
+    <div class="col-2">
+        <h5><b>Año:</b> {{ item.anno }}</h5>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-light text-center">
+        <tr>
+            <th rowspan="2">Indicador</th>
+            <th colspan="3">General</th>
+            <th colspan="13">Profesores a Tiempo Completo e Investigadores</th>
+        </tr>
+        <tr>
+            <th>Total</th>
+            <th>Fem.</th>
+            <th>Jóvenes</th>
+            <th>Fem. Jóvenes</th>
+            <th>PT</th>
+            <th>PA</th>
+            <th>As</th>
+            <th>I</th>
+            <th>IT</th>
+            <th>IA</th>
+            <th>Mg</th>
+            <th>Al</th>
+            <th>Aux.Téc.Doc.</th>
+            <th>Msc</th>
+            <th>Dr.</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- TOTAL CUADROS (1) -->
+        <tr>
+            <td><strong>1. TOTAL CUADROS (Suma 2-5)</strong></td>
+            <td class="text-center">{{ item.totalCuadros ?? '' }}</td>
+            <td class="text-center">{{ item.totalCuadrosFem ?? '' }}</td>
+            <td class="text-center">{{ item.totalCuadrosJovenes ?? '' }}</td>
+            <td class="text-center">{{ item.totalCuadrosFemJovenes ?? '' }}</td>
+            <td colspan="12"></td>
+        </tr>
+
+        <!-- CUADROS DOCENTES (2) -->
+        <tr>
+            <td><strong>2. Cuadros Docentes</strong></td>
+            <td class="text-center">{{ item.cuadrosDocentes ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesFem ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesJovenes ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesFemJovenes ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesPT ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesPA ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesAs ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesI ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesIT ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesIA ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesMg ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesAl ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesAuxTecDoc ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesMsc ?? '' }}</td>
+            <td class="text-center">{{ item.cuadrosDocentesDr ?? '' }}</td>
+        </tr>
+
+        <!-- Resto de indicadores -->
+        <!-- ... -->
+
+        <!-- FIRMA DEL DOCUMENTO -->
+        <tr>
+            <td colspan="16" class="text-center">
+                {% if item.documento %}
+                    <a target="_blank"
+                       href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae3/documento/{{ item.documento }}"
+                       class="btn btn-outline-primary">
+                        <i class="fas fa-file-excel"></i> Descargar AE-3 firmado
+                    </a>
+                {% else %}
+                    <span class="text-muted">No hay documento adjunto</span>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Script para exportar a Excel -->
+<script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+<script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#exportToExcel').on('click', function(e) {
+            e.preventDefault();
+
+            // Crear libro y hoja
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet('AE-3');
+
+            // Configuración inicial
+            var entidad = $('h5:contains("Entidad:")').text().replace('Entidad:', '').trim();
+            var mes = $('h5:contains("Mes:")').text().replace('Mes:', '').trim();
+            var anno = $('h5:contains("Año:")').text().replace('Año:', '').trim();
+
+            // Añadir datos con estilos
+            var row1 = worksheet.addRow(['MODELO AE-3']);
+            row1.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row3 = worksheet.addRow(['INDICADORES DE RECURSOS HUMANOS']);
+            row3.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row5 = worksheet.addRow(['CENTRO INFORMANTE:', entidad]);
+            row5.getCell(1).font = {bold: true};
+            worksheet.addRow(['']);
+
+            var row7 = worksheet.addRow(['MES:', mes, 'AÑO:', anno]);
+            row7.getCell(1).font = {bold: true};
+            row7.getCell(3).font = {bold: true};
+            worksheet.addRow(['']);
+
+            // Crear encabezados
+            var headerRow = worksheet.addRow([
+                'Indicador',
+                'Total',
+                'Fem.',
+                'Jóvenes',
+                'Fem. Jóvenes',
+                'PT',
+                'PA',
+                'As',
+                'I',
+                'IT',
+                'IA',
+                'Mg',
+                'Al',
+                'Aux.Téc.Doc.',
+                'Msc',
+                'Dr.'
+            ]);
+
+            headerRow.eachCell(function(cell) {
+                cell.font = {bold: true};
+                cell.alignment = {horizontal: 'center'};
+            });
+
+            // Procesar todos los indicadores
+            $('table tbody tr').each(function() {
+                var rowData = [
+                    $(this).find('td:first').text().trim()
+                ];
+
+                $(this).find('td:not(:first)').each(function() {
+                    rowData.push($(this).text().trim());
+                });
+
+                worksheet.addRow(rowData);
+            });
+
+            // Ajustar columnas
+            worksheet.columns = [
+                {width: 40}, // Indicador
+                {width: 8}, {width: 8}, {width: 8}, // General
+                {width: 8}, {width: 8}, {width: 8}, {width: 8}, {width: 8}, // Profesores
+                {width: 8}, {width: 8}, {width: 8}, {width: 8}, {width: 8},
+                {width: 8}, {width: 8}, {width: 8}
+            ];
+
+            // Generar archivo
+            workbook.xlsx.writeBuffer().then(function(buffer) {
+                saveAs(new Blob([buffer], {type: 'application/octet-stream'}),
+                    `AE3_${entidad}_${mes}_${anno}.xlsx`);
+            }).catch(function(error) {
+                console.error('Error al generar Excel:', error);
+            });
+        });
+    });
+</script>

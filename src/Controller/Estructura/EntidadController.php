@@ -65,7 +65,7 @@ class EntidadController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $estructura = $estructuraRepository->find($form->get('estructura')->getData()->getId());
+            $estructura = $estructuraRepository->find($_POST['entidad']['estructura']);
             $estructura->setEsEntidad(true);
             $estructura->setClasificacionPresupuestaria($form->get('clasificacionPresupuestaria')->getData());
             $estructuraRepository->edit($estructura, true);

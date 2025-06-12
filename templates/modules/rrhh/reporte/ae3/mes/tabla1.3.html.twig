@@ -1,0 +1,372 @@
+{% block stylesheets %}
+    <style>
+        /* Estilos optimizados para la tabla */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .table-indicadores {
+            width: 100%;
+            margin-bottom: 0;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table-indicadores th,
+        .table-indicadores td {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .table-indicadores thead th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+
+        .table-indicadores tbody tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .table-indicadores tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .col-entidad {
+            white-space: nowrap;
+            text-align: left;
+            min-width: 180px;
+            position: sticky;
+            left: 0;
+            background-color: white;
+            z-index: 1;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #f8f9fa !important;
+        }
+
+        /* Estilo único para el botón */
+        .btn-export-excel {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-export-excel:hover {
+            background-color: #218838;
+        }
+
+        .btn-export-excel i {
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+<!-- Tabla con estructura corregida -->
+<div class="table-container">
+    <table class="table-indicadores" id="tablaDetalleContratos">
+        <thead>
+        <tr>
+            <th rowspan="2" class="col-entidad">ENTIDAD</th>
+            <th rowspan="2" class="text-center">TOTAL Gral.</th>
+            <th rowspan="2" class="text-center">TOTAL Doc.</th>
+            <th rowspan="2" class="text-center">TOTAL No Doc.</th>
+            <th colspan="3" class="text-center">CON RESPALDO DE PLAZA</th>
+            <th colspan="4" class="text-center">SIN RESPALDO DE PLAZA</th>
+            <th colspan="3" class="text-center">RECIÉN GRADUADOS</th>
+            <th colspan="3" class="text-center">ESTUDIANTES CONTRATADOS</th>
+        </tr>
+        <tr>
+            <th class="text-center">Contratos</th>
+            <th class="text-center">Sustitución</th>
+            <th class="text-center">Otros</th>
+            <th class="text-center">Total</th>
+            <th class="text-center">Jubilados</th>
+            <th class="text-center">Lab. Agric.</th>
+            <th class="text-center">Otros</th>
+            <th class="text-center">Reserva Científica</th>
+            <th class="text-center">Técnicos Medios</th>
+            <th class="text-center">Recién Graduados</th>
+            <th class="text-center">ATD</th>
+            <th class="text-center">No Docentes</th>
+            <th class="text-center">TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set totals = {
+            general: 0,
+            general_contratos: 0,
+            docentes: 0,
+            con_respaldo: 0,
+            sustitucion: 0,
+            otros_con: 0,
+            sin_respaldo: 0,
+            jubilados: 0,
+            labores: 0,
+            otros_sin: 0,
+            reserva: 0,
+            tecnicos: 0,
+            recien_graduados: 0,
+            atd: 0,
+            nodoc: 0,
+            estudiantes: 0
+        } %}
+
+        {% set has_data = false %}
+
+        {% for fila in datos %}
+            <tr class="{{ fila.es_subtotal ? 'font-weight-bold' : '' }}">
+                <td class="col-entidad">{{ fila.ces }}</td>
+                <td class="text-center">{{ fila.total_general_contratos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_contratos_profesores_tiempo_determinado|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_contratos_no_docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_no_docentes_con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_por_sustitucion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.otros_con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.contratos_no_docentes_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.jubilados_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.labores_agricolas_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.otros_sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.reserva_cientifica_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.tecnicos_medios_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.recien_graduados_preparacion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.estudiantes_auxiliares_tecnicos_docencia|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.estudiantes_cargos_no_docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ fila.total_estudiantes_universidad_contratados|number_format(0, ',', '.') }}</td>
+            </tr>
+
+            {% if not fila.es_subtotal %}
+                {% set totals = totals|merge({
+                    general_contratos: totals.general_contratos + fila.total_general_contratos,
+                    docentes: totals.docentes + fila.total_contratos_profesores_tiempo_determinado,
+                    general: totals.general + fila.total_contratos_no_docentes,
+                    con_respaldo: totals.con_respaldo + fila.contratos_no_docentes_con_respaldo,
+                    sustitucion: totals.sustitucion + fila.contratos_por_sustitucion,
+                    otros_con: totals.otros_con + fila.otros_con_respaldo,
+                    sin_respaldo: totals.sin_respaldo + fila.contratos_no_docentes_sin_respaldo,
+                    jubilados: totals.jubilados + fila.jubilados_sin_respaldo,
+                    labores: totals.labores + fila.labores_agricolas_sin_respaldo,
+                    otros_sin: totals.otros_sin + fila.otros_sin_respaldo,
+                    reserva: totals.reserva + fila.reserva_cientifica_preparacion,
+                    tecnicos: totals.tecnicos + fila.tecnicos_medios_preparacion,
+                    recien_graduados: totals.recien_graduados + fila.recien_graduados_preparacion,
+                    atd: totals.atd + fila.estudiantes_auxiliares_tecnicos_docencia,
+                    nodoc: totals.nodoc + fila.estudiantes_cargos_no_docentes,
+                    estudiantes: totals.estudiantes + fila.total_estudiantes_universidad_contratados
+                }) %}
+                {% set has_data = true %}
+            {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="17" class="text-center">No hay datos disponibles</td>
+            </tr>
+        {% endfor %}
+
+        {% if has_data %}
+            <tr class="total-row">
+                <td class="col-entidad">TOTAL GENERAL</td>
+                <td class="text-center">{{ totals.general_contratos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.docentes|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.general|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.con_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.sustitucion|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.otros_con|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.sin_respaldo|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.jubilados|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.labores|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.otros_sin|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.reserva|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.tecnicos|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.recien_graduados|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.atd|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.nodoc|number_format(0, ',', '.') }}</td>
+                <td class="text-center">{{ totals.estudiantes|number_format(0, ',', '.') }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+<script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+<script>
+    // Variable para controlar si ya se hizo clic
+    let exportInProgress = false;
+
+    document.getElementById('exportExcelBtn2').addEventListener('click', async function() {
+        const btn = this;
+
+        // Si ya hay una exportación en progreso, no hacer nada
+        if (exportInProgress) return;
+
+        btn.disabled = true;
+        exportInProgress = true;
+
+        try {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Contratos');
+
+            // Obtener fecha del título del modal
+            const modalTitle = document.getElementById('modalDetalleMesLabel')?.textContent || 'DICIEMBRE 2024';
+            const fechaMatch = modalTitle.match(/(\w+)\s(\d{4})$/);
+            const fecha = fechaMatch ? `${fechaMatch[1].toUpperCase()} ${fechaMatch[2]}` : 'DICIEMBRE 2024';
+
+            // Título y metadatos
+            worksheet.mergeCells('A1:Q1');
+            const titleRow = worksheet.getCell('A1');
+            titleRow.value = 'CONTRATOS - TABLA 1.3';
+            titleRow.font = { bold: true, size: 14 };
+            titleRow.alignment = { horizontal: 'center' };
+
+            worksheet.mergeCells('A2:Q2');
+            const dateRow = worksheet.getCell('A2');
+            dateRow.value = `FECHA: ${fecha}`;
+            dateRow.font = { bold: true };
+            dateRow.alignment = { horizontal: 'center' };
+
+            // Encabezados agrupados
+            const groupHeaders = worksheet.addRow([]);
+            groupHeaders.getCell(5).value = 'CON RESPALDO DE PLAZA';
+            worksheet.mergeCells('E3:G3');
+            groupHeaders.getCell(8).value = 'SIN RESPALDO DE PLAZA';
+            worksheet.mergeCells('H3:K3');
+            groupHeaders.getCell(12).value = 'RECIÉN GRADUADOS';
+            worksheet.mergeCells('L3:N3');
+            groupHeaders.getCell(15).value = 'ESTUDIANTES CONTRATADOS';
+            worksheet.mergeCells('O3:Q3');
+
+            // Encabezados de columnas
+            const headerRow = worksheet.addRow([
+                'ENTIDAD', 'TOTAL Gral.', 'TOTAL Doc.', 'TOTAL No Doc.',
+                'Contratos', 'Sustitución', 'Otros',
+                'Total', 'Jubilados', 'Lab. Agric.', 'Otros',
+                'Reserva Científica', 'Técnicos Medios', 'Recién Graduados',
+                'ATD', 'No Docentes', 'TOTAL'
+            ]);
+
+            // Formatear encabezados
+            [groupHeaders, headerRow].forEach(row => {
+                row.eachCell(cell => {
+                    cell.font = { bold: true };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFE9ECEF' }
+                    };
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            });
+
+            // Procesar datos de la tabla
+            const table = document.getElementById('tablaDetalleContratos');
+            const rows = table.querySelectorAll('tbody tr');
+            let hasData = false;
+
+            rows.forEach(row => {
+                if (row.querySelector('th') || row.cells.length <= 1) return;
+
+                const rowData = [];
+                const isTotalRow = row.classList.contains('total-row') || row.classList.contains('font-weight-bold');
+
+                row.querySelectorAll('td').forEach((cell, index) => {
+                    let value = cell.textContent.trim();
+                    if (index > 0) {
+                        value = value.replace(/\./g, '').replace(',', '.');
+                        value = isNaN(value) ? 0 : Number(value);
+                    }
+                    rowData.push(value);
+                });
+
+                const excelRow = worksheet.addRow(rowData);
+
+                if (isTotalRow) {
+                    excelRow.font = { bold: true };
+                    if (row.classList.contains('total-row')) {
+                        excelRow.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFF8F9FA' }
+                        };
+                        hasData = true;
+                    }
+                }
+
+                // Alinear números al centro y texto a la izquierda
+                excelRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+                    cell.alignment = {
+                        horizontal: colNumber === 1 ? 'left' : 'center',
+                        vertical: 'middle'
+                    };
+                });
+            });
+
+            // Aplicar formatos numéricos
+            worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+                for (let col = 2; col <= 17; col++) {
+                    if (typeof row.getCell(col).value === 'number') {
+                        row.getCell(col).numFmt = '#,##0';
+                    }
+                }
+            });
+
+            // Ajustar anchos de columna
+            worksheet.columns = [
+                { key: 'entidad', width: 25 },
+                { key: 'total_gral', width: 12 },
+                { key: 'total_doc', width: 12 },
+                { key: 'total_no_doc', width: 12 },
+                { key: 'contratos', width: 10 },
+                { key: 'sustitucion', width: 10 },
+                { key: 'otros_con', width: 10 },
+                { key: 'total_sin', width: 10 },
+                { key: 'jubilados', width: 10 },
+                { key: 'labores', width: 12 },
+                { key: 'otros_sin', width: 10 },
+                { key: 'reserva', width: 12 },
+                { key: 'tecnicos', width: 12 },
+                { key: 'recien', width: 12 },
+                { key: 'atd', width: 10 },
+                { key: 'nodoc', width: 10 },
+                { key: 'total_est', width: 10 }
+            ];
+
+            // Generar archivo
+            if (hasData) {
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                saveAs(blob, `TABLA_1.3_${fecha.replace(' ', '_')}.xlsx`);
+            } else {
+                alert('No hay datos para exportar');
+            }
+        } catch (error) {
+            console.error('Error al exportar:', error);
+            alert('Ocurrió un error al generar el reporte');
+        } finally {
+            btn.disabled = false;
+            exportInProgress = false;
+        }
+    });
+</script>

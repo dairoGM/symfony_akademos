@@ -1,21 +1,18 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modelo 223.216 (I) (AE2){% endblock %}
+{% block title %}Modelo 223.216 (III) (AE3){% endblock %}
 
 {% block body %}
-
     {% include 'pages/modalDetail.html.twig' %}
 
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
-                <h3 class="card-title text-bold text-gray">Listado de Modelo 223.216 (I) (AE2)</h3>
+                <h3 class="card-title text-bold text-gray">Listado de Modelo 223.216 (III) (AE3)</h3>
                 <a title="Adicionar" class="btn btn-primary mr-2"
-                   href="{{ path('app_rrhh_reporte_ae2_registrar') }}"><i
+                   href="{{ path('app_rrhh_reporte_ae3_registrar') }}"><i
                             class="fa fa-plus"></i>
                 </a>
-
             </div>
         </div>
         <!-- /.card-header -->
@@ -53,38 +50,34 @@
 
                         <td style="width: 15%" class="text-center">
                             <button style="padding: 2px 6px;" title="Detalles" class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_rrhh_reporte_ae2_detail', {'id' : item.id}) }}"
+                                    data-url="{{ path('app_rrhh_reporte_ae3_detail', {'id' : item.id}) }}"
                                     data-title="Detalles ">
                                 <i class="fa fa-eye "></i>
                             </button>
 
                             <a style="padding: 2px 6px;"title="Modificar"
-                               href="{{ path('app_rrhh_reporte_ae2_modificar', {'id': item.id}) }}"
+                               href="{{ path('app_rrhh_reporte_ae3_modificar', {'id': item.id}) }}"
                                class="btn btn-outline-primary"><i
                                         class="fa fa-edit"></i>
                             </a>
-                            <a title="Descargar AE2 firmado" target="_blank"
-                               class="btn btn-outline-primary btn-sm"
-                               href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae2/documento/{{ item.documento }}"
-                               style="padding: 2px 6px;">
-                                <i class="fa fa-file-download"></i>
-                            </a>
+                            {% if item.documento %}
+                                <a title="Descargar AE3 firmado" target="_blank"
+                                   class="btn btn-outline-primary btn-sm"
+                                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae3/documento/{{ item.documento }}"
+                                   style="padding: 2px 6px;">
+                                    <i class="fa fa-file-download"></i>
+                                </a>
+                            {% endif %}
                             <button style="padding: 2px 6px;" title="Eliminar" class="btn btn-outline-danger elementRemove"
-                                    data-url="{{ path('app_rrhh_reporte_ae2_eliminar', {'id': item.id}) }}">
+                                    data-url="{{ path('app_rrhh_reporte_ae3_eliminar', {'id': item.id}) }}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
         </div>
         <!-- /.card-body -->
     </div>
-
-
-
 {% endblock %}
-
-
