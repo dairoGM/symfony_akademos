@@ -25,6 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/rrhh/ae3")
@@ -32,6 +33,14 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AE3Controller extends AbstractController
 {
+
+    private ObjectNormalizer $normalizer;
+
+    public function __construct(ObjectNormalizer $normalizer)
+    {
+        $this->normalizer = $normalizer;
+    }
+
     /**
      * @Route("/", name="app_rrhh_reporte_ae3_index", methods={"GET"})
      * @param AE3Repository $AE3Repository
@@ -54,7 +63,7 @@ class AE3Controller extends AbstractController
      */
     public function registrar(Request $request, AE3Repository $aE3Repository, PersonaRepository $personaRepository)
     {
-//        try {
+        try {
             $ae3 = new AE3();
             if (!$ae3->getMes()) {
                 $ae3->setMes((int)date('n'));
@@ -74,7 +83,7 @@ class AE3Controller extends AbstractController
                     $file = $form['documento']->getData();
                     $file_name = $_FILES['ae3']['name']['documento'];
                     $ae3->setDocumento($file_name);
-                    $file->move("uploads/rrhh/ae2/documento", $file_name);
+                    $file->move("uploads/rrhh/ae3/documento", $file_name);
                 }
 
                 $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
@@ -100,10 +109,10 @@ class AE3Controller extends AbstractController
                 'form' => $form->createView(),
                 'entidad' => $entidad
             ]);
-//        } catch (\Exception $exception) {
-//            $this->addFlash('error', $exception->getMessage());
-//            return $this->redirectToRoute('app_rrhh_reporte_ae3_registrar', [], Response::HTTP_SEE_OTHER);
-//        }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            return $this->redirectToRoute('app_rrhh_reporte_ae3_registrar', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
@@ -127,24 +136,8 @@ class AE3Controller extends AbstractController
                     $file->move("uploads/rrhh/ae3/documento", $file_name);
                 }
                 if (empty($ae3->getEntidad())) {
-                    $this->addFlash('error', 'La institución no es correcta.');
+                    $this->addFlash('error', 'La institucion no es correcta.');
                 }
-
-                // Recalcular totales
-                $ae3->setTotalCuadros(
-                    $ae3->getCuadrosDocentes() +
-                    $ae3->getCuadrosAdministrativos() +
-                    $ae3->getCuadrosInvestigacion() +
-                    $ae3->getOtrosCuadros()
-                );
-
-                $ae3->setTotalTecnicos(
-                    $ae3->getProfesoresTiempoCompleto() +
-                    $ae3->getAsesoresMetodologos() +
-                    $ae3->getInvestigadores() +
-                    $ae3->getOtrosTecnicos()
-                );
-
                 $ae3Repository->edit($ae3);
                 $this->addFlash('success', 'El elemento ha sido actualizado satisfactoriamente.');
                 return $this->redirectToRoute('app_rrhh_reporte_ae3_index', [], Response::HTTP_SEE_OTHER);
@@ -169,8 +162,14 @@ class AE3Controller extends AbstractController
      */
     public function detail(AE3 $ae3)
     {
+        $ae3Array = $this->normalizer->normalize($ae3, null, [
+            'circular_reference_handler' => function ($object) {
+                return method_exists($object, 'getId') ? $object->getId() : null;
+            },
+        ]);
+
         return $this->render('modules/rrhh/reporte/ae3/detail.html.twig', [
-            'item' => $ae3,
+            'ae3' => $ae3Array,
         ]);
     }
 

@@ -363,7 +363,7 @@
             }
 
             // Calcular totales cuando cambia un valor
-            $('.input-number:not(.readonly-field)').on('change', function () {
+            $('.input-number:not(.readonly-field)').on('blur', function () {
                 // Calcular CUADROS DOCENTES HORIZONTALES
                 const temp1 = calcularSuma('[id$="ae3_cuadros_docentes_pt"], [id$="ae3_cuadros_docentes_pa"], [id$="ae3_cuadros_docentes_as"], [id$="ae3_cuadros_docentes_i"], [id$="ae3_cuadros_docentes_it"], [id$="ae3_cuadros_docentes_ia"], [id$="ae3_cuadros_docentes_iag"], [id$="ae3_cuadros_docentes_ai"], [id$="ae3_cuadros_docentes_aux_tec_doc"]');
                 $('#ae3_cuadros_docentes_total_cubierta').val(temp1);
@@ -374,7 +374,7 @@
 
 
                 // Calcular TOTAL CUADROS (suma de filas 2-5)
-                const totalCuadros = calcularSuma('[id$="ae3_cuadros_docentes_total_cubierta"], [id$="ae3_cuadros_administrativos_total_cubierta"], [id$="ae3_otros_tecnicos_total_cubierta"], [id$="ae3_administrativos_total_cubierta"] , [id$="ae3_servicio_total_cubierta"], [id$="ae3_operarios_total_cubierta"]');
+                const totalCuadros = calcularSuma('[id$="ae3_cuadros_docentes_total_cubierta"], [id$="ae3_cuadros_administrativos_total_cubierta"], [id$="ae3_cuadros_investigacion_total_cubierta"], [id$="ae3_otros_cuadros_total_cubierta"]');
                 $('#ae3_total_cuadros_total_cubierta').val(totalCuadros);
 
 
@@ -390,6 +390,70 @@
                 const totalJovFem = calcularSuma('[id$="ae3_cuadros_docentes_jovenes_fem"], [id$="ae3_cuadros_administrativos_jovenes_fem"], [id$="ae3_cuadros_investigacion_jovenes_fem"], [id$="ae3_otros_cuadros_jovenes_fem"]  ');
                 $('#ae3_total_cuadros_jovenes_fem').val(totalJovFem);
 
+
+                const tesmp = calcularSuma('[id$="ae3_profesores_tiempo_completo_pt"], [id$="ae3_profesores_tiempo_completo_pa"], [id$="ae3_profesores_tiempo_completo_as"], [id$="ae3_profesores_tiempo_completo_i"] , [id$="ae3_profesores_tiempo_completo_aux_tec_doc"] ');
+                $('#ae3_profesores_tiempo_completo_total_cubierta').val(tesmp);
+
+
+                const tesmp1 = calcularSuma('[id$="ae3_asesores_metodologos_pt"], [id$="ae3_asesores_metodologos_pa"], [id$="ae3_asesores_metodologos_as"], [id$="ae3_asesores_metodologos_i"] , [id$="ae3_asesores_metodologos_aux_tec_doc"] ');
+                $('#ae3_asesores_metodologos_total_cubierta').val(tesmp1);
+
+                const tesmp2 = calcularSuma('[id$="ae3_investigadores_pt"], [id$="ae3_investigadores_pa"], [id$="ae3_investigadores_as"], [id$="ae3_investigadores_i"] ');
+                $('#ae3_investigadores_total_cubierta').val(tesmp2);
+
+                const tesmp3 = calcularSuma('[id$="ae3_operarios_total_cubierta"], [id$="ae3_servicio_total_cubierta"], [id$="ae3_administrativos_total_cubierta"], [id$="ae3_total_tecnicos_total_cubierta"], [id$="ae3_total_cuadros_total_cubierta"] ');
+                $('#ae3_total_total_cubierta').val(tesmp3);
+
+                const tesmp4 = calcularSuma('[id$="ae3_profesores_tipo_parcial_pt"], [id$="ae3_profesores_tipo_parcial_pa"], [id$="ae3_profesores_tipo_parcial_as"], [id$="ae3_profesores_tipo_parcial_i"], [id$="ae3_profesores_tipo_parcial_it"], [id$="ae3_profesores_tipo_parcial_ia"], [id$="ae3_profesores_tipo_parcial_iag"],  [id$="ae3_profesores_tipo_parcial_ai"],[id$="ae3_profesores_tipo_parcial_aux_tec_doc"]    ');
+                $('#ae3_profesores_tipo_parcial_total_cubierta').val(tesmp4);
+
+
+                const tesmp5 = calcularSuma('[id$="ae3_total_tecnicos_de_ellos_fem"], [id$="ae3_total_cuadros_de_ellos_fem"], [id$="ae3_operarios_de_ellos_fem"], [id$="ae3_servicio_de_ellos_fem"], [id$="ae3_administrativos_de_ellos_fem"]');
+                $('#ae3_total_de_ellos_fem').val(tesmp5);
+
+
+                const tesmp6 = calcularSuma('[id$="ae3_operarios_jovenes_total"], [id$="ae3_servicio_jovenes_total"], [id$="ae3_administrativos_jovenes_total"], [id$="ae3_total_tecnicos_jovenes_total"], [id$="ae3_total_cuadros_jovenes_total"]');
+                $('#ae3_total_jovenes_total').val(tesmp6);
+
+
+                const tesmp7 = calcularSuma('[id$="ae3_operarios_jovenes_fem"], [id$="ae3_servicio_jovenes_fem"], [id$="ae3_administrativos_jovenes_fem"], [id$="ae3_total_tecnicos_jovenes_fem"], [id$="ae3_total_cuadros_jovenes_fem"]');
+                $('#ae3_total_jovenes_fem').val(tesmp7);
+
+                const tesmp8 = calcularSuma('[id$="ae3_operarios_pt"], [id$="ae3_servicio_pt"], [id$="ae3_administrativos_pt"], [id$="ae3_total_tecnicos_pt"], [id$="ae3_total_cuadros_pt"]');
+                $('#ae3_total_pt').val(tesmp8);
+
+                const tesmp9 = calcularSuma('[id$="ae3_operarios_pa"], [id$="ae3_servicio_pa"], [id$="ae3_administrativos_pa"], [id$="ae3_total_tecnicos_pa"], [id$="ae3_total_cuadros_pa"]');
+                $('#ae3_total_pa').val(tesmp9);
+
+                const tesmp10 = calcularSuma('[id$="ae3_operarios_as"], [id$="ae3_servicio_as"], [id$="ae3_administrativos_as"], [id$="ae3_total_tecnicos_as"], [id$="ae3_total_cuadros_as"]');
+                $('#ae3_total_as').val(tesmp10);
+
+                const tesmp11 = calcularSuma('[id$="ae3_operarios_i"], [id$="ae3_servicio_i"], [id$="ae3_administrativos_i"], [id$="ae3_total_tecnicos_i"], [id$="ae3_total_cuadros_i"]');
+                $('#ae3_total_i').val(tesmp11);
+
+                const tesmp12 = calcularSuma('[id$="ae3_operarios_it"], [id$="ae3_servicio_it"], [id$="ae3_administrativos_it"], [id$="ae3_total_tecnicos_it"], [id$="ae3_total_cuadros_it"]');
+                $('#ae3_total_it').val(tesmp12);
+
+
+                const tesmp13 = calcularSuma('[id$="ae3_operarios_ia"], [id$="ae3_servicio_ia"], [id$="ae3_administrativos_ia"], [id$="ae3_total_tecnicos_ia"], [id$="ae3_total_cuadros_ia"]');
+                $('#ae3_total_ia').val(tesmp13);
+
+                const tesmp14 = calcularSuma('[id$="ae3_operarios_iag"], [id$="ae3_servicio_iag"], [id$="ae3_administrativos_iag"], [id$="ae3_total_tecnicos_iag"], [id$="ae3_total_cuadros_iag"]');
+                $('#ae3_total_iag').val(tesmp14);
+
+
+                const tesmp15 = calcularSuma('[id$="ae3_operarios_ai"], [id$="ae3_servicio_ai"], [id$="ae3_administrativos_ai"], [id$="ae3_total_tecnicos_ai"], [id$="ae3_total_cuadros_ai"]');
+                $('#ae3_total_ai').val(tesmp15);
+
+                const tesmp16 = calcularSuma('[id$="ae3_operarios_aux_tec_doc"], [id$="ae3_servicio_aux_tec_doc"], [id$="ae3_administrativos_aux_tec_doc"], [id$="ae3_total_tecnicos_aux_tec_doc"], [id$="ae3_total_cuadros_aux_tec_doc"]');
+                $('#ae3_total_aux_tec_doc').val(tesmp16);
+
+                const tesmp17 = calcularSuma('[id$="ae3_operarios_msc"], [id$="ae3_servicio_msc"], [id$="ae3_administrativos_msc"], [id$="ae3_total_tecnicos_msc"], [id$="ae3_total_cuadros_msc"]');
+                $('#ae3_total_msc').val(tesmp17);
+
+
+                const tesmp18 = calcularSuma('[id$="ae3_operarios_dr"], [id$="ae3_servicio_dr"], [id$="ae3_administrativos_dr"], [id$="ae3_total_tecnicos_dr"], [id$="ae3_total_cuadros_dr"]');
+                $('#ae3_total_dr').val(tesmp18);
 
                 const sufijos = {
                     7: 'pt',
@@ -422,6 +486,8 @@
                     16: 'msc',
                     17: 'dr'
                 };
+
+
 
                 // Función para sumar valores de inputs con selector
                 function calcularSuma(selector) {
@@ -458,9 +524,12 @@
                 });
 
 
+
+
                 // Calcular columnas MsC y Dr. para todas las filas
                 // calcularSumaProfesores();
             });
+
 
             // Validar que solo se ingresen números
             $('input[type="number"]').on('input', function () {
@@ -471,8 +540,8 @@
             $('.input-number:not(.readonly-field)').trigger('change');
 
         });
-        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc,#ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr, #ae3_administrativos_msc, #ae3_administrativos_dr #ae3_profesores_tiempo_completo_dr, #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc').removeAttr('readonly');
-        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc, #ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr,#ae3_administrativos_msc, #ae3_administrativos_dr, #ae3_profesores_tiempo_completo_dr,  #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc').removeClass('readonly-field');
+        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc,#ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr, #ae3_administrativos_msc, #ae3_administrativos_dr #ae3_profesores_tiempo_completo_dr, #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc, #ae3_profesores_tiempo_completo_dr, #ae3_administrativos_dr').removeAttr('readonly');
+        $('#ae3_cuadros_docentes_msc, #ae3_cuadros_docentes_dr, #ae3_cuadros_administrativos_msc, #ae3_cuadros_administrativos_dr, #ae3_cuadros_investigacion_msc, #ae3_cuadros_investigacion_dr, #ae3_otros_cuadros_msc, #ae3_otros_cuadros_dr, #ae3_operarios_msc, #ae3_operarios_dr, #ae3_servicio_msc, #ae3_servicio_dr,#ae3_profesores_tiempo_completo_msc,#ae3_investigadores_dr,#ae3_profesores_tipo_parcial_msc, #ae3_profesores_tipo_parcial_dr, #ae3_otros_tecnicos_msc,#ae3_otros_tecnicos_dr,#ae3_administrativos_msc, #ae3_administrativos_dr, #ae3_profesores_tiempo_completo_dr,  #ae3_asesores_metodologos_msc, #ae3_asesores_metodologos_dr, #ae3_investigadores_msc,#ae3_investigadores_msc, #ae3_investigadores_msc, #ae3_profesores_tiempo_completo_dr, #ae3_administrativos_dr').removeClass('readonly-field');
 
         $(document).ready(function () {
             $('input[type="number"]').addClass('text-right');
