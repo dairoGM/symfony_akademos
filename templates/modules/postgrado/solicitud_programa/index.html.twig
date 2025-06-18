@@ -8,13 +8,17 @@
 
     <div class="card shadow-sm">
         <div class="card-header">
-            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+            <div class="row d-flex align-items-center" style="justify-content: space-between;">
+                <h3 class="card-title text-bold text-gray mb-0">Listado de solicitudes de programas</h3>
 
-                <h3 class="card-title text-bold text-gray">Listado de solicitudes de programas</h3>
-                <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}"><i
-                            class="fa fa-plus"></i>
-                </a>
-
+                <div class="ml-auto d-flex gap-2">
+                    <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_solicitud_programa_registrar') }}">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+                </div>
             </div>
         </div>
         <!-- /.card-header -->

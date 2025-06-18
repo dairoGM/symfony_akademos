@@ -25,7 +25,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if   hasRoles('ROLE_GEST_GRADO_CIENTIFICO') %}
+                    {% if hasRoles('ROLE_GEST_GRADO_CIENTIFICO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_posgrado_grados_cientificos_index') }}"
                                class="nav-link nav-link-menu">
@@ -33,7 +33,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if   hasRoles('ROLE_GEST_FORMACION_ACADEMICA') %}
+                    {% if hasRoles('ROLE_GEST_FORMACION_ACADEMICA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_posgrado_formacion_academica_index') }}"
                                class="nav-link nav-link-menu">
@@ -65,7 +65,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if   hasRoles('ROLE_GEST_RAMCIENC') %}
+                    {% if hasRoles('ROLE_GEST_RAMCIENC') %}
                         <li class="nav-item">
                             <a href="{{ path('app_rama_ciencia_index') }}"
                                class="nav-link nav-link-menu">
@@ -140,8 +140,7 @@
                 </ul>
             </li>
         {% endif %}
-
-        {% if hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+        {% if hasRoles('ROLE_GEST_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_GEST_REPORTE_FORMACION_ACADEMICA') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -152,7 +151,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    {% if  hasRoles('ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO') %}
+                    {% if  hasRoles('ROLE_GEST_REPORTE_GRADO_CIENTIFICO') %}
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_postgrado_grado_cientifico_index') }}"
                                class="nav-link nav-link-menu">
@@ -160,7 +159,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if  hasRoles('ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA') %}
+                    {% if  hasRoles('ROLE_GEST_REPORTE_FORMACION_ACADEMICA') %}
                         <li class="nav-item">
                             <a href="{{ path('app_reporte_postgrado_formacion_academica_index') }}"
                                class="nav-link nav-link-menu">

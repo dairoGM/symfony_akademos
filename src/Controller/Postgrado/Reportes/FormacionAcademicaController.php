@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/postgrado/reporte/formacion_academica")
- * @IsGranted("ROLE_ADMIN", "ROLE_POSGRADO_REPORTE_FORMACION_ACADEMICA")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_REPORTE_FORMACION_ACADEMICA")
  */
 class FormacionAcademicaController extends AbstractController
 {

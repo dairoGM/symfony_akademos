@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/postgrado/reporte/grado_cientifico")
- * @IsGranted("ROLE_ADMIN", "ROLE_POSGRADO_REPORTE_GRADO_CIENTIFICO")
+ * @IsGranted("ROLE_ADMIN", "ROLE_GEST_REPORTE_GRADO_CIENTIFICO")
  */
 class GradoCientificoController extends AbstractController
 {

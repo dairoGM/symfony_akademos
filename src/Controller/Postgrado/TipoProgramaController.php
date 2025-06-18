@@ -6,6 +6,7 @@ use App\Entity\Postgrado\TipoPrograma;
 use App\Entity\Security\User;
 use App\Form\Postgrado\TipoProgramaType;
 use App\Repository\Postgrado\TipoProgramaRepository;
+use App\Repository\Security\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -22,17 +22,23 @@
                     {{ form_errors(form.nombre) }}
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
-                    {{ form_label(form.activo) }}
-                    {{ form_widget(form.activo) }}
-                    {{ form_errors(form.activo) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
                     {{ form_label(form.modulo) }}
                     {{ form_widget(form.modulo) }}
                     {{ form_errors(form.modulo) }}
                 </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.roleKey) }}
+                    {{ form_widget(form.roleKey) }}
+                    {{ form_errors(form.roleKey) }}
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 form-group">
+                    {{ form_label(form.activo) }}
+                    {{ form_widget(form.activo) }}
+                    {{ form_errors(form.activo) }}
+                </div>
+
+
             </div>
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">

@@ -10,8 +10,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>{% block title %}Welcome!{% endblock %}</title>
 
     <!-- Google Font: Source Sans Pro -->
-{#    <link rel="stylesheet"#}
-{#          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">#}
+    {#    <link rel="stylesheet" #}
+    {#          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> #}
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free/css/all.min.css') }}">
 
@@ -30,9 +30,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('assets/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/HoldOn.css') }}">
-{#    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"#}
-{#          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="#}
-{#          crossorigin=""/>#}
+    {#    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" #}
+    {#          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" #}
+    {#          crossorigin=""/> #}
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/Control.FullScreen.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/leaflet.extra-markers.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/leaftlet/MarkerCluster.css') }}">
@@ -392,7 +392,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {% if hasRoles('ROLE_HOME_RRHH') %}
                     <li class=" d-none d-sm-inline-block">
                         <a href="{{ path('app_rrhh_portada') }}"
-                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'rrhh' %} active {% endif %}">Recursos Humanos</a>
+                           class="nav-link {% if app.request.pathinfo|split('/')[1] == 'rrhh' %} active {% endif %}">Recursos
+                            Humanos</a>
                     </li>
                 {% endif %}
             </ul>
@@ -817,9 +818,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('assets/highcharts/modules/export-data.js') }}"></script>
 
 
-{#<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"#}
-{#        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="#}
-{#        crossorigin=""></script>#}
+{# <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" #}
+{#        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" #}
+{#        crossorigin=""></script> #}
 
 <script src="{{ asset('assets/leaftlet/leaflet.js') }}"></script>
 <script src="{{ asset('assets/leaftlet/Control.FullScreen.js') }}"></script>
@@ -905,18 +906,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     className: 'btn btn-success',
                     filename: function() {
                         var now = new Date();
-                        var year = now.getFullYear();
-                        var month = String(now.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos
-                        var day = String(now.getDate()).padStart(2, '0');
-                        var hours = String(now.getHours()).padStart(2, '0');
-                        var minutes = String(now.getMinutes()).padStart(2, '0');
-                        var seconds = String(now.getSeconds()).padStart(2, '0');
-
-                        return `reporte_${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+                        return `reporte_${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
                     },
-                    title: '', // No usar título, para que el encabezado sea el de la tabla
+                    title: '',
                     exportOptions: {
-                        columns: ':visible',
+                        columns: function(idx, data, node) {
+                            return $(node).text().trim() !== 'Opciones';
+                        },
                         search: 'applied',
                         order: 'applied'
                     },
@@ -924,33 +920,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
                         var sheetData = $('sheetData', sheet);
 
-                        // 🔹 Obtener los encabezados directamente de la tabla
+                        // Obtener los encabezados y excluir 'Opciones'
                         var colHeaders = [];
-                        $('.dataTable thead tr:eq(0) th').each(function() {
-                            colHeaders.push($(this).text().trim());
+                        var excludeIndexes = [];
+
+                        $('.dataTable thead tr:eq(0) th').each(function(index) {
+                            var text = $(this).text().trim();
+                            if (text !== 'Opciones') {
+                                colHeaders.push({ text: text, index: index });
+                            } else {
+                                excludeIndexes.push(index); // columnas a excluir
+                            }
                         });
 
-                        // 🔹 Crear una nueva fila con los encabezados en negrita
+                        // Crear una nueva fila de encabezado
                         var newRow = '<row>';
                         for (var i = 0; i < colHeaders.length; i++) {
-                            newRow += '<c t="inlineStr" s="2"><is><t>' + colHeaders[i] + '</t></is></c>';
+                            newRow += '<c t="inlineStr" s="2"><is><t>' + colHeaders[i].text + '</t></is></c>';
                         }
                         newRow += '</row>';
 
-                        // 🔹 Insertar la nueva fila al principio del Excel
+                        // Insertar encabezado nuevo
                         sheetData.prepend(newRow);
 
-                        // 🔹 Agregar estilo en negrita a los encabezados
-                        var styles = xlsx.xl['styles.xml'];
-                        var cellXfs = $('cellXfs', styles);
-                        var fonts = $('fonts', styles);
+                        // Eliminar las celdas de la columna "Opciones" en cada fila (basado en index)
+                        $('row', sheet).each(function() {
+                            excludeIndexes.forEach(function(colIdx) {
+                                $('c', this).eq(colIdx).remove();
+                            });
+                        });
 
-                        // Agregar una nueva fuente en negrita
-                        fonts.append('<font><b/><sz val="12"/></font>');
-                        cellXfs.append('<xf fontId="2" applyFont="1"/>'); // Aplica la fuente en negrita a los encabezados
+                        // Agregar negrita
+                        var styles = xlsx.xl['styles.xml'];
+                        $('fonts', styles).append('<font><b/><sz val="12"/></font>');
+                        $('cellXfs', styles).append('<xf fontId="2" applyFont="1"/>');
                     }
                 }
-            ],
+            ]
+            ,
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -971,12 +978,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
 // Usa el botón de la vista en lugar del que genera DataTables
-        $('#exportExcel').on('click', function() {
+        $('#exportExcel').on('click', function () {
             table.button('.buttons-excel').trigger();
         });
         // Filtros individuales por columna
-        $('.dataTable thead tr:eq(1) th').each(function(i) {
-            $('input', this).on('keyup change', function() {
+        $('.dataTable thead tr:eq(1) th').each(function (i) {
+            $('input', this).on('keyup change', function () {
                 if (table.column(i).search() !== this.value) {
                     table.column(i).search(this.value).draw();
                 }
@@ -984,10 +991,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
         // Controla el ordenamiento solo cuando no hay filtros aplicados
-        table.on('draw', function() {
+        table.on('draw', function () {
             var hasFilter = false;
 
-            table.columns().every(function() {
+            table.columns().every(function () {
                 if (this.search()) {
                     hasFilter = true;
                 }

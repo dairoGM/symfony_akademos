@@ -472,7 +472,7 @@ class SolicitudProgramaController extends AbstractController
 
 
     /**
-     * @Route("/{id}/{tipo}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"})
+     * @Route("/{id}/{tipo}/asignar_comision", name="app_solicitud_programa_asignar_comision", methods={"GET", "POST"}, defaults={"tipo"=1})
      * @param Request $request
      * @param MiembrosComisionRepository $miembrosComisionRepository
      * @param NotificacionesUsuarioRepository $notificacionesUsuarioRepository

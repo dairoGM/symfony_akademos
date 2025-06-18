@@ -47,7 +47,9 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasRoles('ROLE_HOME_POSTG') %}
+        {% if hasRoles('ROLE_HOME_POSTG') or hasRoles('ROLE_GEST_REPORTE_GRADO_CIENTIFICO') or hasRoles('ROLE_GEST_REPORTE_FORMACION_ACADEMICA')
+            or hasRoles('ROLE_GEST_FORMACION_DOCTORES')  or hasRoles('ROLE_GEST_CENTRO_AUTORIZADO')  or hasRoles('ROLE_GEST_COMISION')   or hasRoles('ROLE_GEST_COPEP')
+            or hasRoles('ROLE_GEST_TIP_SOLICITUD_POST') or hasRoles('ROLE_GEST_ROLESPOS') or hasRoles('ROLE_GEST_RAMCIENC') or hasRoles('ROLE_GEST_TIPPROGRAM')%}
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-blue">
                     <div class="inner">
@@ -134,8 +136,8 @@
         {% endif %}
         {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or  hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO')
             or  hasRoles('ROLE_RRHH_REPORTE_AE2') or  hasRoles('ROLE_RRHH_REPORTE_AE3') or
-             hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD') or
-             hasRoles('ROLE_RRHH_REPORTE_AE2_MES') %}
+            hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD') or
+            hasRoles('ROLE_RRHH_REPORTE_AE2_MES') %}
             <div class="col-lg-4 col-6">
                 <div class="small-box bg-blue">
                     <div class="inner">
