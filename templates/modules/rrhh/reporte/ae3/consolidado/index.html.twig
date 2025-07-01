@@ -1,6 +1,6 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Modelo 223.216 (I) (AE2)-IES{% endblock %}
+{% block title %}Modelo 223.216 (II) (AE3)-IES{% endblock %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-                <h3 class="card-title text-bold text-gray">Reporte de Modelo 223.216 (I) (AE2)-IES</h3>
+                <h3 class="card-title text-bold text-gray">Reporte de Modelo 223.216 (II) (AE3)-IES</h3>
             </div>
         </div>
         <!-- /.card-header -->
@@ -107,7 +107,7 @@
                         <td style="width: 5%" class="text-center">
                             <button style="padding: 2px 6px;" title="Detalles"
                                     class="btn btn-outline-primary modalDetailAction"
-                                    data-url="{{ path('app_rrhh_reporte_ae2_consolidado_detail', {'id' : item.id}) }}"
+                                    data-url="{{ path('app_rrhh_reporte_ae3_consolidado_detail', {'id' : item.id}) }}"
                                     data-title="Detalles ">
                                 <i class="fa fa-eye "></i>
                             </button>
@@ -137,7 +137,7 @@
                 message: 'Por favor espere...',
                 textColor: "white"
             });
-            $.post("{{ path('app_rrhh_reporte_ae2_consolidado_index') }}",
+            $.post("{{ path('app_rrhh_reporte_ae3_consolidado_index') }}",
                 {
                     mes: mes,
                     anno: anno

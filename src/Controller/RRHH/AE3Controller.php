@@ -3,28 +3,14 @@
 namespace App\Controller\RRHH;
 
 use App\Entity\RRHH\AE3;
-use App\Entity\RRHH\CategoriaDocente;
-use App\Entity\Security\User;
 use App\Form\RRHH\AE3Type;
-use App\Form\RRHH\CategoriaDocenteType;
-use App\Repository\Estructura\EstructuraRepository;
 use App\Repository\Personal\PersonaRepository;
 use App\Repository\RRHH\AE3Repository;
-use App\Repository\RRHH\CategoriaDocenteRepository;
-use App\Repository\Security\UserRepository;
-use App\Services\Utils;
-use Doctrine\ORM\EntityManagerInterface;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
@@ -159,6 +145,7 @@ class AE3Controller extends AbstractController
      * @Route("/{id}/detail", name="app_rrhh_reporte_ae3_detail", methods={"GET", "POST"})
      * @param AE3 $ae3
      * @return Response
+     * @throws ExceptionInterface
      */
     public function detail(AE3 $ae3)
     {

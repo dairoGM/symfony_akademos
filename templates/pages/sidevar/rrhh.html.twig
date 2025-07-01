@@ -67,6 +67,15 @@
                             </a>
                         </li>
                     {% endif %}
+
+                    {% if hasRoles('ROLE_RRHH_REPORTE_AE3_CONSOLIDADO') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_ae3_consolidado_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Modelo 223.216 (II) (AE3)-IES</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}

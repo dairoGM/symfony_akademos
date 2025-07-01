@@ -1,100 +1,218 @@
-<a id="exportToExcel" class="btn btn-primary" style="float: right;">
-    <i class="fas fa-file-excel me-2"></i> Exportar Excel
-</a>
-
-<div class="row mb-4">
-    <div class="col-8">
-        <h5 id="entidad-header">
-            <b>
-                <i class="fa fa-university"></i>
-            </b> ({{ item[0].entidad.siglas | default('') }}) {{ item[0].entidad.nombre | default('') }}
+{% set mesesText = [
+    '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+] %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <!-- Título de la entidad -->
+    <div class="flex-grow-1 pe-4" style="min-width: 200px;">
+        <h5 class="mb-0">
+            <i class="fa fa-university me-2"></i>
+            <span class="align-middle">
+                ({{ ae3.entidad.siglas | default('0') }}) {{ ae3.entidad.nombre | default('0') }}
+            </span>
         </h5>
     </div>
 
-    <div class="col-4">
-        <h5><b>Último envío:</b> {{ "now"|date("d/m/Y") }}</h5>
+    <!-- Controles de mes, año y botón -->
+    <div class="d-flex flex-wrap align-items-end" style="gap: 1.5rem;">
+        <!-- Mes -->
+        <div style="min-width: 140px;">
+            <label for="selectMes" class="form-label mb-1"><b>Mes:</b></label>
+            <select id="selectMes" class="form-select form-control">
+                {% for i in meses %}
+                    <option value="{{ i }}" {% if i == ae3.mes %}selected{% endif %}>{{ mesesText[i] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Año -->
+        <div style="min-width: 140px;">
+            <label for="selectAnno" class="form-label mb-1"><b>Año:</b></label>
+            <select id="selectAnno" class="form-select form-control">
+                {% for year in range("now"|date("Y"), "now"|date("Y") - 5, -1) %}
+                    <option value="{{ year }}" {% if year == ae3.anno %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Botón Exportar -->
+        <div class="ps-2">
+            <a id="exportToExcel" class="btn btn-primary">
+                <i class="fas fa-file-excel me-2"></i> Exportar Excel
+            </a>
+        </div>
     </div>
 </div>
 
-<table id="tbl_details" class="table table-bordered">
-    <thead class="thead-light text-center">
-    <tr>
-        <th>Indicadores</th>
-        {% set romanos = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'] %}
-{#        {% for trimestre in item %}#}
-{#            <th>{{ romanos[loop.index0] }}</th>#}
-{#        {% endfor %}#}
-        {% for item1 in mesesB  %}
-            <th>{{ item1  }}</th>
-        {% endfor %}
-{#        <th>Total</th>#}
-    </tr>
-    </thead>
-    <tbody>
-    {% set indicadores = [
-        { 'label': '1.- Total Plantilla Aprobada', 'key': 'totalPlantillaAprobada' },
-        { 'label': '2.- Total Plantilla Cubierta', 'key': 'totalPlantillaCubierta' },
-        { 'label': '3.- Total General de Contratos (4+7+14)', 'key': 'totalGeneralContratos' },
-        { 'label': '4.- Total de Contratos de Profesores por tiempo determinado', 'key': 'totalContratosProfesoresTiempoDeterminado' },
-        { 'label': '5.- De ellos: a tiempo completo', 'key': 'profesoresTiempoCompleto' },
-        { 'label': '6.- Total de Contratos No Docentes (7+14)', 'key': 'totalContratosNoDocentes' },
-        { 'label': '7.- Contratos No Docentes con respaldo de plazas (8 a 13)', 'key': 'contratosNoDocentesConRespaldo' },
-        { 'label': '8.- De ellos: por sustitución', 'key': 'contratosPorSustitucion' },
-        { 'label': '9.- Período de Prueba', 'key': 'periodoPrueba' },
-        { 'label': '10.- Serenos y Auxiliares de Limpieza', 'key': 'serenosAuxiliaresLimpieza' },
-        { 'label': '11.- Labores Agrícolas', 'key': 'laboresAgricolas' },
-        { 'label': '12.- Jubilados', 'key': 'jubilados' },
-        { 'label': '13.- Otros', 'key': 'otrosConRespaldo' },
-        { 'label': '14.- Contratos No Docentes sin respaldo de plazas (15 a 19)', 'key': 'contratosNoDocentesSinRespaldo' },
-        { 'label': '15.- De ellos: Serenos y Auxiliares de Limpieza', 'key': 'serenosAuxiliaresLimpiezaSinRespaldo' },
-        { 'label': '16.- Labores Agrícolas', 'key': 'laboresAgricolasSinRespaldo' },
-        { 'label': '17.- Jubilados', 'key': 'jubiladosSinRespaldo' },
-        { 'label': '18.- Ejecución de Obra', 'key': 'ejecucionObra' },
-        { 'label': '19.- Otros', 'key': 'otrosSinRespaldo' },
-        { 'label': '20.- Reserva Científica en Preparación', 'key': 'reservaCientificaPreparacion' },
-        { 'label': '21.- Recién Graduados en Preparación (Nivel Sup.)', 'key': 'recienGraduadosPreparacion' },
-        { 'label': '22.- Reserva Dirección Provincial de Trabajo', 'key': 'reservaDireccionProvincialTrabajo' },
-        { 'label': '23.- Técnicos Medios en Preparación', 'key': 'tecnicosMediosPreparacion' },
-        { 'label': '24.- Del total de estudiantes de la Universidad de CD contratados por tiempo determinado', 'key': 'totalEstudiantesUniversidadContratados' },
-        { 'label': '25.- Del total de estudiantes de CD contratados, cifras como Auxiliar Técnico de la Docencia', 'key': 'estudiantesAuxiliaresTecnicosDocencia' },
-        { 'label': '26.- Del total de estudiantes de CD contratados, cifras en cargos No Docentes', 'key': 'estudiantesCargosNoDocentes' }
-    ] %}
+<!-- Mensaje cuando no hay datos -->
+<div id="noDataMessage" class="alert alert-info text-center mt-4" style="display: none;">
+    <i class="fas fa-info-circle me-2"></i> No hay datos disponibles para el mes y año seleccionados
+</div>
 
-    {% for indicador in indicadores %}
-        <tr>
-            <td>{{ indicador.label }}</td>
-            {% set total = 0 %}
-            {% for trimestre in item %}
-                {% set valor = attribute(trimestre, indicador.key)|default(0) %}
-                <td class="text-center">{{ valor }}</td>
-                {% set total = total + valor %}
+<div id="dataContainer">
+    <div class="table-responsive" id="ae3TableContainer">
+        <table class="table table-bordered table-striped" style="font-size: 0.85rem; width: auto;">
+            <colgroup>
+                <col style="width: 25%; min-width: 200px;"> {# INDICADORES #}
+                <col style="width: 5%;"> {# FILA #}
+                <col style="width: 5%;"> {# Total #}
+                <col style="width: 5%;"> {# Fem. #}
+                <col style="width: 5%;"> {# Jóvenes Total #}
+                <col style="width: 5%;"> {# Jóvenes Fem. #}
+                {# Profesores e Investigadores #}
+                <col style="width: 4%;"> {# PT #}
+                <col style="width: 4%;"> {# PA #}
+                <col style="width: 4%;"> {# As #}
+                <col style="width: 4%;"> {# I #}
+                <col style="width: 4%;"> {# IT #}
+                <col style="width: 4%;"> {# IA #}
+                <col style="width: 4%;"> {# IAg #}
+                <col style="width: 4%;"> {# AI #}
+                <col style="width: 4%;"> {# Aux.Téc.Doc. #}
+                <col style="width: 4%;"> {# MsC #}
+                <col style="width: 4%;"> {# Dr. #}
+            </colgroup>
+            <thead class="thead-light">
+            <tr>
+                <th rowspan="3">INDICADORES</th>
+                <th rowspan="3">FILA</th>
+                <th rowspan="3">Total cubierta</th>
+                <th rowspan="3">Fem.</th>
+                <th colspan="2">Jóvenes</th>
+                <th colspan="11">Profesores a Tiempo Completo e Investigadores</th>
+            </tr>
+            <tr>
+                <th rowspan="2">Total</th>
+                <th rowspan="2">Fem.</th>
+                <th rowspan="2">PT</th>
+                <th rowspan="2">PA</th>
+                <th rowspan="2">As</th>
+                <th rowspan="2">I</th>
+                <th rowspan="2">IT</th>
+                <th rowspan="2">IA</th>
+                <th rowspan="2">IAg</th>
+                <th rowspan="2">AI</th>
+                <th rowspan="2">Aux.Téc.Doc.</th>
+                <th rowspan="2">MsC</th>
+                <th rowspan="2">Dr.</th>
+            </tr>
+            <tr>
+                {# Esta fila vacía completa la estructura de 3 filas en el encabezado #}
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>13</th>
+                <th>14</th>
+                <th>15</th>
+                <th>16</th>
+                <th>17</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set indicadores = {
+                'totalCuadros': '1. TOTAL CUADROS (Suma 2-5)',
+                'cuadrosCocentes': '2. Cuadros Docentes',
+                'cuadrosCdministrativos': '3. Cuadros Administrativos',
+                'cuadrosInvestigacion': '4. Cuadros Investigación',
+                'otrosCuadros': '5. Otros Cuadros',
+                'totalTecnicos': '6. TOTAL TÉCNICOS  (Suma 7-10)',
+                'profesoresTiempoCompleto': '7. Profesores a Tiempo Completo',
+                'asesoresMetodologos': '8. Asesores o Metodólogos',
+                'investigadores': '9. Investigadores',
+                'otrosTecnicos': '10. Otros Técnicos',
+                'administrativos': '11. ADMINISTRATIVOS',
+                'servicio': '12. SERVICIO',
+                'operarios': '13. OPERARIOS',
+                'total': 'TOTAL',
+                'profesoresTipoParcial': 'Profesores a Tiempo Parcial'
+            } %}
+
+            {% for key in indicadores|keys %}
+                {% set label = indicadores[key] %}
+
+                <tr>
+                    <td>{{ label }}</td>
+                    <td class="text-center">{{ "%02d"|format(loop.index) }}</td>
+
+                    <td class="text-center" data-field="{{ key }}TotalCubierta">
+                        {{ ae3[key ~ 'TotalCubierta']  | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}DeEllosFem">
+                        {{ ae3[key ~ 'DeEllosFem'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}JovenesTotal">
+                        {{ ae3[key ~ 'JovenesTotal'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}JovenesFem">
+                        {{ ae3[key ~ 'JovenesFem'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Pt">
+                        {{ ae3[key ~ 'Pt'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Pa">
+                        {{ ae3[key ~ 'Pa'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}As">
+                        {{ ae3[key ~ 'As'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}I">
+                        {{ ae3[key ~ 'I'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}It">
+                        {{ ae3[key ~ 'It'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Ia">
+                        {{ ae3[key ~ 'Ia'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Iag">
+                        {{ ae3[key ~ 'Iag'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Ai">
+                        {{ ae3[key ~ 'Ai'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}AuxTecDoc">
+                        {{ ae3[key ~ 'AuxTecDoc'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Msc">
+                        {{ ae3[key ~ 'Msc'] | default('0') }}
+                    </td>
+                    <td class="text-center" data-field="{{ key }}Dr">
+                        {{ ae3[key ~ 'Dr'] | default('0') }}
+                    </td>
+                </tr>
             {% endfor %}
-{#            <td class="text-center font-weight-bold">{{ total }}</td>#}
-        </tr>
-    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <tr>
-        <td style="font-weight: bold">AE2 firmado</td>
-        {% for trimestre in item %}
-            <td class="text-center">
-                {% if trimestre.documento %}
-                    <div class="col-10 text-center">
-                        <a target="_blank"
-                           href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae2/documento/{{ trimestre.documento }}"
-                           title="Exportar a Excel">
-                            <i class="fas fa-file-excel fa-lg text-success"></i>
-                        </a>
-                    </div>
-                {% else %}
-                    &mdash;
-                {% endif %}
-            </td>
-        {% endfor %}
-{#        <td></td> #}{# celda vacía para mantener la estructura #}
-    </tr>
-    </tbody>
-</table>
-
+{% if ae3.documento %}
+    <div class="row mt-4" id="btn_exportar_pie">
+        <div class="col-12">
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: nowrap; white-space: nowrap;">
+                <span style="font-weight: bold;">AE3 firmado:</span>
+                <a target="_blank" class="documento-link"
+                   href="{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae3/documento/{{ ae3.documento }}"
+                   title="Ver documento"
+                   style="display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none;">
+                    <i class="fas fa-file-excel fa-lg text-success"></i>
+                    <span style="text-decoration: underline;">Descargar AE3</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
 
 <!-- Carga de bibliotecas necesarias -->
 <script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
@@ -102,41 +220,143 @@
 
 <script>
     $(document).ready(function () {
+
+        const noDataMessage = $('#noDataMessage');
+        const dataContainer = $('#dataContainer');
+        const btn_exportar_pie = $('#btn_exportar_pie');
+        const exportToExcel = $('#exportToExcel');
+
+        // Función para cargar datos via AJAX
+        function cargarDatosAE3(mes, anno) {
+
+
+            $.ajax({
+                url: '{{ path("ae3_cargar_datos") }}',
+                method: 'POST',
+                data: {
+                    mes: mes,
+                    anno: anno,
+                    entidadId: {{ ae3.entidad.id|default(0) }}
+                },
+                beforeSend: function () {
+                    dataContainer.hide();
+                    noDataMessage.hide();
+                    exportToExcel.hide();
+                    btn_exportar_pie.hide();
+
+
+                    // Mostrar loader
+                    HoldOn.open({
+                        theme: "sk-cube-grid",
+                        message: 'Por favor espere...',
+                        textColor: "white"
+                    });
+                    $('#ae3TableContainer').hide();
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        dataContainer.show();
+                        noDataMessage.hide();
+                        exportToExcel.show();
+                        btn_exportar_pie.show();
+
+                        actualizarTabla(response.data);
+                    } else {
+                        toastr.error(response.message || 'Error al cargar los datos');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    dataContainer.hide();
+                    noDataMessage.show();
+                    exportToExcel.hide();
+                    btn_exportar_pie.hide();
+                    // toastr.error('No se encontraron datos para el mes y año seleccionados.');
+                },
+                complete: function () {
+                    $('#ae3TableContainer').show();
+                    // Mostrar loader
+                    HoldOn.close()
+                }
+            });
+        }
+
+        // Función para actualizar la tabla con los nuevos datos
+        function actualizarTabla(data) {
+            // Actualizar todos los campos de la tabla
+            {% for key in indicadores|keys %}
+            $('[data-field="{{ key }}TotalCubierta"]').text(data.{{ key }}TotalCubierta || '0');
+            $('[data-field="{{ key }}DeEllosFem"]').text(data.{{ key }}DeEllosFem || '0');
+            $('[data-field="{{ key }}JovenesTotal"]').text(data.{{ key }}JovenesTotal || '0');
+            $('[data-field="{{ key }}JovenesFem"]').text(data.{{ key }}JovenesFem || '0');
+            $('[data-field="{{ key }}Pt"]').text(data.{{ key }}Pt || '0');
+            $('[data-field="{{ key }}Pa"]').text(data.{{ key }}Pa || '0');
+            $('[data-field="{{ key }}As"]').text(data.{{ key }}As || '0');
+            $('[data-field="{{ key }}I"]').text(data.{{ key }}I || '0');
+            $('[data-field="{{ key }}It"]').text(data.{{ key }}It || '0');
+            $('[data-field="{{ key }}Ia"]').text(data.{{ key }}Ia || '0');
+            $('[data-field="{{ key }}Iag"]').text(data.{{ key }}Iag || '0');
+            $('[data-field="{{ key }}Ai"]').text(data.{{ key }}Ai || '0');
+            $('[data-field="{{ key }}AuxTecDoc"]').text(data.{{ key }}AuxTecDoc || '0');
+            $('[data-field="{{ key }}Msc"]').text(data.{{ key }}Msc || '0');
+            $('[data-field="{{ key }}Dr"]').text(data.{{ key }}Dr || '0');
+            {% endfor %}
+
+            // Actualizar el enlace del documento si existe
+            if (data.documento) {
+                $('.documento-link')
+                    .attr('href', '{{ app.request.getSchemeAndHttpHost() }}/uploads/rrhh/ae3/documento/' + data.documento)
+                    .show();
+            } else {
+                $('.documento-link').hide();
+            }
+        }
+
+        // Eventos para los selectores
+        $('#selectMes, #selectAnno').change(function () {
+
+
+            var mes = $('#selectMes').val();
+            var anno = $('#selectAnno').val();
+            cargarDatosAE3(mes, anno);
+
+
+        });
+
+        // Exportar a Excel
         $('#exportToExcel').on('click', function (e) {
             e.preventDefault();
 
-            // 1. Crear libro y hoja
             var workbook = new ExcelJS.Workbook();
-            var worksheet = workbook.addWorksheet('Datos');
+            var worksheet = workbook.addWorksheet('AE3');
 
-            // 2. Obtener información de encabezado
-            var entidad = $('#entidad-header').text().trim();
-            var fecha = $('h5:contains("Fecha:")').text().replace('Fecha:', '').trim();
+            // Configuración inicial
+            var entidad = $('h5:contains("(")').text().trim();
+            var mes = $('#selectMes option:selected').text();
+            var anno = $('#selectAnno').val();
 
-            // 3. Agregar metadatos
-            worksheet.addRow(['MODELO 223.216 (I) AE-2']).getCell(1).font = {bold: true};
-            worksheet.addRow(['INDICADORES MENSUALES DE LA ACTIVIDAD DE RECURSOS HUMANOS']).getCell(1).font = {bold: true};
+            // Añadir títulos
+            worksheet.addRow(['MODELO 223.216 (III) AE-3']).getCell(1).font = {bold: true};
+            worksheet.addRow(['PLANTILLA DE PERSONAL']).getCell(1).font = {bold: true};
             worksheet.addRow(['CENTRO INFORMANTE:', entidad]).getCell(1).font = {bold: true};
-            worksheet.addRow(['FECHA:', fecha]).getCell(1).font = {bold: true};
-            worksheet.addRow(['']); // Espacio en blanco
+            worksheet.addRow(['MES:', mes]).getCell(1).font = {bold: true};
+            worksheet.addRow(['AÑO:', anno]).getCell(1).font = {bold: true};
+            worksheet.addRow([]);
 
-            // 4. Exportar estructura de la tabla HTML
-            var table = $('#tbl_details');
+            // Crear encabezado de la tabla
+            var headerRow = worksheet.addRow([
+                'Indicadores', 'Fila', 'Total cubierta', 'Fem.',
+                'Jóvenes Total', 'Jóvenes Fem.',
+                'PT', 'PA', 'As', 'I', 'IT', 'IA', 'IAg', 'AI',
+                'Aux.Téc.Doc.', 'MsC', 'Dr.'
+            ]);
 
-            // Obtener encabezados
-            var headers = [];
-            table.find('thead th').each(function () {
-                headers.push($(this).text().trim());
-            });
-            worksheet.addRow(headers);
-
-            // Estilo para encabezados
-            worksheet.lastRow.eachCell(function (cell) {
+            headerRow.eachCell(function (cell) {
                 cell.font = {bold: true};
+                cell.alignment = {vertical: 'middle', horizontal: 'center', wrapText: true};
                 cell.fill = {
                     type: 'pattern',
                     pattern: 'solid',
-                    fgColor: {argb: 'FFD3D3D3'} // Gris claro
+                    fgColor: {argb: 'FFD9D9D9'}
                 };
                 cell.border = {
                     top: {style: 'thin'},
@@ -146,39 +366,31 @@
                 };
             });
 
-            // Obtener datos de las filas
-            table.find('tbody tr').each(function () {
+            // Añadir datos de la tabla
+            $('table tbody tr').each(function () {
                 var rowData = [];
                 $(this).find('td').each(function () {
-                    // Manejar celdas con iconos (como los de AE2 firmado)
-                    if ($(this).find('i.fa-file-excel').length) {
-                        rowData.push('Firmado');
-                    } else {
-                        rowData.push($(this).text().trim());
-                    }
+                    rowData.push($(this).text().trim());
                 });
                 worksheet.addRow(rowData);
             });
 
-            // 5. Ajustar anchos de columnas automáticamente
-            worksheet.columns.forEach(function (column, i) {
-                var maxLength = 0;
-                column.eachCell({includeEmpty: true}, function (cell) {
-                    var cellLength = cell.value ? cell.value.toString().length : 0;
-                    if (cellLength > maxLength) {
-                        maxLength = cellLength;
-                    }
-                });
-                column.width = Math.min(Math.max(maxLength + 2, 10), 30); // Mínimo 10, máximo 30
-            });
+            // Ajustar columnas
+            worksheet.columns = [
+                {width: 30}, {width: 5}, {width: 10}, {width: 5},
+                {width: 10}, {width: 10}, {width: 5}, {width: 5},
+                {width: 5}, {width: 5}, {width: 5}, {width: 5},
+                {width: 5}, {width: 5}, {width: 10}, {width: 5},
+                {width: 5}
+            ];
 
-            // 6. Guardar archivo
+            // Generar archivo
             workbook.xlsx.writeBuffer().then(function (buffer) {
                 saveAs(new Blob([buffer], {type: 'application/octet-stream'}),
-                    `AE2_${entidad}_${fecha.replace(/\//g, '-')}.xlsx`);
+                    `AE3_${entidad}_${mes}_${anno}.xlsx`);
             }).catch(function (error) {
                 console.error('Error al generar Excel:', error);
-                alert('Ocurrió un error al generar el archivo Excel');
+                toastr.error('Error al generar el archivo Excel');
             });
         });
     });
