@@ -363,7 +363,7 @@
             }
 
             // Calcular totales cuando cambia un valor
-            $('.input-number:not(.readonly-field)').on('blur', function () {
+            $('.input-number:not(.readonly-field)').on('blur input change', function () {
                 // Calcular CUADROS DOCENTES HORIZONTALES
                 const temp1 = calcularSuma('[id$="ae3_cuadros_docentes_pt"], [id$="ae3_cuadros_docentes_pa"], [id$="ae3_cuadros_docentes_as"], [id$="ae3_cuadros_docentes_i"], [id$="ae3_cuadros_docentes_it"], [id$="ae3_cuadros_docentes_ia"], [id$="ae3_cuadros_docentes_iag"], [id$="ae3_cuadros_docentes_ai"], [id$="ae3_cuadros_docentes_aux_tec_doc"]');
                 $('#ae3_cuadros_docentes_total_cubierta').val(temp1);
