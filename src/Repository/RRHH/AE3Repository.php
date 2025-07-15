@@ -44,7 +44,6 @@ class AE3Repository extends ServiceEntityRepository
     }
 
 
-
     public function findDistinctEntidades(?int $entidadId = null, ?int $mes = null, ?int $anno = null): array
     {
         $qb = $this->createQueryBuilder('a')
@@ -60,5 +59,19 @@ class AE3Repository extends ServiceEntityRepository
         return $qb->orderBy('e.nombre', 'ASC')
             ->getQuery()
             ->getArrayResult();
+    }
+
+
+    public function getTabla1_4($mes, $anno)
+    {
+        $qb = $qb = $this->createQueryBuilder('a')
+            ->join('a.entidad', 'e')
+            ->where('a.mes = :mes')
+            ->andWhere('a.anno = :anno')
+            ->setParameter('mes', $mes)
+            ->setParameter('anno', $anno)
+            ->orderBy('e.siglas', 'ASC');
+
+       return $qb->getQuery()->getResult();
     }
 }

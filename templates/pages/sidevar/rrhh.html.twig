@@ -40,7 +40,7 @@
         {% endif %}
 
 
-        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_AE2_MES') %}
+        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_AE2_MES')  or hasRoles('ROLE_RRHH_REPORTE_AE3_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_1_4') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -73,6 +73,15 @@
                             <a href="{{ path('app_rrhh_reporte_ae3_consolidado_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Modelo 223.216 (II) (AE3)-IES</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if hasRoles('ROLE_RRHH_REPORTE_1_4') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_1_4_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Modelo 1.4</p>
                             </a>
                         </li>
                     {% endif %}

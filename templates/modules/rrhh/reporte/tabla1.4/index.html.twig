@@ -1,0 +1,502 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modelo 1.4{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .table-container {
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            text-align: center;
+            min-width: 40px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .header-row {
+            background-color: #e6e6e6;
+            font-weight: bold;
+        }
+
+        .subtotal-row {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .total-row {
+            background-color: #d9d9d9;
+            font-weight: bold;
+        }
+
+        .group-header {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .sticky-header {
+            z-index: 2;
+        }
+
+        .sticky-group {
+            z-index: 1;
+            background-color: #e0e0e0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Modelo 1.4</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" style="background: #134679">
+                        <h4 class="card-title w-100">
+                            <a style="color: #FFFFFF" class="d-block w-100 collapsed" data-toggle="collapse"
+                               href="#collapseOne" aria-expanded="false">
+                                Búsqueda avanzada por: {{ text_fil | default('') }}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <!-- Select de Años -->
+                                <div class="col-md-4">
+                                    <label class="required" for="annoFicha">Año</label>
+                                    <select id="annoFicha" name="annoFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="annoFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un año</option>
+                                        {% set annoActual = "now"|date("Y") %}
+                                        {% set annoInicial = annoActual - 5 %}
+                                        {% for anno in annoActual..annoInicial %}
+                                            <option value="{{ anno }}" {% if anno == fil_anno %} selected {% endif %}>
+                                                {{ anno }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Select de Meses -->
+                                <div class="col-md-4">
+                                    <label class="required" for="mesFicha">Mes</label>
+                                    <select id="mesFicha" name="mesFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="mesFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un mes</option>
+                                        {% set meses = [
+                                            {id: 3, nombre: 'Marzo'},
+                                            {id: 6, nombre: 'Junio'},
+                                            {id: 9, nombre: 'Septiembre'},
+                                            {id: 12, nombre: 'Diciembre'}
+                                        ] %}
+                                        {% for mes in meses %}
+                                            <option value="{{ mes.id }}" {% if mes.id == fil_mes %} selected {% endif %}>
+                                                {{ mes.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container" style="overflow-x: auto;">
+                <table class="table table-bordered table-striped " id="tabla-modelo-14" style="min-width: 2000px;">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" class=" sticky-header">CENTROS</th>
+                        <th colspan="6">Cuadros Docentes</th>
+                        <th colspan="5">Cuadros de Investigación</th>
+                        <th colspan="6">Profesores a T. Completo</th>
+                        <th colspan="5">Asesores y/o Metodólogos</th>
+                        <th colspan="5">Investigadores</th>
+                        <th colspan="6">Otros</th>
+                    </tr>
+                    <tr class="header-row">
+                        <th class="sticky-header">Tot.</th>
+                        <th class="sticky-header">PT</th>
+                        <th class="sticky-header">PA</th>
+                        <th class="sticky-header">As</th>
+                        <th class="sticky-header">I</th>
+                        <th class="sticky-header">ATD</th>
+                        <th class="sticky-header">Tot.</th>
+                        <th class="sticky-header">IT</th>
+                        <th class="sticky-header">IA</th>
+                        <th class="sticky-header">IAg</th>
+                        <th class="sticky-header">AI</th>
+                        <th class="sticky-header">Tot.</th>
+                        <th class="sticky-header">PT</th>
+                        <th class="sticky-header">PA</th>
+                        <th class="sticky-header">As</th>
+                        <th class="sticky-header">I</th>
+                        <th class="sticky-header">ATD</th>
+                        <th class="sticky-header">Tot.</th>
+                        <th class="sticky-header">PT</th>
+                        <th class="sticky-header">PA</th>
+                        <th class="sticky-header">As</th>
+                        <th class="sticky-header">I</th>
+                        <th class="sticky-header">Tot.</th>
+                        <th class="sticky-header">IT</th>
+                        <th class="sticky-header">IA</th>
+                        <th class="sticky-header">IAg</th>
+                        <th class="sticky-header">AI</th>
+                        <th class="sticky-header">Otros Cuadros</th>
+                        <th class="sticky-header">Claustro</th>
+                        <th class="sticky-header">Técnicos</th>
+                        <th class="sticky-header">Administrativos</th>
+                        <th class="sticky-header">Servicio</th>
+                        <th class="sticky-header">Operarios</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for grupo in grupos %}
+                        <tr class="group-header">
+                            <td colspan="37" class="  sticky-group">{{ grupo.nombre | default('') }}</td>
+                        </tr>
+
+                        {% for centro in grupo.centros %}
+                            <tr>
+                                <td class=" ">{{ centro.nombre }}</td>
+                                <td>{{ centro.cuadros_docentes.tot }}</td>
+                                <td>{{ centro.cuadros_docentes.pt }}</td>
+                                <td>{{ centro.cuadros_docentes.pa }}</td>
+                                <td>{{ centro.cuadros_docentes.as }}</td>
+                                <td>{{ centro.cuadros_docentes.i }}</td>
+                                <td>{{ centro.cuadros_docentes.atd }}</td>
+                                <td>{{ centro.cuadros_investigacion.tot }}</td>
+                                <td>{{ centro.cuadros_investigacion.it }}</td>
+                                <td>{{ centro.cuadros_investigacion.ia }}</td>
+                                <td>{{ centro.cuadros_investigacion.iag }}</td>
+                                <td>{{ centro.cuadros_investigacion.ai }}</td>
+                                <td>{{ centro.profesores_completo.tot }}</td>
+                                <td>{{ centro.profesores_completo.pt }}</td>
+                                <td>{{ centro.profesores_completo.pa }}</td>
+                                <td>{{ centro.profesores_completo.as }}</td>
+                                <td>{{ centro.profesores_completo.i }}</td>
+                                <td>{{ centro.profesores_completo.atd }}</td>
+                                <td>{{ centro.asesores.tot }}</td>
+                                <td>{{ centro.asesores.pt }}</td>
+                                <td>{{ centro.asesores.pa }}</td>
+                                <td>{{ centro.asesores.as }}</td>
+                                <td>{{ centro.asesores.i }}</td>
+                                <td>{{ centro.investigadores.tot }}</td>
+                                <td>{{ centro.investigadores.it }}</td>
+                                <td>{{ centro.investigadores.ia }}</td>
+                                <td>{{ centro.investigadores.iag }}</td>
+                                <td>{{ centro.investigadores.ai }}</td>
+                                <td>{{ centro.otros.otros_cuadros }}</td>
+                                <td>{{ centro.otros.claustro }}</td>
+                                <td>{{ centro.otros.tecnicos }}</td>
+                                <td>{{ centro.otros.administrativos }}</td>
+                                <td>{{ centro.otros.servicio }}</td>
+                                <td>{{ centro.otros.operarios }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr class="subtotal-row">
+                            <td class=" ">SUBTOTAL {# {{ grupo.nombre }} #}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.tot }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.pt }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.pa }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.as }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.i }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.atd }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.tot }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.it }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.ia }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.iag }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.ai }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.tot }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.pt }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.pa }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.as }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.i }}</td>
+                            <td>{{ grupo.subtotal.profesores_completo.atd }}</td>
+                            <td>{{ grupo.subtotal.asesores.tot }}</td>
+                            <td>{{ grupo.subtotal.asesores.pt }}</td>
+                            <td>{{ grupo.subtotal.asesores.pa }}</td>
+                            <td>{{ grupo.subtotal.asesores.as }}</td>
+                            <td>{{ grupo.subtotal.asesores.i }}</td>
+                            <td>{{ grupo.subtotal.investigadores.tot }}</td>
+                            <td>{{ grupo.subtotal.investigadores.it }}</td>
+                            <td>{{ grupo.subtotal.investigadores.ia }}</td>
+                            <td>{{ grupo.subtotal.investigadores.iag }}</td>
+                            <td>{{ grupo.subtotal.investigadores.ai }}</td>
+                            <td>{{ grupo.subtotal.otros.otros_cuadros }}</td>
+                            <td>{{ grupo.subtotal.otros.claustro }}</td>
+                            <td>{{ grupo.subtotal.otros.tecnicos }}</td>
+                            <td>{{ grupo.subtotal.otros.administrativos }}</td>
+                            <td>{{ grupo.subtotal.otros.servicio }}</td>
+                            <td>{{ grupo.subtotal.otros.operarios }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    <tr class="total-row">
+                        <td class=" ">TOTAL GENERAL</td>
+                        <td>{{ totalGeneral.cuadros_docentes.tot }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.pt }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.pa }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.as }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.i }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.atd }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.tot }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.it }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.ia }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.iag }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.ai }}</td>
+                        <td>{{ totalGeneral.profesores_completo.tot }}</td>
+                        <td>{{ totalGeneral.profesores_completo.pt }}</td>
+                        <td>{{ totalGeneral.profesores_completo.pa }}</td>
+                        <td>{{ totalGeneral.profesores_completo.as }}</td>
+                        <td>{{ totalGeneral.profesores_completo.i }}</td>
+                        <td>{{ totalGeneral.profesores_completo.atd }}</td>
+                        <td>{{ totalGeneral.asesores.tot }}</td>
+                        <td>{{ totalGeneral.asesores.pt }}</td>
+                        <td>{{ totalGeneral.asesores.pa }}</td>
+                        <td>{{ totalGeneral.asesores.as }}</td>
+                        <td>{{ totalGeneral.asesores.i }}</td>
+                        <td>{{ totalGeneral.investigadores.tot }}</td>
+                        <td>{{ totalGeneral.investigadores.it }}</td>
+                        <td>{{ totalGeneral.investigadores.ia }}</td>
+                        <td>{{ totalGeneral.investigadores.iag }}</td>
+                        <td>{{ totalGeneral.investigadores.ai }}</td>
+                        <td>{{ totalGeneral.otros.otros_cuadros }}</td>
+                        <td>{{ totalGeneral.otros.claustro }}</td>
+                        <td>{{ totalGeneral.otros.tecnicos }}</td>
+                        <td>{{ totalGeneral.otros.administrativos }}</td>
+                        <td>{{ totalGeneral.otros.servicio }}</td>
+                        <td>{{ totalGeneral.otros.operarios }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <!-- ExcelJS y FileSaver -->
+    <script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+    <script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Filtros (tu código actual)
+            $('#mesFicha, #annoFicha').change(function (e) {
+                var mes = $('#mesFicha').val();
+                var anno = $('#annoFicha').val();
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                $.post("{{ path('app_rrhh_reporte_1_4_index') }}",
+                    {
+                        mes: mes,
+                        anno: anno
+                    },
+                    function (data) {
+                        $(window).attr('location', window.location)
+                        HoldOn.close()
+                    });
+            });
+
+            $('#exportExcel').click(async function () {
+                // 1. Crear un nuevo libro de Excel
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Tabla 1.4');
+
+                // 2. Agregar metadatos (opcional)
+                workbook.creator = 'Sistema';
+                workbook.lastModifiedBy = 'Usuario';
+                workbook.created = new Date();
+
+                // =============================================
+                // A. ENCABEZADOS PERSONALIZADOS (como el Excel adjunto)
+                // =============================================
+
+                // ---- Fila 1: Título principal ----
+                const titleRow = worksheet.addRow([
+                    "TRABAJADORES FISICOS (FIJOS) POR CATEGORIAS OCUPACIONALES, DOCENTES Y CIENTÍFICAS"
+                ]);
+                titleRow.font = {bold: true, size: 14};
+                titleRow.alignment = {horizontal: 'center'};
+                worksheet.mergeCells('A1:AH1'); // Combinar celdas para el título
+
+                // ---- Fila 2: Tabla y UM ----
+                const subtitleRow1 = worksheet.addRow([
+                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                    "TABLA: 1.4", "", "", "", "", "", "", "", "UM:UNO"
+                ]);
+                subtitleRow1.getCell(19).font = {bold: true}; // "TABLA: 1.4"
+                subtitleRow1.getCell(28).font = {bold: true}; // "UM:UNO"
+
+                // ---- Fila 3: Fecha ----
+                const subtitleRow2 = worksheet.addRow([
+                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                    "FECHA:" + $('#mesFicha option:selected').text() + $('#annoFicha').val()
+                ]);
+                subtitleRow2.getCell(19).font = {bold: true};
+                worksheet.mergeCells('S3:V3'); // Combinar celdas para la fecha
+
+                // ---- Filas 4-5: Vacías (para formato) ----
+                worksheet.addRow([]);
+                worksheet.addRow([]);
+
+                // ---- Fila 6: Encabezados agrupados (nivel 1) ----
+                const groupHeaders1 = [
+                    "CENTROS",
+                    "Cuadros Docentes", "", "", "", "", "",
+                    "Cuadros de Investigación", "", "", "", "",
+                    "Profesores a T. Completo", "", "", "", "", "",
+                    "Asesores y/o Metodólogos", "", "", "", "",
+                    "Investigadores", "", "", "", "",
+                    "Otros", "Total", "Otros", "Adminis-", "", ""
+                ];
+                const headerRow1 = worksheet.addRow(groupHeaders1);
+                headerRow1.font = {bold: true};
+
+                // Combinar celdas para encabezados agrupados
+                worksheet.mergeCells('B6:G6'); // "Cuadros Docentes"
+                worksheet.mergeCells('H6:L6'); // "Cuadros de Investigación"
+                worksheet.mergeCells('M6:R6'); // "Profesores a T. Completo"
+                worksheet.mergeCells('S6:W6'); // "Asesores y/o Metodólogos"
+                worksheet.mergeCells('X6:AB6'); // "Investigadores"
+                worksheet.mergeCells('AC6:AH6'); // "Otros"
+
+                // ---- Fila 7: Encabezados agrupados (nivel 2) ----
+                const groupHeaders2 = [
+                    "",
+                    "Tot.", "PT", "PA", "As", "I", "ATD",
+                    "Tot.", "IT", "IA", "IAg", "AI",
+                    "Tot.", "PT", "PA", "As", "I", "ATD",
+                    "Tot.", "PT", "PA", "As", "I",
+                    "Tot.", "IT", "IA", "IAg", "AI",
+                    "Cuadros", "Claustro", "Técnicos", "trativos", "Servicio", "Operarios"
+                ];
+                const headerRow2 = worksheet.addRow(groupHeaders2);
+                headerRow2.font = {bold: true};
+
+                // =============================================
+                // B. DATOS DE LA TABLA HTML
+                // =============================================
+                const table = document.getElementById('tabla-modelo-14');
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const rowData = [];
+                    const cells = row.querySelectorAll('td');
+
+                    cells.forEach(cell => {
+                        rowData.push(cell.innerText.trim());
+                    });
+
+                    worksheet.addRow(rowData);
+                });
+
+                // =============================================
+                // C. FORMATOS ADICIONALES
+                // =============================================
+
+                // ---- Ajustar anchos de columnas ----
+                worksheet.columns = [
+                    {width: 30}, // CENTROS (A)
+                    {width: 8},  // Tot. (B)
+                    {width: 8},  // PT (C)
+                    {width: 8},  // PA (D)
+                    {width: 8},  // As (E)
+                    {width: 8},  // I (F)
+                    {width: 8},  // ATD (G)
+                    {width: 8},  // Tot. (H)
+                    {width: 8},  // IT (I)
+                    {width: 8},  // IA (J)
+                    {width: 8},  // IAg (K)
+                    {width: 8},  // AI (L)
+                    {width: 8},  // Tot. (M)
+                    {width: 8},  // PT (N)
+                    {width: 8},  // PA (O)
+                    {width: 8},  // As (P)
+                    {width: 8},  // I (Q)
+                    {width: 8},  // ATD (R)
+                    {width: 8},  // Tot. (S)
+                    {width: 8},  // PT (T)
+                    {width: 8},  // PA (U)
+                    {width: 8},  // As (V)
+                    {width: 8},  // I (W)
+                    {width: 8},  // Tot. (X)
+                    {width: 8},  // IT (Y)
+                    {width: 8},  // IA (Z)
+                    {width: 8},  // IAg (AA)
+                    {width: 8},  // AI (AB)
+                    {width: 10}, // Cuadros (AC)
+                    {width: 10}, // Claustro (AD)
+                    {width: 10}, // Técnicos (AE)
+                    {width: 10}, // Adminis- (AF)
+                    {width: 10}, // Servicio (AG)
+                    {width: 10}  // Operarios (AH)
+                ];
+
+                // ---- Estilo para filas de subtotal y total ----
+                worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
+                    if (rowNumber >= 8) { // Filas de datos (empezando desde la 8)
+                        const firstCell = row.getCell(1).value;
+                        if (firstCell && (firstCell.includes('SUBTOTAL') || firstCell.includes('TOTAL'))) {
+                            row.font = {bold: true};
+                            row.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: {argb: 'FFD9D9D9'} // Color gris claro
+                            };
+                        }
+                    }
+                });
+
+                // =============================================
+                // D. GENERAR Y DESCARGAR EL ARCHIVO
+                // =============================================
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                saveAs(blob, `Modelo_1.4_${new Date().toISOString().slice(0, 10)}.xlsx`);
+            });
+
+        });
+    </script>
+{% endblock %}
