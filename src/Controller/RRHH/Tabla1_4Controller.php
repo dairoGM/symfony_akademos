@@ -120,95 +120,20 @@ class Tabla1_4Controller extends AbstractController
                             ],
                             'otros' => [
                                 'otros_cuadros' => (
-                                    ($ae3Array['otrosCuadrosTotalCubierta'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosDeEllosFem'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosJovenesTotal'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosJovenesFem'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosFem'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosPt'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosPa'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosAs'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosI'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosIt'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosIa'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosIag'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosAi'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosAuxTecDoc'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosMsc'] ?? 0) +
-                                    ($ae3Array['otrosCuadrosDr'] ?? 0)
+                                ($ae3Array['otrosCuadrosTotalCubierta'] ?? 0)
                                 ),
                                 'claustro' => $claustro,
                                 'tecnicos' => (
-                                    ($ae3Array['otrosTecnicosTotalCubierta'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosDeEllosFem'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosJovenesTotal'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosJovenesFem'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosFem'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosPt'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosPa'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosAs'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosI'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosIt'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosIa'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosIag'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosAi'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosAuxTecDoc'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosMsc'] ?? 0) +
-                                    ($ae3Array['otrosTecnicosDr'] ?? 0)
+                                ($ae3Array['otrosTecnicosTotalCubierta'] ?? 0)
                                 ),
                                 'administrativos' => (
-                                    ($ae3Array['administrativosTotalCubierta'] ?? 0) +
-                                    ($ae3Array['administrativosDeEllosFem'] ?? 0) +
-                                    ($ae3Array['administrativosJovenesTotal'] ?? 0) +
-                                    ($ae3Array['administrativosJovenesFem'] ?? 0) +
-                                    ($ae3Array['administrativosFem'] ?? 0) +
-                                    ($ae3Array['administrativosPt'] ?? 0) +
-                                    ($ae3Array['administrativosPa'] ?? 0) +
-                                    ($ae3Array['administrativosAs'] ?? 0) +
-                                    ($ae3Array['administrativosI'] ?? 0) +
-                                    ($ae3Array['administrativosIt'] ?? 0) +
-                                    ($ae3Array['administrativosIa'] ?? 0) +
-                                    ($ae3Array['administrativosIag'] ?? 0) +
-                                    ($ae3Array['administrativosAi'] ?? 0) +
-                                    ($ae3Array['administrativosAuxTecDoc'] ?? 0) +
-                                    ($ae3Array['administrativosMsc'] ?? 0) +
-                                    ($ae3Array['administrativosDr'] ?? 0)
+                                ($ae3Array['administrativosTotalCubierta'] ?? 0)
                                 ),
                                 'servicio' => (
-                                    ($ae3Array['servicioTotalCubierta'] ?? 0) +
-                                    ($ae3Array['servicioDeEllosFem'] ?? 0) +
-                                    ($ae3Array['servicioJovenesTotal'] ?? 0) +
-                                    ($ae3Array['servicioJovenesFem'] ?? 0) +
-                                    ($ae3Array['servicioFem'] ?? 0) +
-                                    ($ae3Array['servicioPt'] ?? 0) +
-                                    ($ae3Array['servicioPa'] ?? 0) +
-                                    ($ae3Array['servicioAs'] ?? 0) +
-                                    ($ae3Array['servicioI'] ?? 0) +
-                                    ($ae3Array['servicioIt'] ?? 0) +
-                                    ($ae3Array['servicioIa'] ?? 0) +
-                                    ($ae3Array['servicioIag'] ?? 0) +
-                                    ($ae3Array['servicioAi'] ?? 0) +
-                                    ($ae3Array['servicioAuxTecDoc'] ?? 0) +
-                                    ($ae3Array['servicioMsc'] ?? 0) +
-                                    ($ae3Array['servicioDr'] ?? 0)
+                                ($ae3Array['servicioTotalCubierta'] ?? 0)
                                 ),
                                 'operarios' => (
-                                    ($ae3Array['operariosTotalCubierta'] ?? 0) +
-                                    ($ae3Array['operariosDeEllosFem'] ?? 0) +
-                                    ($ae3Array['operariosJovenesTotal'] ?? 0) +
-                                    ($ae3Array['operariosJovenesFem'] ?? 0) +
-                                    ($ae3Array['operariosFem'] ?? 0) +
-                                    ($ae3Array['operariosPt'] ?? 0) +
-                                    ($ae3Array['operariosPa'] ?? 0) +
-                                    ($ae3Array['operariosAs'] ?? 0) +
-                                    ($ae3Array['operariosI'] ?? 0) +
-                                    ($ae3Array['operariosIt'] ?? 0) +
-                                    ($ae3Array['operariosIa'] ?? 0) +
-                                    ($ae3Array['operariosIag'] ?? 0) +
-                                    ($ae3Array['operariosAi'] ?? 0) +
-                                    ($ae3Array['operariosAuxTecDoc'] ?? 0) +
-                                    ($ae3Array['operariosMsc'] ?? 0) +
-                                    ($ae3Array['operariosDr'] ?? 0)
+                                ($ae3Array['operariosTotalCubierta'] ?? 0)
                                 )
                             ]
                         ];
