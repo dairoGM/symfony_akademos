@@ -1,0 +1,371 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Claustro DrC y PT{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .table-container {
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            text-align: center;
+            min-width: 40px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .header-row {
+            background-color: #e6e6e6;
+            font-weight: bold;
+        }
+
+        .subtotal-row {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .total-row {
+            background-color: #d9d9d9;
+            font-weight: bold;
+        }
+
+        .group-header {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .sticky-header {
+            z-index: 2;
+        }
+
+        .sticky-group {
+            z-index: 1;
+            background-color: #e0e0e0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% include 'pages/modalDetail.html.twig' %}
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center">
+                <h3 class="card-title text-bold text-gray">Claustro DrC y PT</h3>
+                <div style="float: left;padding-right: 1%">
+                    <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" style="background: #134679">
+                        <h4 class="card-title w-100">
+                            <a style="color: #FFFFFF" class="d-block w-100 collapsed" data-toggle="collapse"
+                               href="#collapseOne" aria-expanded="false">
+                                Búsqueda avanzada por: {{ text_fil | default('') }}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <!-- Select de Años -->
+                                <div class="col-md-4">
+                                    <label class="required" for="annoFicha">Año</label>
+                                    <select id="annoFicha" name="annoFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="annoFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un año</option>
+                                        {% set annoActual = "now"|date("Y") %}
+                                        {% set annoInicial = annoActual - 5 %}
+                                        {% for anno in annoActual..annoInicial %}
+                                            <option value="{{ anno }}" {% if anno == fil_anno %} selected {% endif %}>
+                                                {{ anno }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Select de Meses -->
+                                <div class="col-md-4">
+                                    <label class="required" for="mesFicha">Mes</label>
+                                    <select id="mesFicha" name="mesFicha"
+                                            class="form-control select2-hidden-accessible"
+                                            data-select2-id="mesFicha"
+                                            tabindex="-1" aria-hidden="true">
+                                        <option value="">Seleccione un mes</option>
+                                        {% set meses = [
+                                            {id: 3, nombre: 'Marzo'},
+                                            {id: 6, nombre: 'Junio'},
+                                            {id: 9, nombre: 'Septiembre'},
+                                            {id: 12, nombre: 'Diciembre'}
+                                        ] %}
+                                        {% for mes in meses %}
+                                            <option value="{{ mes.id }}" {% if mes.id == fil_mes %} selected {% endif %}>
+                                                {{ mes.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container" style="overflow-x: auto;">
+                <table class="table table-bordered table-striped " id="tabla-modelo-14" style="min-width: 1000px;">
+                    <thead>
+                    <tr class="header-row">
+                        <th class="sticky-header">CENTROS</th>
+                        <th class="sticky-header">PT</th>
+                        <th class="sticky-header">PA</th>
+                        <th class="sticky-header">AS</th>
+                        <th class="sticky-header">IT</th>
+                        <th class="sticky-header">IA</th>
+                        <th class="sticky-header">IAG</th>
+                        <th class="sticky-header">Total</th>
+                        <th class="sticky-header">TOTAL DrC</th>
+                        <th class="sticky-header">% DrC</th>
+                        <th class="sticky-header">TOTAL MsC</th>
+                        <th class="sticky-header">% MsC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for grupo in grupos %}
+                        <tr class="group-header">
+                            <td colspan="12" class="sticky-group">{{ grupo.nombre | default('') }}</td>
+                        </tr>
+
+                        {% for centro in grupo.centros %}
+                            <tr>
+                                <td class="">{{ centro.nombre  | default(0) }}</td>
+                                <td>{{ centro.cuadros_docentes.pt | default(0) }}</td>
+                                <td>{{ centro.cuadros_docentes.pa | default(0) }}</td>
+                                <td>{{ centro.cuadros_docentes.as | default(0) }}</td>
+                                <td>{{ centro.cuadros_investigacion.it | default(0) }}</td>
+                                <td>{{ centro.cuadros_investigacion.ia | default(0) }}</td>
+                                <td>{{ centro.cuadros_investigacion.iag | default(0) }}</td>
+                                <td>{{ centro.cuadros_docentes.tot | default(0) + centro.cuadros_investigacion.tot | default(0) }}</td>
+                                <td>{{ centro.total_drc | default(0) }}</td>
+                                <td>{{ centro.porcentaje_drc | default(0) }}%</td>
+                                <td>{{ centro.total_msc | default(0) }}</td>
+                                <td>{{ centro.porcentaje_msc | default(0) }}%</td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr class="subtotal-row">
+                            <td class="">SUBTOTAL</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.pt | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.pa | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.as  | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.it | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.ia  | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_investigacion.iag | default(0) }}</td>
+                            <td>{{ grupo.subtotal.cuadros_docentes.tot | default(0) + grupo.subtotal.cuadros_investigacion.tot | default(0) }}</td>
+                            <td>{{ grupo.subtotal.total_drc | default(0) }}</td>
+                            <td>{{ grupo.subtotal.porcentaje_drc | default(0) }}%</td>
+                            <td>{{ grupo.subtotal.total_msc | default(0) }}</td>
+                            <td>{{ grupo.subtotal.porcentaje_msc | default(0) }}%</td>
+                        </tr>
+                    {% endfor %}
+
+                    <tr class="total-row">
+                        <td class="">TOTAL GENERAL</td>
+                        <td>{{ totalGeneral.cuadros_docentes.pt | default(0) }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.pa | default(0) }}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.as | default(0) }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.it | default(0) }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.ia | default(0) }}</td>
+                        <td>{{ totalGeneral.cuadros_investigacion.iag  | default(0)}}</td>
+                        <td>{{ totalGeneral.cuadros_docentes.tot | default(0) + totalGeneral.cuadros_investigacion.tot | default(0) }}</td>
+                        <td>{{ totalGeneral.total_drc | default(0) }}</td>
+                        <td>{{ totalGeneral.porcentaje_drc | default(0) }}%</td>
+                        <td>{{ totalGeneral.total_msc | default(0) }}</td>
+                        <td>{{ totalGeneral.porcentaje_msc | default(0) }}%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <!-- ExcelJS y FileSaver -->
+    <script src="{{ asset('assets/js/excel/exceljs.js') }}"></script>
+    <script src="{{ asset('assets/js/excel/fileSaver.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Filtros (tu código actual)
+            $('#mesFicha, #annoFicha').change(function (e) {
+                var mes = $('#mesFicha').val();
+                var anno = $('#annoFicha').val();
+                HoldOn.open({
+                    theme: "sk-cube-grid",
+                    message: 'Por favor espere...',
+                    textColor: "white"
+                });
+                $.post("{{ path('app_rrhh_reporte_drc_vs_claustro_index') }}",
+                    {
+                        mes: mes,
+                        anno: anno
+                    },
+                    function (data) {
+                        $(window).attr('location', window.location)
+                        HoldOn.close()
+                    });
+            });
+
+            $('#exportExcel').click(async function () {
+                // 1. Crear un nuevo libro de Excel
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Tabla Claustro DrC y PT');
+
+                // 2. Agregar metadatos (opcional)
+                workbook.creator = 'Sistema';
+                workbook.lastModifiedBy = 'Usuario';
+                workbook.created = new Date();
+
+                // =============================================
+                // A. ENCABEZADOS PERSONALIZADOS
+                // =============================================
+
+                // ---- Fila 1: Título principal ----
+                const titleRow = worksheet.addRow([
+                    "PROFESORES E INVESTIGADORES, CUADROS DOCENTES Y DE INVESTIGACIÓN,  ASESORES Y METODÓLOGOS (SIN INSTRUCTORES NI ASPIRANTES A INVESTIGADORES)"
+                ]);
+                titleRow.font = {bold: true, size: 14};
+                titleRow.alignment = {horizontal: 'center'};
+                worksheet.mergeCells('A1:J1'); // Combinar celdas para el título
+
+                // ---- Fila 2: Tabla y UM ----
+                const subtitleRow1 = worksheet.addRow([
+                    "", "", "", "", "", "", "", "", "", "",
+                    "TABLA: DrC vs claustro sin I ni AI", "", "", "", "", "", "", "", "UM:UNO"
+                ]);
+                subtitleRow1.getCell(11).font = {bold: true}; // "TABLA: 1.4"
+                subtitleRow1.getCell(19).font = {bold: true}; // "UM:UNO"
+
+                // ---- Fila 3: Fecha ----
+                const subtitleRow2 = worksheet.addRow([
+                    "", "", "", "", "", "", "", "", "", "",
+                    "FECHA:" + $('#mesFicha option:selected').text() + $('#annoFicha').val()
+                ]);
+                subtitleRow2.getCell(11).font = {bold: true};
+                worksheet.mergeCells('K3:M3'); // Combinar celdas para la fecha
+
+                // ---- Filas 4-5: Vacías (para formato) ----
+                worksheet.addRow([]);
+                worksheet.addRow([]);
+
+                // ---- Fila 6: Encabezados ----
+                const headers = [
+                    "CENTROS",
+                    "PT",
+                    "PA",
+                    "AS",
+                    "IT",
+                    "IA",
+                    "IAG",
+                    "Total",
+                    "TOTAL DrC",
+                    "% DrC",
+                    "TOTAL MsC",
+                    "% MsC"
+                ];
+                const headerRow = worksheet.addRow(headers);
+                headerRow.font = {bold: true};
+
+                // =============================================
+                // B. DATOS DE LA TABLA HTML
+                // =============================================
+                const table = document.getElementById('tabla-modelo-14');
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    // Saltar las filas de grupo (solo tienen una celda)
+                    if (row.cells.length === 1) return;
+
+                    const rowData = [];
+                    const cells = row.querySelectorAll('td');
+
+                    cells.forEach(cell => {
+                        rowData.push(cell.innerText.trim());
+                    });
+
+                    worksheet.addRow(rowData);
+                });
+
+                // =============================================
+                // C. FORMATOS ADICIONALES
+                // =============================================
+
+                // ---- Ajustar anchos de columnas ----
+                worksheet.columns = [
+                    {width: 30}, // CENTROS (A)
+                    {width: 8},  // PT (B)
+                    {width: 8},  // PA (C)
+                    {width: 8},  // AS (D)
+                    {width: 8},  // IT (E)
+                    {width: 8},  // IA (F)
+                    {width: 8},  // IAG (G)
+                    {width: 8},  // Total (H)
+                    {width: 10}, // TOTAL DrC (I)
+                    {width: 8},   // % DrC (J)
+                    {width: 10}, // TOTAL MsC (K)
+                    {width: 8}   // % MsC (L)
+                ];
+
+                // ---- Estilo para filas de subtotal y total ----
+                worksheet.eachRow({includeEmpty: false}, (row, rowNumber) => {
+                    if (rowNumber >= 7) { // Filas de datos
+                        const firstCell = row.getCell(1).value;
+                        if (firstCell && (firstCell.includes('SUBTOTAL') || firstCell.includes('TOTAL'))) {
+                            row.font = {bold: true};
+                            row.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: {argb: 'FFD9D9D9'} // Color gris claro
+                            };
+                        }
+                    }
+                });
+
+                // =============================================
+                // D. GENERAR Y DESCARGAR EL ARCHIVO
+                // =============================================
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                saveAs(blob, `Modelo_Claustro_DrC_y_PT_${new Date().toISOString().slice(0, 10)}.xlsx`);
+            });
+
+        });
+    </script>
+{% endblock %}
