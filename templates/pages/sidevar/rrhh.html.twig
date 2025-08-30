@@ -40,7 +40,7 @@
         {% endif %}
 
 
-        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_AE2_MES')  or hasRoles('ROLE_RRHH_REPORTE_AE3_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_1_4') %}
+        {% if hasRoles('ROLE_RRHH_REPORTE_AE2_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_AE2_MES')  or hasRoles('ROLE_RRHH_REPORTE_AE3_CONSOLIDADO') or hasRoles('ROLE_RRHH_REPORTE_1_4') or hasRoles('ROLE_RRHH_CLAUSTRO_DRC_PT') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -85,12 +85,20 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if hasRoles('ROLE_RRHH_CLAUSTRO_DRC_PT') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_rrhh_reporte_drc_vs_claustro_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Claustro DrC y PT</p>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endif %}
 
 
-        {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD') %}
+        {% if hasRoles('ROLE_RRHH_GEST_CAT_DOC') or hasRoles('ROLE_RRHH_GEST_ESPECIALIDAD')  or hasRoles('ROLE_RRHH_GEST_GRUPOS') %}
             <li class="nav-item">
                 <a href="#"
                    class="nav-link nav-link-menu">
@@ -114,6 +122,14 @@
                             <a href="{{ path('app_rrhh_especialidad_index') }}"
                                class="nav-link nav-link-menu">
                                 <p>Especialidades</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if hasRoles('ROLE_RRHH_GEST_GRUPOS') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_grupo_index') }}"
+                               class="nav-link nav-link-menu">
+                                <p>Grupos</p>
                             </a>
                         </li>
                     {% endif %}

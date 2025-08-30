@@ -4,6 +4,7 @@ namespace App\Controller\Estructura;
 
 use App\Entity\Estructura\Estructura;
 use App\Entity\Estructura\Plaza;
+use App\Entity\RRHH\Grupo;
 use App\Entity\Security\User;
 use App\Export\Estructura\ExportListEstructuraToPdf;
 use App\Form\Estructura\EstructuraType;
@@ -20,17 +21,16 @@ use App\Services\Utils;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/estructura/estructura")
@@ -86,7 +86,7 @@ class EstructuraController extends AbstractController
             $persona = $personaRepository->findBy(['usuario' => $this->getUser()->getId()]);
             $entidad = isset($persona[0]) ? $persona[0]->getEntidad() : null;
             $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
-            $estructuraNegocio = $entidad->getId();
+            $estructuraNegocio = 1;// $entidad->getId();
             //$isAdmin = false;
 
             if (!$isAdmin) {
@@ -544,5 +544,105 @@ class EstructuraController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/asignar-grupo", name="app_estructura_asignar_grupo", methods={"POST"})
+     */
+    public function asignarGrupo(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $estructuraId = $request->request->get('estructuraId');
+        $grupoId = $request->request->get('grupoId');
+        $nuevoGrupoNombre = $request->request->get('nuevoGrupoNombre');
 
+        $estructura = $entityManager->getRepository(Estructura::class)->find($estructuraId);
+
+        if (!$estructura) {
+            return $this->json(['success' => false, 'message' => 'Estructura no encontrada']);
+        }
+
+        // Si se está creando un nuevo grupo
+        if ($nuevoGrupoNombre) {
+            $grupo = new Grupo();
+            $grupo->setNombre($nuevoGrupoNombre);
+            $entityManager->persist($grupo);
+            $entityManager->flush();
+
+            $estructura->setGrupo($grupo);
+        } // Si se está asignando un grupo existente
+        elseif ($grupoId) {
+            $grupo = $entityManager->getRepository(Grupo::class)->find($grupoId);
+            if ($grupo) {
+                $estructura->setGrupo($grupo);
+            }
+        } // Si no se envió ningún grupo (para eliminar la asignación)
+        else {
+            $estructura->setGrupo(null);
+        }
+
+        $entityManager->flush();
+
+        return $this->json(['success' => true, 'message' => 'Grupo asignado correctamente']);
+    }
+
+    /**
+     * @Route("/grupos", name="app_grupos_index")
+     */
+    public function listarGrupos(EntityManagerInterface $entityManager): Response
+    {
+        $grupos = $entityManager->getRepository(Grupo::class)->findAll();
+
+        return $this->render('estructura/grupos.html.twig', [
+            'grupos' => $grupos,
+        ]);
+    }
+
+    /**
+     * @Route("/obtener-grupos", name="app_estructura_obtener_grupos", methods={"GET"})
+     */
+    public function obtenerGrupos(EntityManagerInterface $entityManager): JsonResponse
+    {
+        $grupos = $entityManager->getRepository(Grupo::class)->findBy(['activo' => true]);
+
+        $gruposArray = [];
+        foreach ($grupos as $grupo) {
+            $gruposArray[] = [
+                'id' => $grupo->getId(),
+                'nombre' => $grupo->getNombre()
+            ];
+        }
+
+        return $this->json($gruposArray);
+    }
+
+
+    /**
+     * @Route("/obtener-grupos/{idEstructura}", name="app_estructura_obtener_grupos", methods={"GET"})
+     */
+    public function obtenerGruposDadoId($idEstructura = null, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $grupos = $entityManager->getRepository(Grupo::class)->findBy(['activo' => true]);
+
+        $gruposArray = [];
+        foreach ($grupos as $grupo) {
+            $gruposArray[] = [
+                'id' => $grupo->getId(),
+                'nombre' => $grupo->getNombre()
+            ];
+        }
+
+        // Obtener el grupo actual de la estructura si se proporciona ID
+        $grupoActual = null;
+        if ($idEstructura) {
+            $estructura = $entityManager->getRepository(Estructura::class)->find($idEstructura);
+            if ($estructura && $estructura->getGrupo() !== null) {
+                // Ahora es una relación ManyToOne, así que obtenemos el grupo directamente
+                $grupoActual = $estructura->getGrupo()->getId();
+            }
+        }
+
+        return $this->json([
+            'grupos' => $gruposArray,
+            'grupoActual' => $grupoActual
+        ]);
+    }
 }
+

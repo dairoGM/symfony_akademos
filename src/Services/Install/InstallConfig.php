@@ -418,6 +418,9 @@ class InstallConfig
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE3_CONSOLIDADO", "Reporte de modelo A3 IES", "Reporte de modelo A3 IES");
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE2_MES", "Reporte de modelo A2 MES", "Reporte de modelo A2 MES");
         $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_AE3", "Gestión de modelo A3", "Gestión de modelo A3");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_REPORTE_1_4", "Modelo 1.4", "Modelo 1.4");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_CLAUSTRO_DRC_PT", "Claustro DrC y PT", "Claustro DrC y PT");
+        $functionalities[] = Functionality::createFunctionality("MODULE_RRHH", "ROLE_RRHH_GEST_GRUPOS", "Gestión de grupos", "Gestión de grupos");
 
 
         return $functionalities;
@@ -608,7 +611,10 @@ class InstallConfig
             ->addFunctionality("ROLE_RRHH_REPORTE_AE2_CONSOLIDADO")
             ->addFunctionality("ROLE_RRHH_REPORTE_AE3_CONSOLIDADO")
             ->addFunctionality("ROLE_RRHH_REPORTE_AE2_MES")
-            ->addFunctionality("ROLE_RRHH_GEST_ESPECIALIDAD");
+            ->addFunctionality("ROLE_RRHH_GEST_ESPECIALIDAD")
+            ->addFunctionality("ROLE_RRHH_REPORTE_1_4")
+            ->addFunctionality("ROLE_RRHH_CLAUSTRO_DRC_PT")
+            ->addFunctionality("ROLE_RRHH_GEST_GRUPOS");
         return $roles;
     }
 }

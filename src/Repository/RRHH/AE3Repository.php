@@ -64,7 +64,7 @@ class AE3Repository extends ServiceEntityRepository
 
     public function getTabla1_4($mes, $anno)
     {
-        $qb = $qb = $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->join('a.entidad', 'e')
             ->where('a.mes = :mes')
             ->andWhere('a.anno = :anno')
@@ -72,6 +72,20 @@ class AE3Repository extends ServiceEntityRepository
             ->setParameter('anno', $anno)
             ->orderBy('e.siglas', 'ASC');
 
-       return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getTotalDoctoresMasters($entidad, $mes, $anno)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a.total_dr, a.total_msc')
+            ->where('a.mes = :mes')
+            ->andWhere('a.anno = :anno')
+            ->andWhere('a.entidad = :entidad')
+            ->setParameter('mes', $mes)
+            ->setParameter('anno', $anno)
+            ->setParameter('entidad', $entidad);
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -1,0 +1,57 @@
+
+
+
+
+{% block body %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Información básica</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Nombre:</th>
+                            <td>{{ grupo.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Descripción:</th>
+                            <td>{{ grupo.descripcion|default('Sin descripción') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Estado:</th>
+                            <td>
+                                {% if grupo.activo %}
+                                    <span class="badge badge-success">Habilitado</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Deshabilitado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Estructuras asignadas:</th>
+                            <td>{{ grupo.estructuras|length }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                {% if grupo.estructuras|length > 0 %}
+                    <div class="col-md-6">
+                        <h5>Estructuras asignadas</h5>
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <ul class="list-group">
+                                {% for estructura in grupo.estructuras %}
+                                    <li class="list-group-item">
+                                        <strong>({{ estructura.siglas }}) {{ estructura.nombre }}</strong>
+                                        {% if estructura.estructura %}
+                                            <br><small class="text-muted">Subordinado a: ({{ estructura.estructura.siglas }}) {{ estructura.estructura.nombre }}</small>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

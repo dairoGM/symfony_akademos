@@ -3,6 +3,9 @@
 namespace App\Entity\Estructura;
 
 use App\Entity\BaseEntity;
+use App\Entity\RRHH\Grupo;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -118,6 +121,23 @@ class Estructura extends BaseEntity
      * @ORM\Column(type="integer", nullable=false, options={"default": 0})
      */
     private int $orden = 0;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\RRHH\Grupo")
+     * @ORM\JoinColumn(name="grupo_id", referencedColumnName="id", nullable=true)
+     */
+    private $grupo;
+
+    public function getGrupo(): ?Grupo
+    {
+        return $this->grupo;
+    }
+
+    public function setGrupo(?Grupo $grupo): self
+    {
+        $this->grupo = $grupo;
+
+        return $this;
+    }
 
     public function __construct()
     {

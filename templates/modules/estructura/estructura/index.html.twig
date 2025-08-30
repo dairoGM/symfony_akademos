@@ -3,36 +3,69 @@
 {% block title %}Estructuras{% endblock %}
 
 {% block body %}
-
     {% include 'pages/modalDetail.html.twig' %}
 
+    {# Modal para asignar Agrupación #}
+    <div class="modal fade" id="modalAsignarGrupo" tabindex="-1" role="dialog" aria-labelledby="modalAsignarGrupoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAsignarGrupoLabel">Asignar Agrupación a Estructura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="cargandoGrupos" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Cargando grupos...</span>
+                        </div>
+                        <p class="mt-2">Cargando grupos disponibles...</p>
+                    </div>
 
+                    <form id="formAsignarGrupo" style="display: none;">
+                        <input type="hidden" id="estructuraId" name="estructuraId">
+                        <div class="form-group">
+                            <label for="grupoSelect">Seleccionar grupo existente:</label>
+                            <select class="form-control" id="grupoSelect" name="grupoExistente">
+                                <option value="">-- Seleccione un grupo --</option>
+                                <!-- Los grupos se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                        <div class="text-center my-2">- O -</div>
+                        <div class="form-group">
+                            <label for="nuevoGrupo">Crear nuevo grupo:</label>
+                            <input type="text" class="form-control" id="nuevoGrupo" name="nuevoGrupo"
+                                   placeholder="Nombre del nuevo grupo">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarGrupo" disabled>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center">
-
                 <h3 class="card-title text-bold text-gray">Listado de estructuras </h3>
-
                 <div>
                     <a title="Adicionar" class="btn btn-primary mr-2" href="{{ path('app_estructura_registrar') }}"><i
                                 class="fa fa-plus"></i>
                     </a>
-
-                    {#                    <a title="Mapa" href="{{ path('app_estructura_index_mapa') }}" class="btn btn-primary"><i #}
-                    {#                                class="fa fa-map"></i> </a> #}
                     <a title="Vista de árbol" href="{{ path('app_estructura_index_arbol') }}" class="btn btn-primary"><i
                                 class="fas fa-sitemap"></i> </a>
                     <a title="Exportar a pdf" class="btn btn-success" target="_blank"
                        href="{{ path('app_estructura_exportar_pdf') }}"><i class="fa fa-file-pdf"></i>
                     </a>
-
                     <a id="exportExcel" title="Exportar a Excel" class="btn btn-success">
                         <i class="fa fa-file-excel"></i>
                     </a>
                 </div>
-
-
             </div>
         </div>
         <!-- /.card-header -->
@@ -58,20 +91,19 @@
                     <th class="text-center">Opciones</th>
                 </tr>
                 <tr>
-                    <th></th> <!-- No filter for index -->
+                    <th></th>
                     <th><input type="text" placeholder="Filtrar por Estructura superior" class="responsive-input"/></th>
                     <th><input type="text" placeholder="Filtrar por Nombre" class="responsive-input"/></th>
                     <th><input type="text" placeholder="Filtrar por Categoría de estructura" class="responsive-input"/>
                     </th>
                     <th><input type="text" placeholder="Filtrar por Estado" class="responsive-input"/></th>
-                    <th></th> <!-- No filter for actions -->
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in registros %}
                     <tr>
                         <td width="1">{{ loop.index }}</td>
-                        {#                        <td>{{ item.estructura.nombre | default('') }}</td> #}
                         <td>
                             {% if item.estructura is not null
                                 and item.estructura.estructura is not null
@@ -80,12 +112,9 @@
                             {% endif %}
                             {{ item.estructura.nombre|default('') }}
                         </td>
-                        {#                        {% if item.estructura.siglas is defined %} #}
-                        {#                            <td>({{ item.estructura.siglas | default('') }}) {{ item.nombre }}</td> #}
-                        {#                        {% else %} #}
                         <td>{{ item.nombre | default('') }}</td>
-                        {#                        {% endif %} #}
                         <td>{{ item.categoriaEstructura.nombre | default('') }}</td>
+
                         <td class="-text-center">
                             {% if '1' == item.activo %}
                                 <span class="ms-status -active">Habilitado</span>
@@ -122,6 +151,19 @@
                                href="{{ path('app_estructura_exportar_estructuras_hijas', {'id': item.id}) }}"><i
                                         class="fa fa-file-pdf"></i>
                             </a>
+
+                            {# Nuevo botón para asignar Agrupación #}
+                            <button class="btn btn-outline-primary asignarGrupoAction" title="Asignar Agrupación"
+                                    style="min-width: auto; width: auto; padding: 2px 6px;"
+                                    data-id="{{ item.id }}" data-nombre="{% if item.estructura is not null
+                                and item.estructura.estructura is not null
+                                and item.estructura.estructura.siglas is not empty %}
+                                ({{ item.estructura.estructura.siglas }})
+                            {% endif %}
+                            {{ item.estructura.nombre|default('') }}">
+                                <i class="fa fa-users"></i>
+                            </button>
+
                             {% if dataShow[item.id] %}
                                 <button class="btn btn-outline-danger elementRemove" title="Eliminar"
                                         style="min-width: auto; width: auto; padding: 2px 6px;"
@@ -133,10 +175,176 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            // Abrir modal para asignar Agrupación
+            $('.asignarGrupoAction').click(function () {
+                var estructuraId = $(this).data('id');
+                var estructuraNombre = $(this).data('nombre');
+
+                $('#estructuraId').val(estructuraId);
+                $('#modalAsignarGrupoLabel').text('Asignar Agrupación a: ' + estructuraNombre);
+
+                // Mostrar modal inmediatamente
+                $('#modalAsignarGrupo').modal('show');
+
+                // Siempre cargar los grupos cuando se abre el modal
+                cargarGrupos(estructuraId);
+            });
+
+            // Función para cargar grupos via AJAX
+            function cargarGrupos(estructuraId) {
+                $.ajax({
+                    url: '{{ path("app_estructura_obtener_grupos") }}/' + estructuraId,
+                    method: 'GET',
+                    beforeSend: function () {
+                        // Mostrar cargador y ocultar formulario
+                        $('#cargandoGrupos').show();
+                        $('#formAsignarGrupo').hide();
+                        $('#btnGuardarGrupo').prop('disabled', true);
+
+                        // Limpiar selecciones anteriores
+                        $('#grupoSelect').val('');
+                        $('#nuevoGrupo').val('');
+                    },
+                    success: function (response) {
+                        // Limpiar y poblar el select de grupos
+                        $('#grupoSelect').empty().append('<option value="">-- Seleccione un grupo --</option>');
+
+                        if (response.grupos.length > 0) {
+                            $.each(response.grupos, function (index, grupo) {
+                                $('#grupoSelect').append('<option value="' + grupo.id + '">' + grupo.nombre + '</option>');
+                            });
+
+                            // Seleccionar el grupo actual si existe
+                            if (response.grupoActual) {
+                                $('#grupoSelect').val(response.grupoActual);
+                            }
+                        } else {
+                            $('#grupoSelect').append('<option value="" disabled>No hay grupos disponibles</option>');
+                        }
+
+                        // Ocultar cargador y mostrar formulario
+                        $('#cargandoGrupos').hide();
+                        $('#formAsignarGrupo').show();
+
+                        // Habilitar botón si ya hay una selección
+                        if ($('#grupoSelect').val() || $('#nuevoGrupo').val().trim()) {
+                            $('#btnGuardarGrupo').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al cargar grupos:', error);
+                        $('#cargandoGrupos').html('<div class="alert alert-danger">Error al cargar los grupos. Intente nuevamente.</div>');
+
+                        // Aún así mostrar el formulario para permitir crear nuevo grupo
+                        setTimeout(function () {
+                            $('#cargandoGrupos').hide();
+                            $('#formAsignarGrupo').show();
+                        }, 2000);
+                    }
+                });
+            }
+
+            // Guardar la asignación de grupo
+            $('#btnGuardarGrupo').click(function () {
+                var estructuraId = $('#estructuraId').val();
+                var grupoExistente = $('#grupoSelect').val();
+                var nuevoGrupo = $('#nuevoGrupo').val().trim();
+
+                // Validación
+                if (!grupoExistente && !nuevoGrupo) {
+                    toastr.error('Debe seleccionar un grupo existente o crear uno nuevo');
+                    return;
+                }
+
+                if (grupoExistente && nuevoGrupo) {
+                    toastr.warning('Solo puede seleccionar un grupo existente O crear uno nuevo, no ambos');
+                    return;
+                }
+
+                // Preparar datos para enviar
+                var data = {
+                    estructuraId: estructuraId
+                };
+
+                if (grupoExistente) {
+                    data.grupoId = grupoExistente;
+                } else {
+                    data.nuevoGrupoNombre = nuevoGrupo;
+                }
+
+                // Enviar solicitud AJAX
+                $.ajax({
+                    url: '{{ path("app_estructura_asignar_grupo") }}',
+                    method: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        $('#btnGuardarGrupo').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...');
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modalAsignarGrupo').modal('hide');
+                            toastr.success('Grupo asignado correctamente');
+                            // Recargar la página para ver los cambios
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            toastr.error('Error: ' + response.message);
+                            $('#btnGuardarGrupo').prop('disabled', false).html('Guardar');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error('Error al asignar el grupo: ' + error);
+                        $('#btnGuardarGrupo').prop('disabled', false).html('Guardar');
+                    }
+                });
+            });
+
+            // Resetear formulario cuando se cierra el modal
+            $('#modalAsignarGrupo').on('hidden.bs.modal', function () {
+                $('#formAsignarGrupo')[0].reset();
+                $('#btnGuardarGrupo').prop('disabled', true);
+            });
+
+            // Habilitar/deshabilitar el botón guardar según la selección
+            $('#grupoSelect, #nuevoGrupo').on('change keyup', function () {
+                var grupoExistente = $('#grupoSelect').val();
+                var nuevoGrupo = $('#nuevoGrupo').val().trim();
+
+                if (grupoExistente || nuevoGrupo) {
+                    $('#btnGuardarGrupo').prop('disabled', false);
+                } else {
+                    $('#btnGuardarGrupo').prop('disabled', true);
+                }
+
+                // Si se selecciona un grupo existente, limpiar el campo de nuevo grupo
+                if (grupoExistente) {
+                    $('#nuevoGrupo').val('');
+                }
+            });
+
+            // Si se escribe en nuevo grupo, limpiar la selección del select
+            $('#nuevoGrupo').on('keyup', function () {
+                if ($(this).val().trim()) {
+                    $('#grupoSelect').val('');
+                }
+            });
+
+            // Cerrar modal con Escape key
+            $(document).keyup(function (e) {
+                if (e.key === "Escape" && $('#modalAsignarGrupo').hasClass('show')) {
+                    $('#modalAsignarGrupo').modal('hide');
+                }
+            });
+        });
+    </script>
 {% endblock %}
