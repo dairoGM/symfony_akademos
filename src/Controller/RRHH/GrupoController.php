@@ -41,6 +41,11 @@ class GrupoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($grupo->getEstructuras() as $estructura) {
+                $estructura->setGrupo($grupo); // 👈 setear FK en cada estructura
+                $entityManager->persist($estructura);
+            }
+
             $entityManager->persist($grupo);
             $entityManager->flush();
 
@@ -62,8 +67,11 @@ class GrupoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($grupo->getEstructuras() as $estructura) {
+                $estructura->setGrupo($grupo); // 👈 setear FK en cada estructura
+                $entityManager->persist($estructura);
+            }
             $entityManager->flush();
-
             $this->addFlash('success', 'Grupo modificado correctamente.');
             return $this->redirectToRoute('app_grupo_index');
         }
