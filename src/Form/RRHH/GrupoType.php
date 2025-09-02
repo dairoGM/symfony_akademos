@@ -46,7 +46,7 @@ class GrupoType extends AbstractType
                 },
                 'multiple' => true,
                 'expanded' => false,
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'tom-select',
                     'data-placeholder' => 'Seleccione las estructuras',

@@ -3,6 +3,7 @@
 namespace App\Controller\RRHH;
 
 
+use App\Entity\Estructura\Estructura;
 use App\Entity\RRHH\Grupo;
 
 use App\Form\RRHH\GrupoType;
@@ -67,11 +68,25 @@ class GrupoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($grupo->getEstructuras() as $estructura) {
-                $estructura->setGrupo($grupo); // 👈 setear FK en cada estructura
-                $entityManager->persist($estructura);
+
+            // 1. Quitar el grupo de todas las estructuras que lo tenían antes
+            $repoEstructura = $entityManager->getRepository(Estructura::class);
+            $estructurasViejas = $repoEstructura->findBy(['grupo' => $grupo]);
+
+            foreach ($estructurasViejas ?? [] as $estructuraVieja) {
+                $estructuraVieja->setGrupo(null);
+                $entityManager->persist($estructuraVieja);
             }
+
+            // 2. Asignar el grupo a las estructuras seleccionadas en el form
+            foreach ($grupo->getEstructuras() ?? [] as $estructuraNueva) {
+                $estructuraNueva->setGrupo($grupo);
+                $entityManager->persist($estructuraNueva);
+            }
+
+            // 3. Guardar cambios
             $entityManager->flush();
+
             $this->addFlash('success', 'Grupo modificado correctamente.');
             return $this->redirectToRoute('app_grupo_index');
         }
@@ -81,6 +96,7 @@ class GrupoController extends AbstractController
             'grupo' => $grupo,
         ]);
     }
+
 
     /**
      * @Route("/{id}/detail", name="app_grupo_detail")
